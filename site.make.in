@@ -1,5 +1,8 @@
 # $Id$
 
+prefix=		@prefix@
+exec_prefix=	@exec_prefix@
+abs_srcdir=	@abs_srcdir@
 
 # Which compiler to use (gcc is prefered).
 CC = @CC@
@@ -55,7 +58,13 @@ endif
 
 EXTRA_LIB += -lm
 
-DESTDIR = $(srctop)/..
+BINDIR = @bindir@
+LIBDIR = @libdir@
+INCLUDEDIR = @includedir@
+DATADIR = @prefix@/data
+DOCDIR = @prefix@/doc
+DESTDIR = @prefix@
+
 
 PRPC_LANG = en
 

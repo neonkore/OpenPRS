@@ -44,13 +44,15 @@ include ../site.make
 
 top_srcdir=	@top_srcdir@
 
-.PHONY:	all index
+srcdir=	@srcdir@
 
-srcdir= $top_srcdir
+.PHONY:	all index
 
 VPATH = .:$(srcdir)
 
 FIGURES = $(srcdir)/fig/*.ps
+
+TEXINPUTS = .:@srcdir@:@srcdir@/fig:
 
 INDEX = oprs.cpnd oprs.fnnd oprs.epnd oprs.efnd oprs.vrnd oprs.pgnd 
 

@@ -678,7 +678,6 @@ size:
 install_contrib:
 	-(cd contrib/src ; $(MAKE) install)
 
-ifndef VXWORKS
 install: install_no_doc install_doc
 
 # install all except the doc
@@ -706,9 +705,8 @@ install_relocatable: $(RELOCATABLE)
 
 install_bin: $(PROG)
 	@-for i in $^; do\
-		$(INSTALL-IF-CHANGE) -c -m 755 $$i ${DESTDIR}/${TARGET}${TARGET-SUFFIX}/bin/$$i;\
+		$(INSTALL-IF-CHANGE) -c -m 755 $$i ${BINDIR}/$$i;\
 	done
-	$(INSTALL-IF-CHANGE) -c -m 755 doc/find_url_in_doc.pl ${DESTDIR}/${TARGET}${TARGET-SUFFIX}/bin/find_url_in_doc.pl
 
 install_src: ${EXTERNAL_SRC}
 	@-for i in $^; do\
@@ -717,7 +715,7 @@ install_src: ${EXTERNAL_SRC}
 
 install_include: ${EXTERNAL_INCLUDE}
 	@-for i in $^; do\
-		$(INSTALL-IF-CHANGE) -c -m 644 $$i ${DESTDIR}/include/`basename $$i`;\
+		$(INSTALL-IF-CHANGE) -c -m 644 $$i ${INCLUDEDIR}/`basename $$i`;\
 	done
 
 install_util:
@@ -752,20 +750,6 @@ install_doc:
 
 install_data:
 	-(cd data; $(MAKE) install)
-else
-install \
-install_lib \
-install_relocatable \
-install_code \
-install_just_code \
-install_no_doc \
-install_bin \
-vx-install: lib vxoprs vxoprs-relocatable vx-mp-lib.o vx-mp-oprs vx-kill-mp c_toolkit/c_toolkit.o install_contrib
-	@-for i in  vxoprs vxoprs-relocatable vx-mp-lib.o vx-mp-oprs vx-kill-mp c_toolkit/c_toolkit.o; do\
-		$(INSTALL-IF-CHANGE) -c -m 644 $$i ${DESTDIR}/${TARGET}${TARGET-SUFFIX}/lib/`basename $$i`;\
-	done
-	@$(INSTALL-IF-CHANGE) -c -m 644 site.make ${DESTDIR}/${TARGET}${TARGET-SUFFIX}/site.make
-endif
 
 user-external.c: default-user-external.c
 	@echo "*******************************"

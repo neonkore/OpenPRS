@@ -4,7 +4,7 @@
 AC_PREREQ(2.53)
 AC_INIT(Open PRS, 1.0b, felix@laas.fr, OpenPRS)
 AC_CONFIG_SRCDIR([oprs-main.c])
-AC_CONFIG_HEADER([config-ac.h])
+AC_CONFIG_HEADERS([config-ac.h config.h])
 AC_CONFIG_AUX_DIR([util])
 
 AC_LANG(C)
@@ -61,7 +61,6 @@ AC_CHECK_FUNCS([abort sigaction setitimer valloc clock_gettime dup2 gethostbynam
 AC_CONFIG_FILES([
 		 Makefile
 		 site.make
-		 config.h
                  c_toolkit/Makefile
                  contrib/Makefile
                  contrib/data/Makefile

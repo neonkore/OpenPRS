@@ -1,3 +1,7 @@
+2004-12-15  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* config.h: Remove config.h.in only use config-ac.h
+
 2004-12-03  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* oprs-cat.c (main): remove the call to setpgrp() ... not even
