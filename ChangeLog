@@ -3,6 +3,10 @@
 	* config.h.in: protect the LITTLE_ENDIAN define which can be
 	sometimes already defined.
 
+2005-01-21  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* README: Fixed a typo.
+
 2005-01-06  Francois Felix Ingrand  <felix@laas.fr>
 
 	* ev-function.c: Add a make_atom_ef evaluable function.
@@ -13,7 +17,6 @@
 
 	* Makefile.in: Fixed a small bug in the install (link) of .ad files.
 	Remove the InfoPath setting in .ad files...
-
 
 2005-01-03  Francois Felix Ingrand  <felix@laas.fr>
 

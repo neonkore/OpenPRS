@@ -57,8 +57,9 @@ PREREQUISITES
 Open PRS needs the following tools to be installed on the system before you can
 compile it:
 
-- gcc (and or cc on Solaris)
-- X11 Release 6 (or some equivalent)
+- autoconf and autoheader (both >=2.53, but only required if you really plan to hack the source)
+- gcc (and/or cc on Solaris)
+- X11 Release 6
 - Some version of Motif, such as Motif itself, Lesstif, or Open Motif
 - libreadline/libhistory (or some compatible replacement... not tested though)
 - The GNU make utility, version 3.79 or higher. Open PRS Makefiles use some
@@ -94,8 +95,8 @@ come...
 - x86 Linux (tested on many of them)
 
 
-The system for which I am dropping support (although the code retain ifdef
-which should help you to get it compiling...) 
+The system for which I am dropping support (although the code retains #ifdef
+all over the place which should help you to get it compiling...) 
 - VxWorks (68x00, PPC)
 - SGI Irix
 - HP UX
@@ -126,37 +127,50 @@ powerpc-darwin). Then cd in this $TARGET directory and execute:
 
 	../../src/configure
 
+Note that if you do not intend to install OpenPRS in the standard
+/usr/local directory you may have to specify the --prefix=<dir>
+Similarly, if you plan to have more than one architecture-dependent file in
+the same tree you may want to specify the  --exec-prefix=<bindir>
 
-(if you did not create a $TARGET subdirectory, you can remove the first ../
-from the previous command)
+	../../src/configure --prefix=/usr/local/openprs \
+			    --exec-prefix=/usr/local/openprs/i386-linux
+
+Anyway... ../../src/configure --help will give you some information
+
+if you did not create a $TARGET subdirectory, you can remove the first ../
+from the previous commands)
 
 	../src/configure
 
-For some historical reasons... I tend to not compile in the src
-directory... but it should work (just do a configure in the src directory)
+For some historical reasons (and because it is then messy ;-)... I tend not
+to compile in the src directory... but it should work (just do a ./configure
+in the src directory)
 
 Then in the directory where you executed configure, type:
 
 	make depend
 	make
 
+****** 
 Do not forget the make depend (it does create files which are needed in the
 next step).
+******
 
-You can test with something like:
+You can test the result with something like:
 
-	xoprs -n fact -a -A -x data/fact
+	./xoprs -n fact -a -A -x data/fact-meta-if-par.inc
 
 A window should appear...
 
 Go in the Oprs menu and select Add Fact or Goal
 
-type (! (PRINT-FACTORIAL 10.0)) 
+type 
+(! (PRINT-FACTORIAL 10.0)) 
 (it is case sensitive)
 
 The result should show up..
 
-a
+If you think that everything seems to work, type:
 	make install
 will also build other things such as the documentation... and install everything.
 
@@ -213,13 +227,14 @@ etc...
 primer... if I can find where I put it).
 
 Known Problems
----------------------------
+--------------
 
-- The current Configure mechanism is very "basic" and mya fail on a number
-of system... SO far I tested it under Mac OSX 10.3.6 and Linux RHL 7.3.
+- The current Configure mechanism is very "basic" and may fail on a number
+of system... SO Far I tested it under Mac OSX 10.3.6 and Linux RHL 7.3.
 
 - The documentation does not come out right on every systems... I do not
-know why... some latex/index version problems...
+know why... some latex/index version problems... In any case, it is available in PDF
+format from the distribution.
 
 Reporting Problems / Getting Help
 ---------------------------------

@@ -22,13 +22,18 @@ LICENSE = $(OPENPRS-FTP-DIR)/LICENSE
 INSTALL = $(OPENPRS-FTP-DIR)/INSTALL
 CHANGELOG = $(OPENPRS-FTP-DIR)/ChangeLog
 
-all: $(DOC-PDF) $(OPENPRS-REST) $(OPENPRS-SRC) $(README) $(INSTALL) $(LICENSE) $(CHANGELOG)\
-	 $(OPENPRS-FTP-DIR)/openprs-$(VERSION)-sparc-solaris.tgz \
-	 $(OPENPRS-FTP-DIR)/openprs-$(VERSION)-powerpc-darwin.tgz \
-	 $(OPENPRS-FTP-DIR)/openprs-$(VERSION)-i386-linux.tgz
+BINARIES = $(OPENPRS-FTP-DIR)/openprs-$(VERSION)-sparc-solaris.tgz \
+	   $(OPENPRS-FTP-DIR)/openprs-$(VERSION)-powerpc-darwin.tgz \
+	   $(OPENPRS-FTP-DIR)/openprs-$(VERSION)-i386-linux.tgz
+
+
+all: $(DOC-PDF) $(OPENPRS-REST) $(OPENPRS-SRC) $(README) $(INSTALL) \
+	$(LICENSE) $(CHANGELOG) $(BINARIES)
 
 dist: all
-	scp $(DOC-PDF) $(OPENPRS-REST) $(OPENPRS-SRC) $(README) $(INSTALL) $(LICENSE) $(CHANGELOG) $(OPENPRS-FTP-DIR)/openprs-$(VERSION)-sparc-solaris.tgz $(OPENPRS-FTP-DIR)/openprs-$(VERSION)-i386-linux.tgz rust:/var/ftp/pub/openrobots/openprs/
+	scp $(DOC-PDF) $(OPENPRS-REST) $(OPENPRS-SRC) $(README) \
+		$(INSTALL) $(LICENSE) $(CHANGELOG) $(BINARIES) \
+		rust:/var/ftp/pub/openrobots/openprs/
 
 $(DOC-PDF): doc/oprs.pdf
 	cp $^ $@
