@@ -1,19 +1,19 @@
 ########################### -*- Mode: Makefile -*- #########################
 ## Makefile -- 
 ## 
-## Copyright (C) 1992-2003 Francois Felix Ingrand
+## Copyright (C) 1992-2001 Francois Felix Ingrand
 ## 
 ## Author          : Francois Felix Ingrand
 ## Created On      : Wed Apr  1 15:00:21 1992
 ## Last Modified By: Francois Felix Ingrand
-## Last Modified On: Thu Jan 27 09:05:02 2000
-## Update Count    : 269
+## Last Modified On: Tue Oct 21 10:49:17 2003
+## Update Count    : 270
 ## Status          : OK
 ## 
 ## $Id$
 ## 
 ###############################################################################
-# Copyright (c) 1991-2003 Francois Felix Ingrand.
+# Copyright (c) 1991-2001 Francois Felix Ingrand.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -70,7 +70,7 @@ OP_EDITOR = ../ope
 X_OPRS = ../xoprs
 
 
-all: oprs.ps html
+all: oprs.pdf
 
 #oprs.dvi: oprs-macros.tex $(OP_TEX) $(OP_TEXT) $(FIGURES) $(INDEX)
 
