@@ -6,8 +6,8 @@
 ## Author          : Francois Felix Ingrand
 ## Created On      : Wed Apr  1 15:00:21 1992
 ## Last Modified By: Francois Felix Ingrand
-## Last Modified On: Tue Oct 21 13:50:03 2003
-## Update Count    : 271
+## Last Modified On: Thu Dec 18 10:52:30 2003
+## Update Count    : 274
 ## Status          : OK
 ## 
 ## $Id$
@@ -133,19 +133,19 @@ us-letter:
 	ln oprs.ps oprs.ps.us
 
 %.tex: ../data/%.opf $(OP_EDITOR)
-	$(OP_EDITOR) -iconic -t $< $@
+	$(OP_EDITOR) -t $< $@
 
 %.txt-opf: ../data/%.opf
 	cp $< $@
 
 %.tex: ../data/test/%.opf
-	$(OP_EDITOR) -iconic -t $< $@
+	$(OP_EDITOR) -t $< $@
 
 truck-demo.tex: ../demo/truck-demo/oprs/data/truck-demo.opf
-	$(OP_EDITOR) -iconic -t $< $@
+	$(OP_EDITOR) -t $< $@
 
 truck-demo-plus.tex: ../demo/truck-demo/oprs/data/truck-demo-plus.opf
-	$(OP_EDITOR) -iconic -t $< $@
+	$(OP_EDITOR) -t $< $@
 
 $(OP_EDITOR):
 	(cd .. ; $(MAKE) ope)

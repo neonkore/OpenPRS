@@ -1,3 +1,9 @@
+2003-12-18  Francois Felix Ingrand  <felix@laas.fr>
+
+	* Makefile: remove the -iconic which makes the Darwin X11 server
+	crash...
+	
+
 2003-09-22  Francois Felix Ingrand  <felix@laas.fr>
 
 	* README: creation...
