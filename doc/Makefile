@@ -6,8 +6,8 @@
 ## Author          : Francois Felix Ingrand
 ## Created On      : Wed Apr  1 15:00:21 1992
 ## Last Modified By: Francois Felix Ingrand
-## Last Modified On: Tue Oct 21 10:49:17 2003
-## Update Count    : 270
+## Last Modified On: Tue Oct 21 13:50:03 2003
+## Update Count    : 271
 ## Status          : OK
 ## 
 ## $Id$
@@ -104,16 +104,8 @@ clean:
 		oprs $(OP_TEX)
 
 
-install: html oprs.ps oprs.dvi
-	for i in oprs.ps oprs.dvi; do\
-		$(srcdir)/../util/install.sh -c -m 644 $$i ${DESTDIR}/doc/$$i;\
-	done
-	for i in $(FIGURES); do\
-		$(srcdir)/../util/install.sh -c -m 644 $$i ${DESTDIR}/doc/fig/`basename $$i`;\
-	done
-	-$(RM) -r ${DESTDIR}/doc/html
-	mkdir ${DESTDIR}/doc/html
-	tar chf - -C oprs . | ( cd ${DESTDIR}/doc/html ; tar xf - )
+install: oprs.pdf
+	$(srcdir)/../util/install.sh -c -m 644 $< ${DESTDIR}/doc/$@;\
 
 # Cut here for updating the Makefile.src file
 # (DO NOT TOUCH THE PREVIOUS LINE)

@@ -3,7 +3,7 @@
 #
 # $Id$
 #
-# Copyright (c) 1991-2003 Francois Felix Ingrand.
+# Copyright (c) 1991-2001 Francois Felix Ingrand.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -120,13 +120,11 @@ ANNEX_FILES = $(DIST_ANNEX_FILES) ChangeLog MISC Makefile Makefile.src \
 #
 OLD_FILES = 
 
-PUBLIC_SRC = user-action.c user-action.h user-ev-function.c user-ev-function.h \
+EXTERNAL_SRC = user-action.c user-action.h user-ev-function.c user-ev-function.h \
 	user-ev-predicate.c user-ev-predicate.h user-external.c user-external.h \
 	user-external_f.h user-trace.c user-trace.h user-trace_f.h
 
-MISC_DIST = HISTORY NEWS
-
-PUBLIC_INCLUDE = action_f-pub.h constant-pub.h ev-function_f-pub.h ev-predicate_f-pub.h \
+EXTERNAL_INCLUDE = action_f-pub.h constant-pub.h ev-function_f-pub.h ev-predicate_f-pub.h \
 	fact-goal_f-pub.h int-graph_f-pub.h intention_f-pub.h lang.h oprs-sprint-pub.h \
 	op-instance_f-pub.h op-structure_f-pub.h lisp-list_f-pub.h macro-pub.h \
 	mp-pub.h opaque-pub.h oprs-array_f-pub.h oprs-type-pub.h oprs-sprint_f-pub.h \
@@ -723,12 +721,12 @@ install_bin: $(PROG)
 	done
 	$(INSTALL-IF-CHANGE) -c -m 755 doc/find_url_in_doc.pl ${DESTDIR}/${TARGET}${TARGET-SUFFIX}/bin/find_url_in_doc.pl
 
-install_src: ${PUBLIC_SRC} ${MISC_DIST}
+install_src: ${EXTERNAL_SRC}
 	@-for i in $^; do\
 		$(INSTALL-IF-CHANGE) -c -m 644 $$i ${DESTDIR}/pub_src/`basename $$i`;\
 	done
 
-install_include: ${PUBLIC_INCLUDE}
+install_include: ${EXTERNAL_INCLUDE}
 	@-for i in $^; do\
 		$(INSTALL-IF-CHANGE) -c -m 644 $$i ${DESTDIR}/include/`basename $$i`;\
 	done

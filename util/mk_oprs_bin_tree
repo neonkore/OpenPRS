@@ -36,7 +36,9 @@ mkdir contrib/src
 ln -s $srcdir/contrib/src/Makefile contrib/src/Makefile
 ln -s $srcdir/contrib/Makefile contrib/Makefile
 ln -s $srcdir/contrib/data contrib/data
-ln -s $srcdir/data data
 mkdir doc
 cd doc
 lndir $srcdir/doc .
+mkdir data
+cd data
+lndir $srcdir/data .

@@ -144,14 +144,14 @@ already...)
 	cd doc 
 	make
 
-If you are happy about the built and want to install it, go back in the directory above the doc directory and make install
+If you are happy about the built and want to install it, go back in the
+directory above the doc directory and make install (check the path where it
+will be installed in the site.make file created in your build/$TARGET
+directory.)
 
 	cd ..
 	make install
 
-Can be also done (although you can run it from the build directory)... check
-the path where it will be installed in the site.make file created in your
-build/$TARGET directory.
 
 RUNNING Open PRS
 ----------------
