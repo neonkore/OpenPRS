@@ -1,3 +1,23 @@
+2004-05-27  Francois Felix Ingrand  <felix@laas.fr>
+
+	* version.c: 1.0 Beta PatchLevel 1. I think, I fixed Robert
+	Goldman problem... I am also putting HAS_READLINE in the sparc and
+	linux config. Now that we are in BSD like licence, this should not
+	be an issue.
+
+	* oprs-server-main.c: filename_completion_function becomes
+	rl_filename_completion_function... 
+
+	* Makefile.dev: a missing dependancy for oprs-server-parser.l
+
+	* lex-parser-def.l: Robert Goldman reporter a problem with the
+	parsing... Indeed, we do not return when a return is being hit on
+	the keyboard... reversing to Propice 2.0 code... I wish I
+	could remember why this code was deleted... So much for "loging"
+	ChangeLog modification.
+
+	* oprs-server-main.c: remove "key" code left from Propice.
+
 2004-05-26  Francois Felix Ingrand  <felix@laas.fr>
 
 	* xhelp.c: Change the code to warn about the online (i.e. linked to the

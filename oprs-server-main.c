@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*-
  * oprs-main.c --
  *
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2004 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,9 +41,7 @@ static const char* const rcsid = "$Id$";
 #endif
 
 #include <stdio.h>
-#ifndef OPRS_KEY_CODE
 #include <errno.h>
-#endif
 #include <string.h>
 #include <sys/types.h>
 #ifdef HAS_SYS_SIGNAL
@@ -53,7 +51,7 @@ static const char* const rcsid = "$Id$";
 #endif
 #include <stdlib.h>
 
-#if ! defined(OPRS_KEY_CODE) && defined(HAS_READLINE)
+#if defined(HAS_READLINE)
 #include <readline/readline.h>
 #include <readline/history.h>
 #endif     
@@ -87,9 +85,7 @@ pthread_t accept_thread;
 #include "oprs-client_f.h"
 #include "oprs-pred-func_f.h"
 
-#ifndef OPRS_KEY_CODE
 #include "mp-register_f.h"
-#endif     
 
 #define SERVER_ARG_ERR_MESSAGE LG_STR(\
 "Usage: oprs-server [-X] [-n] [-i server-port-number]\n\
@@ -198,9 +194,7 @@ void server_init_arg(int argc,char **argv)
 
 }
 
-#if ! defined(OPRS_KEY_CODE) && defined(HAS_READLINE)
-
-/* This code is GNU copy left... So only in the LAAS version. */
+#if defined(HAS_READLINE)
 
 char *strip_white(char *string)
 {
@@ -455,7 +449,7 @@ char *oprs_server_completion(char *text_arg, int state)
 		    break;
 	       case CC_FILENAME:
 		    command_match = TRUE;
-		    to_free = filename_completion_function(text+len_com,state);
+		    to_free = rl_filename_completion_function(text+len_com,state);
 		    if (to_free) {
 			 res = concat_str1_str2(name,to_free);
 			 FREE_STD(to_free);
@@ -484,7 +478,7 @@ void initialize_rl(void)
      rl_basic_word_break_characters = "";
      rl_readline_name = "oprs";
      rl_completion_append_character ='\0';
-     rl_completion_entry_function = (Function *)oprs_server_completion;
+     rl_completion_entry_function = (rl_compentry_func_t *)oprs_server_completion;
 }
 #endif
 
@@ -500,7 +494,7 @@ int main(int argc, char **argv, char **envp)
      Oprs_Client *oprs_cl;
      Slist *oprslist2;
      PBoolean ignore;
-#if ! defined(OPRS_KEY_CODE) && defined(HAS_READLINE)
+#if defined(HAS_READLINE)
      char hist_filename[FILENAME_MAX];
      char *home;
 #endif
@@ -529,7 +523,7 @@ int main(int argc, char **argv, char **envp)
      oprs_prompt = OPRS_SERVER_MP_NAME; /* Set the prompt */
      i_have_the_stdin = TRUE;
 
-     setbuf(stdin, NULL);	/* In case we are connected to a file, we want to be unbuffered Otherwise we have
+     setvbuf(stdin, NULL, _IONBF, 0);	/* In case we are connected to a file, we want to be unbuffered Otherwise we have
 				 * trouble when we fork because the buffer of the child stdin is full of the father
 				 * command... */
 
@@ -560,7 +554,7 @@ int main(int argc, char **argv, char **envp)
      printf(LG_STR("This oprs-server does not auto accept new clients.\n",
 		   "Ce oprs-server n'accepte pas les nouveaux clients automatiquement.\n"));
 
-#if ! defined(OPRS_KEY_CODE) && defined(HAS_READLINE)
+#if defined(HAS_READLINE)
      using_history ();
      
      if ((home = getenv("HOME")))
@@ -579,7 +573,7 @@ int main(int argc, char **argv, char **envp)
 
      while (!quit &&		/* I have not been ask to quit */
 	    (feof(stdin) == 0)) { /* The stdin is still here... */
-#if ! defined(OPRS_KEY_CODE) && defined(HAS_READLINE)
+#if defined(HAS_READLINE)
 	  char *command;
 
 	  command = rl_gets("oprs-server> ");
@@ -596,7 +590,7 @@ int main(int argc, char **argv, char **envp)
 #endif
      }
 
-#if ! defined(OPRS_KEY_CODE) && defined(HAS_READLINE)
+#if defined(HAS_READLINE)
      if (write_history(hist_filename) != 0) {
 	  perror("oprs-server: write_history");
      }

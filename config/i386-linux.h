@@ -9,6 +9,7 @@
 #define USE_MULTI_THREAD
 #define MIXED_MALLOC
 
+#define HAS_READLINE
 #define HAS_BUFSIZ
 #define HAS_STRERROR
 #define HAS_LRAND48

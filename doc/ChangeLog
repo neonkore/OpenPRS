@@ -1,3 +1,12 @@
+2004-05-27  Francois Felix Ingrand  <felix@laas.fr>
+
+	* Makefile: Stop remaking all the opf.tex files when ope has been modified...
+
+2004-05-26  Francois Felix Ingrand  <felix@laas.fr>
+
+	* appendices.tex: Fixed typos about SRI OPRS...
+	Put a warning in the INSTALL section which is "outdated".
+
 2004-05-24  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* overview.tex: corrected typos and mistakes pointed by Robert P.

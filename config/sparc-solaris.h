@@ -14,6 +14,7 @@
 
 #define INLINE_UNDEFINED
 
+#define HAS_READLINE
 #define HAS_STRERROR
 #define HAS_LRAND48
 #define HAS_ABORT

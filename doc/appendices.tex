@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% -*- Mode: latex -*- %%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
-%% Copyright (c) 1991-2003 Francois Felix Ingrand.
+%% Copyright (c) 1991-2004 Francois Felix Ingrand.
 %% All rights reserved.
 %%
 %% Redistribution and use in source and binary forms, with or without
@@ -44,7 +44,7 @@
 
 
 \chapter{Principal Differences with SRI PRS}
-\node{Principal Differences with SRI OPRS}
+\node{Principal Differences with SRI PRS}
 \cpindex{Principal Differences with SRI PRS}
 
 One of the principal concern while writing C-PRS and \COPRS{} was to
@@ -70,13 +70,13 @@ is not allowed any longer\dots{} It should be replaced with: \*
 but should be replaced with the \code{=>} temporal operator (a similar
 remark holds for \code{~>}) .
 
-\item The \code{@} variables have the expected behavior. In SRI OPRS, the
+\item The \code{@} variables have the expected behavior. In SRI PRS, the
 only way to rebind a variable was to use a goal such as \code{(! (= @x
 ...))}. This limitation has been removed in \COPRS{}, and the \code{@}
 variables can be rebound in any context.
 
 \item The database uses a term indexing mechanism which has been extended
-recursively (SRI OPRS version did not handle embedded composed terms
+recursively (SRI PRS version did not handle embedded composed terms
 properly).
 
 \item The wait temporal operator is cleaner in \COPRS{} as it succeeds only
@@ -1044,7 +1044,7 @@ Forking/Joining & \ref{OPRS Trace} \\
 \cpindex{Default OPs}
 
 Some default OPs are provided as is in the standard \COPRS{} distribution.
-However, unlike SRI OPRS, these default OPs are not loaded by default in all
+However, unlike SRI PRS, these default OPs are not loaded by default in all
 \CPK{}s. Most of these files comes with a \file{.sym} and \file{.inc}
 companion. If this is the case, always load the coresponding \file{.inc} file.
 
@@ -2554,6 +2554,10 @@ These OPS can be found in the file \file{fib-par.opf}.
 \chapter{How to Install the \COPRSDE{}}
 \node{How to Install the OPRS Development Environment}
 \cpindex{How to Install the \COPRSDE{}}
+
+This section is completely out of date and need to be updated since I moved
+the code in Open Source...
+
 
 The installation procedure is different (although very similar), according to
 the license you have. One general comment is that most Makefile are written for

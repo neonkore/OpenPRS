@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * oprs-client.c -- 
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2004 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -277,7 +277,7 @@ Oprs_Client *accept_oprs_client()
      oprs_cl->pid = pid;
      oprs_cl->use_x = flag_x;
 
-#if ! defined(OPRS_KEY_CODE) && defined(HAS_READLINE)
+#if defined(HAS_READLINE)
      oprs_cl->completion_size = 0;
      oprs_cl->completion = NULL;
 #endif
@@ -471,7 +471,7 @@ void kill_oprs_client(Oprs_Client *pcl)
 	  perror("kill_oprs_client: close");
      sl_delete_slist_node(oprslist,pcl);
 
-#if ! defined(OPRS_KEY_CODE) && defined(HAS_READLINE)
+#if defined(HAS_READLINE)
      if (pcl->completion_size) {
 	  int i;
 	  for (i = 0; i < pcl->completion_size; i++) {

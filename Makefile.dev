@@ -3,7 +3,7 @@
 #
 # $Id$
 #
-# Copyright (c) 1991-2003 Francois Felix Ingrand.
+# Copyright (c) 1991-2004 Francois Felix Ingrand.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -602,7 +602,7 @@ util/lex-includer:
 ope-parser.ll oprs-parser.ll opc-parser.ll: lex-parser-def.l lex-simple-def.l lex-macro.l \
 		lex-graph-op.l lex-text-op.l lex-meta-exp.l lex-exp.l
 
-oprs-server-parser.ll: lex-simple-def.l lex-macro.l lex-exp.l
+oprs-server-parser.ll: lex-simple-def.l lex-macro.l lex-exp.l lex-parser-def.l
 
 #
 # This rule says that the .ad.h are obtained with the coresponding .ad

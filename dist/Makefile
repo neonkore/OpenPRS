@@ -5,29 +5,32 @@
 
 .DEFAULT:
 
+VERSION = 1.0b
+
 OPENPRS-FTP-DIR = dist-dir
 
-DOC-HTML = $(OPENPRS-FTP-DIR)/openprs-1.0b-doc-html.tgz
+DOC-HTML = $(OPENPRS-FTP-DIR)/openprs-$(VERSION)-doc-html.tgz
 
-DOC-PDF = $(OPENPRS-FTP-DIR)/openprs-1.0b-doc-pdf.tgz
+DOC-PDF = $(OPENPRS-FTP-DIR)/openprs-$(VERSION)-doc.pdf
 
-OPENPRS-REST = $(OPENPRS-FTP-DIR)/openprs-1.0b-rest.tgz
+OPENPRS-REST = $(OPENPRS-FTP-DIR)/openprs-$(VERSION)-rest.tgz
 
-OPENPRS-SRC = $(OPENPRS-FTP-DIR)/openprs-1.0b-src.tgz
+OPENPRS-SRC = $(OPENPRS-FTP-DIR)/openprs-$(VERSION)-src.tgz
 
 README = $(OPENPRS-FTP-DIR)/README
 LICENSE = $(OPENPRS-FTP-DIR)/LICENSE
 INSTALL = $(OPENPRS-FTP-DIR)/INSTALL
+CHANGELOG = $(OPENPRS-FTP-DIR)/ChangeLog
 
-all: $(DOC-PDF) $(OPENPRS-REST) $(OPENPRS-SRC) $(README) $(INSTALL) $(LICENSE)\
-	 $(OPENPRS-FTP-DIR)/openprs-1.0b-sparc-solaris.tgz \
-	 $(OPENPRS-FTP-DIR)/openprs-1.0b-i386-linux.tgz
+all: $(DOC-PDF) $(OPENPRS-REST) $(OPENPRS-SRC) $(README) $(INSTALL) $(LICENSE) $(CHANGELOG)\
+	 $(OPENPRS-FTP-DIR)/openprs-$(VERSION)-sparc-solaris.tgz \
+	 $(OPENPRS-FTP-DIR)/openprs-$(VERSION)-i386-linux.tgz
 
 dist: all
-	scp $(DOC-PDF) $(OPENPRS-REST) $(OPENPRS-SRC) $(README) $(INSTALL) $(LICENSE) $(OPENPRS-FTP-DIR)/openprs-1.0b-sparc-solaris.tgz $(OPENPRS-FTP-DIR)/openprs-1.0b-i386-linux.tgz rust:/var/ftp/pub/openrobots/openprs/
+	scp $(DOC-PDF) $(OPENPRS-REST) $(OPENPRS-SRC) $(README) $(INSTALL) $(LICENSE) $(CHANGELOG) $(OPENPRS-FTP-DIR)/openprs-$(VERSION)-sparc-solaris.tgz $(OPENPRS-FTP-DIR)/openprs-$(VERSION)-i386-linux.tgz rust:/var/ftp/pub/openrobots/openprs/
 
 $(DOC-PDF): doc/oprs.pdf
-	gnutar zcf $@ $^
+	cp $^ $@
 
 $(OPENPRS-REST): app-defaults/* contrib/include/* contrib/src/* data/* include/* pub_src/* util/*
 	gnutar zcf $@ app-defaults contrib/include contrib/src data include pub_src util
@@ -35,17 +38,20 @@ $(OPENPRS-REST): app-defaults/* contrib/include/* contrib/src/* data/* include/*
 $(OPENPRS-SRC): src/* src/*/*
 	gnutar zcf $@ src
 
-$(README): src/dist/README
+$(README): src/README
 	cp $^ $@
 
-$(LICENSE): src/dist/LICENSE
+$(CHANGELOG): src/ChangeLog
+	cp $^ $@
+
+$(LICENSE): src/LICENSE
 	cp $^ $@
 
 $(INSTALL): src/dist/INSTALL
 	cp $^ $@
 
-$(OPENPRS-FTP-DIR)/openprs-1.0b-%.tgz: %/bin %/lib %/site.make contrib/%/lib
+$(OPENPRS-FTP-DIR)/openprs-$(VERSION)-%.tgz: %/bin %/lib %/site.make contrib/%/lib
 	gnutar zchf $@ $^
 
-$(OPENPRS-FTP-DIR)/openprs-1.0b-%-vxworks.tgz: %-vxworks/lib %-vxworks/site.make contrib/%-vxworks/lib
+$(OPENPRS-FTP-DIR)/openprs-$(VERSION)-%-vxworks.tgz: %-vxworks/lib %-vxworks/site.make contrib/%-vxworks/lib
 	gnutar zchf $@ $^

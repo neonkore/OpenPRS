@@ -1,19 +1,19 @@
 ########################### -*- Mode: Makefile -*- #########################
 ## Makefile -- 
 ## 
-## Copyright (C) 1992-2003 Francois Felix Ingrand
+## Copyright (C) 1992-2004 Francois Felix Ingrand
 ## 
 ## Author          : Francois Felix Ingrand
 ## Created On      : Wed Apr  1 15:00:21 1992
 ## Last Modified By: Francois Felix Ingrand
-## Last Modified On: Thu Dec 18 10:52:30 2003
-## Update Count    : 274
+## Last Modified On: Thu May 27 14:09:29 2004
+## Update Count    : 277
 ## Status          : OK
 ## 
 ## $Id$
 ## 
 ###############################################################################
-# Copyright (c) 1991-2003 Francois Felix Ingrand.
+# Copyright (c) 1991-2004 Francois Felix Ingrand.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -74,14 +74,14 @@ all: oprs.pdf
 
 #oprs.dvi: oprs-macros.tex $(OP_TEX) $(OP_TEXT) $(FIGURES) $(INDEX)
 
-oprs.dvi: oprs.tex oprs-macros.tex oprs.bib $(OP_TEX) $(OP_TEXT) $(FIGURES)
+oprs.dvi: oprs.tex oprs-macros.tex oprs.bib $(OP_TEX) $(OP_TEXT) $(FIGURES) appendices.tex
 	latex $<
 	$(MAKE) index
 	bibtex oprs
 	latex $<
 	latex $<
 
-oprs.pdf: oprs.tex oprs-macros.tex oprs.bib $(OP_TEX) $(OP_TEXT) $(FIGURES)
+oprs.pdf: oprs.tex oprs-macros.tex oprs.bib $(OP_TEX) $(OP_TEXT) $(FIGURES) appendices.tex
 	pdflatex $<
 	$(MAKE) index
 	bibtex oprs
@@ -132,7 +132,7 @@ us-letter:
 	make oprs.ps US_LETTER=1	
 	ln oprs.ps oprs.ps.us
 
-%.tex: ../data/%.opf $(OP_EDITOR)
+%.tex: ../data/%.opf
 	$(OP_EDITOR) -t $< $@
 
 %.txt-opf: ../data/%.opf
