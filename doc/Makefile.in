@@ -106,14 +106,7 @@ clean:
 
 
 install: oprs.pdf
-	$(srcdir)/../util/install.sh -c -m 644 $< ${DESTDIR}/doc/$<
-
-# Cut here for updating the Makefile.src file
-# (DO NOT TOUCH THE PREVIOUS LINE)
-# The next entry depends on it...
-
-Makefile.src: Makefile.dev
-	sed -e '/^# Cut here for updating the Makefile.src file/,$$d'  <Makefile.dev >Makefile.src
+	$(srcdir)/../util/install.sh -c -m 644 $< ${DOCDIR}/doc/$<
 
 ifdef US_LETTER
 paper-size.tex:  us-letter-size.tex
