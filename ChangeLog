@@ -1,3 +1,11 @@
+2005-01-04  Francois Felix Ingrand  <felix@laas.fr>
+
+	* macro.h: INLINE definition now in config.h
+
+	* Makefile.in: Fixed a small bug in the install (link) of .ad files.
+	Remove the InfoPath setting in .ad files...
+
+
 2005-01-03  Francois Felix Ingrand  <felix@laas.fr>
 
 	* ac_readline.m4: Try a new readline macro.

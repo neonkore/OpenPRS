@@ -12,8 +12,8 @@ YACC = @BISON@
 YFLAGS = -d
 
 LEX = @FLEX@
-LFLAGS =
-LEXLIB = -lfl
+LEXFLAGS =
+LEXLIB = -L$(subst bin,lib,$(patsubst %flex,%,@FLEX@)) -lfl
 
 MV = mv
 
@@ -53,6 +53,7 @@ EXTRA_LIB += @READLINE_LIBS@
 
 READLINE_INCLUDE = @READLINE_INCLUDES@
 
+EXEC-PREFIX = @exec_prefix@
 BINDIR = @bindir@
 LIBDIR = @libdir@
 INCLUDEDIR = @includedir@

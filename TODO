@@ -1,4 +1,7 @@
-Copyright (c) 1991-2003 Francois Felix Ingrand.
+Copyright (c) 1991-2004 Francois Felix Ingrand.
 All rights reserved.
+
+- Change configure to handle French/english flag and compilation.
+
 
 $Id$

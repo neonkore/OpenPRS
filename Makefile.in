@@ -579,11 +579,11 @@ oprs-parser.yy ope-parser.yy opc-parser.yy: yacc-exp.y yacc-text-op.y
 
 
 %.lex.c: %.ll
-	$(LEX) $(LFLAGS) -L -Poprs_yy -t $< > $@
+	$(LEX) $(LEXFLAGS) -L -Poprs_yy -t $< > $@
 
 #For debuging, use:
 #%.lex.c: %.ll
-#	$(LEX) $(LFLAGS) -L -Poprs_yy -d -t $< > $@
+#	$(LEX) $(LEXFLAGS) -L -Poprs_yy -d -t $< > $@
 
 util/lex-includer:
 	(cd util ; $(MAKE) lex-includer)
@@ -690,17 +690,17 @@ install_just_code: all install_bin install_lib install_contrib
 install_code:  install_just_code install_ad install_site_make
 
 install_site_make:
-	@$(INSTALL-IF-CHANGE) -c -m 644 site.make ${DESTDIR}/${TARGET}${TARGET-SUFFIX}/site.make
+	@$(INSTALL-IF-CHANGE) -c -m 644 site.make ${EXEC-PREFIX}/site.make
 
 install_lib: $(EXT_MP_LIB) $(OPAQUE_LIB) $(C_TOOLKIT_LIB) install_relocatable
 	@-for i in $(EXT_MP_LIB) $(OPAQUE_LIB) $(C_TOOLKIT_LIB); do\
-		$(INSTALL-IF-CHANGE) -c -m 644 $$i ${DESTDIR}/${TARGET}${TARGET-SUFFIX}/lib/$$i;\
-		$(RANLIB) ${DESTDIR}/${TARGET}${TARGET-SUFFIX}/lib/$$i;\
+		$(INSTALL-IF-CHANGE) -c -m 644 $$i ${LIBDIR}/$$i;\
+		$(RANLIB) ${LIBDIR}/$$i;\
 	done
 
 install_relocatable: $(RELOCATABLE)
 	@-for i in $^; do\
-		$(INSTALL-IF-CHANGE) -c -m 644 $$i ${DESTDIR}/${TARGET}${TARGET-SUFFIX}/lib/$$i;\
+		$(INSTALL-IF-CHANGE) -c -m 644 $$i ${LIBDIR}/$$i;\
 	done
 
 install_bin: $(PROG)
@@ -727,20 +727,19 @@ ifeq ($(OPRS_LANG),fr)
 install_ad: install_ad_lang
 	for i in $(XDEFAULT); do \
 		rm -f ${DESTDIR}/app-defaults/$$i;\
-		$(LN_S) $$i-fr ${DESTDIR}/app-defaults/$$i;\
+		$(LN_S) ${DESTDIR}/app-defaults/$$i-fr ${DESTDIR}/app-defaults/$$i;\
 	done
 else
 install_ad: install_ad_lang
 	for i in $(XDEFAULT); do \
 		rm -f ${DESTDIR}/app-defaults/$$i;\
-		$(LN_S) $$i-en ${DESTDIR}/app-defaults/$$i;\
+		$(LN_S) ${DESTDIR}/app-defaults/$$i-en ${DESTDIR}/app-defaults/$$i;\
 	done
 endif
 
 install_ad_lang: $(XDEFAULT_LANG) 
 	for i in $^; do \
-		sed -e "s|^\*Info.infoPath:.*$$|\*Info.infoPath: ${DESTDIR}/doc|" \
-		    -e "s|\.directory:[ 	]*./data$$|.directory: .|" \
+		sed -e "s|\.directory:[ 	]*./data$$|.directory: .|" \
 			< $$i > $$i.tmp;\
 		$(INSTALL-IF-CHANGE) -m 644 $$i.tmp ${DESTDIR}/app-defaults/`basename $$i .ad`;\
 	done

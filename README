@@ -23,7 +23,7 @@ it, providing the original copyright and licence are included...
 Anyway, it is not that long, so I put it here again (please read it once, at
 least):
 
- Copyright (c) 1991-2001 Francois Felix Ingrand.
+ Copyright (c) 1991-2004 Francois Felix Ingrand.
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -57,38 +57,45 @@ PREREQUISITES
 Open PRS needs the following tools to be installed on the system before you can
 compile it:
 
-- autoconf and autoheader (both >=2.53)
-- gcc (or cc on Solaris)
-- X11 Release 6
+- gcc (and or cc on Solaris)
+- X11 Release 6 (or some equivalent)
 - Some version of Motif, such as Motif itself, Lesstif, or Open Motif
-- libreadline/libhistory or some compatible replacement...(not tested though)
+- libreadline/libhistory (or some compatible replacement... not tested though)
 - The GNU make utility, version 3.79 or higher. Open PRS Makefiles use some
   GNU make extensions and thus won't work with other make implementations. 
   Note the GNU make is the standard make on most Linux systems.
   (<http://www.gnu.org/software/make/make.html>).
-- mkdep, the dependencies generator from CNRS/LAAS. Mkdep has many
+- LAAS mkdep, the dependencies generator from CNRS/LAAS. Mkdep has many
   features that other dependencies generators miss, and even more. 
   (<http://softs.laas.fr/openrobots/tools/mkdep.php>). 
-- latex if you want to typeset the documentation (to postscript or to PDF).
+- latex if you want to typeset the documentation (to postscript or to
+  PDF). My experience is that it works fine with teTeX 2.0... but may fail
+  with older version of TeX
 - a PDF reader if you want to read the documentation.
+- autoconf and autoheader (both >=2.53) (not required if you stick with the
+  distributed configure)
 
 
 SUPPORTED PLATFORMS
 -------------------
 
-Open PRS is known to run on many platforms (in fact, I still have to find a Unix
-on which it did not run):
+Open PRS is known to run on many platforms (in fact, I still have to find a
+Unix on which it did not run):
 
-As of today... here are the system on which OpenPRS has been successfully built using configure:
+As of today... here are the system on which OpenPRS has been successfully
+built using configure: 
 - MacOS X 10.3 (using Apple X11)
 - Linux RH 7.3
+- Sparc Solaris 5.9, gcc 2.95 and Sun WorkShop 6 cc
 
-The system it was working on before and for which conifgure support should come...
-- SPARC Solaris (tested on Solaris 2.5.1 through Solaris 9),
+The system it was working on before and for which configure support should
+come... 
+- SPARC Solaris (tested on Solaris 2.5.1 through Solaris 8),
 - x86 Linux (tested on many of them)
 
 
-The ssytem for which I am dropping support (although the code retain ifdef which should help you to get it compiling...)
+The system for which I am dropping support (although the code retain ifdef
+which should help you to get it compiling...) 
 - VxWorks (68x00, PPC)
 - SGI Irix
 - HP UX

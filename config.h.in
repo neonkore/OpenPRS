@@ -70,6 +70,10 @@
 #define LITTLE_ENDIAN
 #endif
 
+#define INLINE inline
+
+
+
 /********************************************************************
  *
  * OPRS Features section. 
@@ -109,9 +113,6 @@
 #undef FIND_UNEXISTING_NODE
 
 #undef TRUCK_DEMO
-
-/* Does the CC handle the inline keyword. */
-#undef INLINE_UNDEFINED
 
 /********************************************************************
  *
