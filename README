@@ -1,4 +1,4 @@
-Copyright (c) 1991-2003 Francois Felix Ingrand.
+Copyright (c) 1991-2004 Francois Felix Ingrand.
 All rights reserved.
 
 Open PRS is an open source version of PRS (Procedural Reasoning Systems) / Propice. 
@@ -57,20 +57,20 @@ PREREQUISITES
 Open PRS needs the following tools to be installed on the system before you can
 compile it:
 
-- cc (or gcc)
+- autoconf and autoheader (both >=2.53)
+- gcc (or cc on Solaris)
 - X11 Release 6
-- Some version of Motif, such as Morif itself, Lesstif, or Open Motif
-- Perl (I think we use it, but I am not 100% sure), but perl is a good tool
-  to have around anyway... even if I hate it.
+- Some version of Motif, such as Motif itself, Lesstif, or Open Motif
+- libreadline/libhistory or some compatible replacement...(not tested though)
 - The GNU make utility, version 3.79 or higher. Open PRS Makefiles use some
   GNU make extensions and thus won't work with other make implementations. 
   Note the GNU make is the standard make on most Linux systems.
   (<http://www.gnu.org/software/make/make.html>).
 - mkdep, the dependencies generator from CNRS/LAAS. Mkdep has many
   features that other dependencies generators miss, and even more. 
-  (<http://www.laas.fr/~matthieu/mkdep/>). 
+  (<http://softs.laas.fr/openrobots/tools/mkdep.php>). 
 - latex if you want to typeset the documentation (to postscript or to PDF).
-- acrobat reader if you want to read the documentation.
+- a PDF reader if you want to read the documentation.
 
 
 SUPPORTED PLATFORMS
@@ -79,11 +79,19 @@ SUPPORTED PLATFORMS
 Open PRS is known to run on many platforms (in fact, I still have to find a Unix
 on which it did not run):
 
+As of today... here are the system on which OpenPRS has been successfully built using configure:
+- MacOS X 10.3 (using Apple X11)
+- Linux RH 7.3
+
+The system it was working on before and for which conifgure support should come...
 - SPARC Solaris (tested on Solaris 2.5.1 through Solaris 9),
 - x86 Linux (tested on many of them)
-- MacOS X (using Apple X11)
+
+
+The ssytem for which I am dropping support (although the code retain ifdef which should help you to get it compiling...)
 - VxWorks (68x00, PPC)
-- ...
+- SGI Irix
+- HP UX
 
 In any case, the source are provided and it has never been a problem to
 recompile it on a new architecture. We even had a version running under
@@ -93,13 +101,12 @@ GETTING Open PRS
 ----------------
 
 The latest Open PRS version is available for download from:
-<http://www.laas.fr/~felix/openprs/>. 
+<http://softs.laas.fr/openrobots/tools/openprs.php>. 
 
 INSTALLATION INSTRUCTIONS
 -------------------------
 
-Open PRS does not use any automatic  configuration tool... (I never had the
-time to do it, but if you are willing to give it a shot, let me know).
+Open PRS now does use an automatic configuration tool... (Finally found some time to do it)...
 
 Usually, you just untar the source directory (src) in your open-prs
 directory, then just create a build directory at the same level than the src
@@ -110,21 +117,24 @@ $TARGET subdirectory in the build directory ($TARGET has often a value which
 explicit the current architecture/os such as i386-linux or sparc-solaris or
 powerpc-darwin). Then cd in this $TARGET directory and execute:
 
-	../../src/util/mk_oprs_bin_tree <path to the src dir> <architecture>
-
-exemple:
-	../../src/util/mk_oprs_bin_tree /usr/local/open-prs/src sparc-solaris
+	../../src/configure
 
 
 (if you did not create a $TARGET subdirectory, you can remove the first ../
 from the previous command)
+
+	../src/configure
+
+For some historical reasons... I tend to not compile in the src
+directory... but it should work (just do a configure in the src directory)
+
+Then in the directory where you executed configure, type:
 
 	make depend
 	make
 
 Do not forget the make depend (it does create files which are needed in the
 next step).
-
 
 You can test with something like:
 
@@ -134,13 +144,14 @@ A window should appear...
 
 Go in the Oprs menu and select Add Fact or Goal
 
-type (! (PRINT-FACTTORIAL 10.0)) 
+type (! (PRINT-FACTORIAL 10.0)) 
 (it is case sensitive)
 
 The result should show up..
 
-you can now build the documentation (although the PDF may be available
-already...) 
+a
+	make install
+will also build other things such as the documentation... and install everything.
 
 **** CAUTION **** it looks like one needs a recent version of Latex and its
 **** package to be able to generate the documentation...
@@ -193,6 +204,15 @@ etc...
 
 (I think it is time for you to look at the full documentation or at the
 primer... if I can find where I put it).
+
+Known Problems
+---------------------------
+
+- The current Configure mechanism is very "basic" and mya fail on a number
+of system... SO far I tested it under Mac OSX 10.3.6 and Linux RHL 7.3.
+
+- The documentation does not come out right on every systems... I do not
+know why... some latex/index version problems...
 
 Reporting Problems / Getting Help
 ---------------------------------

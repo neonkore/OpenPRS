@@ -1,11 +1,11 @@
 #
-# This Makefile should be called from ../..
+# This Makefile should be called from where you want the dist-dir to be created...
 #
 #
 
 .DEFAULT:
 
-VERSION = 1.0b
+VERSION = 1.0b1
 
 OPENPRS-FTP-DIR = dist-dir
 
@@ -24,6 +24,7 @@ CHANGELOG = $(OPENPRS-FTP-DIR)/ChangeLog
 
 all: $(DOC-PDF) $(OPENPRS-REST) $(OPENPRS-SRC) $(README) $(INSTALL) $(LICENSE) $(CHANGELOG)\
 	 $(OPENPRS-FTP-DIR)/openprs-$(VERSION)-sparc-solaris.tgz \
+	 $(OPENPRS-FTP-DIR)/openprs-$(VERSION)-powerpc-darwin.tgz \
 	 $(OPENPRS-FTP-DIR)/openprs-$(VERSION)-i386-linux.tgz
 
 dist: all
@@ -51,7 +52,4 @@ $(INSTALL): src/dist/INSTALL
 	cp $^ $@
 
 $(OPENPRS-FTP-DIR)/openprs-$(VERSION)-%.tgz: %/bin %/lib %/site.make contrib/%/lib
-	gnutar zchf $@ $^
-
-$(OPENPRS-FTP-DIR)/openprs-$(VERSION)-%-vxworks.tgz: %-vxworks/lib %-vxworks/site.make contrib/%-vxworks/lib
 	gnutar zchf $@ $^
