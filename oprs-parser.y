@@ -181,7 +181,7 @@ long int read_check_sum;
 %type <term> 		term 
 %type <expr> 		simple_action
 %type <action_field>	action action_expr
-%type <expr> 		call expr invocation setting expr edge_expr
+%type <expr> 		call invocation setting expr edge_expr
 %type <list_expr> 	list_expr list_par_expr context effects list_effects
 /* %type <add_del_list> 	*/
 %type <dn> 		body inst list_inst while_inst do_inst par_inst top_expr if_inst comment goto_inst

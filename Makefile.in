@@ -321,7 +321,7 @@ else
 LANG_FLAG = -DLANGUAGE=ENGLISH
 endif
 
-CPPFLAGS += $(MT_CPPFLAGS) $(LANG_FLAG) $(INCLUDE) $(X_INCLUDE)
+CPPFLAGS += $(MT_CPPFLAGS) $(LANG_FLAG) $(INCLUDE) $(X_INCLUDE) $(READLINE_INCLUDE)
 
 LDFLAGS = $(OPRS_LDFLAGS) $(MT_LDFLAGS) $(ANSI) $(STATIC) $(DEBUG_FLAG) $(OPTIMIZE) $(PROFILE)
 
@@ -974,7 +974,7 @@ $(srcdir)/configure: configure.ac aclocal.m4
 # From autoconf info documentation
 # autoheader might not change config-ac.h.in, so touch a stamp file.
 $(srcdir)/config-ac.h.in: stamp-h.in
-$(srcdir)/stamp-h.in: configure.ac aclocal.m4
+$(srcdir)/stamp-h.in: configure.ac aclocal.m4 ac_find_motif.m4 ac_readline.m4
 	cd $(srcdir) && autoheader
 	echo timestamp > $(srcdir)/stamp-h.in
 

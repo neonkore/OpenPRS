@@ -25,10 +25,16 @@ AC_PATH_PROG(FLEX, flex, no, $prefix/bin:$exec_prefix/bin:$PATH)
 # FIXME: Replace `main' with a function in `-lm':
 AC_CHECK_LIB([m], [sin])
 
-#check for Readline
-VL_LIB_READLINE
 
-AC_SUBST(HAVE_LIBREADLINE)
+AC_C_BIGENDIAN
+
+AC_CHECK_FUNCS(gethostbyname, [], [
+  AC_CHECK_LIB(nsl, gethostbyname)
+])
+AC_CHECK_LIB(socket, socket)
+
+#check for Readline
+AC_CHECK_READLINE
 
 # Checks for header files.
 AC_PATH_XTRA
@@ -56,7 +62,7 @@ AC_FUNC_SELECT_ARGTYPES
 #AC_FUNC_SETPGRP
 AC_TYPE_SIGNAL
 AC_FUNC_STAT
-AC_CHECK_FUNCS([abort sigaction setitimer valloc clock_gettime dup2 gethostbyname gethostname getpagesize gettimeofday pow realpath select socket strcasecmp strchr strerror strncasecmp strrchr setpgid])
+AC_CHECK_FUNCS([abort sigaction setitimer valloc clock_gettime dup2 gethostname getpagesize gettimeofday pow realpath select socket strcasecmp strchr strerror strncasecmp strrchr setpgid])
 
 AC_CONFIG_FILES([
 		 Makefile

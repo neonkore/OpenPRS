@@ -64,6 +64,12 @@
 #define HAS_ABORT
 #endif
 
+#ifdef WORDS_BIGENDIAN
+#define BIG_ENDIAN
+#else
+#define LITTLE_ENDIAN
+#endif
+
 /********************************************************************
  *
  * OPRS Features section. 
