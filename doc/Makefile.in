@@ -53,6 +53,7 @@ VPATH = .:$(srcdir)
 FIGURES = $(srcdir)/fig/*.ps
 
 TEXINPUTS = .:@srcdir@:@srcdir@/fig:
+BIBINPUTS = .:@srcdir@:
 
 INDEX = oprs.cpnd oprs.fnnd oprs.epnd oprs.efnd oprs.vrnd oprs.pgnd 
 
