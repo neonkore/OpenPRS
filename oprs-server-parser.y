@@ -4,7 +4,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * oprs-server-parser.y -- yacc grammaire
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2004 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -123,11 +123,11 @@ server_command: INCLUDE file_name {open_file_for_yyparse($2); FREE($2);}
 	| KILL_OPRS  { yy_begin_0();} SYMBOL_TK
 		{kill_named_oprs_client($3);}
 | REHASH_TK  { yy_begin_0();} SYMBOL_TK {
-#if defined(OPRS_KEY_CODE) || ! defined (HAS_READLINE)
+#if defined(HAVE_LIBREADLINE)
+		rehash_named_oprs_client($3);
+#else
 		printf(LG_STR("oprs-server: command unavailable...\n",
 			       "oprs-server: commande non disponible...\n"));
-#else
-		rehash_named_oprs_client($3);
 #endif
 		}
 	| RESET_TK PARSER_TK  { yy_begin_0();} SYMBOL_TK

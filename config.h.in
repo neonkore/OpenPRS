@@ -32,33 +32,31 @@
  *
  */
 
-/********************************************************************
- *
- * This is a step to concentrate in one point the system dependent
- * features. Most variables are listed here (defined or undefined).
- * Some are handled by the Makefile to compile some files in different
- * ways for different libs: NO_GRAPHIX C_PLUS_PLUS_RELOCATABLE
- * OPRS_KERNEL HOST COMPIL_DATE
- *
- * Most features are HAS_XXXX or XXX_UNDEFINED .... In both case, XXX
- * is desired... and it is better if it is present. So the most
- * HAS_XXX and the least XXX_UNDEFINED is the best.
- *
- ********************************************************************/
+/* This one is created by autoheader and "tweaked" by configure */
+
+#include "config-ac.h"
+
+/* After this line... my own customization... Presumably those not taken
+ * care by autoconf, or translation from autoconf to some symbol I was using
+ * before...*/
 
 
-/********************************************************************
- *
- * Global section.  It should contain global defines for very peculiar
- * systems (VxWorks, Win95, etc). 
- *
- ********************************************************************/
+#ifdef HAVE_LIBREADLINE
+#define HAS_READLINE
+#endif
 
-/* VXWORKS: should be set for VXWORKS OS. */
-#undef VXWORKS
+#ifdef HAVE_VALLOC
+#define HAS_VALLOC
+#endif
 
-/* WIN95: should be set for Window 95. */
-#undef WIN95
+/* Has timer functions and SIGALARM. */
+#ifdef HAVE_SETITIMER
+#define HAS_TIMER
+#endif
+
+#ifdef HAVE_SIGACTION
+#define HAS_SIGACTION
+#endif
 
 /********************************************************************
  *
@@ -79,7 +77,7 @@
 
 /* Use a mixe of OPRS malloc and standard one.
    This is the preferred option. */
-#undef MIXED_MALLOC
+#define MIXED_MALLOC
 
 /* Use OPRS malloc only.  Quite good too.*/
 #undef OPRS_MALLOC
@@ -110,13 +108,6 @@
  ********************************************************************/
 
 #undef HAS_BUFSIZ
-
-/* HP system do not like cast of double in int... They generate a
-   floating point exception. This variable should be define for them... */
-#undef CANNOT_CAST_DOUBLE_IN_INT
-
-/* HP system misses a char Error[128]; */
-#undef ERROR_UNDEFINED
 
 /* Some systems do not define/initialize yyin and yyout propely.
  In this case define this variable. */
@@ -198,14 +189,8 @@
 /* Use WinSock (Win95) */
 #undef WINSOCK
 
-/* signal.h is in sys/... */
-#undef HAS_SYS_SIGNAL
-
 /* Can fork a new process. */
 #undef HAS_FORK
-
-/* Has timer functions and SIGALARM. */
-#undef HAS_TIMER
 
 /* Has times function. */
 #undef HAS_TIMES

@@ -3,7 +3,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * ope-parser.y -- yacc grammaire
  * 
- * Copyright (c) 1991-2001 Francois Felix Ingrand.
+ * Copyright (c) 1991-2004 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -128,9 +128,7 @@ PBoolean out_edge;
 %type <integer> 	pos_x pos_y pp_width
 %type <bool> 		boolean visible pp_fill split join
 %type <string> 		op_name node_name edge_name prop_name documentation file_name symbol t_or_nil
-%type <expr>		expr call
-%type <list_expr> 	list_expr
-%type <expr> 		expr invocation setting expr edge_expr
+%type <expr> 		call invocation setting expr edge_expr
 %type <list_expr> 	list_expr list_par_expr context effects list_effects
 /* %type <add_del_list> 	*/
 %type <dn> 		body inst list_inst while_inst do_inst par_inst top_expr if_inst comment goto_inst

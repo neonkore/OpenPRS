@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*-
  * database.c -- Database management functions.
  *
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2004 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -111,10 +111,6 @@ int hash_a_term(Term *t)
  *                standard functions other have to be adjusted.
  */
 {
-#ifdef CANNOT_CAST_DOUBLE_IN_INT
-     int test_double;
-#endif
-
      switch (t->type) {
      case INTEGER:
 	  return t->u.intval;
@@ -130,12 +126,7 @@ int hash_a_term(Term *t)
      case U_POINTER:
 	  return (int)t->u.u_pointer;
      case TT_FLOAT:
-#ifdef CANNOT_CAST_DOUBLE_IN_INT
-	  test_double = ((int) (*t->u.doubleptr)); /* We get a floating point exception on this on the HP. */
-	  return test_double;
-#else
 	  return ((int) (*t->u.doubleptr));
-#endif
      case STRING:
 	  return hash_a_string(t->u.string);
      case LISP_LIST:

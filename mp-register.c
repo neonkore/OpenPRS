@@ -434,13 +434,7 @@ PBoolean start_mp_oprs(const char *mp_hostname, int mp_port)
 	       sprintf (args[2],"%d", mp_port);
 	       args[3] = NULL;
 	       pid = getpid();
-	       if (
-#ifdef SETPGRP_TAKE_ARGS
-		    setpgrp(0, pid)
-#else
-		    setpgrp()
-#endif
-		    <0) { /* will disconnect it from the term... */
+	       if (setpgrp(0, getpid()) <0) { /* will disconnect it from the term... */
 		    perror("start_mp_oprs: setpgrp");
 	       }	
 	       execvp(prog, args); /* Lets start the message passer */

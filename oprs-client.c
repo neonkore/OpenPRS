@@ -177,13 +177,7 @@ Oprs_Client *make_oprs_client(PString name)
 	  }
 
 	  pid = getpid();	/* Get out of the caller process group (go in bg)... */
-	  if (
-#ifdef SETPGRP_TAKE_ARGS
-	       setpgrp(0, pid)
-#else		
-	       setpgrp()
-#endif
-             <0) {
+	  if (setpgrp(0, getpid()) <0) {
 	       perror("oprs-server: setpgrp");
 	  }
 	  args[2] = (char *) MALLOC(MAX_PRINTED_INT_SIZE);
@@ -277,7 +271,7 @@ Oprs_Client *accept_oprs_client()
      oprs_cl->pid = pid;
      oprs_cl->use_x = flag_x;
 
-#if defined(HAS_READLINE)
+#if defined(HAVE_LIBREADLINE)
      oprs_cl->completion_size = 0;
      oprs_cl->completion = NULL;
 #endif
@@ -471,7 +465,7 @@ void kill_oprs_client(Oprs_Client *pcl)
 	  perror("kill_oprs_client: close");
      sl_delete_slist_node(oprslist,pcl);
 
-#if defined(HAS_READLINE)
+#if defined(HAVE_LIBREADLINE)
      if (pcl->completion_size) {
 	  int i;
 	  for (i = 0; i < pcl->completion_size; i++) {

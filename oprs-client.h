@@ -42,7 +42,7 @@ struct oprs_client {
      int socket;
      PBoolean use_x;
 /*      int gen_comp; */		/* Wich generation */
-#if defined(HAS_READLINE)
+#if defined(HAVE_LIBREADLINE)
      int completion_size;
      char **completion;
 #endif

@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * parser-funct.c -- 
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2004 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -83,15 +83,6 @@ static const char* const rcsid = "$Id$";
 #include "oprs-sprint_f.h"
 
 PString oprs_data_path = NULL;
-
-#ifndef HAS_STRERROR
-extern char *sys_errlist[];		/* Should be defined in errno.h */
-
-char *strerror(int erreur)
-{
-     return sys_errlist[erreur];
-}
-#endif
 
 void close_file_for_yyparse(void);
 

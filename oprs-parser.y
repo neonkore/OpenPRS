@@ -3,7 +3,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * oprs-parser.y -- yacc grammaire
  * 
- * Copyright (c) 1991-2001 Francois Felix Ingrand.
+ * Copyright (c) 1991-2004 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -179,11 +179,9 @@ long int read_check_sum;
 %type <list_term> 	term_list
 %type <var> 		variable
 %type <term> 		term 
-%type <expr> 	simple_action
-%type <expr>		expr call
+%type <expr> 		simple_action
 %type <action_field>	action action_expr
-%type <list_expr> 	list_expr
-%type <expr> 		expr invocation setting expr edge_expr
+%type <expr> 		call expr invocation setting expr edge_expr
 %type <list_expr> 	list_expr list_par_expr context effects list_effects
 /* %type <add_del_list> 	*/
 %type <dn> 		body inst list_inst while_inst do_inst par_inst top_expr if_inst comment goto_inst

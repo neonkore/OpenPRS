@@ -3,7 +3,7 @@
 #
 # $Id$
 # 
-# Copyright (c) 1991-2003 Francois Felix Ingrand.
+# Copyright (c) 1991-2004 Francois Felix Ingrand.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -35,14 +35,9 @@
 # the file site.make is a link to a file containing machine/site dependencies.
 #
 
-ifdef OPRS_INSTALLED_DIR
-OPRS_INCL_DIR = ${OPRS_INSTALLED_DIR}/include
-OPRS_UTIL_DIR = ${OPRS_INSTALLED_DIR}/util
-else
-
 include ../../site.make
 
-include ../../path.make
+srctop = @top_srcdir@
 
 CEXTRACT	= /usr/local/Divers/bin/$(HOSTTYPE)/cextract
 
@@ -52,7 +47,6 @@ VPATH = $(srcdir)
 
 OPRS_INCL_DIR = $(srctop)
 OPRS_UTIL_DIR = $(srctop)/util
-endif
 
 PU_LIB_OBJ =  pu-parse-tl.o pu-mk-term.o pu-enum.o pu-genom.o
 PU_LIB_SRC = $(PU_LIB_OBJ:%.o=%.c)
@@ -60,9 +54,9 @@ PU_LIB_PROTO = $(PU_LIB_OBJ:%.o=%_f.h)
 
 INCLUDE =  -I. -I$(OPRS_INCL_DIR) -I../.. -I$(OPRS_INCL_DIR)/c_toolkit
 
-CFLAGS = $(MT_CFLAGS) $(ANSI) $(DEBUG_FLAG) $(OPTIMIZE) $(WARNINGS) $(PROFILE) $(CFLAGS_HOST)
+#CFLAGS = $(MT_CFLAGS) $(ANSI) $(DEBUG_FLAG) $(OPTIMIZE) $(WARNINGS) $(PROFILE) $(CFLAGS_HOST)
 
-CPPFLAGS = $(MT_CPPFLAGS) $(MACHINE) $(LANG_FLAG) $(INCLUDE) $(OTHER_INCLUDE) $(X_INCLUDE)
+CPPFLAGS = $(MT_CPPFLAGS) $(MACHINE) $(LANG_FLAG) $(INCLUDE)
 
 PU_LIB = libpu.a
 

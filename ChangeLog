@@ -1,3 +1,24 @@
+2004-12-03  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* oprs-cat.c (main): remove the call to setpgrp() ... not even
+	sure why we need this...
+
+	* database.c: hash_a_term remove this compilation flag for HP
+	system... CANNOT_CAST_DOUBLE_IN_INT... I am not sure it is
+	"meaningfull"... 
+
+2004-12-02  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* configure.ac: Trying to use autoconf...
+
+2004-10-07  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* opt-parser.y: This file should be removed...
+
+	* ope-parser.y, oprs-parser.y: Remove redundant declaration of
+	expr and list_expr in this file... More resent version of bison
+	seems to be mor touchy about this...
+
 2004-05-27  Francois Felix Ingrand  <felix@laas.fr>
 
 	* version.c: 1.0 Beta PatchLevel 1. I think, I fixed Robert

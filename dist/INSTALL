@@ -12,6 +12,10 @@ execution control to Space Shuttle operational procedure execution.
 If you have not idea at all what it is doing... well, you should probably
 just stop here and look at other fun open source tools.
 
+This file is called INSTALL... and guess what... the INSTALL procedure really depends of what you got from the FTP site.
+
+If you have the src package... then unpack it somewhere and check the file src/README
+
 
 <to be written>
 

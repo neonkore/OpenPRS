@@ -40,17 +40,15 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-.SUFFIXES: .Z
+include ../site.make
+
+top_srcdir=	@top_srcdir@
 
 .PHONY:	all index
 
-srcdir=../../../src/doc
+srcdir= $top_srcdir
 
 VPATH = .:$(srcdir)
-
-include ../path.make
-
-include ../site.make
 
 FIGURES = $(srcdir)/fig/*.ps
 
