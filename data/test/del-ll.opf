@@ -1,0 +1,52 @@
+;;;
+;;; File: /usr/other/users/felix/C/PORTABLE/oprs-1.1/data/test/del-ll.opf
+;;; $Id$
+;;; Date: Thu Oct  7 10:48:38 1993
+;;; Host: corona
+;;; OP Editor Version : 1.1.10
+;;; Compiled on corona (Thu Oct  7 10:44:29 MET 1993)
+;;; OP File Format: 2
+;;;
+(2 
+(
+)
+(TEST-DEL-LL (
+(INVOCATION INVOCATION (TEST-DEL-LL) 10 50 1 60 0 )
+(CONTEXT CONTEXT  10 150 1 60 0 )
+(SETTING SETTING  10 250 1 60 0 )
+(EFFECTS EFFECTS () 10 350 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "To test the delete-from-list evaluable function." 10 450 1 60 0 )
+(PROPERTIES PROPERTIES () 10 400 1 60 0 )
+) (
+(START START 0 0 317 15)
+(PROCESS N1 0 0 328 109)
+(PROCESS N0 0 0 328 191)
+(PROCESS N2 0 0 328 288)
+(PROCESS N3 0 0 328 389)
+(END END0 0 0 322 483)
+) (
+(GOAL N2 E4 N3
+(! (PRINT $Y))
+()  0 0 40 0)
+(GOAL N0 E3 N2
+(! (= $Y
+      (DELETE-FROM-LIST
+          (TERM-TO-LISP-CAR "string")
+          $X)))
+()  2 -12 40 0)
+(GOAL N3 E2 END0
+(! (PRINT
+       (DELETE-FROM-LIST
+           (TERM-TO-LISP-CAR TATA) $X)))
+()  10 -16 40 0)
+(GOAL N1 E0 N0
+(! (PRINT
+       (DELETE-FROM-LIST
+           (TERM-TO-LISP-CAR TOTO) $X)))
+()  1 -8 40 0)
+(GOAL START E1 N1
+(! (= $X
+      (. 432 TOTO "string" 0.900000 .)))
+()  -19 -6 40 0)
+) )
+)

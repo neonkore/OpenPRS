@@ -1,0 +1,22 @@
+2000-07-27  Francois Felix Ingrand  <felix@laas.fr>
+
+	* pu-parse-tl.c: Remove the warning when requesting less
+	parameters than the length of the arg list.
+
+1999-07-22  Francois Felix Ingrand  <felix@laas.fr>
+
+	* pu-genom.c: Use strcasecmp instead of strcmp
+
+1998-06-15  Francois Felix Ingrand  <felix@laas.fr>
+
+	* pu-enum.c: Added this new library.
+
+1998-06-12  Francois Felix Ingrand  <felix@laas.fr>
+
+	* pu-parse-tl.c: Big cleanup....
+
+Tue Oct 14 11:09:53 1997  Francois Felix Ingrand  <felix@laas.fr>
+
+	* pu-parse-tl.c (PUGetPrsTermCompSpecArg): Now return FALSE
+	silently when asking for an argument beyond the end of the list.
+

@@ -1,0 +1,2702 @@
+%!PS-Adobe-2.0 EPSF-1.2
+%%Title: run-time.ps
+%%Creator: Canvas 3.0
+%%For: guiness
+%%CreationDate: Jeu 7 Oct 1993 14:13
+%%BoundingBox: 13 13 721 468
+%%DocumentProcSets: CanvasDict
+%%DocumentSuppliedProcSets: CanvasDict
+%%Copyright 1988-91 Deneba Systems, Inc. - All Rights Reserved Worldwide
+%%DocumentFonts: Times-Roman
+%%+ Times-Italic
+%%DocumentNeededFonts: Times-Roman
+%%+ Times-Italic
+%%EndComments
+%%BeginProcSet:CanvasDict
+/CanvasDict where not{/CanvasDict 250 dict def}{pop}ifelse
+CanvasDict begin
+systemdict/setpacking known{/origpack currentpacking def true setpacking}if
+/bdf{bind def}bind def
+/xdf{exch bind def}bdf
+/min{2 copy gt{exch}if pop}bdf
+/edf{exch def}bdf
+/max{2 copy lt{exch}if pop}bdf
+/cvmtx matrix def
+/tpmx matrix def
+/currot 0 def
+/rotmtx matrix def
+/origmtx matrix def
+/cvangle{360 exch sub 90 add 360 mod}bdf
+/setrot{/currot edf rotmtx currentmatrix pop 2 copy translate currot rotate neg exch neg exch translate}bdf
+/endrot{rotmtx setmatrix}bdf
+/i systemdict/image get def/T true def/F false def/dbg F def
+/ncolors 0 def/st0 ()def/st1 ()def/proc0 {}def
+/penh 1 def/penv 1 def/penv2 0 def/penh2 0 def/samplesize 0 def/width 0 def/height 0 def
+/setcmykcolor where not{/setcmykcolor{/b edf 3{b add 1.0 exch sub 0.0 max 1.0 min 3 1 roll}repeat systemdict begin setrgbcolor end}bdf}{pop}ifelse
+/doeoclip{closepath{eoclip}stopped{currentflat dup 2 mul setflat eoclip setflat}if}bdf
+/SpaceExtra 0 def/LetterSpace 0 def/StringLength 0 def/NumSpaces 0 def/JustOffset 0 def
+/f0/fill load def
+/s0{1 setlinewidth cvmtx currentmatrix pop penh penv scale stroke cvmtx setmatrix}bdf
+/f1{_bp _fp impat}def
+/s1{cvmtx currentmatrix pop 1 setlinewidth penh penv scale
+{strokepath}stopped{currentflat dup 2 mul setflat strokepath setflat}if 
+_bp
+cvmtx setmatrix _fp impat}def
+/filltype 0 def
+/stroketype 0 def
+/f{filltype 0 eq{f0}{f1}ifelse}bdf
+/s{stroketype 0 eq{s0}{s1}ifelse}bdf
+/_fp{}def
+/_bp{}def
+/_fg 1 def
+/_pg 0 def
+/_bkg 1 def
+/_frg 0 def
+/_frgb 3 array def
+/_frrgb [0 0 0] def
+/_fcmyk 4 array def
+/_frcmyk [0 0 0 1] def
+/_prgb 3 array def
+/_pcmyk 4 array def
+/_bkrgb [1 1 1] def
+/_bkcmyk [0 0 0 0] def
+/fg{/_fg exch def /filltype 0 def/fills{_fg setgray}def}def
+/frgb{_frgb astore pop /filltype 0 def/fills{_frgb aload pop setrgbcolor}def}def
+/fcmyk{_fcmyk astore pop /filltype 0 def/fills{_fcmyk aload pop setcmykcolor}def}def
+/pg{/_pg exch def /stroketype 0 def/pens{_pg setgray}def}def
+/prgb{_prgb astore pop /stroketype 0 def/pens{_prgb aload pop setrgbcolor}def}def
+/pcmyk{_pcmyk astore pop /stroketype 0 def/pens{_pcmyk aload pop setcmykcolor}def}def
+/fpat{/fstr edf/filltype 1 def/fills{/patstr fstr def}bdf}bdf
+/ppat{/sstr edf/stroketype 1 def/pens{/patstr sstr def}bdf}bdf
+/bkg{ /_bkg exch def /_bp{gsave _bkg setgray fill grestore}def}def
+/bkrgb{_bkrgb astore pop/_bp{gsave _bkrgb aload pop setrgbcolor fill grestore}def}def
+/bkcmyk{_bkcmyk astore pop/_bp{gsave _bkcmyk aload pop setcmykcolor fill grestore}def}def
+/frg{ /_frg exch def /_fp{_frg setgray}def}def
+/frrgb{_frrgb astore pop/_fp{_frrgb aload pop setrgbcolor}def}def
+/frcmyk{_frcmyk astore pop/_fp{_frcmyk aload pop setcmykcolor}def}def
+/icomp{/ncolors edf
+ncolors 1 gt{/proc0 edf
+dup dup 0 get ncolors div cvi exch 0 3 -1 roll put
+4 -1 roll ncolors div cvi 4 1 roll{proc0 dup/st0 edf
+0 exch ncolors exch length
+dup ncolors sub exch ncolors div cvi string/st1 edf
+{dup 0 exch dup 1 exch
+2 add{st0 exch get add}bind for
+3 div ncolors 4 eq{exch dup 3 1 roll 3 add st0 exch get add 255 exch sub dup 0 lt{pop 0}if}if cvi
+dup 255 gt{pop 255}if
+exch ncolors div cvi exch
+st1 3 1 roll put}bind for
+st1}}if i}bdf
+/ci
+{/colorimage where
+{pop false exch colorimage}
+{icomp}
+ifelse}bdf
+/impat
+{/cnt 0 def
+/MySave save def
+currot 0 ne{currot neg rotate}if
+clip
+flattenpath
+pathbbox
+3 -1 roll
+8 div floor 8 mul dup/starty edf
+sub abs 8 div ceiling 8 mul cvi/height edf
+exch 8 div floor 8 mul dup/startx edf
+sub abs 8 div ceiling 8 mul cvi/width edf
+startx starty translate
+width height scale
+/height height 8 mul def
+/st0 width string def
+width height T [width 0 0 height neg 0 height]
+{patstr
+cnt 8 mod
+get/st1 edf
+0 1
+st0 length 1 sub dup 0 le{pop 1}if
+{st0 exch
+st1
+put}bind for/cnt cnt 1 add def
+st0}bind
+imagemask
+MySave restore
+newpath}bdf
+/cm{/ncolors edf
+translate
+scale/height edf/colorimage where
+{pop}
+{ncolors mul}ifelse/width edf
+/tbitstr width string def
+width height 8 [width 0 0 height neg 0 height]
+{currentfile tbitstr readhexstring pop}bind
+ncolors
+dup 3 eq {ci}{icomp}ifelse}bdf
+/im{translate
+scale
+/height edf
+/width edf
+/tbitstr width 7 add 8 div cvi string def
+width height 1 [width 0 0 height neg 0 height]
+{currentfile tbitstr readhexstring pop}bind
+i}bdf
+/imk{/invFlag edf
+translate
+scale
+/height edf
+/width edf
+/tbitstr width 7 add 8 div cvi string def
+width height invFlag [width 0 0 height neg 0 height]
+{currentfile tbitstr readhexstring pop}bind
+imagemask}bdf
+/BeginEPSF
+{/MySave save def
+/dict_count countdictstack def
+/op_count count 1 sub def
+userdict begin
+/showpage {} def
+0 setgray 0 setlinecap
+1 setlinewidth 0 setlinejoin
+10 setmiterlimit [] 0 setdash newpath
+/languagelevel where
+{pop languagelevel 1 ne{false setstrokeadjust false setoverprint}if}if
+}bdf
+/EndEPSF
+{count op_count sub {pop}repeat
+countdictstack dict_count sub {end}repeat
+MySave restore}bdf
+/rectpath {/cv_r edf/cv_b edf/cv_l edf/cv_t edf
+cv_l cv_t moveto cv_r cv_t lineto cv_r cv_b lineto cv_l cv_b lineto cv_l cv_t lineto closepath}bdf
+/setpen{/penh edf/penv edf/penv2 penv 2 div def/penh2 penh 2 div def}bdf
+/dostroke{not pens 1.0 currentgray ne or {s}{newpath}ifelse}bdf
+/dodashfill{not fills 1.0 currentgray ne or
+{gsave f grestore gsave [] 0 setdash 
+stroketype/stroketype filltype def
+s/stroketype edf grestore}{newpath}ifelse}bdf
+/dofill{not fills 1.0 currentgray ne or {f}{newpath}ifelse}bdf
+/dofillsave{not fills 1.0 currentgray ne or {gsave f grestore}if}bdf
+/doline{not pens 1.0 currentgray ne or {filltype/filltype stroketype def f/filltype edf}{newpath}ifelse}bdf
+/spx{SpaceExtra 0 32 4 -1 roll widthshow}bdf
+/lsx{SpaceExtra 0 32 LetterSpace 0 6 -1 roll awidthshow}bdf
+/Rjust{stringwidth pop JustOffset exch sub /JustOffset edf}bdf
+/Cjust{stringwidth pop 2 div JustOffset exch sub /JustOffset edf}bdf
+/adjfit{stringwidth pop LetterSpace StringLength 1 sub mul add SpaceExtra NumSpaces mul add dup /pw edf JustOffset exch 
+sub dup /wdif edf StringLength div dup abs 1.0 gt{pop 0}if LetterSpace add /LetterSpace edf}bdf
+/ulb{currentpoint pop /underlinpt edf}bdf
+/ule{gsave currentpoint newpath moveto currentfont dup /ft1 known{dup /ft1 get begin /FontMatrix get FontMatrix tpmx concatmatrix pop}
+{begin FontMatrix tpmx copy pop}ifelse FontInfo begin UnderlinePosition UnderlineThickness end end dup tpmx
+dtransform pop setlinewidth dup tpmx dtransform pop 0 exch rmoveto underlinpt currentpoint pop sub 0 rlineto stroke grestore}bdf
+/fittext{ /SpaceExtra edf /LetterSpace edf /StringLength edf /NumSpaces edf /JustOffset edf not 1 currentgray ne or
+{dup {ulb}if exch
+dup adjfit
+lsx {ule}if}{pop pop}ifelse}bdf
+/cvRecFont{/encod edf FontDirectory 2 index known{cleartomark}{findfont dup length 1 add dict begin
+{1 index/FID ne{def}{pop pop}ifelse}forall encod{/Encoding CVvec def}if
+currentdict end definefont cleartomark}ifelse}bdf
+/wrk1 ( ) def/wdict 16 dict def
+/Work75 75 string def /Nmk{Work75 cvs dup}bdf /Npt{put cvn}bdf /dhOdh{Nmk 2 79 Npt}bdf /dhodh{Nmk 2 111 Npt}bdf	/dhSdh{Nmk 2 83 Npt}bdf
+/sfWidth{gsave 0 0 moveto 0 0 lineto 0 0 lineto 0 0 lineto closepath clip stringwidth grestore}bdf
+/MakOF{dup dhodh FontDirectory 1 index known{exch pop}{exch findfont dup length 1 add dict begin
+{1 index/FID ne 2 index /UniqueID ne and{def}{pop pop}ifelse}forall
+/PaintType 2 def
+/StrokeWidth .24 1000 mul ftSize div dup 12 lt{pop 12}if def
+dup currentdict end definefont pop}ifelse}bdf
+/fts{dup/ftSize edf}def
+/mkFT{/tempFT 11 dict def tempFT begin
+/FontMatrix [1 0 0 1 0 0] def/FontType 3 def
+FontDirectory 3 index get /Encoding get/Encoding exch def
+/proc2 edf/ft2 exch findfont def/ft1 exch findfont def/FontBBox [0 0 1 1] def
+/BuildChar{wdict begin/chr edf/ftdt edf/chrst wrk1 dup 0 chr put def ftdt/proc2 get exec end}def
+end tempFT definefont pop}bdf
+/OLFt{dup dhOdh FontDirectory 1 index known{exch pop}
+{dup 3 -1 roll dup MakOF {outproc} mkFT}ifelse}bdf
+/mshw{moveto show}bdf
+/outproc{ftdt/ft1 get setfont gsave chrst sfWidth grestore setcharwidth dblsh}bdf
+/dblsh{currentgray 1 setgray chrst 0 0 mshw setgray ftdt/ft2 get setfont chrst 0 0 mshw}bdf
+/ShadChar{ftdt/ft1 get setfont gsave chrst sfWidth 1 index 0 ne{exch .05 add exch}if grestore setcharwidth
+chrst .06 0 mshw 0 .05 translate dblsh}bdf
+/ShFt{dup dhSdh FontDirectory 1 index known{exch pop}
+{dup 3 -1 roll dup MakOF {ShadChar} mkFT}ifelse}bdf
+/LswUnits{72 75 div dup scale}bdf
+/erasefill{_bp}def
+/CVvec 256 array def
+/NUL/SOH/STX/ETX/EOT/ENQ/ACK/BEL/BS/HT/LF/VT/FF/CR/SO/SI/DLE/DC1/DC2/DC3/DC4/NAK/SYN/ETB/CAN/EM/SUB/ESC/FS/GS/RS/US
+CVvec 0 32 getinterval astore pop
+CVvec 32/Times-Roman findfont/Encoding get
+32 96 getinterval putinterval CVvec dup 39/quotesingle put 96/grave put
+/Adieresis/Aring/Ccedilla/Eacute/Ntilde/Odieresis/Udieresis/aacute
+/agrave/acircumflex/adieresis/atilde/aring/ccedilla/eacute/egrave
+/ecircumflex/edieresis/iacute/igrave/icircumflex/idieresis/ntilde/oacute
+/ograve/ocircumflex/odieresis/otilde/uacute/ugrave/ucircumflex/udieresis
+/dagger/degree/cent/sterling/section/bullet/paragraph/germandbls
+/registered/copyright/trademark/acute/dieresis/notequal/AE/Oslash
+/infinity/plusminus/lessequal/greaterequal/yen/mu/partialdiff/summation
+/product/pi/integral/ordfeminine/ordmasculine/Omega/ae/oslash
+/questiondown/exclamdown/logicalnot/radical/florin/approxequal/Delta/guillemotleft
+/guillemotright/ellipsis/blank/Agrave/Atilde/Otilde/OE/oe
+/endash/emdash/quotedblleft/quotedblright/quoteleft/quoteright/divide/lozenge
+/ydieresis/Ydieresis/fraction/currency/guilsinglleft/guilsinglright/fi/fl
+/daggerdbl/periodcentered/quotesinglbase/quotedblbase/perthousand/Acircumflex/Ecircumflex/Aacute
+/Edieresis/Egrave/Iacute/Icircumflex/Idieresis/Igrave/Oacute/Ocircumflex
+/apple/Ograve/Uacute/Ucircumflex/Ugrave/dotlessi/circumflex/tilde
+/macron/breve/dotaccent/ring/cedilla/hungarumlaut/ogonek/caron
+CVvec 128 128 getinterval astore pop
+end
+%%EndProcSet
+%%BeginSetup
+CanvasDict begin
+0 setlinecap
+0 setlinejoin
+4 setmiterlimit
+/currot 0 def
+origmtx currentmatrix pop
+[] 0 setdash
+1 1 setpen
+1 fg
+0 pg
+0 frg
+1 bkg
+newpath
+/dbg F def
+%%EndSetup
+% ---- Object #1:4 Obj Type: 99
+% ---- Object #2:7 Obj Type: 99
+% ---- Object #3:8 Obj Type: 4
+0 setlinecap
+373.5000 427.7500 202.5000 607.7500 rectpath
+F dofillsave
+F dostroke
+% ---- Object #4:9 Obj Type: 2
+0 0 setpen
+save
+0 setgray
+mark /|___Times-Roman /Times-Roman T cvRecFont
+12 fts /|___Times-Roman findfont exch scalefont setfont
+0 setgray
+434 361 moveto
+(Invocation Part:)
+F F 76.9717 1 16 0 0 fittext
+restore
+% ---- Object #5:10 Obj Type: 99
+% ---- Object #6:11 Obj Type: 4
+1 1 setpen
+0 setlinecap
+333.5000 510.7500 162.5000 690.7500 rectpath
+F dofillsave
+F dostroke
+% ---- Object #7:12 Obj Type: 2
+0 0 setpen
+save
+0 setgray
+mark /|___Times-Roman /Times-Roman T cvRecFont
+12 fts /|___Times-Roman findfont exch scalefont setfont
+0 setgray
+517 321 moveto
+(Invocation Part:)
+F F 76.9717 1 16 0 0 fittext
+restore
+% ---- Object #8:13 Obj Type: 4
+1 1 setpen
+0 setlinecap
+438.5000 307.7500 393.5000 433.7500 rectpath
+F dofillsave
+F dostroke
+% ---- Object #9:14 Obj Type: 2
+0 0 setpen
+save
+0 setgray
+mark /|___Times-Roman /Times-Roman T cvRecFont
+12 fts /|___Times-Roman findfont exch scalefont setfont
+0 setgray
+316 427 moveto
+(\(overpressurized FRCS\))
+F F 116.2881 1 22 0 0 fittext
+0 setgray
+315 416 moveto
+(\(! \(position valve close\)\))
+F F 118.2744 3 26 0 0 fittext
+0 setgray
+339 405 moveto
+(\(soak ka1 ka4\))
+F F 70.6318 2 14 0 0 fittext
+restore
+% ---- Object #10:15 Obj Type: 99
+% ---- Object #11:16 Obj Type: 4
+1 1 setpen
+0 setlinecap
+354.5000 396.7500 183.5000 576.7500 rectpath
+F dofillsave
+F dostroke
+% ---- Object #12:17 Obj Type: 99
+% ---- Object #13:18 Obj Type: 6
+0 setlinecap
+444.7500 306.5000 moveto
+444.7500 301.5632 440.6869 297.5000 435.7500 297.5000 curveto
+430.8132 297.5000 426.7500 301.5632 426.7500 306.5000 curveto
+426.7500 311.4368 430.8132 315.5000 435.7500 315.5000 curveto
+440.6869 315.5000 444.7500 311.4368 444.7500 306.5000 curveto
+closepath
+F dofillsave
+F dostroke
+% ---- Object #14:19 Obj Type: 6
+0 setlinecap
+428.7500 227.5000 moveto
+428.7500 222.5632 424.6869 218.5000 419.7500 218.5000 curveto
+414.8132 218.5000 410.7500 222.5632 410.7500 227.5000 curveto
+410.7500 232.4368 414.8132 236.5000 419.7500 236.5000 curveto
+424.6869 236.5000 428.7500 232.4368 428.7500 227.5000 curveto
+closepath
+F dofillsave
+F dostroke
+% ---- Object #15:20 Obj Type: 6
+0 setlinecap
+483.7500 206.5000 moveto
+483.7500 201.5632 479.6869 197.5000 474.7500 197.5000 curveto
+469.8132 197.5000 465.7500 201.5632 465.7500 206.5000 curveto
+465.7500 211.4368 469.8132 215.5000 474.7500 215.5000 curveto
+479.6869 215.5000 483.7500 211.4368 483.7500 206.5000 curveto
+closepath
+F dofillsave
+F dostroke
+% ---- Object #16:21 Obj Type: 99
+% ---- Object #17:22 Obj Type: 9
+0 0 setpen
+0 fg
+463.7500 285.5000 moveto
+450.7500 291.5000 lineto
+452.7500 294.5000 lineto
+455.7500 297.5000 lineto
+463.7500 285.5000 lineto
+closepath
+F dofill
+% ---- Object #18:23 Obj Type: 9
+463.7500 285.5000 moveto
+450.7500 291.5000 lineto
+452.7500 294.5000 lineto
+455.7500 297.5000 lineto
+463.7500 285.5000 lineto
+closepath
+F dofill
+% ---- Object #19:24 Obj Type: 3
+1 1 setpen
+2 setlinecap
+gsave
+newpath
+444.7500 302.5000 moveto
+452.7500 295.5000 lineto
+F dostroke
+grestore
+% ---- Object #20:25 Obj Type: 99
+% ---- Object #21:26 Obj Type: 9
+0 0 setpen
+419.7500 268.5000 moveto
+420.7500 282.5000 lineto
+424.7500 281.5000 lineto
+427.7500 279.5000 lineto
+419.7500 268.5000 lineto
+closepath
+F dofill
+% ---- Object #22:27 Obj Type: 9
+419.7500 268.5000 moveto
+420.7500 282.5000 lineto
+424.7500 281.5000 lineto
+427.7500 279.5000 lineto
+419.7500 268.5000 lineto
+closepath
+F dofill
+% ---- Object #23:28 Obj Type: 3
+1 1 setpen
+2 setlinecap
+gsave
+newpath
+430.7500 298.5000 moveto
+424.7500 282.5000 lineto
+F dostroke
+grestore
+% ---- Object #24:29 Obj Type: 4
+0 setlinecap
+1 fg
+286.5000 462.7500 271.5000 482.7500 rectpath
+F dofillsave
+F dostroke
+% ---- Object #25:30 Obj Type: 4
+0 setlinecap
+267.5000 410.7500 252.5000 430.7500 rectpath
+F dofillsave
+F dostroke
+% ---- Object #26:31 Obj Type: 99
+% ---- Object #27:32 Obj Type: 9
+0 0 setpen
+0 fg
+420.7500 232.5000 moveto
+416.7500 247.5000 lineto
+420.7500 247.5000 lineto
+423.7500 247.5000 lineto
+420.7500 232.5000 lineto
+closepath
+F dofill
+% ---- Object #28:33 Obj Type: 9
+420.7500 232.5000 moveto
+416.7500 247.5000 lineto
+420.7500 247.5000 lineto
+423.7500 247.5000 lineto
+420.7500 232.5000 lineto
+closepath
+F dofill
+% ---- Object #29:34 Obj Type: 3
+1 1 setpen
+2 setlinecap
+gsave
+newpath
+420.7500 251.5000 moveto
+420.7500 248.5000 lineto
+F dostroke
+grestore
+% ---- Object #30:35 Obj Type: 4
+0 setlinecap
+1 fg
+252.5000 464.7500 237.5000 484.7500 rectpath
+F dofillsave
+F dostroke
+% ---- Object #31:36 Obj Type: 99
+% ---- Object #32:37 Obj Type: 9
+0 0 setpen
+0 fg
+473.7500 252.5000 moveto
+468.7500 266.5000 lineto
+472.7500 267.5000 lineto
+475.7500 267.5000 lineto
+473.7500 252.5000 lineto
+closepath
+F dofill
+% ---- Object #33:38 Obj Type: 9
+473.7500 252.5000 moveto
+468.7500 266.5000 lineto
+472.7500 267.5000 lineto
+475.7500 267.5000 lineto
+473.7500 252.5000 lineto
+closepath
+F dofill
+% ---- Object #34:39 Obj Type: 3
+1 1 setpen
+2 setlinecap
+gsave
+newpath
+472.7500 270.5000 moveto
+472.7500 268.5000 lineto
+F dostroke
+grestore
+% ---- Object #35:40 Obj Type: 99
+% ---- Object #36:41 Obj Type: 9
+0 0 setpen
+474.7500 212.5000 moveto
+470.7500 227.5000 lineto
+474.7500 227.5000 lineto
+477.7500 227.5000 lineto
+474.7500 212.5000 lineto
+closepath
+F dofill
+% ---- Object #37:42 Obj Type: 9
+474.7500 212.5000 moveto
+470.7500 227.5000 lineto
+474.7500 227.5000 lineto
+477.7500 227.5000 lineto
+474.7500 212.5000 lineto
+closepath
+F dofill
+% ---- Object #38:43 Obj Type: 3
+1 1 setpen
+2 setlinecap
+gsave
+newpath
+474.7500 236.5000 moveto
+474.7500 228.5000 lineto
+F dostroke
+grestore
+% ---- Object #39:44 Obj Type: 2
+0 0 setpen
+save
+0 setgray
+mark /|___Times-Roman /Times-Roman T cvRecFont
+12 fts /|___Times-Roman findfont exch scalefont setfont
+0 setgray
+401 342 moveto
+(Invocation)
+F F 51.3135 0 10 0 0 fittext
+0 setgray
+401 331 moveto
+(Part:\(pressurization-alarm\))
+F F 129.2519 0 27 0 0 fittext
+restore
+% ---- Object #40:45 Obj Type: 7
+2 2 setpen
+0 setlinecap
+433.7500 401.5000 moveto
+435.1676 401.4945 lineto
+437.9923 401.4506 lineto
+440.8119 401.3629 lineto
+443.6229 401.2316 lineto
+446.4219 401.0567 lineto
+449.2055 400.8386 lineto
+451.9738 400.5770 lineto
+454.7164 400.2731 lineto
+457.4345 399.9266 lineto
+460.1227 399.5384 lineto
+462.7787 399.1087 lineto
+465.4028 398.6375 lineto
+467.9849 398.1265 lineto
+470.5254 397.5758 lineto
+473.0210 396.9860 lineto
+475.4688 396.3578 lineto
+477.8657 395.6921 lineto
+480.2131 394.9884 lineto
+482.4997 394.2500 lineto
+484.7269 393.4765 lineto
+486.8921 392.6690 lineto
+488.9925 391.8284 lineto
+491.0258 390.9558 lineto
+492.9915 390.0510 lineto
+494.8827 389.1174 lineto
+496.6996 388.1551 lineto
+498.4397 387.1652 lineto
+500.1018 386.1484 lineto
+501.6844 385.1056 lineto
+503.1821 384.0403 lineto
+504.5952 382.9523 lineto
+505.9221 381.8431 lineto
+507.1612 380.7140 lineto
+508.3108 379.5664 lineto
+509.3710 378.4001 lineto
+510.3380 377.2191 lineto
+511.2114 376.0244 lineto
+511.9904 374.8168 lineto
+512.6742 373.5979 lineto
+513.2625 372.3675 lineto
+513.7532 371.1303 lineto
+514.1465 369.8863 lineto
+514.4419 368.6370 lineto
+514.6390 367.3838 lineto
+514.7377 366.1284 lineto
+514.7500 365.5000 lineto
+F dostroke
+% ---- Object #41:46 Obj Type: 99
+% ---- Object #42:47 Obj Type: 9
+0 0 setpen
+514.7500 338.5000 moveto
+509.7500 355.5000 lineto
+514.7500 355.5000 lineto
+518.7500 355.5000 lineto
+514.7500 338.5000 lineto
+closepath
+F dofill
+% ---- Object #43:48 Obj Type: 9
+514.7500 338.5000 moveto
+509.7500 355.5000 lineto
+514.7500 355.5000 lineto
+518.7500 355.5000 lineto
+514.7500 338.5000 lineto
+closepath
+F dofill
+% ---- Object #44:49 Obj Type: 3
+2 2 setpen
+2 setlinecap
+gsave
+newpath
+514.7500 365.5000 moveto
+514.7500 355.5000 lineto
+F dostroke
+grestore
+% ---- Object #45:50 Obj Type: 2
+0 0 setpen
+save
+0 setgray
+mark /|___Times-Roman /Times-Roman T cvRecFont
+18 fts /|___Times-Roman findfont exch scalefont setfont
+0 setgray
+573 390 moveto
+(Procedures Library)
+F F 138.4189 1 18 0 0 fittext
+restore
+% ---- Object #46:51 Obj Type: 4
+1 1 setpen
+0 setlinecap
+1 fg
+141.5000 244.7500 15.5000 586.7500 rectpath
+F dofillsave
+F dostroke
+% ---- Object #47:52 Obj Type: 4
+0 setlinecap
+95.5000 250.7500 69.5000 339.7500 rectpath
+F dostroke
+% ---- Object #48:53 Obj Type: 2
+0 0 setpen
+save
+0 setgray
+mark /|___Times-Roman /Times-Roman T cvRecFont
+12 fts /|___Times-Roman findfont exch scalefont setfont
+0 setgray
+277 84 moveto
+(KA 1)
+F F 26.3262 1 4 0 0 fittext
+restore
+% ---- Object #49:54 Obj Type: 2
+save
+0 setgray
+mark /|___Times-Roman /Times-Roman T cvRecFont
+9 fts /|___Times-Roman findfont exch scalefont setfont
+0 setgray
+256 73 moveto
+(\(soak <Ka-7> <Ka-3>\))
+F F 83.2610 2 20 0 0 fittext
+restore
+% ---- Object #50:55 Obj Type: 4
+1 1 setpen
+0 setlinecap
+138.5000 382.7500 112.5000 441.7500 rectpath
+F dostroke
+% ---- Object #51:56 Obj Type: 2
+0 0 setpen
+save
+0 setgray
+mark /|___Times-Roman /Times-Roman T cvRecFont
+12 fts /|___Times-Roman findfont exch scalefont setfont
+0 setgray
+401 126 moveto
+(KA 2)
+F F 26.3262 1 4 0 0 fittext
+restore
+% ---- Object #52:57 Obj Type: 2
+save
+0 setgray
+mark /|___Times-Roman /Times-Roman T cvRecFont
+9 fts /|___Times-Roman findfont exch scalefont setfont
+0 setgray
+489 116 moveto
+(\(! \(position valve close\)\))
+F F 88.7058 3 26 0 0 fittext
+restore
+% ---- Object #53:58 Obj Type: 4
+1 1 setpen
+0 setlinecap
+95.5000 382.7500 69.5000 460.7500 rectpath
+F dostroke
+% ---- Object #54:59 Obj Type: 2
+0 0 setpen
+save
+0 setgray
+mark /|___Times-Roman /Times-Roman T cvRecFont
+12 fts /|___Times-Roman findfont exch scalefont setfont
+0 setgray
+400 84 moveto
+(KA 3)
+F F 26.3262 1 4 0 0 fittext
+restore
+% ---- Object #55:60 Obj Type: 2
+save
+0 setgray
+mark /|___Times-Roman /Times-Roman T cvRecFont
+10 fts /|___Times-Roman findfont exch scalefont setfont
+0 setgray
+388 73 moveto
+(\(position tb bp\))
+F F 61.6577 2 16 0 0 fittext
+restore
+% ---- Object #56:61 Obj Type: 4
+1 1 setpen
+0 setlinecap
+45.5000 382.7500 18.5000 478.7500 rectpath
+F dostroke
+% ---- Object #57:62 Obj Type: 2
+0 0 setpen
+save
+0 setgray
+mark /|___Times-Roman /Times-Roman T cvRecFont
+12 fts /|___Times-Roman findfont exch scalefont setfont
+0 setgray
+404 33 moveto
+(KA 4)
+F F 26.3262 1 4 0 0 fittext
+restore
+% ---- Object #58:63 Obj Type: 4
+1 1 setpen
+0 setlinecap
+138.5000 481.7500 112.5000 577.7500 rectpath
+F dostroke
+% ---- Object #59:64 Obj Type: 2
+0 0 setpen
+save
+0 setgray
+mark /|___Times-Roman /Times-Roman T cvRecFont
+12 fts /|___Times-Roman findfont exch scalefont setfont
+0 setgray
+525 126 moveto
+(KA 5)
+F F 26.3262 1 4 0 0 fittext
+restore
+% ---- Object #60:65 Obj Type: 2
+save
+0 setgray
+mark /|___Times-Roman /Times-Roman T cvRecFont
+10 fts /|___Times-Roman findfont exch scalefont setfont
+0 setgray
+401 115 moveto
+(\(Alarm\))
+F F 32.1973 0 7 0 0 fittext
+restore
+% ---- Object #61:66 Obj Type: 99
+% ---- Object #62:67 Obj Type: 9
+0 fg
+382.7500 122.5000 moveto
+374.7500 110.5000 lineto
+372.7500 113.5000 lineto
+369.7500 115.5000 lineto
+382.7500 122.5000 lineto
+closepath
+F dofill
+% ---- Object #63:68 Obj Type: 9
+382.7500 122.5000 moveto
+374.7500 110.5000 lineto
+372.7500 113.5000 lineto
+369.7500 115.5000 lineto
+382.7500 122.5000 lineto
+closepath
+F dofill
+% ---- Object #64:69 Obj Type: 3
+1 1 setpen
+2 setlinecap
+gsave
+newpath
+339.7500 82.5000 moveto
+372.7500 114.5000 lineto
+F dostroke
+grestore
+% ---- Object #65:70 Obj Type: 7
+0 0 setpen
+377.0002 114.3396 moveto
+376.8499 114.4281 lineto
+376.5540 114.6130 lineto
+376.2643 114.8084 lineto
+375.9819 115.0136 lineto
+375.7069 115.2285 lineto
+375.4396 115.4527 lineto
+375.1803 115.6862 lineto
+374.9290 115.9289 lineto
+374.6865 116.1799 lineto
+374.4530 116.4393 lineto
+374.2287 116.7066 lineto
+374.0139 116.9815 lineto
+373.8088 117.2638 lineto
+373.6133 117.5536 lineto
+373.4284 117.8495 lineto
+373.2539 118.1517 lineto
+373.1707 118.3050 lineto
+382 123 lineto
+377.0002 114.3396 lineto
+closepath
+F dofill
+% ---- Object #66:71 Obj Type: 99
+% ---- Object #67:72 Obj Type: 9
+382.7500 81.5000 moveto
+368.7500 78.5000 lineto
+368.7500 81.5000 lineto
+368.7500 85.5000 lineto
+382.7500 81.5000 lineto
+closepath
+F dofill
+% ---- Object #68:73 Obj Type: 9
+382.7500 81.5000 moveto
+368.7500 78.5000 lineto
+368.7500 81.5000 lineto
+368.7500 85.5000 lineto
+382.7500 81.5000 lineto
+closepath
+F dofill
+% ---- Object #69:74 Obj Type: 3
+1 1 setpen
+2 setlinecap
+gsave
+newpath
+339.7500 82.5000 moveto
+368.7500 82.5000 lineto
+F dostroke
+grestore
+% ---- Object #70:75 Obj Type: 7
+0 0 setpen
+372.3875 79.8812 moveto
+372.3408 80.0410 lineto
+372.2564 80.3626 lineto
+372.1837 80.6873 lineto
+372.1231 81.0138 lineto
+372.0746 81.3421 lineto
+372.0381 81.6717 lineto
+372.0137 82.0024 lineto
+372.0015 82.3337 lineto
+372.0015 82.6658 lineto
+372.0137 82.9971 lineto
+372.0380 83.3278 lineto
+372.0745 83.6575 lineto
+372.1231 83.9858 lineto
+372.1836 84.3123 lineto
+372.2563 84.6369 lineto
+372.3407 84.9586 lineto
+372.3873 85.1184 lineto
+382 82.5000 lineto
+372.3875 79.8812 lineto
+closepath
+F dofill
+% ---- Object #71:76 Obj Type: 99
+% ---- Object #72:77 Obj Type: 9
+382.7500 29.5000 moveto
+370.7500 37.5000 lineto
+373.7500 40.5000 lineto
+376.7500 42.5000 lineto
+382.7500 29.5000 lineto
+closepath
+F dofill
+% ---- Object #73:78 Obj Type: 9
+382.7500 29.5000 moveto
+370.7500 37.5000 lineto
+373.7500 40.5000 lineto
+376.7500 42.5000 lineto
+382.7500 29.5000 lineto
+closepath
+F dofill
+% ---- Object #74:79 Obj Type: 3
+1 1 setpen
+2 setlinecap
+gsave
+newpath
+339.7500 82.5000 moveto
+373.7500 41.5000 lineto
+F dostroke
+grestore
+% ---- Object #75:80 Obj Type: 7
+0 0 setpen
+373.9098 35.2900 moveto
+374.0136 35.4163 lineto
+374.2285 35.6638 lineto
+374.4527 35.9044 lineto
+374.6862 36.1378 lineto
+374.9289 36.3639 lineto
+375.1799 36.5821 lineto
+375.4393 36.7922 lineto
+375.7066 36.9941 lineto
+375.9815 37.1875 lineto
+376.2638 37.3721 lineto
+376.5536 37.5480 lineto
+376.8495 37.7145 lineto
+377.1517 37.8715 lineto
+377.4598 38.0189 lineto
+377.7735 38.1566 lineto
+378.0922 38.2844 lineto
+378.2539 38.3446 lineto
+382 30 lineto
+373.9098 35.2900 lineto
+closepath
+F dofill
+% ---- Object #76:81 Obj Type: 99
+% ---- Object #77:82 Obj Type: 9
+482.7500 126.5000 moveto
+468.7500 123.5000 lineto
+468.7500 126.5000 lineto
+468.7500 130.5000 lineto
+482.7500 126.5000 lineto
+closepath
+F dofill
+% ---- Object #78:83 Obj Type: 9
+482.7500 126.5000 moveto
+468.7500 123.5000 lineto
+468.7500 126.5000 lineto
+468.7500 130.5000 lineto
+482.7500 126.5000 lineto
+closepath
+F dofill
+% ---- Object #79:84 Obj Type: 3
+1 1 setpen
+2 setlinecap
+gsave
+newpath
+442.7500 127.5000 moveto
+467.7500 127.5000 lineto
+F dostroke
+grestore
+% ---- Object #80:85 Obj Type: 2
+0 0 setpen
+save
+0 setgray
+mark /|___Times-Roman /Times-Roman T cvRecFont
+12 fts /|___Times-Roman findfont exch scalefont setfont
+0 setgray
+390 123 moveto
+(S)
+show
+restore
+% ---- Object #81:86 Obj Type: 2
+save
+0 setgray
+mark /|___Times-Roman /Times-Roman T cvRecFont
+12 fts /|___Times-Roman findfont exch scalefont setfont
+0 setgray
+386 33 moveto
+(W)
+show
+restore
+% ---- Object #82:87 Obj Type: 7
+2 2 setpen
+0 setlinecap
+514.7500 167.5000 moveto
+514.7267 166.0861 lineto
+514.5404 163.2614 lineto
+514.1680 160.4418 lineto
+513.6101 157.6307 lineto
+512.8672 154.8317 lineto
+511.9403 152.0482 lineto
+510.8290 149.2798 lineto
+509.5374 146.5372 lineto
+508.0659 143.8202 lineto
+506.4163 141.1320 lineto
+504.5896 138.4747 lineto
+502.5871 135.8506 lineto
+500.4156 133.2684 lineto
+498.0752 130.7279 lineto
+495.5688 128.2323 lineto
+492.8995 125.7844 lineto
+490.0704 123.3874 lineto
+487.0811 121.0410 lineto
+483.9416 118.7533 lineto
+480.6547 116.5260 lineto
+477.2230 114.3607 lineto
+473.6506 112.2602 lineto
+469.9377 110.2245 lineto
+466.0970 108.2610 lineto
+462.1295 106.3697 lineto
+458.0397 104.5528 lineto
+453.8327 102.8125 lineto
+449.5136 101.1510 lineto
+445.0798 99.5677 lineto
+440.5521 98.0698 lineto
+435.9285 96.6566 lineto
+431.2145 95.3295 lineto
+426.4160 94.0904 lineto
+421.5387 92.9406 lineto
+416.5821 91.8803 lineto
+411.5651 90.9136 lineto
+406.4875 90.0401 lineto
+401.3531 89.2606 lineto
+396.1728 88.5767 lineto
+390.9437 87.9882 lineto
+385.6858 87.4974 lineto
+380.3989 87.1040 lineto
+375.0892 86.8084 lineto
+369.7633 86.6112 lineto
+364.4276 86.5124 lineto
+361.7500 86.5000 lineto
+F dostroke
+% ---- Object #83:88 Obj Type: 99
+% ---- Object #84:89 Obj Type: 9
+0 0 setpen
+343.7500 86.5000 moveto
+359.7500 91.5000 lineto
+359.7500 86.5000 lineto
+359.7500 82.5000 lineto
+343.7500 86.5000 lineto
+closepath
+F dofill
+% ---- Object #85:90 Obj Type: 9
+343.7500 86.5000 moveto
+359.7500 91.5000 lineto
+359.7500 86.5000 lineto
+359.7500 82.5000 lineto
+343.7500 86.5000 lineto
+closepath
+F dofill
+% ---- Object #86:91 Obj Type: 3
+2 2 setpen
+2 setlinecap
+gsave
+newpath
+361.7500 86.5000 moveto
+359.7500 86.5000 lineto
+F dostroke
+grestore
+% ---- Object #87:92 Obj Type: 6
+1 1 setpen
+0 setlinecap
+1 fg
+218.7500 300.5000 moveto
+218.7500 295.5632 214.6869 291.5000 209.7500 291.5000 curveto
+204.8132 291.5000 200.7500 295.5632 200.7500 300.5000 curveto
+200.7500 305.4368 204.8132 309.5000 209.7500 309.5000 curveto
+214.6869 309.5000 218.7500 305.4368 218.7500 300.5000 curveto
+closepath
+F dofillsave
+F dostroke
+% ---- Object #88:93 Obj Type: 6
+0 setlinecap
+182.7500 224.5000 moveto
+182.7500 219.5632 178.6869 215.5000 173.7500 215.5000 curveto
+168.8132 215.5000 164.7500 219.5632 164.7500 224.5000 curveto
+164.7500 229.4368 168.8132 233.5000 173.7500 233.5000 curveto
+178.6869 233.5000 182.7500 229.4368 182.7500 224.5000 curveto
+closepath
+F dofillsave
+F dostroke
+% ---- Object #89:94 Obj Type: 6
+0 setlinecap
+256.7500 155.5000 moveto
+256.7500 150.5632 252.6869 146.5000 247.7500 146.5000 curveto
+242.8132 146.5000 238.7500 150.5632 238.7500 155.5000 curveto
+238.7500 160.4368 242.8132 164.5000 247.7500 164.5000 curveto
+252.6869 164.5000 256.7500 160.4368 256.7500 155.5000 curveto
+closepath
+F dofillsave
+F dostroke
+% ---- Object #90:95 Obj Type: 99
+% ---- Object #91:96 Obj Type: 9
+0 0 setpen
+0 fg
+241.7500 272.5000 moveto
+228.7500 279.5000 lineto
+230.7500 282.5000 lineto
+232.7500 284.5000 lineto
+241.7500 272.5000 lineto
+closepath
+F dofill
+% ---- Object #92:97 Obj Type: 9
+241.7500 272.5000 moveto
+228.7500 279.5000 lineto
+230.7500 282.5000 lineto
+232.7500 284.5000 lineto
+241.7500 272.5000 lineto
+closepath
+F dofill
+% ---- Object #93:98 Obj Type: 3
+1 1 setpen
+2 setlinecap
+gsave
+newpath
+216.7500 295.5000 moveto
+230.7500 283.5000 lineto
+F dostroke
+grestore
+% ---- Object #94:99 Obj Type: 99
+% ---- Object #95:100 Obj Type: 9
+0 0 setpen
+176.7500 274.5000 moveto
+184.7500 285.5000 lineto
+186.7500 283.5000 lineto
+189.7500 280.5000 lineto
+176.7500 274.5000 lineto
+closepath
+F dofill
+% ---- Object #96:101 Obj Type: 9
+176.7500 274.5000 moveto
+184.7500 285.5000 lineto
+186.7500 283.5000 lineto
+189.7500 280.5000 lineto
+176.7500 274.5000 lineto
+closepath
+F dofill
+% ---- Object #97:102 Obj Type: 3
+1 1 setpen
+2 setlinecap
+gsave
+newpath
+200.7500 295.5000 moveto
+186.7500 284.5000 lineto
+F dostroke
+grestore
+% ---- Object #98:103 Obj Type: 4
+0 setlinecap
+1 fg
+273.5000 239.7500 258.5000 259.7500 rectpath
+F dofillsave
+F dostroke
+% ---- Object #99:104 Obj Type: 4
+0 setlinecap
+273.5000 164.7500 258.5000 184.7500 rectpath
+F dofillsave
+F dostroke
+% ---- Object #100:105 Obj Type: 4
+0 setlinecap
+235.5000 212.7500 220.5000 232.7500 rectpath
+F dofillsave
+F dostroke
+% ---- Object #101:106 Obj Type: 99
+% ---- Object #102:107 Obj Type: 9
+0 0 setpen
+0 fg
+173.7500 231.5000 moveto
+169.7500 246.5000 lineto
+173.7500 246.5000 lineto
+176.7500 246.5000 lineto
+173.7500 231.5000 lineto
+closepath
+F dofill
+% ---- Object #103:108 Obj Type: 9
+173.7500 231.5000 moveto
+169.7500 246.5000 lineto
+173.7500 246.5000 lineto
+176.7500 246.5000 lineto
+173.7500 231.5000 lineto
+closepath
+F dofill
+% ---- Object #104:109 Obj Type: 3
+1 1 setpen
+2 setlinecap
+gsave
+newpath
+173.7500 258.5000 moveto
+173.7500 247.5000 lineto
+F dostroke
+grestore
+% ---- Object #105:110 Obj Type: 4
+0 setlinecap
+1 fg
+236.5000 266.7500 221.5000 286.7500 rectpath
+F dofillsave
+F dostroke
+% ---- Object #106:111 Obj Type: 4
+0 setlinecap
+200.5000 239.7500 185.5000 259.7500 rectpath
+F dofillsave
+F dostroke
+% ---- Object #107:112 Obj Type: 99
+% ---- Object #108:113 Obj Type: 9
+0 0 setpen
+0 fg
+217.7500 236.5000 moveto
+224.7500 249.5000 lineto
+227.7500 246.5000 lineto
+229.7500 244.5000 lineto
+217.7500 236.5000 lineto
+closepath
+F dofill
+% ---- Object #109:114 Obj Type: 9
+217.7500 236.5000 moveto
+224.7500 249.5000 lineto
+227.7500 246.5000 lineto
+229.7500 244.5000 lineto
+217.7500 236.5000 lineto
+closepath
+F dofill
+% ---- Object #110:115 Obj Type: 3
+1 1 setpen
+2 setlinecap
+gsave
+newpath
+239.7500 258.5000 moveto
+227.7500 247.5000 lineto
+F dostroke
+grestore
+% ---- Object #111:116 Obj Type: 99
+% ---- Object #112:117 Obj Type: 9
+0 0 setpen
+272.7500 235.5000 moveto
+261.7500 246.5000 lineto
+264.7500 248.5000 lineto
+267.7500 249.5000 lineto
+272.7500 235.5000 lineto
+closepath
+F dofill
+% ---- Object #113:118 Obj Type: 9
+272.7500 235.5000 moveto
+261.7500 246.5000 lineto
+264.7500 248.5000 lineto
+267.7500 249.5000 lineto
+272.7500 235.5000 lineto
+closepath
+F dofill
+% ---- Object #114:119 Obj Type: 3
+1 1 setpen
+2 setlinecap
+gsave
+newpath
+259.7500 258.5000 moveto
+264.7500 249.5000 lineto
+F dostroke
+grestore
+% ---- Object #115:120 Obj Type: 99
+% ---- Object #116:121 Obj Type: 9
+0 0 setpen
+238.7500 199.5000 moveto
+226.7500 208.5000 lineto
+229.7500 210.5000 lineto
+232.7500 212.5000 lineto
+238.7500 199.5000 lineto
+closepath
+F dofill
+% ---- Object #117:122 Obj Type: 9
+238.7500 199.5000 moveto
+226.7500 208.5000 lineto
+229.7500 210.5000 lineto
+232.7500 212.5000 lineto
+238.7500 199.5000 lineto
+closepath
+F dofill
+% ---- Object #118:123 Obj Type: 3
+1 1 setpen
+2 setlinecap
+gsave
+newpath
+222.7500 219.5000 moveto
+229.7500 211.5000 lineto
+F dostroke
+grestore
+% ---- Object #119:124 Obj Type: 99
+% ---- Object #120:125 Obj Type: 9
+0 0 setpen
+259.7500 199.5000 moveto
+264.7500 213.5000 lineto
+267.7500 211.5000 lineto
+269.7500 209.5000 lineto
+259.7500 199.5000 lineto
+closepath
+F dofill
+% ---- Object #121:126 Obj Type: 9
+259.7500 199.5000 moveto
+264.7500 213.5000 lineto
+267.7500 211.5000 lineto
+269.7500 209.5000 lineto
+259.7500 199.5000 lineto
+closepath
+F dofill
+% ---- Object #122:127 Obj Type: 3
+1 1 setpen
+2 setlinecap
+gsave
+newpath
+273.7500 220.5000 moveto
+267.7500 212.5000 lineto
+F dostroke
+grestore
+% ---- Object #123:128 Obj Type: 99
+% ---- Object #124:129 Obj Type: 9
+0 0 setpen
+248.7500 162.5000 moveto
+244.7500 177.5000 lineto
+248.7500 177.5000 lineto
+251.7500 177.5000 lineto
+248.7500 162.5000 lineto
+closepath
+F dofill
+% ---- Object #125:130 Obj Type: 9
+248.7500 162.5000 moveto
+244.7500 177.5000 lineto
+248.7500 177.5000 lineto
+251.7500 177.5000 lineto
+248.7500 162.5000 lineto
+closepath
+F dofill
+% ---- Object #126:131 Obj Type: 3
+1 1 setpen
+2 setlinecap
+gsave
+newpath
+248.7500 185.5000 moveto
+248.7500 178.5000 lineto
+F dostroke
+grestore
+% ---- Object #127:132 Obj Type: 7
+2 2 setpen
+0 setlinecap
+250.7500 77.5000 moveto
+249.0569 77.5178 lineto
+245.6741 77.6603 lineto
+242.2975 77.9450 lineto
+238.9313 78.3717 lineto
+235.5794 78.9398 lineto
+232.2460 79.6486 lineto
+228.9307 80.4984 lineto
+225.6464 81.4861 lineto
+222.3927 82.6113 lineto
+219.1735 83.8728 lineto
+215.9913 85.2697 lineto
+212.8488 86.8010 lineto
+209.7566 88.4616 lineto
+206.7143 90.2513 lineto
+203.7257 92.1680 lineto
+200.7943 94.2092 lineto
+197.9237 96.3726 lineto
+195.1139 98.6585 lineto
+192.3743 101.0593 lineto
+189.7070 103.5729 lineto
+187.1141 106.1971 lineto
+184.5986 108.9289 lineto
+182.1608 111.7682 lineto
+179.8095 114.7052 lineto
+177.5446 117.7392 lineto
+175.3688 120.8667 lineto
+173.2848 124.0838 lineto
+171.2951 127.3867 lineto
+169.3989 130.7772 lineto
+167.6052 134.2396 lineto
+165.9128 137.7752 lineto
+164.3236 141.3800 lineto
+162.8397 145.0495 lineto
+161.4629 148.7792 lineto
+160.1931 152.5696 lineto
+159.0354 156.4061 lineto
+157.9893 160.2890 lineto
+157.0558 164.2153 lineto
+156.2369 168.1767 lineto
+155.5322 172.1754 lineto
+154.9444 176.1961 lineto
+154.4732 180.2391 lineto
+154.1194 184.2994 lineto
+153.8831 188.3722 lineto
+153.7649 192.4524 lineto
+153.7500 194.5000 lineto
+F dostroke
+% ---- Object #128:133 Obj Type: 99
+% ---- Object #129:134 Obj Type: 9
+0 0 setpen
+153.7500 229.5000 moveto
+157.7500 213.5000 lineto
+153.7500 213.5000 lineto
+148.7500 213.5000 lineto
+153.7500 229.5000 lineto
+closepath
+F dofill
+% ---- Object #130:135 Obj Type: 9
+153.7500 229.5000 moveto
+157.7500 213.5000 lineto
+153.7500 213.5000 lineto
+148.7500 213.5000 lineto
+153.7500 229.5000 lineto
+closepath
+F dofill
+% ---- Object #131:136 Obj Type: 3
+2 2 setpen
+2 setlinecap
+gsave
+newpath
+153.7500 193.5000 moveto
+153.7500 213.5000 lineto
+F dostroke
+grestore
+% ---- Object #132:137 Obj Type: 3
+1 1 setpen
+2 setlinecap
+gsave
+newpath
+165.7500 289.5000 moveto
+201.7500 289.5000 lineto
+F dostroke
+grestore
+% ---- Object #133:138 Obj Type: 3
+2 setlinecap
+gsave
+newpath
+157.7500 256.5000 moveto
+193.7500 256.5000 lineto
+F dostroke
+grestore
+% ---- Object #134:139 Obj Type: 3
+2 setlinecap
+gsave
+newpath
+211.7500 252.5000 moveto
+247.7500 252.5000 lineto
+F dostroke
+grestore
+% ---- Object #135:140 Obj Type: 3
+2 setlinecap
+gsave
+newpath
+256.7500 251.5000 moveto
+292.7500 251.5000 lineto
+F dostroke
+grestore
+% ---- Object #136:141 Obj Type: 3
+2 setlinecap
+gsave
+newpath
+213.7500 287.5000 moveto
+249.7500 287.5000 lineto
+F dostroke
+grestore
+% ---- Object #137:142 Obj Type: 3
+2 setlinecap
+gsave
+newpath
+210.7500 215.5000 moveto
+246.7500 215.5000 lineto
+F dostroke
+grestore
+% ---- Object #138:143 Obj Type: 3
+2 setlinecap
+gsave
+newpath
+256.7500 217.5000 moveto
+292.7500 217.5000 lineto
+F dostroke
+grestore
+% ---- Object #139:144 Obj Type: 3
+2 setlinecap
+gsave
+newpath
+229.7500 180.5000 moveto
+265.7500 180.5000 lineto
+F dostroke
+grestore
+% ---- Object #140:145 Obj Type: 6
+0 setlinecap
+0.9375 fg
+233.7500 345 moveto
+233.7500 338.1433 228.1067 332.5000 221.2500 332.5000 curveto
+214.3933 332.5000 208.7500 338.1433 208.7500 345 curveto
+208.7500 351.8567 214.3933 357.5000 221.2500 357.5000 curveto
+228.1067 357.5000 233.7500 351.8567 233.7500 345 curveto
+closepath
+F dofillsave
+F dostroke
+% ---- Object #141:146 Obj Type: 2
+0 0 setpen
+save
+0 setgray
+mark /|___Times-Italic /Times-Italic T cvRecFont
+18 fts /|___Times-Italic findfont exch scalefont setfont
+0 setgray
+217 339 moveto
+(7)
+show
+restore
+% ---- Object #142:147 Obj Type: 7
+2 2 setpen
+0 setlinecap
+181.7500 287.5000 moveto
+181.7623 289.6470 lineto
+181.8610 293.9364 lineto
+182.0581 298.2181 lineto
+182.3535 302.4866 lineto
+182.7468 306.7370 lineto
+183.2375 310.9639 lineto
+183.8258 315.1677 lineto
+184.5096 319.3324 lineto
+185.2886 323.4582 lineto
+186.1620 327.5403 lineto
+187.1290 331.5754 lineto
+188.1892 335.5603 lineto
+189.3388 339.4813 lineto
+190.5778 343.3390 lineto
+191.9048 347.1288 lineto
+193.3179 350.8459 lineto
+194.8156 354.4859 lineto
+196.3982 358.0489 lineto
+198.0603 361.5228 lineto
+199.8004 364.9050 lineto
+201.6172 368.1930 lineto
+203.5085 371.3827 lineto
+205.4742 374.4739 lineto
+207.5074 377.4555 lineto
+209.6079 380.3275 lineto
+211.7731 383.0865 lineto
+214.0003 385.7291 lineto
+216.2869 388.2521 lineto
+218.6342 390.6565 lineto
+221.0312 392.9310 lineto
+223.4790 395.0771 lineto
+225.9746 397.0922 lineto
+228.5151 398.9738 lineto
+231.0971 400.7198 lineto
+233.7212 402.3298 lineto
+236.3773 403.7979 lineto
+239.0655 405.1243 lineto
+241.7836 406.3080 lineto
+244.5262 407.3465 lineto
+247.2945 408.2401 lineto
+250.0781 408.9855 lineto
+252.8771 409.5829 lineto
+255.6881 410.0316 lineto
+258.5077 410.3312 lineto
+261.3324 410.4812 lineto
+262.7500 410.5000 lineto
+F dostroke
+% ---- Object #143:148 Obj Type: 99
+% ---- Object #144:149 Obj Type: 9
+0 0 setpen
+0 fg
+298.7500 410.5000 moveto
+281.7500 406.5000 lineto
+281.7500 410.5000 lineto
+281.7500 415.5000 lineto
+298.7500 410.5000 lineto
+closepath
+F dofill
+% ---- Object #145:150 Obj Type: 9
+298.7500 410.5000 moveto
+281.7500 406.5000 lineto
+281.7500 410.5000 lineto
+281.7500 415.5000 lineto
+298.7500 410.5000 lineto
+closepath
+F dofill
+% ---- Object #146:151 Obj Type: 3
+2 2 setpen
+2 setlinecap
+gsave
+newpath
+262.7500 410.5000 moveto
+281.7500 410.5000 lineto
+F dostroke
+grestore
+% ---- Object #147:152 Obj Type: 2
+0 0 setpen
+save
+0 setgray
+mark /|___Times-Roman /Times-Roman T cvRecFont
+18 fts /|___Times-Roman findfont exch scalefont setfont
+0 setgray
+455 50 moveto
+(Tasks Graph)
+F F 91.4590 1 11 0 0 fittext
+restore
+% ---- Object #148:153 Obj Type: 2
+save
+0 setgray
+mark /|___Times-Roman /Times-Roman T cvRecFont
+18 fts /|___Times-Roman findfont exch scalefont setfont
+0 setgray
+296 450 moveto
+(New goals & new facts)
+F F 167.9238 4 21 0 0 fittext
+restore
+% ---- Object #149:154 Obj Type: 2
+save
+0 setgray
+mark /|___Times-Roman /Times-Roman T cvRecFont
+18 fts /|___Times-Roman findfont exch scalefont setfont
+0 setgray
+80 184 moveto
+(Procedure Execution)
+F F 150.4292 1 19 0 0 fittext
+restore
+% ---- Object #150:155 Obj Type: 99
+% ---- Object #151:156 Obj Type: 9
+298.7500 428.5000 moveto
+281.7500 424.5000 lineto
+281.7500 428.5000 lineto
+281.7500 433.5000 lineto
+298.7500 428.5000 lineto
+closepath
+F dofill
+% ---- Object #152:157 Obj Type: 9
+298.7500 428.5000 moveto
+281.7500 424.5000 lineto
+281.7500 428.5000 lineto
+281.7500 433.5000 lineto
+298.7500 428.5000 lineto
+closepath
+F dofill
+% ---- Object #153:158 Obj Type: 3
+2 2 setpen
+2 setlinecap
+gsave
+newpath
+217.7500 428.5000 moveto
+281.7500 428.5000 lineto
+F dostroke
+grestore
+% ---- Object #154:159 Obj Type: 2
+0 0 setpen
+save
+0 setgray
+mark /|___Times-Roman /Times-Roman T cvRecFont
+18 fts /|___Times-Roman findfont exch scalefont setfont
+0 setgray
+87 427 moveto
+(External events)
+F F 111.4453 1 15 0 0 fittext
+restore
+% ---- Object #155:160 Obj Type: 99
+% ---- Object #156:161 Obj Type: 9
+309.7500 86.5000 moveto
+323.7500 90.5000 lineto
+323.7500 86.5000 lineto
+323.7500 83.5000 lineto
+309.7500 86.5000 lineto
+closepath
+F dofill
+% ---- Object #157:162 Obj Type: 9
+309.7500 86.5000 moveto
+323.7500 90.5000 lineto
+323.7500 86.5000 lineto
+323.7500 83.5000 lineto
+309.7500 86.5000 lineto
+closepath
+F dofill
+% ---- Object #158:163 Obj Type: 3
+1 1 setpen
+2 setlinecap
+gsave
+newpath
+330.7500 87.5000 moveto
+323.7500 87.5000 lineto
+F dostroke
+grestore
+% ---- Object #159:164 Obj Type: 99
+% ---- Object #160:165 Obj Type: 9
+0 0 setpen
+278.7500 87.5000 moveto
+264.7500 83.5000 lineto
+264.7500 87.5000 lineto
+264.7500 90.5000 lineto
+278.7500 87.5000 lineto
+closepath
+F dofill
+% ---- Object #161:166 Obj Type: 9
+278.7500 87.5000 moveto
+264.7500 83.5000 lineto
+264.7500 87.5000 lineto
+264.7500 90.5000 lineto
+278.7500 87.5000 lineto
+closepath
+F dofill
+% ---- Object #162:167 Obj Type: 3
+1 1 setpen
+2 setlinecap
+gsave
+newpath
+256.7500 88.5000 moveto
+264.7500 88.5000 lineto
+F dostroke
+grestore
+% ---- Object #163:168 Obj Type: 2
+0 0 setpen
+save
+0 setgray
+mark /|___Times-Italic /Times-Italic T cvRecFont
+14 fts /|___Times-Italic findfont exch scalefont setfont
+0 setgray
+132 370 moveto
+(Posting new subgoal)
+F F 116.6621 2 19 0 0 fittext
+restore
+% ---- Object #164:169 Obj Type: 2
+save
+0 setgray
+mark /|___Times-Italic /Times-Italic T cvRecFont
+14 fts /|___Times-Italic findfont exch scalefont setfont
+0 setgray
+472 414 moveto
+(Triggering)
+F F 60.6655 0 10 0 0 fittext
+0 setgray
+460 400 moveto
+(andUnification)
+F F 84.7690 0 14 0 0 fittext
+restore
+% ---- Object #165:170 Obj Type: 2
+save
+0 setgray
+mark /|___Times-Italic /Times-Italic T cvRecFont
+14 fts /|___Times-Italic findfont exch scalefont setfont
+0 setgray
+345 163 moveto
+(Intend the Procedure)
+F F 118.9487 2 20 0 0 fittext
+restore
+% ---- Object #166:171 Obj Type: 2
+save
+0 setgray
+mark /|___Times-Italic /Times-Italic T cvRecFont
+14 fts /|___Times-Italic findfont exch scalefont setfont
+0 setgray
+107 114 moveto
+(Execute the intention)
+F F 118.1728 2 21 0 0 fittext
+restore
+% ---- Object #167:172 Obj Type: 6
+1 1 setpen
+0 setlinecap
+0.9375 fg
+290.7500 454 moveto
+290.7500 447.1433 285.1067 441.5000 278.2500 441.5000 curveto
+271.3933 441.5000 265.7500 447.1433 265.7500 454 curveto
+265.7500 460.8567 271.3933 466.5000 278.2500 466.5000 curveto
+285.1067 466.5000 290.7500 460.8567 290.7500 454 curveto
+closepath
+F dofillsave
+F dostroke
+% ---- Object #168:173 Obj Type: 6
+0 setlinecap
+0.9375 fg
+578.7500 428 moveto
+578.7500 421.1433 573.1067 415.5000 566.2500 415.5000 curveto
+559.3933 415.5000 553.7500 421.1433 553.7500 428 curveto
+553.7500 434.8567 559.3933 440.5000 566.2500 440.5000 curveto
+573.1067 440.5000 578.7500 434.8567 578.7500 428 curveto
+closepath
+F dofillsave
+F dostroke
+% ---- Object #169:174 Obj Type: 6
+0 setlinecap
+0.9375 fg
+486.7500 156 moveto
+486.7500 149.1433 481.1067 143.5000 474.2500 143.5000 curveto
+467.3933 143.5000 461.7500 149.1433 461.7500 156 curveto
+461.7500 162.8567 467.3933 168.5000 474.2500 168.5000 curveto
+481.1067 168.5000 486.7500 162.8567 486.7500 156 curveto
+closepath
+F dofillsave
+F dostroke
+% ---- Object #170:175 Obj Type: 6
+0 setlinecap
+0.9375 fg
+88.7500 311 moveto
+88.7500 304.1433 83.1067 298.5000 76.2500 298.5000 curveto
+69.3933 298.5000 63.7500 304.1433 63.7500 311 curveto
+63.7500 317.8567 69.3933 323.5000 76.2500 323.5000 curveto
+83.1067 323.5000 88.7500 317.8567 88.7500 311 curveto
+closepath
+F dofillsave
+F dostroke
+% ---- Object #171:176 Obj Type: 6
+0 setlinecap
+0.9375 fg
+133.7500 163 moveto
+133.7500 156.1433 128.1067 150.5000 121.2500 150.5000 curveto
+114.3933 150.5000 108.7500 156.1433 108.7500 163 curveto
+108.7500 169.8567 114.3933 175.5000 121.2500 175.5000 curveto
+128.1067 175.5000 133.7500 169.8567 133.7500 163 curveto
+closepath
+F dofillsave
+F dostroke
+% ---- Object #172:177 Obj Type: 6
+0 setlinecap
+0.9375 fg
+274.7500 113 moveto
+274.7500 106.1433 269.1067 100.5000 262.2500 100.5000 curveto
+255.3933 100.5000 249.7500 106.1433 249.7500 113 curveto
+249.7500 119.8567 255.3933 125.5000 262.2500 125.5000 curveto
+269.1067 125.5000 274.7500 119.8567 274.7500 113 curveto
+closepath
+F dofillsave
+F dostroke
+% ---- Object #173:178 Obj Type: 7
+2 2 setpen
+0 setlinecap
+77.7500 332.5000 moveto
+78.5200 332.4880 lineto
+80.0545 332.3929 lineto
+81.5861 332.2030 lineto
+83.1131 331.9184 lineto
+84.6335 331.5396 lineto
+86.1456 331.0669 lineto
+87.6494 330.5002 lineto
+89.1391 329.8417 lineto
+90.6157 329.0910 lineto
+92.0759 328.2499 lineto
+93.5187 327.3189 lineto
+94.9441 326.2979 lineto
+96.3468 325.1907 lineto
+97.7267 323.9975 lineto
+99.0824 322.7196 lineto
+100.4120 321.3587 lineto
+101.7141 319.9163 lineto
+102.9892 318.3916 lineto
+104.2313 316.7916 lineto
+105.4411 315.1158 lineto
+106.6173 313.3662 lineto
+107.7583 311.5449 lineto
+108.8628 309.6542 lineto
+109.9306 307.6939 lineto
+110.9579 305.6711 lineto
+111.9448 303.5861 lineto
+112.8901 301.4413 lineto
+113.7929 299.2383 lineto
+114.6526 296.9788 lineto
+115.4662 294.6706 lineto
+116.2338 292.3134 lineto
+116.9546 289.9101 lineto
+117.6277 287.4637 lineto
+118.2522 284.9772 lineto
+118.8281 282.4503 lineto
+119.3534 279.8914 lineto
+119.8278 277.3028 lineto
+120.2510 274.6864 lineto
+120.6224 272.0454 lineto
+120.9420 269.3795 lineto
+121.2085 266.6990 lineto
+121.4222 264.0037 lineto
+121.5826 261.2968 lineto
+121.6897 258.5816 lineto
+121.7433 255.8615 lineto
+121.7500 254.5000 lineto
+F dostroke
+% ---- Object #174:179 Obj Type: 99
+% ---- Object #175:180 Obj Type: 9
+0 0 setpen
+0 fg
+58.7500 333.5000 moveto
+75.7500 329.5000 lineto
+75.7500 333.5000 lineto
+75.7500 337.5000 lineto
+58.7500 333.5000 lineto
+closepath
+F dofill
+% ---- Object #176:181 Obj Type: 9
+58.7500 333.5000 moveto
+75.7500 329.5000 lineto
+75.7500 333.5000 lineto
+75.7500 337.5000 lineto
+58.7500 333.5000 lineto
+closepath
+F dofill
+% ---- Object #177:182 Obj Type: 3
+2 2 setpen
+2 setlinecap
+gsave
+newpath
+76.7500 333.5000 moveto
+75.7500 333.5000 lineto
+F dostroke
+grestore
+% ---- Object #178:183 Obj Type: 2
+0 0 setpen
+save
+0 setgray
+mark /|___Times-Italic /Times-Italic T cvRecFont
+14 fts /|___Times-Italic findfont exch scalefont setfont
+0 setgray
+19 338 moveto
+(Primitive)
+F F 52.0898 0 9 0 0 fittext
+0 setgray
+28 324 moveto
+(action)
+F F 34.9932 0 6 0 0 fittext
+restore
+% ---- Object #179:184 Obj Type: 2
+save
+0 setgray
+mark /|___Times-Italic /Times-Italic T cvRecFont
+18 fts /|___Times-Italic findfont exch scalefont setfont
+0 setgray
+273 448 moveto
+(1)
+show
+restore
+% ---- Object #180:185 Obj Type: 2
+save
+0 setgray
+mark /|___Times-Italic /Times-Italic T cvRecFont
+18 fts /|___Times-Italic findfont exch scalefont setfont
+0 setgray
+561 422 moveto
+(2)
+show
+restore
+% ---- Object #181:186 Obj Type: 2
+save
+0 setgray
+mark /|___Times-Italic /Times-Italic T cvRecFont
+18 fts /|___Times-Italic findfont exch scalefont setfont
+0 setgray
+467 150 moveto
+(3)
+show
+restore
+% ---- Object #182:187 Obj Type: 2
+save
+0 setgray
+mark /|___Times-Italic /Times-Italic T cvRecFont
+18 fts /|___Times-Italic findfont exch scalefont setfont
+0 setgray
+72 303 moveto
+(6)
+show
+restore
+% ---- Object #183:188 Obj Type: 2
+save
+0 setgray
+mark /|___Times-Italic /Times-Italic T cvRecFont
+18 fts /|___Times-Italic findfont exch scalefont setfont
+0 setgray
+115 157 moveto
+(5)
+show
+restore
+% ---- Object #184:189 Obj Type: 2
+save
+0 setgray
+mark /|___Times-Italic /Times-Italic T cvRecFont
+18 fts /|___Times-Italic findfont exch scalefont setfont
+0 setgray
+256 105 moveto
+(4)
+show
+restore
+% ---- Object #185:190 Obj Type: 7
+2 2 setpen
+0 setlinecap
+0.2500 pg
+1 fg
+395.6789 321.3355 moveto
+394.5863 321.2466 lineto
+392.3963 321.1097 lineto
+390.2009 321.0275 lineto
+388 321 lineto
+385.8020 321.0274 lineto
+383.6066 321.1096 lineto
+381.4166 321.2464 lineto
+379.2346 321.4377 lineto
+377.0632 321.6833 lineto
+374.9014 321.9834 lineto
+372.7594 322.3366 lineto
+370.6359 322.7430 lineto
+368.5335 323.2021 lineto
+366.4549 323.7133 lineto
+364.4025 324.2760 lineto
+362.3761 324.8903 lineto
+360.3837 325.5539 lineto
+358.4249 326.2667 lineto
+356.5013 327.0283 lineto
+354.6169 327.8370 lineto
+352.7707 328.6934 lineto
+350.9699 329.5940 lineto
+349.2142 330.5390 lineto
+347.5057 331.5272 lineto
+345.8465 332.5574 lineto
+344.2386 333.6283 lineto
+342.6816 334.7404 lineto
+341.1823 335.8888 lineto
+339.7400 337.0739 lineto
+338.3564 338.2942 lineto
+337.0334 339.5483 lineto
+335.7723 340.8345 lineto
+334.5734 342.1531 lineto
+333.4411 343.4991 lineto
+332.3752 344.8725 lineto
+331.3771 346.2716 lineto
+330.4476 347.6954 lineto
+329.5874 349.1427 lineto
+328.7996 350.6087 lineto
+328.0838 352.0934 lineto
+327.4410 353.5951 lineto
+326.8720 355.1118 lineto
+326.3773 356.6419 lineto
+325.9572 358.1853 lineto
+325.6132 359.7369 lineto
+325.3452 361.2955 lineto
+325.1536 362.8598 lineto
+325.0384 364.4279 lineto
+325 366 lineto
+388 366 lineto
+395.6789 321.3355 lineto
+closepath
+F dofill
+396.4289 320.8355 moveto
+395.3363 320.7466 lineto
+393.1463 320.6097 lineto
+390.9509 320.5275 lineto
+388.7500 320.5000 lineto
+386.5520 320.5274 lineto
+384.3566 320.6096 lineto
+382.1666 320.7464 lineto
+379.9846 320.9377 lineto
+377.8132 321.1833 lineto
+375.6514 321.4834 lineto
+373.5094 321.8366 lineto
+371.3859 322.2430 lineto
+369.2835 322.7021 lineto
+367.2049 323.2133 lineto
+365.1525 323.7760 lineto
+363.1261 324.3903 lineto
+361.1337 325.0539 lineto
+359.1749 325.7667 lineto
+357.2513 326.5283 lineto
+355.3669 327.3370 lineto
+353.5207 328.1934 lineto
+351.7199 329.0940 lineto
+349.9642 330.0390 lineto
+348.2557 331.0272 lineto
+346.5965 332.0574 lineto
+344.9886 333.1283 lineto
+343.4316 334.2404 lineto
+341.9323 335.3888 lineto
+340.4900 336.5739 lineto
+339.1064 337.7942 lineto
+337.7834 339.0483 lineto
+336.5223 340.3345 lineto
+335.3234 341.6531 lineto
+334.1911 342.9991 lineto
+333.1252 344.3725 lineto
+332.1271 345.7716 lineto
+331.1976 347.1954 lineto
+330.3374 348.6427 lineto
+329.5496 350.1087 lineto
+328.8338 351.5934 lineto
+328.1910 353.0951 lineto
+327.6220 354.6118 lineto
+327.1273 356.1419 lineto
+326.7072 357.6853 lineto
+326.3632 359.2369 lineto
+326.0952 360.7955 lineto
+325.9036 362.3598 lineto
+325.7884 363.9279 lineto
+325.7500 365.5000 lineto
+F dostroke
+% ---- Object #186:191 Obj Type: 99
+% ---- Object #187:192 Obj Type: 9
+0 0 setpen
+0 fg
+325.7500 392.5000 moveto
+320.7500 375.5000 lineto
+325.7500 375.5000 lineto
+329.7500 375.5000 lineto
+325.7500 392.5000 lineto
+closepath
+F dofill
+% ---- Object #188:193 Obj Type: 9
+325.7500 392.5000 moveto
+320.7500 375.5000 lineto
+325.7500 375.5000 lineto
+329.7500 375.5000 lineto
+325.7500 392.5000 lineto
+closepath
+F dofill
+% ---- Object #189:194 Obj Type: 9
+% ---- Object #190:195 Obj Type: 3
+2 2 setpen
+2 setlinecap
+0.2500 pg
+gsave
+newpath
+325.7500 365.5000 moveto
+325.7500 375.5000 lineto
+F dostroke
+grestore
+% ---- Object #191:196 Obj Type: 2
+0 0 setpen
+save
+0 setgray
+mark /|___Times-Italic /Times-Italic T cvRecFont
+14 fts /|___Times-Italic findfont exch scalefont setfont
+0 setgray
+343 363 moveto
+(Posting)
+F F 42.7759 0 7 0 0 fittext
+0 setgray
+335 349 moveto
+(MetaFacts)
+F F 59.8623 0 9 0 0 fittext
+restore
+% ---- Object #192:197 Obj Type: 2
+save
+0 setgray
+mark /|___Times-Roman /Times-Roman T cvRecFont
+10 fts /|___Times-Roman findfont exch scalefont setfont
+0 setgray
+386 21 moveto
+(\(position valve op\))
+F F 75.5347 2 19 0 0 fittext
+restore
+% ---- Object #193:198 Obj Type: 2
+save
+0 setgray
+mark /|___Times-Roman /Times-Roman T cvRecFont
+18 fts /|___Times-Roman findfont exch scalefont setfont
+0 setgray
+149 235 moveto
+(or)
+F F 14.9897 0 2 0 0 fittext
+restore
+% ---- Object #194:199 Obj Type: 2
+save
+0 setgray
+mark /|___Times-Roman /Times-Roman T cvRecFont
+12 fts /|___Times-Roman findfont exch scalefont setfont
+0 setgray
+62 242 moveto
+(Action KA:)
+F F 56.3174 1 10 0 0 fittext
+0 setgray
+62 231 moveto
+(\(signal switch s1\))
+F F 84.6387 2 18 0 0 fittext
+restore
+% ---- Object #195:200 Obj Type: 2
+save
+0 setgray
+mark /|___Times-Roman /Times-Roman T cvRecFont
+12 fts /|___Times-Roman findfont exch scalefont setfont
+0 setgray
+262 282 moveto
+(Graph KA:)
+F F 53.6426 1 9 0 0 fittext
+restore
+% ---- Object #196:201 Obj Type: 4
+1 1 setpen
+0 setlinecap
+0 pg
+1 fg
+381.5000 531.7500 210.5000 711.7500 rectpath
+F dofillsave
+F dostroke
+% ---- Object #197:202 Obj Type: 99
+% ---- Object #198:203 Obj Type: 6
+0 setlinecap
+669.7500 324.5000 moveto
+669.7500 319.5632 665.6869 315.5000 660.7500 315.5000 curveto
+655.8132 315.5000 651.7500 319.5632 651.7500 324.5000 curveto
+651.7500 329.4368 655.8132 333.5000 660.7500 333.5000 curveto
+665.6869 333.5000 669.7500 329.4368 669.7500 324.5000 curveto
+closepath
+F dofillsave
+F dostroke
+% ---- Object #199:204 Obj Type: 6
+0 setlinecap
+653.7500 245.5000 moveto
+653.7500 240.5632 649.6869 236.5000 644.7500 236.5000 curveto
+639.8132 236.5000 635.7500 240.5632 635.7500 245.5000 curveto
+635.7500 250.4368 639.8132 254.5000 644.7500 254.5000 curveto
+649.6869 254.5000 653.7500 250.4368 653.7500 245.5000 curveto
+closepath
+F dofillsave
+F dostroke
+% ---- Object #200:205 Obj Type: 6
+0 setlinecap
+708.7500 224.5000 moveto
+708.7500 219.5632 704.6869 215.5000 699.7500 215.5000 curveto
+694.8132 215.5000 690.7500 219.5632 690.7500 224.5000 curveto
+690.7500 229.4368 694.8132 233.5000 699.7500 233.5000 curveto
+704.6869 233.5000 708.7500 229.4368 708.7500 224.5000 curveto
+closepath
+F dofillsave
+F dostroke
+% ---- Object #201:206 Obj Type: 99
+% ---- Object #202:207 Obj Type: 9
+0 0 setpen
+0 fg
+688.7500 303.5000 moveto
+675.7500 309.5000 lineto
+677.7500 312.5000 lineto
+680.7500 315.5000 lineto
+688.7500 303.5000 lineto
+closepath
+F dofill
+% ---- Object #203:208 Obj Type: 9
+688.7500 303.5000 moveto
+675.7500 309.5000 lineto
+677.7500 312.5000 lineto
+680.7500 315.5000 lineto
+688.7500 303.5000 lineto
+closepath
+F dofill
+% ---- Object #204:209 Obj Type: 3
+1 1 setpen
+2 setlinecap
+gsave
+newpath
+669.7500 320.5000 moveto
+677.7500 313.5000 lineto
+F dostroke
+grestore
+% ---- Object #205:210 Obj Type: 99
+% ---- Object #206:211 Obj Type: 9
+0 0 setpen
+644.7500 286.5000 moveto
+645.7500 300.5000 lineto
+649.7500 299.5000 lineto
+652.7500 297.5000 lineto
+644.7500 286.5000 lineto
+closepath
+F dofill
+% ---- Object #207:212 Obj Type: 9
+644.7500 286.5000 moveto
+645.7500 300.5000 lineto
+649.7500 299.5000 lineto
+652.7500 297.5000 lineto
+644.7500 286.5000 lineto
+closepath
+F dofill
+% ---- Object #208:213 Obj Type: 3
+1 1 setpen
+2 setlinecap
+gsave
+newpath
+655.7500 316.5000 moveto
+649.7500 300.5000 lineto
+F dostroke
+grestore
+% ---- Object #209:214 Obj Type: 4
+0 setlinecap
+1 fg
+304.5000 687.7500 289.5000 707.7500 rectpath
+F dofillsave
+F dostroke
+% ---- Object #210:215 Obj Type: 4
+0 setlinecap
+285.5000 635.7500 270.5000 655.7500 rectpath
+F dofillsave
+F dostroke
+% ---- Object #211:216 Obj Type: 99
+% ---- Object #212:217 Obj Type: 9
+0 0 setpen
+0 fg
+645.7500 250.5000 moveto
+641.7500 265.5000 lineto
+645.7500 265.5000 lineto
+648.7500 265.5000 lineto
+645.7500 250.5000 lineto
+closepath
+F dofill
+% ---- Object #213:218 Obj Type: 9
+645.7500 250.5000 moveto
+641.7500 265.5000 lineto
+645.7500 265.5000 lineto
+648.7500 265.5000 lineto
+645.7500 250.5000 lineto
+closepath
+F dofill
+% ---- Object #214:219 Obj Type: 3
+1 1 setpen
+2 setlinecap
+gsave
+newpath
+645.7500 269.5000 moveto
+645.7500 266.5000 lineto
+F dostroke
+grestore
+% ---- Object #215:220 Obj Type: 4
+0 setlinecap
+1 fg
+270.5000 689.7500 255.5000 709.7500 rectpath
+F dofillsave
+F dostroke
+% ---- Object #216:221 Obj Type: 99
+% ---- Object #217:222 Obj Type: 9
+0 0 setpen
+0 fg
+698.7500 270.5000 moveto
+693.7500 284.5000 lineto
+697.7500 285.5000 lineto
+700.7500 285.5000 lineto
+698.7500 270.5000 lineto
+closepath
+F dofill
+% ---- Object #218:223 Obj Type: 9
+698.7500 270.5000 moveto
+693.7500 284.5000 lineto
+697.7500 285.5000 lineto
+700.7500 285.5000 lineto
+698.7500 270.5000 lineto
+closepath
+F dofill
+% ---- Object #219:224 Obj Type: 3
+1 1 setpen
+2 setlinecap
+gsave
+newpath
+697.7500 288.5000 moveto
+697.7500 286.5000 lineto
+F dostroke
+grestore
+% ---- Object #220:225 Obj Type: 99
+% ---- Object #221:226 Obj Type: 9
+0 0 setpen
+699.7500 230.5000 moveto
+695.7500 245.5000 lineto
+699.7500 245.5000 lineto
+702.7500 245.5000 lineto
+699.7500 230.5000 lineto
+closepath
+F dofill
+% ---- Object #222:227 Obj Type: 9
+699.7500 230.5000 moveto
+695.7500 245.5000 lineto
+699.7500 245.5000 lineto
+702.7500 245.5000 lineto
+699.7500 230.5000 lineto
+closepath
+F dofill
+% ---- Object #223:228 Obj Type: 3
+1 1 setpen
+2 setlinecap
+gsave
+newpath
+699.7500 254.5000 moveto
+699.7500 246.5000 lineto
+F dostroke
+grestore
+% ---- Object #224:229 Obj Type: 2
+0 0 setpen
+save
+0 setgray
+mark /|___Times-Roman /Times-Roman T cvRecFont
+12 fts /|___Times-Roman findfont exch scalefont setfont
+0 setgray
+536 369 moveto
+(Invocation)
+F F 51.3135 0 10 0 0 fittext
+0 setgray
+536 358 moveto
+(Part:\(overpressurized $x\))
+F F 121.5967 1 25 0 0 fittext
+restore
+% ---- Object #225:230 Obj Type: 4
+1 1 setpen
+0 setlinecap
+1 fg
+315.5000 368.7500 247.5000 502.7500 rectpath
+F dofillsave
+F dostroke
+% ---- Object #226:231 Obj Type: 2
+0 0 setpen
+save
+0 setgray
+mark /|___Times-Roman /Times-Roman T cvRecFont
+12 fts /|___Times-Roman findfont exch scalefont setfont
+0 setgray
+375 304 moveto
+(Invocation Part:)
+F F 76.9717 1 16 0 0 fittext
+0 setgray
+375 293 moveto
+(\(! \(position switch $x\)\))
+F F 110.9590 3 24 0 0 fittext
+restore
+% ---- Object #227:232 Obj Type: 2
+save
+0 setgray
+mark /|___Times-Roman /Times-Roman T cvRecFont
+12 fts /|___Times-Roman findfont exch scalefont setfont
+0 setgray
+378 271 moveto
+(Action Part:)
+F F 58.3154 1 12 0 0 fittext
+0 setgray
+378 260 moveto
+(\(signal switch $x\))
+F F 85.9717 2 18 0 0 fittext
+restore
+% ---- Object #228:233 Obj Type: 99
+% ---- Object #229:234 Obj Type: 4
+1 1 setpen
+0 setlinecap
+341.5000 465.7500 170.5000 645.7500 rectpath
+F dofillsave
+F dostroke
+% ---- Object #230:235 Obj Type: 99
+% ---- Object #231:236 Obj Type: 6
+0 setlinecap
+578.7500 302.5000 moveto
+578.7500 297.5632 574.6869 293.5000 569.7500 293.5000 curveto
+564.8132 293.5000 560.7500 297.5632 560.7500 302.5000 curveto
+560.7500 307.4368 564.8132 311.5000 569.7500 311.5000 curveto
+574.6869 311.5000 578.7500 307.4368 578.7500 302.5000 curveto
+closepath
+F dofillsave
+F dostroke
+% ---- Object #232:237 Obj Type: 6
+0 setlinecap
+539.7500 241.5000 moveto
+539.7500 236.5632 535.6869 232.5000 530.7500 232.5000 curveto
+525.8132 232.5000 521.7500 236.5632 521.7500 241.5000 curveto
+521.7500 246.4368 525.8132 250.5000 530.7500 250.5000 curveto
+535.6869 250.5000 539.7500 246.4368 539.7500 241.5000 curveto
+closepath
+F dofillsave
+F dostroke
+% ---- Object #233:238 Obj Type: 6
+0 setlinecap
+613.7500 182.5000 moveto
+613.7500 177.5632 609.6869 173.5000 604.7500 173.5000 curveto
+599.8132 173.5000 595.7500 177.5632 595.7500 182.5000 curveto
+595.7500 187.4368 599.8132 191.5000 604.7500 191.5000 curveto
+609.6869 191.5000 613.7500 187.4368 613.7500 182.5000 curveto
+closepath
+F dofillsave
+F dostroke
+% ---- Object #234:239 Obj Type: 99
+% ---- Object #235:240 Obj Type: 9
+0 0 setpen
+0 fg
+598.7500 281.5000 moveto
+585.7500 287.5000 lineto
+587.7500 289.5000 lineto
+589.7500 292.5000 lineto
+598.7500 281.5000 lineto
+closepath
+F dofill
+% ---- Object #236:241 Obj Type: 9
+598.7500 281.5000 moveto
+585.7500 287.5000 lineto
+587.7500 289.5000 lineto
+589.7500 292.5000 lineto
+598.7500 281.5000 lineto
+closepath
+F dofill
+% ---- Object #237:242 Obj Type: 3
+1 1 setpen
+2 setlinecap
+gsave
+newpath
+579.7500 297.5000 moveto
+587.7500 290.5000 lineto
+F dostroke
+grestore
+% ---- Object #238:243 Obj Type: 99
+% ---- Object #239:244 Obj Type: 9
+0 0 setpen
+533.7500 282.5000 moveto
+543.7500 292.5000 lineto
+545.7500 289.5000 lineto
+547.7500 286.5000 lineto
+533.7500 282.5000 lineto
+closepath
+F dofill
+% ---- Object #240:245 Obj Type: 9
+533.7500 282.5000 moveto
+543.7500 292.5000 lineto
+545.7500 289.5000 lineto
+547.7500 286.5000 lineto
+533.7500 282.5000 lineto
+closepath
+F dofill
+% ---- Object #241:246 Obj Type: 3
+1 1 setpen
+2 setlinecap
+gsave
+newpath
+558.7500 299.5000 moveto
+545.7500 290.5000 lineto
+F dostroke
+grestore
+% ---- Object #242:247 Obj Type: 4
+0 setlinecap
+1 fg
+282.5000 596.7500 267.5000 616.7500 rectpath
+F dofillsave
+F dostroke
+% ---- Object #243:248 Obj Type: 4
+0 setlinecap
+282.5000 521.7500 267.5000 541.7500 rectpath
+F dofillsave
+F dostroke
+% ---- Object #244:249 Obj Type: 4
+0 setlinecap
+253.5000 569.7500 238.5000 589.7500 rectpath
+F dofillsave
+F dostroke
+% ---- Object #245:250 Obj Type: 99
+% ---- Object #246:251 Obj Type: 9
+0 0 setpen
+0 fg
+530.7500 248.5000 moveto
+526.7500 262.5000 lineto
+530.7500 262.5000 lineto
+534.7500 262.5000 lineto
+530.7500 248.5000 lineto
+closepath
+F dofill
+% ---- Object #247:252 Obj Type: 9
+530.7500 248.5000 moveto
+526.7500 262.5000 lineto
+530.7500 262.5000 lineto
+534.7500 262.5000 lineto
+530.7500 248.5000 lineto
+closepath
+F dofill
+% ---- Object #248:253 Obj Type: 3
+1 1 setpen
+2 setlinecap
+gsave
+newpath
+530.7500 267.5000 moveto
+530.7500 263.5000 lineto
+F dostroke
+grestore
+% ---- Object #249:254 Obj Type: 4
+0 setlinecap
+1 fg
+254.5000 623.7500 239.5000 643.7500 rectpath
+F dofillsave
+F dostroke
+% ---- Object #250:255 Obj Type: 4
+0 setlinecap
+218.5000 596.7500 203.5000 616.7500 rectpath
+F dofillsave
+F dostroke
+% ---- Object #251:256 Obj Type: 99
+% ---- Object #252:257 Obj Type: 9
+0 0 setpen
+0 fg
+583.7500 254.5000 moveto
+591.7500 266.5000 lineto
+593.7500 263.5000 lineto
+596.7500 261.5000 lineto
+583.7500 254.5000 lineto
+closepath
+F dofill
+% ---- Object #253:258 Obj Type: 9
+583.7500 254.5000 moveto
+591.7500 266.5000 lineto
+593.7500 263.5000 lineto
+596.7500 261.5000 lineto
+583.7500 254.5000 lineto
+closepath
+F dofill
+% ---- Object #254:259 Obj Type: 3
+1 1 setpen
+2 setlinecap
+gsave
+newpath
+596.7500 267.5000 moveto
+593.7500 264.5000 lineto
+F dostroke
+grestore
+% ---- Object #255:260 Obj Type: 99
+% ---- Object #256:261 Obj Type: 9
+0 0 setpen
+629.7500 253.5000 moveto
+617.7500 260.5000 lineto
+619.7500 263.5000 lineto
+622.7500 265.5000 lineto
+629.7500 253.5000 lineto
+closepath
+F dofill
+% ---- Object #257:262 Obj Type: 9
+629.7500 253.5000 moveto
+617.7500 260.5000 lineto
+619.7500 263.5000 lineto
+622.7500 265.5000 lineto
+629.7500 253.5000 lineto
+closepath
+F dofill
+% ---- Object #258:263 Obj Type: 3
+1 1 setpen
+2 setlinecap
+gsave
+newpath
+616.7500 267.5000 moveto
+619.7500 264.5000 lineto
+F dostroke
+grestore
+% ---- Object #259:264 Obj Type: 99
+% ---- Object #260:265 Obj Type: 9
+0 0 setpen
+595.7500 218.5000 moveto
+583.7500 226.5000 lineto
+586.7500 228.5000 lineto
+588.7500 231.5000 lineto
+595.7500 218.5000 lineto
+closepath
+F dofill
+% ---- Object #261:266 Obj Type: 9
+595.7500 218.5000 moveto
+583.7500 226.5000 lineto
+586.7500 228.5000 lineto
+588.7500 231.5000 lineto
+595.7500 218.5000 lineto
+closepath
+F dofill
+% ---- Object #262:267 Obj Type: 3
+1 1 setpen
+2 setlinecap
+gsave
+newpath
+578.7500 238.5000 moveto
+586.7500 229.5000 lineto
+F dostroke
+grestore
+% ---- Object #263:268 Obj Type: 99
+% ---- Object #264:269 Obj Type: 9
+0 0 setpen
+616.7500 217.5000 moveto
+621.7500 230.5000 lineto
+624.7500 228.5000 lineto
+627.7500 226.5000 lineto
+616.7500 217.5000 lineto
+closepath
+F dofill
+% ---- Object #265:270 Obj Type: 9
+616.7500 217.5000 moveto
+621.7500 230.5000 lineto
+624.7500 228.5000 lineto
+627.7500 226.5000 lineto
+616.7500 217.5000 lineto
+closepath
+F dofill
+% ---- Object #266:271 Obj Type: 3
+1 1 setpen
+2 setlinecap
+gsave
+newpath
+630.7500 238.5000 moveto
+624.7500 229.5000 lineto
+F dostroke
+grestore
+% ---- Object #267:272 Obj Type: 99
+% ---- Object #268:273 Obj Type: 9
+0 0 setpen
+605.7500 189.5000 moveto
+601.7500 203.5000 lineto
+605.7500 203.5000 lineto
+609.7500 203.5000 lineto
+605.7500 189.5000 lineto
+closepath
+F dofill
+% ---- Object #269:274 Obj Type: 9
+605.7500 189.5000 moveto
+601.7500 203.5000 lineto
+605.7500 203.5000 lineto
+609.7500 203.5000 lineto
+605.7500 189.5000 lineto
+closepath
+F dofill
+% ---- Object #270:275 Obj Type: 3
+1 1 setpen
+2 setlinecap
+gsave
+newpath
+605.7500 203.5000 moveto
+605.7500 204.5000 lineto
+F dostroke
+grestore
+% ---- Object #271:276 Obj Type: 2
+0 0 setpen
+save
+0 setgray
+mark /|___Times-Roman /Times-Roman T cvRecFont
+12 fts /|___Times-Roman findfont exch scalefont setfont
+0 setgray
+472 329 moveto
+(Invocation Part:\(! \(position)
+F F 130.6201 2 28 0 0 fittext
+0 setgray
+472 318 moveto
+(valve $x\)\))
+F F 48.9727 1 10 0 0 fittext
+restore
+% ---- Object #272:277 Obj Type: 4
+1 1 setpen
+0 setlinecap
+56 253 30 331 rectpath
+F dostroke
+% ---- Object #273:278 Obj Type: 2
+0 0 setpen
+save
+0 setgray
+mark /|___Times-Roman /Times-Roman T cvRecFont
+12 fts /|___Times-Roman findfont exch scalefont setfont
+0 setgray
+270 44 moveto
+(KA 6)
+F F 26.3262 1 4 0 0 fittext
+restore
+% ---- Object #274:279 Obj Type: 2
+save
+0 setgray
+mark /|___Times-Roman /Times-Roman T cvRecFont
+10 fts /|___Times-Roman findfont exch scalefont setfont
+0 setgray
+270 33 moveto
+(\(alarm\))
+F F 29.4165 0 7 0 0 fittext
+restore
+origmtx setmatrix
+systemdict /setpacking known {origpack setpacking} if end
+showpage
+%%EndDocument:

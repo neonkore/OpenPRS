@@ -1,0 +1,79 @@
+;;;
+;;; File: /home/felix/C/oprs/src/data/mini-default.opf
+;;; $Id$
+;;; Date: Mon Mar  1 17:59:56 1999
+;;; Host: elf
+;;; OP Editor Version: 2.0.0 Beta
+;;; Compiled on elf (Mon Mar  1 17:51:03 MET 1999)
+;;; OP File Format: 2
+;;;
+(2 
+(
+)
+(|Fail| (
+(INVOCATION INVOCATION (! (FAILED)) 10 50 1 60 0 )
+(CONTEXT CONTEXT  10 150 0 60 0 )
+(CALL CALLNODE  10 150 0 60 0 )
+(SETTING SETTING  10 250 0 60 0 )
+(EFFECTS EFFECTS  10 350 0 60 0 )
+(ACTION ACTION (FAIL) 310 50 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "This action will fail... This OP can be used to
+fail the branch of a OP, for example" 12 108 1 60 0 )
+(PROPERTIES PROPERTIES  10 400 0 60 0 )
+) (
+) (
+) )
+(|Print (just print an object)| (
+(INVOCATION INVOCATION (! (PRINT $X)) 8 45 1 80 0 )
+(CONTEXT CONTEXT  10 110 0 60 0 )
+(CALL CALLNODE  10 150 0 60 0 )
+(SETTING SETTING  10 210 0 60 0 )
+(EFFECTS EFFECTS  10 310 0 60 0 )
+(ACTION ACTION (PRINT $X) 309 42 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "Print the value of $x in the Text Pane" 5 154 1 60 0 )
+(PROPERTIES PROPERTIES  10 360 0 60 0 )
+) (
+) (
+) )
+(|Print C Format| (
+(INVOCATION INVOCATION (! (PRINTF $X)) 30 100 1 80 0 )
+(CONTEXT CONTEXT  33 174 0 60 0 )
+(CALL CALLNODE  10 150 0 60 0 )
+(SETTING SETTING  30 227 0 60 0 )
+(EFFECTS EFFECTS  30 300 0 60 0 )
+(ACTION ACTION (PRINTF $X) 398 101 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "This OP prints a (format ) statement. 
+It accepts some of the % C directives (%d %s %f %g %%).
+Example : (printf (format \"The %d of %s is %f.\" $x $y $z))" 24 172 1 60 0 )
+(PROPERTIES PROPERTIES  30 400 0 60 0 )
+) (
+) (
+) )
+(|Print List (Format like printing)| (
+(INVOCATION INVOCATION (! (PRINT-LIST $X)) 30 100 1 80 0 )
+(CONTEXT CONTEXT  33 174 0 60 0 )
+(CALL CALLNODE  10 150 0 60 0 )
+(SETTING SETTING  30 227 0 60 0 )
+(EFFECTS EFFECTS  30 300 0 60 0 )
+(ACTION ACTION (PRINT-INSIDE $X) 400 100 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "This OP prints a (format nil ....) statement. This is a
+remanence of the LISP version of OPRS. It does not accept
+all the ~ directives, but accepts some of the % C directives." 24 172 1 60 0 )
+(PROPERTIES PROPERTIES  30 400 0 60 0 )
+) (
+) (
+) )
+(|Succeed| (
+(INVOCATION INVOCATION (! (SUCCEED)) 10 50 1 60 0 )
+(CONTEXT CONTEXT  10 150 0 60 0 )
+(CALL CALLNODE  10 150 0 60 0 )
+(SETTING SETTING  10 250 0 60 0 )
+(EFFECTS EFFECTS  10 350 0 60 0 )
+(ACTION ACTION (SUCCEED) 310 50 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "This action will succeed... This OP can be used to
+make a branch which always succeeds" 7 98 1 60 0 )
+(PROPERTIES PROPERTIES  10 400 0 60 0 )
+) (
+) (
+) )
+)

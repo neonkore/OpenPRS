@@ -1,0 +1,339 @@
+;;;
+;;; File: data/frogger-proc.opf
+;;; $Id$
+;;; Date: Wed Sep 29 12:17:31 1993
+;;; Host: idefix
+;;; OP Editor Version : 1.1.7
+;;; Compiled on idefix (Wed Sep 29 12:15:16 MET 1993)
+;;; OP File Format: 2
+;;;
+(2 
+(
+)
+(|Geronimo| (
+(INVOCATION INVOCATION (! (GET-OUT-OF-THE-WAY $X)) 11 25 1 80 0 )
+(CONTEXT CONTEXT (& (I-AM-IN-LANE $X)
+     (ADJACENT-LANE $X $Y)
+     (ADJACENT-LANE $Z $X)
+     (CAR-IN-LANE $Y)
+     (CAR-IN-LANE $Z)) 10 74 1 60 0 )
+(SETTING SETTING  17 215 1 60 0 )
+(EFFECTS EFFECTS () 30 350 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "" 30 450 1 60 0 )
+(PROPERTIES PROPERTIES ((SAFETY-HANDLER T)) 30 400 1 60 0 )
+) (
+(END END1 0 0 399 278)
+(START START 0 0 400 100)
+) (
+(GOAL START E0224 END1
+(! (PRINT-LIST
+       (FORMAT
+           NIL
+           "Both lanes ~a and ~a have cars... I am dead"
+           $Z
+           $Y)))
+()  0 0 40 0)
+) )
+(|Get out off the way| (
+(INVOCATION INVOCATION (! (GET-OUT-OF-THE-WAY $X)) 13 25 1 80 0 )
+(CONTEXT CONTEXT (& (I-AM-IN-LANE $X)
+     (|| (ADJACENT-LANE $X $Y)
+         (ADJACENT-LANE $Y $X))
+     (~ (CAR-IN-LANE $Y))) 13 112 1 60 0 )
+(SETTING SETTING  28 243 1 60 0 )
+(EFFECTS EFFECTS () 30 350 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "" 30 450 1 60 0 )
+(PROPERTIES PROPERTIES ((SAFETY-HANDLER T)) 30 400 1 60 0 )
+) (
+(PROCESS S2 0 0 409 254)
+(PROCESS S3 0 0 410 358)
+(PROCESS S4 0 0 410 452)
+(END END1 0 0 411 542)
+(PROCESS S1 0 0 409 170)
+(START START 0 0 409 39)
+) (
+(GOAL START E0224 S1
+(! (PRINT-LIST
+       (FORMAT
+           NIL
+           "Moving from lane ~a to lane ~a"
+           $X
+           $Y)))
+()  0 0 40 0)
+(GOAL S1 E0245 S2
+(=> (I-AM-IN-LANE $Y))
+()  0 0 40 0)
+(GOAL S4 E0272 END1
+(=> (I-AM-IN-LANE $X))
+()  0 0 40 0)
+(GOAL S3 E0271 S4
+(! (PRINT-LIST
+       (FORMAT
+           NIL
+           "Moving back from lane ~a to lane ~a"
+           $Y
+           $X)))
+()  0 0 40 0)
+(GOAL S2 E0269 S3
+(^ (~ (CAR-IN-LANE $X)))
+()  0 0 40 0)
+) )
+(|Meta Selector (safety alone always first)| (
+(INVOCATION INVOCATION (SOAK $X) 27 25 1 80 0 )
+(CONTEXT CONTEXT (& (= (LENGTH $X) 1)
+     (PROPERTY-P SAFETY-HANDLER (FIRST $X))) 27 63 1 60 0 )
+(SETTING SETTING  27 142 1 60 0 )
+(EFFECTS EFFECTS () 30 300 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "Meta OP used whenever there is only one OP applicable and it is a Safety Handler" 29 351 1 60 0 )
+(PROPERTIES PROPERTIES ((DECISION-PROCEDURE T)) 30 248 1 60 0 )
+) (
+(END END6 0 0 561 234)
+(START START 0 0 561 61)
+) (
+(GOAL START E0223 END6
+(! (INTENDED-ALL-AS-ROOT $X))
+()  0 0 40 0)
+) )
+(|Meta Selector (safety preferred rest)| (
+(INVOCATION INVOCATION (SOAK $X) 29 25 1 80 0 )
+(CONTEXT CONTEXT (> (LENGTH $X) 1) 26 72 1 60 0 )
+(SETTING SETTING  29 142 1 60 0 )
+(EFFECTS EFFECTS () 30 300 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "Meta OP used whenever
+there are more than
+one OPs applicable." 29 351 1 60 0 )
+(PROPERTIES PROPERTIES ((DECISION-PROCEDURE T)) 30 248 1 60 0 )
+) (
+(PROCESS N2 0 0 541 289)
+(PROCESS N4 0 0 458 347)
+(PROCESS N5 0 0 340 405)
+(PROCESS N6 0 0 589 405)
+(PROCESS N3 0 0 765 275)
+(PROCESS S3 0 0 899 333)
+(PROCESS S1 0 0 899 394)
+(PROCESS S6 0 0 340 490)
+(END END2 0 0 730 473)
+(PROCESS S2 0 0 899 465)
+(PROCESS S8 0 0 491 559)
+(PROCESS S7 0 0 204 559)
+(END END6 0 0 491 639)
+(END END5 0 0 204 639)
+(PROCESS S4 0 0 899 529)
+(PROCESS S5 0 0 899 606)
+(END END4 0 0 899 689)
+(PROCESS N1 0 0 627 224)
+(START START 0 0 628 120)
+) (
+(GOAL START |#e7750| N1
+(! (= $F (FACT-INVOKED-OPS-OF $X)))
+()  0 0 40 0)
+(GOAL N1 |Mike-Error| N3
+(? (> (LENGTH $F) 0))
+()  0 0 40 0)
+(GOAL N1 |#e7751| N2
+(! (NULL $F))
+()  0 0 40 0)
+(GOAL S5 E0185 END4
+(! (INTENDED-ALL-AS-ROOT $S))
+()  0 0 40 0)
+(GOAL S4 E0175 S5
+(! (INTENDED-ALL-AS-ROOT $P))
+()  0 0 40 0)
+(GOAL S2 E0177 S4
+(! (INTENDED-ALL $R))
+()  0 0 40 0)
+(GOAL S7 E0218 END5
+(! (INTENDED-OP (SELECT-RANDOMLY $X)))
+()  0 0 40 0)
+(GOAL S8 E0207 END6
+(! (INTENDED-OP (SELECT-RANDOMLY $P)))
+()  0 0 40 0)
+(GOAL S6 E0192 S7
+(? (NULL $P))
+()  0 0 40 0)
+(GOAL S6 E0194 S8
+(? (> (LENGTH $P) 0))
+()  0 0 40 0)
+(GOAL S1 E0039 S2
+(! (= $R
+      (LIST-DIFFERENCE
+          (LIST-DIFFERENCE $F $S) $P)))
+()  0 0 40 0)
+(GOAL N6 |#e7756| END2
+(! (INTENDED-OP (SELECT-RANDOMLY $S)))
+()  0 0 40 0)
+(GOAL N5 E0188 S6
+(! (= $P (PREFERRED-OF $X)))
+()  0 0 40 0)
+(GOAL S3 E0171 S1
+(! (= $P (PREFERRED-OF $F)))
+()  0 0 40 0)
+(GOAL N3 E0168 S3
+(! (= $S (SAFETY-HANDLERS-OF $F)))
+()  0 0 40 0)
+(GOAL N4 |#e7755| N6
+(? (> (LENGTH $S) 0))
+()  0 0 40 0)
+(GOAL N4 |#e7754| N5
+(? (NULL $S))
+()  0 0 40 0)
+(GOAL N2 |#e7753| N4
+(! (= $S (SAFETY-HANDLERS-OF $X)))
+()  0 0 40 0)
+) )
+(|Move to lane non ajacent| (
+(INVOCATION INVOCATION (! (I-AM-IN-LANE $X)) 30 48 1 80 0 )
+(CONTEXT CONTEXT (& (I-AM-IN-LANE $Y)
+     (ADJACENT-LANE $Y $Z)
+     (~ (EQUAL $X $Z))
+     (ADJACENT-LANE $W $Y)
+     (~ (EQUAL $W $Z))) 31 98 1 60 0 )
+(SETTING SETTING  26 235 1 60 0 )
+(EFFECTS EFFECTS () 30 350 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "" 30 450 1 60 0 )
+(PROPERTIES PROPERTIES () 30 400 1 60 0 )
+) (
+(END END4 0 0 861 436)
+(PROCESS S8 0 0 861 296)
+(END END3 0 0 589 437)
+(PROCESS S7 0 0 592 306)
+(PROCESS S4 0 0 387 154)
+(START START 0 0 675 27)
+(PROCESS S3 0 0 590 212)
+(PROCESS S1 0 0 861 159)
+) (
+(GOAL S1 E0237 S8
+(! (PRINT-LIST
+       (FORMAT
+           NIL
+           "Moving from lane ~a to lane ~a"
+           $Y
+           $Z)))
+()  0 0 40 0)
+(GOAL S3 E0239 S7
+(! (PRINT-LIST
+       (FORMAT
+           NIL
+           "Moving from lane ~a to lane ~a"
+           $Y
+           $W)))
+()  0 0 40 0)
+(GOAL START E0235 S1
+(? (~ (CAR-IN-LANE $Z)))
+()  0 0 40 0)
+(GOAL START E0238 S3
+(? (~ (CAR-IN-LANE $W)))
+()  0 0 40 0)
+(GOAL START E0240 S4
+(? (& (CAR-IN-LANE $W)
+      (CAR-IN-LANE $Z)))
+()  0 0 40 0)
+(GOAL S4 E0242 START
+(^ (V (~ (CAR-IN-LANE $W))
+      (~ (CAR-IN-LANE $Z))))
+((453 60) )  -6 -8 40 0)
+(GOAL S7 E0243 END3
+(=> (I-AM-IN-LANE $W))
+()  0 0 40 0)
+(GOAL S8 E0244 END4
+(=> (I-AM-IN-LANE $Z))
+()  0 0 40 0)
+) )
+(|Move to lane| (
+(INVOCATION INVOCATION (! (I-AM-IN-LANE $X)) 23 35 1 80 0 )
+(CONTEXT CONTEXT (& (~ (CAR-IN-LANE $X))
+     (I-AM-IN-LANE $Y)
+     (|| (ADJACENT-LANE $Y $X)
+         (ADJACENT-LANE $X $Y))) 15 88 1 60 0 )
+(SETTING SETTING  27 215 1 60 0 )
+(EFFECTS EFFECTS ((=> (I-AM-IN-LANE $X))) 30 350 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "" 30 450 1 60 0 )
+(PROPERTIES PROPERTIES () 30 400 1 60 0 )
+) (
+(END END1 0 0 400 236)
+(START START 0 0 400 100)
+) (
+(GOAL START E0234 END1
+(! (PRINT-LIST
+       (FORMAT
+           NIL
+           "Moving from lane ~a to lane ~a"
+           $Y
+           $X)))
+()  0 0 40 0)
+) )
+(|New Rubish on the road| (
+(INVOCATION INVOCATION (RUBBISH-IN-LANE $A) 32 63 1 80 0 )
+(CONTEXT CONTEXT  33 161 1 60 0 )
+(SETTING SETTING  37 227 1 60 0 )
+(EFFECTS EFFECTS () 30 350 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "" 30 450 1 60 0 )
+(PROPERTIES PROPERTIES () 30 400 1 60 0 )
+) (
+(END END1 0 0 400 269)
+(START START 0 0 400 100)
+) (
+(GOAL START E0230 END1
+(! (PICK-UP-RUBBISH $A))
+()  0 0 40 0)
+) )
+(|Oz driver comming...| (
+(INVOCATION INVOCATION (CAR-IN-LANE $X) 26 51 1 80 0 )
+(CONTEXT CONTEXT (I-AM-IN-LANE $X) 21 126 1 60 0 )
+(SETTING SETTING  30 227 1 60 0 )
+(EFFECTS EFFECTS () 30 350 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "" 30 450 1 60 0 )
+(PROPERTIES PROPERTIES ((SAFETY-HANDLER T)) 30 400 1 60 0 )
+) (
+(END END1 0 0 399 399)
+(PROCESS S1 0 0 399 278)
+(START START 0 0 400 100)
+) (
+(GOAL START E0224 S1
+(! (PRINT-LIST
+       (FORMAT
+           NIL
+           "Oz driver comming in lane ~a"
+           $X)))
+()  0 0 40 0)
+(GOAL S1 E0233 END1
+(! (GET-OUT-OF-THE-WAY $X))
+()  0 0 40 0)
+) )
+(|Pick Up Rubbish| (
+(INVOCATION INVOCATION (! (PICK-UP-RUBBISH $X)) 21 30 1 80 0 )
+(CONTEXT CONTEXT  28 117 1 60 0 )
+(SETTING SETTING  34 215 1 60 0 )
+(EFFECTS EFFECTS ((~> (RUBBISH-IN-LANE $X))) 30 350 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "" 30 450 1 60 0 )
+(PROPERTIES PROPERTIES () 30 400 1 60 0 )
+) (
+(END END1 0 0 400 407)
+(PROCESS S1 0 0 400 269)
+(END END2 0 0 647 407)
+(PROCESS S3 0 0 647 269)
+(PROCESS S2 0 0 506 193)
+(START START 0 0 506 74)
+) (
+(GOAL START E0257 S2
+(! (TEST-AND-SET
+       (! (I-AM-IN-LANE $X)) $RESULT))
+()  0 0 40 0)
+(GOAL S2 E0258 S1
+(? (= $RESULT T))
+()  0 0 40 0)
+(GOAL S2 E0266 S3
+(? (= $RESULT NIL))
+()  0 0 40 0)
+(GOAL S3 E0267 END2
+(! (PICK-UP-RUBBISH $X))
+()  0 0 40 0)
+(GOAL S1 E0232 END1
+(! (PRINT-LIST
+       (FORMAT
+           NIL
+           "Picking up rubbish from lane ~a"
+           $X)))
+()  -3 -26 40 0)
+) )
+)

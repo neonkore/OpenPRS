@@ -1,0 +1,18 @@
+declare predicate bk-cont
+declare predicate bk-fail
+declare predicate bk-list
+declare predicate z-bk-point
+declare function z-bk-point
+
+declare op_predicate bk-point
+declare op_predicate bk-list
+declare op_predicate print-list-z-bk-point
+
+declare op_predicate check-atomp
+declare op_predicate check-consp
+declare op_predicate check-numberp
+declare op_predicate check-stringp
+declare op_predicate check-boundp
+
+
+

@@ -1,0 +1,24 @@
+Copyright (c) 1991-2003 Francois Felix Ingrand.
+All rights reserved.
+
+This directory contains the following files:
+
+database-test.inc : test the database.
+
+database-cwp.inc : test closed world predicates.
+
+database-ff.inc : test fucntional fact.
+
+database-ep.inc : test evaluable predicates and functions.
+
+fact.sgraph : factorial example.
+
+data/new-default.sgraph : new default processes graph.
+
+data/fact-meta.sgraph : factorial example with meta ka (See prs manual)
+
+data/test-mess2.sgraph : test message passing.
+
+data/meta-selector.sgraph : new meta selector (used by test-mess2).
+
+README: This file.

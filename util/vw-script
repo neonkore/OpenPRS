@@ -1,0 +1,47 @@
+###############################################################################
+## vw-script -- 
+## 
+## Copyright (C) 1995-2003 Francois Felix Ingrand
+## 
+## $Id$
+## 
+###############################################################################
+#
+# This is an example of a VxWorks script one can use to load/start 
+# a OPRS kernel under VxWorks
+# 
+# Modify it at your convenience.
+# 
+# Where is oprs located? get the /oprs mount point on it.
+#nfsMount "hill","/softs1/oprs/oprs-1.3","/oprs"
+#nfsMount "alf","/local/oprs/oprs-plan","/oprs"
+#nfsMount "alf","/local/oprs/oprs-2.0","/oprs"
+#cd "/oprs/build/VxWorks"
+#cd "/oprs/ppc-vxworks/lib"
+#cd "/oprs/m68k-vxworks/lib"
+# <../../util/vw-script
+ld < c_toolkit.o
+#ld < c_toolkit/c_toolkit.o
+ld < vx-mp-lib.o
+ld < vxoprs
+ld < vx-mp-oprs
+ld < vx-kill-mp
+# 
+# This line will start a message passer.
+#sp mp_oprs_main,3300,0,""
+#
+cd "/oprs"
+#
+# The 3 following lines will start FOO, BAR and BOO (do not do it on the
+# same board...)
+#sp oprs_main,"BAR","shems",3410,"h2bis0",3300,"data/bar.inc"
+#sp oprs_main,"BOO","shems",3410,"h2bis0",3300,"data/boo.inc"
+#sp oprs_main,"FOO","shems",3410,"h2bis0",3300,"data/foo.inc"
+#
+# This line will start one of the factorial example.
+#sp oprs_main,"BAR","alf",3400,"alf",3300,"data/fact-meta-if-par.inc"
+#sp oprs_main,"BAR","alf",3400,"dagon",3300,"data/fact-meta-if-par.inc"
+sp oprs_main,"BAR","alf",3400,"alf",3300,"data/test-ipp.inc"
+#
+# This line will start the kill-mp, which kill the message passer.
+#sp kill_mp_main,3300

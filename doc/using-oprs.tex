@@ -1,0 +1,1265 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% -*- Mode: latex -*- %%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Copyright (c) 1991-2003 Francois Felix Ingrand.
+%% All rights reserved.
+%%
+%% Redistribution and use in source and binary forms, with or without
+%% modification, are permitted provided that the following conditions
+%% are met:
+%%
+%%    - Redistributions of source code must retain the above copyright
+%%      notice, this list of conditions and the following disclaimer.
+%%    - Redistributions in binary form must reproduce the above
+%%      copyright notice, this list of conditions and the following
+%%      disclaimer in the documentation and/or other materials provided
+%%      with the distribution.
+%%
+%% THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+%% "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+%% LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+%% FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+%% COPYRIGHT HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+%% INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+%% BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+%% LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+%% CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+%% LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+%% ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+%% POSSIBILITY OF SUCH DAMAGE.
+%%
+%% $Id$
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\part{Using \COPRS{}}
+\node{Using OPRS}
+\cpindex{Using \COPRS{}}
+
+
+
+\chapter{Introduction to Using \COPRS{}}
+\node{Introduction to Using OPRS}
+\cpindex{Introduction to Using \COPRS{}}
+
+Now that you have read through the whole documentation (you still have the
+Appendices\dots), you may start to wonder how the different parts fit in.  You
+have got this real-time, control and supervision application to solve, and you
+get the strange but growing feeling that \COPRS{} is the tool you need.  Good.
+This part of the manual go through the various process you have to do to set up
+your own application.
+
+We are first going to go through a simple \OPE{} and \XPK{} session. We
+will then  examine the various questions you have to ask
+yourself before getting started. How many kernels do I need? what do I
+put in the database? how many OPs? do I need meta level reasoning? how
+can I optimize my application? etc...
+
+Then we will examine various applications and justify the answer to the
+aforementioned questions.
+
+\chapter{Setting Up your Environment}
+\node{Setting Up your Environment}
+\cpindex{Setting Up your Environment}
+
+To be able to use the \COPRSDE{} you may need to set up a number of environment
+variables.
+
+\begin{verbatim}
+setenv OPRS_DIR /usr/local/oprs
+setenv PATH "${PATH}:${OPRS_DIR}/bin"
+if ( $?XFILESEARCHPATH ) then
+         setenv XFILESEARCHPATH "${XFILESEARCHPATH}:${OPRS_DIR}/\%T/%N"
+else
+         setenv XFILESEARCHPATH "${OPRS_DIR}/%T/%N"
+endif
+setenv OPRS_DOC_DIR ${OPRS_DIR}/doc
+setenv OPRS_DATA_PATH  ${OPRS_DIR}/data:./data:.
+\end{verbatim}
+
+\chapter{Getting Started}
+\node{Getting Started}
+\cpindex{Getting Started}
+\cpindex{How to Start}
+\cpindex{Where to Start}
+
+To understand this chapter, the reader is supposed to have some common
+knowledge about the following subject: Unix, X11, X server, Motif, Xt. 
+
+Assuming \COPRSDE{} has been properly installed at your site, and assuming
+you have the \COPRSDE{} in ``your path'' (i.e. Unix will find the command
+if you invoke them), then you can now start to use \COPRS{}.
+
+
+
+\section{Getting Started with the \OPE{}}
+\node{Getting Started with the OP Editor}
+\cpindex{Getting Started with the \OPE{}}
+
+To get started, you can probably just call the \OPE{}. This tool described in
+detailed (\pxref{How to Use the OP Editor}), is used to display/edit/create
+procedures as they are represented in used in the \COPRSDE{}.
+
+The \OPE{} is a graphical tool and can only be used if and only if you are
+running an X server. To call the \OPE{}, just type (at the Unix prompt):
+
+\code{\% op-editor}
+
+This should bring the \OPE{} window. Then, you can either load an already
+existing OP file, or you can start to create your own procedure.
+
+To load an existing OP File, you must select the Load OP File menu item
+from the File menu, \nxref{Load OP File}. This will bring a File Selection
+Dialog Box from which you can select a file to load. Usually, data files
+are available in the \file{/usr/local/oprs/data/} directory. If your version
+of the \OPE{} is properly installed, the File Selection Dialog Box should
+point to this directory.
+
+After the OP file is loaded, you will be asked (with a List Selection
+Dialog Box) to select which procedure to edit from this file (keep in mind
+that a OP File can contain more than one procedure). If you select a
+procedure, then it should appear on the screen. In case, you do not select
+any procedure, you can still select a procedure later by using the Select
+OP menu item from the OP Menu \nxref{Select OP}.
+
+You can now browse through the different menus available in the menu bar,
+\nxref{Menubar of the OP Editor}. You will see that there are many
+commands available to select/load/save/unload OP File, as well as command
+to
+deal with procedures and OPs.
+
+If you decide to create your own procedure, you must select the Create OP
+menu item from the OP menu (\pxref{Create OP} and \pxref{Creating a OP}).
+
+When you have a OP selected on the screen, you need to choose from the
+Working Menu (the menu on the left of the drawing area) which operation
+you want to perform. Here also, there are a number of operations
+available. Each operation is more or less self explanatory, when
+selected, it stay selected until you select another operation. Note that
+at any time you can consult the Help Footer (\pxref{Footer and Dialog Box Help}) for information on how to proceed.
+
+\section{Getting Started with the \XPK{}}
+\node{Getting Started with the X-OPRS Kernel}
+\cpindex{Getting Started with the \XPK{}}
+
+Before starting a \XPK{}, you must start a \OPRSS{} (this operation
+will also start a \MP{}). If you attempt to run a \XPK{} or a \CPK{}
+without any \OPRSS{} running, the program will exit with an error
+message stating that it cannot connect to the \MP{} (which is mandatory
+for \XPK{} and \CPK{}).
+
+So, before doing anything, you need to call a \OPRSS{} by issuing
+the following command at the Unix prompt:
+
+\code{\% oprs-server}
+
+From then, you can either start a \XPK{} from the \OPRSS{} by issuing
+the command at the \OPRSS{} prompt:
+
+\code{OPRS-Server> make\_x foo}
+
+This will create a \XPK{} named FOO. Another way to obtain a \XPK{} is to
+issue (at the Unix prompt) the command:
+
+\code{\% xoprs foo}
+
+and then to issue (at the \OPRSS{} prompt) the command:
+
+\code{OPRS-Server> accept}
+
+In both case, you should get the \XPK{} window on your screen.
+
+At this stage, this \XPK{} is fully functional and can execute any
+procedure you will load in it. To try a well known example, you can load
+the file \file{/usr/local/oprs/data/fact-meta.inc}. This include file will
+load various OP files (\file{/usr/local/oprs/data/fact-meta.opf} and
+\file{/usr/local/oprs/data/new-default.opf}). To load the include file,
+you have to select the Include File command from the File Menu
+(\pxref{Include}).
+
+You should see in the text pane various information about the procedures
+which are loaded.
+
+Now, your kernel is running, it has some procedures loaded, you need to
+post a new goal or a new fact. For this particular example you just loaded,
+you need to post the goal: \code{(! (print-factorial 3))}, or any
+particular integer value. If you try with an integer > 30, you will most
+likely reach the maximum integer value, and will get an erroneous result.
+You should then use float (\code{(! (print-factorial 150.0))}). In any
+case, to post a new goal or a new fact, you need to select the Add Fact or
+Goal menu item from the OPRS menu (\pxref{Add Fact or Goal}), type the goal,
+and click on OK. You will see the result printed on the screen, in the text
+pane. During the run, you may  noticed some activity in the intention
+graphic trace pane. It is the evolution of the different intentions
+which appear and then disappear.
+
+You can make as many runs as you want and play with the different trace
+and execution options available to the user. For example you can select
+the OP Graphic Trace menu item in the Trace Menu (\pxref{OP Trace/Step}). This will pop up a List Selection dialog box where you can
+select the OP for which you want a graphic trace of their execution. For
+this particular application, it is a good idea to trace the OP:
+\code{Print Factorial, Iterative Factorial, Recursive Factorial and Meta
+Factorial}.
+
+Now that you are becoming more and more familiar with the interface, you
+can start to play with the \xref{Control and Status Panel}. For example,
+you can halt the kernel, then add a new goal, and then click on Step of
+Next to see a step by step execution (see \nxref{Control and Status Panel}, for an explanation of the differences between Next and Step.
+
+\chapter{Setting Up a \COPRS{} Application}
+\node{Setting Up a OPRS Application}
+\cpindex{Setting Up a \COPRS{} Application}
+
+Setting up a \COPRS{} application is an easy task. However, there are a number
+of questions you have to ask yourself, or ask the final users or the experts
+who will bring the knowledge in the system. These questions mainly relates to
+the structure of the problem and to the way you want to solve it using \COPRS{}.
+Keep in mind that \COPRS{} is a shell, a tool, and if its functionalities makes
+it particularly well suited for a certain type of application, you still need
+to do some work to organize your application.
+
+In this chapter we will examine all these questions you have to ask
+yourself and put forward some elements to help you to answer them.
+
+
+
+\section{How Many \CPK{}s Does it Takes to Screw a Light Bulb?}
+\node{How Many OPRS Kernels Does it Takes to Screw a Light Bulb?}
+\cpindex{How Many \CPK{}s Does it Takes to Screw a Light Bulb?}
+
+The answer is 42.
+
+In fact, this is indeed a question you have to ask yourself before
+starting to implement your \COPRS{} application. The answer is in your
+application itself, you have to analyze it and figure out the answer. To
+help you we can go through a number of criteria which participate to the
+decision.
+
+% **************************************
+% ********** To be completed ***********
+% **************************************
+
+\paragraph{How many agents are involved in your application?} Indeed,
+the number of agents are currently used to solve the problem is a good
+indication of the number of kernels you may need to solve it with
+\COPRS{}. For example, if your problem involved two agents working on
+their own part of the problem, exchanging information from time to time,
+then using two kernels seems a wise choice. Another possible situation is
+when you have a large number of agents doing ``more or less'' the same
+task, but either in a distributed way, or for their own objectives.
+
+\paragraph{Can all the computation be done by one kernel?} This is an
+important consideration. You must evaluate the amount of computation which
+will be done for the application and consider its distribution if it
+appear to be to large for a single kernel/platform. Keep in mind that
+the kernel will not only execute the procedure you loaded but also the
+evaluable functions, predicates, and actions you have linked in the
+kernel. Some of these operations can be rather time consuming and
+required to be sliced or distributed.
+
+\paragraph{Is the application composed of different independent modules
+or steps?} When the resolution of the problem is well defined in
+different modules, or can be broken down in a number of well separated
+steps, then one can consider implementing these different modules or
+step in separate kernels.
+
+\paragraph{Is the shared information between modules small?} This is an
+important consideration to take into account. You have to make sure that
+the amount of information between the different kernels is not too large.
+Otherwise, you will loose in communication time, the time you have spare
+in distributing your application.
+
+\section{\CPK{}s or \XPK{}s}
+\node{OPRS Kernels or X-OPRS Kernels?}
+\cpindex{OPRS Kernels or X-OPRS Kernels}
+
+This question is easy to answer. First from a functional point of view, the
+two kernels are identical. However, due to some obvious overhead induced by
+X and Xt the \XPK{} is slower than the \CPK{}. Keep in mind though that the
+\XPK{} provides some interesting tracing and debugging capabilities which
+are missing in the \CPK{} (the \CPK{} still provide some trace, but they
+are not as visual as the one provided in the \XPK{}).
+
+It is usually a good practice to develop the various \COPRS{} agents with
+the \XPK{}, just to be able to trace and debug the OPs. Then, when a set
+of procedure has been debugged and run flawlessly, one can load them in a
+\CPK{}, you should not have any problem, except with the increased
+performance.
+
+Note however, that for some applications, the final user or the operator
+may need to ``see'' the procedures executing. Therefore, it may be
+necessary to run these procedures in an \XPK{}.
+
+Similarly, there are some applications for which there are no need to
+follow the graphic execution of the procedure, or to follow the graphic
+evolution of the intentions graph. In this situation, one may run these
+procedure in a \CPK{}.
+
+Of course, one can mix \XPK{}s and \CPK{}s in the same application.
+
+An important criterion to evaluate, regarding the use of \CPK{} or \XPK{},
+is the respective size of these two kernels. The size of each kernel
+depends of the availability of shared libraries on your system, the debug
+flag with which the kernels were compiled and more generally the size of
+binaries on your machine. Nevertheless you will noticed a
+great difference in size between the \XPK{} and \CPK{} (the ratio can be of
+one to ten...). Therefore, depending on the size of the swap space and the
+size of memory on your machines, and the number of kernels involved, you
+may have to limit the number of \XPK{}.
+
+\section{The Database: Facts, Only the Facts}
+\node{The Database: Facts Only the Facts}
+\cpindex{The Database: Facts, Only the Facts}
+
+The database has a very important and critical role in a \COPRS{}
+application. It is the memory of the ``system'', and it is heavily used
+by the kernel to retrieve, check, conclude information. There are many
+questions to be asked before you start building your database. This
+section will go through these questions and will bring some elements of
+answer.
+
+
+
+\subsection{The Representation of Facts}
+\node{The Representation of Facts}
+\cpindex{The Representation of Facts in the Database}
+
+A very common question is what is exactly the proper way to represent
+facts or beliefs in the database? Which format should be used? What is
+the proper way to represent such and such information and what is the
+wrong way to do it?
+
+The format used to represent facts in the database is simple: \*
+\code{(predicate-name <arguments>*)}.
+
+The semantic associated with the predicate name and the arguments (and
+the order of the arguments) is yours, and should be consistent through
+the whole database and application.
+
+For example, if you consider the predicate \code{position}, you probably
+want to associate it to the idea of devices or objects being in
+particular position. Such as in: \code{(position valve open)}, or
+\code{(position switch on)}, or even \code{(position robot unknown)}.
+
+Note that for this particular predicate, we put first the argument to which
+this information apply, and then the argument which represent the ``value''
+of this predicate for the first argument... However, this is not always
+the case. For example, a predicate such as \code{connected} which would
+represent that two entities are somehow ``connected'' in your application
+may not bear any particular meaning on the order of the argument.
+Therefore, \code{(connected a b)} would be semantically equivalent to
+\code{(connected b a)}. However, from a strict database point of view,
+these two facts are different and it is the user task to make these 2
+equivalent when needed. To summarize, the order of arguments may be
+meaningful or not, but in any case, it is up to the user to ensure that
+this order is properly respected through the whole application when it is
+meaningful, and to ensure that it is properly used when it is meaningless.
+
+An important consideration, is to keep in mind that the predicate name is
+always first, and cannot be replaced with a variable in any context. For
+example, it is forbidden to write in a OP something like: \code{(=> (\$x a
+b))}... Even if the variable \code{\$x} is bound to the symbol \code{connected}.
+The reasons for this limitation take their roots in the ``First Order Predicate
+Calculus''.
+
+The last consideration to take into account relate to the goal
+representation in \COPRS{}. Do not forget that goals are built upon facts.
+According to the temporal operator used, they modify the semantic of the
+fact they are qualifying. As a consequence, it is important that the
+facts underlying the goal representation be consistent with the goal
+representation.
+
+If one consider the fact \code{(position door open)}, then we can easily
+build on this fact to get the following goal: \code{(! (position door
+open))} to close open the door if it is not already open, \code{(?
+(position door open))} to test if it is currently open , \code{(\^{}
+(position door open))} to wait until somebody open the door (if it is not
+already open), etc... In all these examples, we can see that the fact and
+the goals are really carrying the wanted information. Moreover, when any
+of these goal is attempted, the corresponding facts is checked in the
+database...
+
+\subsection{Which Predicate?}
+\node{Which Predicate?}
+\cpindex{Which Predicate?}
+
+Now that the notion of predicate is clear. Remains the problem of
+deciding which predicate should be used and for what.
+
+First, the semantic of the predicates is the one the user wants to give
+to the predicate. If you want to use the word \code{position} to
+represent things we have nothing to do with position, you can... This will
+just make your OP unreadable...
+
+Similarly, you can overload the semantic of a predicate. The predicate
+\code{position} can be used in an application to represent the position
+of various objects, and even different types of objects: switches,
+valves, lights, etc. An another alternative is to use predicate such as
+\code{switch-position} or \code{valve-position}. Here also, there is no
+rules, it is question of readability of the OPs and the database.
+
+To help organize a database, very often, one use a \code{type} predicate
+to specify the type of the various object. This is very useful for
+example when one looks for all the open valve of the system: \*
+\code{(\& (type valve \$v) (position \$v open))}.
+
+\subsection{Which Predicate Should be Declared as Closed World Predicate?}
+\node{Closed World Predicate?}
+\cpindex{Which Predicate Should be Declared as Closed World Predicate?}
+
+This is an easy question to answer... In general, most if not all
+predicates should be declared as closed world predicates. Why? Because
+this is usually the way we tend to think, i.e. if something is not know
+to be true, then its contrary is usually true. To use the example given
+in section \nxref{Closed World Predicates}, if we do not have any
+information about a direct flight between Toulouse an San Francisco, most
+likely, no such flight exist, and therefore, its negation is true.
+However, keep in mind that this information will be looked at (the fact
+that this specific fact is not in the database, and the fact that it is a
+CWP) if and only if you consult the negation of the fact. In other words,
+there are no need to declare CWP predicate for which you never retrieve
+the negation.
+
+Last, there may exist some predicates which are not closed world
+predicate, i.e.
+for which a request of the negation of something which is not known as
+true is false...
+
+\subsection{Which Predicate Should be Declared as Functional Facts?}
+\node{Functional Facts?}
+\cpindex{Which Predicate Should be Declared as Functional Facts?}
+
+\xref{Functional Facts} explains in great details the logic
+behind functional facts (in short FF).
+
+The important things to remember are:
+
+\begin{itemize}
+
+\item FF are expensive.
+
+\item Only the predicates for which there exist a ``functional''
+representation can be considered as FF.
+
+\item Declare predicate as functional fact, if and only if you want to
+insure an automatic clean up of previous value.
+
+\item Remember to order the arguments in such a way that the predicate can
+be declare as FF.
+
+\item Sometime, Basic Events (\pxref{Basic Events}) and (\pxref{Basic Events?}) are enough to represent facts you want to get deleted
+automatically.
+
+\end{itemize}
+
+Here are example of predicates which are often declared as FF:\*
+\code{position}, \code{status}, \code{connected}. For each of them one
+usually want to remove the previous value when a new value for a specific
+object is concluded.
+
+\subsection{Which Predicate Should be Declared as Basic Events?}
+\node{Basic Events?}
+\cpindex{Which Predicate Should be Declared as Basic Events?}
+
+This is another easy question to answer. You want to declare as Basic
+Events (\pxref{Basic Events}), all the predicate you want to trigger OP
+applicability or intentions/threads awaking, but that you do not want to
+keep in the database. This is to represent events which are ephemeral,
+still need to be considered by the kernel main loop, but do not need to
+be remembered in the database for future use.
+
+\subsection{Forbidden Things and Things to Avoid with the Database}
+\node{Forbidden Things and Things to Avoid with the Database}
+\cpindex{Forbidden Things and Things to Avoid with the Database}
+
+There are a number of things one should not do or avoid while using the
+database mechanism. Here is a non exhaustive list of forbidden things:
+
+\begin{itemize}
+
+\item Do not conclude facts containing unbound variables.
+
+\item Do not consult evaluable predicate with unbound variable (unless
+you predicate is able to handle the situation, which is unlikely...)
+
+\end{itemize}
+
+Here is a non exhaustive list of things to avoid as much as possible:
+
+\begin{itemize}
+
+\item Avoid consulting big disjunction, which can lead to a huge number
+of possible results. If you must use disjunction, try to put the most
+discriminating facts in first.
+
+\item Avoid using long argument list for facts.
+
+\item Remember to tune the size of the hashtable according to the number
+of facts you are concluding in the database.
+
+\item Do not conclude evaluable predicates.
+
+\item Do not conclude facts containing variables bound to objects which
+are, by their nature, pointing to internal objects, themselves pointing
+to other internal objects. This will not break the system, but this will
+result in ever growing kernel (as the Garbage Collector will be unable to
+collect the internal data concluded in the database).
+
+\item Do not consult negation of Closed World predicate with unbound
+variable, as you will not get binding even if the negation is true.
+
+\item Do not forget to clean up your database. Many application grows
+indefinitely because of a bad database clean up.
+
+\end{itemize}
+
+\section{Which OP for Which Task?}
+\node{Which OP for Which Task?}
+\cpindex{Which OP for Which Task?}
+
+
+
+\subsection{Fact Invoked OPs}
+\node{Fact Invoked OPs}
+\cpindex{Fact Invoked OPs}
+
+Fact invoked OPs are usually written to respond or react to events. They do not
+have any explicit goal or objective.
+
+These OPs usually correspond to events you have to monitor or you need to
+check, such as alarm, or change of values, etc.
+
+\subsection{Goal Invoked OPs}
+\node{Goal Invoked OPs}
+\cpindex{Goal Invoked OPs}
+
+Goal invoked OPs are written to achieve a particular goal or objective.
+Their success is equivalent to achieving the goal which invoked them.
+
+These OPs are usually implementing a goal directed behavior, i.e. the execution
+of these OP is supposed to achieve the goal for which they are applicable.
+
+\subsection{Predefined OPs}
+\node{Predefined OPs}
+\cpindex{Predefined OPs}
+
+A number of predefined OPs can be loaded in a specific application. The user
+can pick up OPs in the different OP files provided with the distribution
+(\pxref{Default OPs}). For example, the OPs in the file \file{new-default.opf}
+(\pxref{new-default.opf}) provide a number of interesting functionalities. In
+fact, most application load this OP file.  Even if it is not required, it is
+strongly recommended, as OP as basic as \code{=} are defined in this file.
+
+Most of the default OPs defined in  \file{new-default.opf} are actions OPs. The
+actions they called are usually documented and can be directly used by the
+user.
+
+\section{User Defined Evaluable Functions}
+\node{User Defined Evaluable Functions}
+\cpindex{User Defined Evaluable Functions}
+
+Do you need to defined your own evaluable functions? This depends of your
+application. Do not look after them, the need will come in its time.
+
+You may need evaluable functions for one the following reasons:
+
+\begin{itemize}
+
+\item to perform some specific computation on some Terms. For example,
+you may have to define the \code{max} function which taking to integers
+return the biggest of the two. Similarly, you may want to defined a
+function which concatenate two stings, etc... That's up to you.
+
+\item to perform some specific computation on some user defined objects
+(\code{U\_POINTER} Term). For example, you may have defined your own user type, a
+fancy C structure which hold various information required by your
+application, and you want now to write a function which return the string
+contained in a specific field of this object.
+
+\end{itemize}
+
+In any case, the need for evaluable function is easy to identify, and
+easy to solve. Keep in mind though, that evaluable function are called
+whenever they are encountered while posting a goal containing a composed
+term which function name is an evaluable function. As a consequence, the
+time taken by these function should be as short as possible. Contrary to
+Actions, the execution of evaluable functions cannot be time sliced.
+
+Last, there are a number of things to consider when you write evaluable
+functions:
+
+\begin{itemize}
+
+\item Check the number of arguments which is passed to your function.
+
+\item Check the type of each argument you are getting. (do not assume
+that the user will always pass the argument of the right type at the
+right position).
+
+\item Check that all the arguments are bound. This relates to the previous
+comment as you will get a Term of type \code{VARIABLE} if a variable is
+unbound...
+
+\end{itemize}
+
+\xref{How to Define  your Own Evaluable Functions}, for more information
+on this subject.
+
+\section{User Defined Evaluable Predicates}
+\node{User Defined Evaluable Predicates}
+\cpindex{User Defined Evaluable Predicates}
+
+As evaluable functions, evaluable predicates may be required in some
+application:
+
+\begin{itemize}
+
+\item to perform some specific computation on some Terms. For example,
+you may have to define the \code{ordered} predicate which taking a list
+of integers return \code{TRUE} if the list is ordered, \code{FALSE}
+otherwise.
+
+\item to perform some specific computation on some user defined objects
+(\code{U\_POINTER} Term). For example, you may have defined your own user type, a
+fancy C structure which hold various information required by your
+application, and you need a predicate which evaluate to \code{TRUE} if a
+this structure satisfy a particular condition.
+
+\end{itemize}
+
+Last, there are a number of things to consider when you write evaluable
+predicates:
+
+\begin{itemize}
+
+\item Remember that you just need to return a \code{PBoolean}, i.e.
+\code{TRUE} or \code{FALSE}, not a Term.
+
+\item Check the number of arguments which is passed to your function.
+
+\item Check the type of each argument you are getting. (do not assume
+that the user will always pass the argument of the right type at the
+right position).
+
+\item Check that all the arguments are bound. This relates to the previous
+comment as you will get a Term of type \code{VARIABLE} if a variable is
+unbound...
+
+\end{itemize}
+
+\xref{How to Define  your Own Evaluable Predicates}, for more information
+on this subject.
+
+\section{User Defined Actions}
+\node{User Defined Actions}
+\cpindex{User Defined Actions}
+
+Do you need to defined some actions? Here also, this depends of your
+application. It usually depends of what kind of interaction or
+``actions'' (thus their name) you need to perform with the kernels.
+If your application only prints some statements (such as advices to an
+operator), then you may not need to define any actions. On the opposite,
+if your application need to directly interact or act with subsystems,
+then you will need to define some action.
+
+Keep in mind that if your application is organized in such a way that
+there is module which perform the real action on the world, and that this
+module is connected to the \MP{}, then most if not all the actions are
+done using the \MP{} (i.e. by sending a message to the module in charge
+of performing the action (a simulator or an interface to the real system).
+
+Nevertheless, you may need actions for one the following reasons:
+
+\begin{itemize}
+
+\item to associate a specific functions to a OP. Thus enabling the action to
+succeed or fail and make the corresponding OP returning the corresponding
+result. Many users tend to forget that evaluable functions (as presented
+above) are evaluated at posting time, i.e. when the goal in which their
+form is contained is posted. But their evaluation is always meaningful and
+does not bear any success or failure. For example, in \code{(! (foo (+ 3
+4)))}, the   \code{(+ 3 4)} will be evaluated right away (unless you have
+unselected the \code{eval\_on\_post} option). However, this evaluation is
+always feasible and always gives a result. For an action (in fact a
+standard action), the result can  be either \code{T} or \code{NIL}, and
+upon this result depend the success or failure of the OP which calls it.
+
+\item to perform some actions using code linked in your kernel. Keep in
+mind that when you build your application, you will, or may link some
+code in it. For example, if your application is linked (and by linked we
+mean the operation of linking in one program a number of functions calling
+each others) to an application dependent library and that you want to
+call some of these functions which may fail, then you need to define
+actions to call these functions.
+
+\item to time slice the execution of functions which take to long to
+execute. Keep in mind that the reactivity of your system depend of the
+longest action/evaluable functions of your application. Therefore, to
+increase the reactivity of your kernel, you may have to time slice the
+execution of these actions.
+
+\item to write functions which return a list of terms instead of one
+term. \xref{Multi Variable Special Action} for more details.
+
+\end{itemize}
+
+Last, there are a number of things to consider when you write functions:
+
+\begin{itemize}
+
+\item Check the number of arguments which is passed to your function.
+
+\item Check the type of each argument you are getting. (do not assume
+that the user will always pass the argument of the right type at the
+right position).
+
+\item Check that all the arguments are bound. This relates to the previous
+comment as you will get a Term of type \code{VARIABLE} if a variable is
+unbound...
+
+\item Make sure you return a \strong{new} Term, and this recursively...
+Do not return for example one of the argument passed to the functions
+``as is'', or a \code{LISP\_LIST} containing object which have not been created
+by you.
+
+\item Make sure your function return the Term containing either:
+
+\begin{itemize}
+
+\item The symbol \code{T}, the symbol \code{NIL} or the symbol
+\code{:wait}, if it is a Standard Action. \xref{Standard Action} for more
+details.
+
+\item Any kind of term or the symbol \code{:wait}, if it is a Special
+Action. \xref{Special Action} for more details.
+
+\item A list (\code{OPRS\_LIST}) of any kind of term or the symbol \code{:wait}, if it
+is a Multi Variable Special Action. The list should have exactly the same
+number of element as the list of variable it is unify against.
+\xref{Multi Variable Special Action} for more details.
+
+\end{itemize}
+\end{itemize}
+
+\xref{How to Define  your Own Actions}, for more information
+on this subject.
+
+\section{Do You Need Meta Level?}
+\node{Do You Need Meta Level?}
+\cpindex{Do You Need Meta Level?}
+
+This question is somewhat difficult to answer. The following points have to
+be considered before making a decision.
+
+\begin{itemize}
+
+\item Do you need a particular type of control in the main loop?
+
+\item Do you have to choose among various applicable OPs with a specific
+heuristic?
+
+\item Do you mind ``loosing'' or forgetting external events?
+
+\end{itemize}
+
+In any case, always use the right level of options in the kernel to suit
+your meta level needs. For example, if your kernel does not use any meta
+level reasoning, you should disable it in the kernel (\pxref{Meta Level Reasoning}. However, if it does, for example use the \code{SOAK} meta
+fact, you should enable it and enable the conclusion of this particular
+fact (and disable all the other one), see \nxref{OPRS Kernel Meta Level Option Commands}.
+
+\section{Intention Graph Manipulation}
+\node{Intention Graph Manipulation}
+\cpindex{Intention Graph Manipulation}
+
+% **************************************
+% ********** To be completed ***********
+% **************************************
+
+\section{Data and Commands}
+\node{Data and Commands}
+\cpindex{Data and Commands}
+
+If your \OPRS{} application is embedded in a ``real'' or simulated
+environment, you will probably get some data from this environment and
+you may send commands to it.
+
+In most case, these data and these commands will transit through the
+\MP{}.
+
+Example are provided in the \file{demo} directory of connection between
+applications and \CPK{} through the \MP{}.
+
+However, you can also design your own communication interface, which will
+interact with the external application through evaluable predicate, functions
+or actions.
+
+\section{Linking C Code in the Kernels}
+\node{Linking C Code in the Kernels}
+\cpindex{Linking C Code in the Kernels}
+
+To be able to execute your own code in a \CPK{} or \XPK{}, you need to link it
+to relocatable kernels.
+
+Technically, a relocatable is an ``almost executable'' in which are missing a
+number of functions. The \COPRSDE{} contains two relocatables,
+\file{oprs-relocatable} and \file{xoprs-relocatable} (and their C++ counterpart,
+\file{c++-oprs-relocatable} and \file{c++-xoprs-relocatable}) . These files are
+almost like \file{oprs} and \file{xoprs} except that a number of functions are
+missing.
+
+Apart from some system libraries needed to build the final executable,  the
+missing functions are:
+\begin{verbatim}
+declare_user_eval_funct 
+declare_user_eval_pred 
+declare_user_action 
+start_kernel_user_hook 
+end_kernel_user_hook 
+\end{verbatim}
+
+For the C++ version, the main is missing (so the user can have a C++ main) and
+is called oprs\_main (and takes the same argument as main).
+
+Somehow, you need to define these functions. Example of these functions are
+given in the \file{pub\_src} directory, in the files: \file{user-action.c}, 
+\file{user-action.h}, \file{user-ev-function.c}, \file{user-ev-function.h},
+\file{user-ev-predicate.c}, \file{user-ev-predicate.h}, \file{user-external.c},
+\file{user-external.h} and \file{user-external\_f.h}.
+
+When  these files are defined, you need to write a Makefile more or less like
+the following one:
+\begin{verbatim}
+OPRS_DIR =
+
+include ${OPRS_DIR}/site.make
+
+OPRS_INCL_DIR = ${OPRS_DIR}/include
+
+USER_SRC = user-evaluable-predicate.c user-action.c user-evaluable-function.c user-external.c
+
+USER_OBJ = user-evaluable-predicate.o user-action.o user-evaluable-function.o user-external.o
+
+SRCS = $(USER_SRC)
+
+INCLUDE =  -I$(OPRS_INCL_DIR)
+
+CFLAGS = $(ANSI) $(DEBUG_FLAG) $(OPTIMIZE) $(WARNINGS) $(MACHINE) 
+        $(CFLAGS1) $(INCLUDE) $(X_INCLUDE) $(PROFILE)
+
+LDFLAGS = $(ANSI) $(STATIC) $(DEBUG_FLAG) $(OPTIMIZE) $(PROFILE)
+
+SYS_LIB = -lm
+
+all: oprs xoprs
+
+oprs: $(OPRS_DIR)/oprs-relocatable $(USER_OBJ)
+        $(CC) -o oprs $(USER_OBJ) oprs-relocatable 
+
+xoprs:  $(OPRS_DIR)/xoprs-relocatable $(USER_OBJ) $(LIB_UTIL)
+        $(CC) -o xoprs xoprs-relocatable $(USER_OBJ) $(SYS_LIB) $(X_LIB)
+\end{verbatim}
+
+\section{Miscellaneous Questions}
+\node{Miscellaneous Questions}
+\cpindex{Miscellaneous Questions}
+
+% **************************************
+% ********** To be completed ***********
+% **************************************
+
+\section{Common Mistakes}
+\node{Common Mistakes}
+\cpindex{Common Mistakes}
+
+There are a number of mistakes which are commonly made. \xref{Known Problems and Things to Avoid} for a list of potential pitfalls. Nevertheless, here is
+a list of common mistakes.
+
+\begin{itemize}
+
+\item Do not write OPs with evaluable predicate in their invocation part.
+They will not become applicable, because of this predicate becoming true.
+
+\item If you write a goal such as \code{(! (\& (foo a \$x) (boo b \$y)))},
+you may achieve it if this conjunction is true in the database, but if it
+is not, there are absolutely no way this specific goal may be achieved
+through a OP. Because only texpressions are allowed in Invocation Part as
+element of their gmexpression.
+
+\item When you declare a functional fact, do not forget the integer argument of
+the declaration.
+
+\item Before launching a \XPK{} or \CPK{}, make sure a \OPRSS{} and a \MP{}
+are running.
+
+\end{itemize}
+
+\chapter{Simple \COPRS{} Applications}
+\node{Simple OPRS Applications}
+\cpindex{Simple \COPRS{} Applications}
+
+
+
+\section{Factorial Example}
+\node{Factorial Example}
+\cpindex{Factorial Example}
+
+This fairly simple example introduces many different interesting concepts
+of \COPRS. It uses logical and program variables, it introduces meta level
+reasoning and also presents some advanced features such as parallel
+goals intentions. This example can be found in \file{data/fact-meta.inc}
+and related files.
+
+
+
+\subsection{Factorial Example OPs}
+\node{Factorial Example OPs}
+\cpindex{Factorial Example OPs}
+
+Here is the list of the procedures provided for this demo. They can be found in
+the file \file{fact-meta.opf}.
+
+\input{fact-meta}
+
+\subsection{Other Factorial Example OPs}
+\node{Other Factorial Example OPs}
+\cpindex{Other Factorial Example OPs}
+
+In this example, we use the new ``if-then-else'' node as well as the parallel
+thread execution mechanism. These OPs can be found in the file
+\file{fact-meta-if-par.opf}.
+
+\input{fact-meta-if-par}
+
+\chapter{Complex \COPRS{} Applications}
+\node{Complex OPRS Applications}
+\cpindex{Complex \COPRS{} Applications}
+
+
+
+
+\section{Truck Loading Example}
+\node{Truck Loading Example}
+\cpindex{Truck Loading Example}
+
+This example is a real application, with a simulator and a user interface.
+
+
+
+\subsection{Truck Loading Example Presentation}
+\node{Truck Loading Example Presentation}
+\cpindex{Truck Loading Example Presentation}
+
+\figuregif[scale=0.5]{truck-demo-window}{Truck Loading Demo}{Truck Loading Demo}
+
+This example presents a supervision and control problem with various complex
+temporal constructions. As described on figure \ref{Truck Loading Demo}, an
+operator is in charge of a refilling station. The process to supervise is
+basically the following.  From time to time, tank trucks come to the station.
+They are queued until a traffic light (Queue Light) turns green. As soon as
+they are in place, a ``truck in place'' signal is sent to the operator who has
+to turn the Queue Light to red again and waits until the truck is ready to be
+filled (Filling Talkback shows Empty). He then opens the valve controlling the
+product flow.  This valve is opened and closed using a two position switch on
+the control panel (Switch Valve). To monitor the current position of the valve,
+two talkbacks with different sensors are used (Talkback Sensor1 and Talkback
+Sensor2). These talkbacks can display the following information: closed, open,
+and barber pole.  Barber pole is displayed by a talkback whenever the valve is
+neither open nor closed but in between (most likely it is moving in position).
+Whenever the operator is filling up a truck and a ``truck full'' signal is
+received (the Filling Talkback shows Full), he immediately closes the valve.
+When the valve is considered as closed, he gives an ``OK to go'' to the truck
+driver, by turning the Filling Light to Green. This process goes on for ever
+during the whole day.
+
+In the plan executed by the operator, different things can go wrong. The most
+important failure is the valve not closing properly; a slightly less important
+problem is the valve not opening properly. If the valve reportedly fails to
+open or close and, if there is a serious doubt about its real position, the
+operator must activate the emergency shutdown (the Stop Button), which is
+considered as a ``last resort'' solution.
+
+The inputs (and their respective values) of this control and supervision
+process are displayed in the Control Board (the blue panel on the top).
+
+The actions the operator can take are available from the Command board (the
+bottom blue panel).
+
+The operator does not see the bottom panel of the demo window which displays
+the real world (trucks showing up, filling up, etc). He can only rely on the
+Control board to analyze the current situation, and on the Command board to
+control the operations.
+
+The three text windows in the upper part of the truck demo window display
+information from various sources. Message: normal operation of the
+demonstration. Warning: abnormal states in the simulation. OPRS: message sent
+and received from the controlling \CPK{}.
+
+The six buttons below the text panes are used to (from left to right) quit the
+demo, reset the demo, clear the text panes, disconnect from the \CPK{}, connect
+to the \MP{}, and connect to \CPK{}.
+
+The clock panel displays the current simulation time (from the simulator when
+alone, or from \CPK{} when connected). It is also used to start or stop the
+simulation time. There are also buttons to speed up or slow down the simulation
+in non connected mode.
+
+The Error board on the right can be used to modify a number of internal
+parameters of the demo. It is mainly used to create dysfunction.
+
+In general, the operator should monitor the following conditions and take
+various actions in response to these conditions:
+
+\begin{itemize}
+
+\item Talkback 1 and Talkback 2 disagree (one says OPEN, the other says
+CLOSE). If this condition arises, the talkback which disagrees with the switch
+is considered as failed.
+
+\item Talkback 1 and Talkback 2 show a barber pole for more than x seconds
+(i.e., there are at least x seconds during which both talkbacks show
+barber pole). The valve is jammed, emergency stop.
+
+\item Talkback 1 or Talkback 2 show a barber pole for more than y seconds.
+If this condition arises, then the faulty Talkback is concluded as failed.
+
+\item z seconds after flipping the switch in one position or the other,
+the valve is not reported in the right position by both talkbacks. This
+interval is decreased down to w seconds if one of the talkback is failed. In
+this case, an emergency shutdown is issued.
+
+\end{itemize}
+
+\subsection{How to Install the Truck Loading Demo}
+\node{How to Install the Truck Loading Demo}
+\cpindex{How to Install the Truck Loading Demo}
+
+The \file{demo/truck-demo} directory should be placed or extracted in the \file{oprs}
+directory. Then just type \*
+\code{\% make truck-demo}.
+
+If everything goes well, you should end up with a \code{truck-demo} executable
+in the \file{demo/truck-demo/bin} sub directory, as well as a \code{oprs} and
+\code{xoprs} kernels in the \file{demo/truck-demo/oprs} sub directory. Note that
+you must use these kernels as they define their own evaluable functions and
+predicates (which are different from the one defined by default in the kernel).
+
+This application is a good example of how to define your own actions, evaluable
+functions, predicates, etc...
+
+\subsection{How to Run the Truck Loading Demo}
+\node{How to Run the Truck Loading Demo}
+\cpindex{How to Run the Truck Loading Demo}
+
+You first need to start the truck-demo. To do so, just execute the
+\code{truck-demo} program produced by the make command.
+
+At this point, you can play with the simulator as if you were the operator. You
+are in ``Alone'' mode.
+
+If you want to get \COPRS{} to manage the ``filling station'', start a oprs-server,
+and then start a \CPK{} or \XPK{} with the following options (you must use the
+kernels from the \file{demo/truck-demo/oprs} directory as it defines some
+specific evaluable functions or predicates): \*
+\code{\% xoprs -n truck -x data/truck-demo.inc}
+
+You then need to issue an \code{accept} command in the \OPRSS{}.
+
+Go back in the truck-demo window, and click on "Connect to the MP" button, wait
+until the connection completes (the button is highlighted). Click on the
+"Connect to OPRS" button. If you have been playing with the demo before
+connecting to the \CPK{}, it is necessary to reset the simulation (by clicking
+on the Reset button) before connecting to OPRS.
+
+From this point, the \CPK{} will control and supervise the filling truck
+process. You will see the lights and the valve switching upon \OPRS{} request,
+as well as \OPRS{} reacting to transients and to real problems.
+
+Feel free to select the \XPK{} window and trace the OP used for this demo.
+
+A priori, \CPK{} takes care of the filling station ``ad vitam eternam''. If you
+want to produce an error (to check if \COPRS will find it), you can play with
+the various settings of the Error board.
+
+You can also improve the demo by adding OPs which will check other faulty or
+error conditions. For instance, the \file{demo/truck-demo/oprs/data/truck-demo-plus.opf}
+contains a OP which checks that you are not switching a traffic light on (to
+green) while the valve is open. (Note that this OP is not loaded by default but
+can be added with the Load OP command from the \XPK{}).
+
+\subsection{Truck Loading Example OPs}
+\node{Truck Loading Example OPs}
+\cpindex{Truck Loading Example OPs}
+
+Here is a list of the procedures provided for this demo. They can be found in
+the file \file{truck-demo.opf}.
+
+\input{truck-demo}
+
+One can also find an extra OP, in the file \file{truck-demo-plus.opf}.
+
+\input{truck-demo-plus}
+
+\chapter{Applications of \COPRS{}}
+\node{Applications of OPRS}
+\cpindex{Applications of \COPRS{}}
+
+If there exist a priori no exclusive domain of application to Procedural
+Reasoning, some seem more adapted than other. They can be identified by
+the following characteristics, which are illustrated with different
+applications where Procedural Reasoning was applied:
+
+\begin{description}
+
+\item [Control \& Supervision of Complex Systems:] In this kind of
+application, one or several operators are in charge of executing and
+following, under some well defined conditions, the procedures the system
+designers  established. These procedures cover the nominal mode of the
+system, as well as emergency and critical situation like alarms, or
+threshold overshooting. (Example: Telecommunication Network
+Supervision).
+
+\item [Operator Assistance:] For various, reasons, replacing operators of
+complex systems with autonomous systems is not always recommended.
+However, operators tend to make mistakes, with potentially dramatic
+consequences, whenever they are overflowed with storms of alarms and
+data. For this very reason, it is very important to assist them in the
+most tedious tasks, or in those requiring quick  responses, like in power
+plant supervision, or in threat assessment systems.
+
+\item [Automation of predefined procedures execution:] In many domains,
+complete folders of procedures have been written to describe all the
+reachable states of the system (planes, space shuttle). Here also,
+operators assure the triggering, retrieval, and execution of these
+procedures.
+
+\item [On-line planning and execution control:] These activities combine
+the planning of task and actions, and the control of their execution. By
+planning, we mean that the system chooses at run-time a solution among a
+set of possibilities, and this according to some general criteria.
+Execution control checks that the chosen plan or procedure is executing
+properly (example: execution control of a mobile robot, pilot
+associate).
+
+\item [Diagnosis \& Troubleshooting:] The decision trees used in diagnosis
+activities show a procedural structure. Thus, troubleshooting is usually
+done by following the procedures which, test after test, determine the
+system faulty component (examples: troubleshooting of radar system). Note
+that these tests can be arbitrary complex and require the execution of
+other procedures.
+
+\item [Operator Training:] Given its graphical capabilities, procedural
+reasoning can also be used for operator training. As a matter of fact,
+problems can be simulated for the operator to follow the procedures the
+system is currently running (example: operator training in the space
+shuttle mission control room).
+
+\end{description}
+
+In every domain presenting these characteristics or properties,
+procedural reasoning is the solution that improves system safety, speed
+up response time and reduces operating costs.
+
+% **************************************
+% ********** To be completed ***********
+% **************************************
+
+\chapter{Optimizing a \COPRS{} Applications}
+\node{Optimizing a OPRS Applications}
+\cpindex{Optimizing a \COPRS{} Applications}
+
+
+
+\section{Optimizing Hashtables}
+\node{Optimizing Hashtables}
+\cpindex{Optimizing Hashtables}
+
+A number of commands (\pxref{OPRS Kernel Miscellaneous Commands}) or menus
+(\pxref{Stat All Hashtables}, and others) are available to obtain statistics on
+the use of the various hashtables of the kernel.
+
+When you select these commands, you get the following printout (this one
+was obtained with a \code{stat all} command):
+
+\begin{verbatim}
+ The id hashtable contains:
+     442 element(s)
+     in  355 buckets ( 1024 );
+     with a maximal number of 4 element(s) in one bucket.
+The database hashtable contains:
+     48 element(s)
+     in  48 buckets ( 1024 );
+     with a maximal number of 1 element(s) in one bucket.
+The predicate hashtable contains:
+     107 element(s)
+     in  51 buckets ( 64 );
+     with a maximal number of 5 element(s) in one bucket.
+The function hashtable contains:
+     146 element(s)
+     in  57 buckets ( 64 );
+     with a maximal number of 6 element(s) in one bucket.
+\end{verbatim}
+
+You can then analyze the result and decide if a specific hashtables is
+overloaded or not. You may then decide to change its size (reduce it or
+increase it) using the argument of the \code{oprs} or \code{xoprs} command
+(which are the same for this matter) (\pxref{Arguments to the oprs Command}).
+
+Note that these statistic are ``static'' in the sense that they give you
+snapshots of the use of your hashtables. However, most of them (except the
+database and id hashtable) are loaded upon starting the kernel and do not
+evolve much during the execution. Nevertheless, for the database hashtable, you
+should stat it at different time of the execution to figure out its maximum
+size and conclude then which size is the most appropriate. As for the id
+hashtable, or the symbol hashtable, keep in mind that this hashtable cannot be
+cleared by any mean. As a result, if you keep adding new symbols in the kernel,
+then this will be an ever growing hashtable.
+
+Last, you may consider reducing the size of the hashtables (after all ,
+the default values may far exceed your need). This will have the
+advantage of reducing the size of the kernel, by the amount of memory
+saved.
+
+Keep in mind that since release 1.1, all these hashtable are mostly used at
+compile time. The id, the function and the predicate hashtables are use at
+runtime just to parse coming external events, and user commands (which explain
+why they are kept).
+
+\section{Just the Right Level of Meta Level}
+\node{Just the Right Level of Meta Level}
+\cpindex{Just the Right Level of Meta Level}
+
+This is probably one of the easiest optimization one can do... and if it
+has not been done, it can be one of the most profitable optimization.
+
+You should always use the right level of options in the kernel to suit
+your meta level needs. For example, if your kernel does not use any meta
+level reasoning, you should disable it in the kernel (\pxref{Meta Level Reasoning}) with a \code{set meta off} command or with the option menu of
+the \XPK{}. However, if it does, for example use the \code{SOAK} meta
+fact, you should enable it and enable the conclusion of this particular
+fact (and disable all the other one).
+
+\section{Database Organization}
+\node{Database Organization}
+\cpindex{Database Organization}
+
+Database optimization can be of different type. First you should optimize
+the size of its hashtable (not too big, not too small), see
+\nxref{Optimizing Hashtables}.
+
+\section{Slicing your Action}
+\node{Slicing your Action}
+\cpindex{Slicing your Action}
+
+One of the important point to consider when optimizing an application is
+the time taken by actions. If their execution takes too long time, you should
+consider recoding them to slice their execution in smaller time chunk. This can
+be done using the action slicing mechanism (\pxref{Action Slicing}).
+
+See \code{action\_first\_call} and \code{action\_number\_called},
+\nxref{Intention Manipulation Functions}. 
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "oprs"
+%%% End: 

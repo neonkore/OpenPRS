@@ -1,0 +1,81 @@
+;;;
+;;; File: /home/felix/oprs/src/data/test/goal-intend.opf
+;;; $Id$
+;;; Date: Fri Feb 18 15:18:55 2000
+;;; Host: alf
+;;; OP Editor Version: 3.0.0 Beta
+;;; Compiled on alf (Thu Feb 17 17:06:54 MET 2000)
+;;; OP File Format: 2
+;;;
+(
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; FOO1
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(defop FOO1
+    :invocation (! (FOO $Z))
+    :context ()
+    :body ((! (PRINT "foo1"))
+          (! (= $Z FOO1))
+           (! (FAILED))
+          )
+    :effects ()
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; FOO2
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(defop FOO2
+    :invocation (! (FOO $Z))
+    :context ()
+    :body ((! (PRINT "foo2"))
+           (! (= $Z FOO2))
+           (! (FAILED))
+          )
+    :effects ()
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; FOO3
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(defop FOO3
+    :invocation (! (FOO $Z))
+    :context ()
+    :body ((! (PRINT "foo3"))
+          (! (= $Z FOO3))
+          )
+    :effects ()
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; INTEND-AND-EXECUTE-AOP-FOR-GOAL
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(defop INTEND-AND-EXECUTE-AOP-FOR-GOAL
+    :invocation (! (INTEND-AND-EXECUTE-AOP-FOR-GOAL $AOP $GOAL))
+    :context ()
+    :action (INTEND-AND-EXECUTE-AOP-FOR-GOAL $AOP $GOAL)
+    :effects ()
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; TEST-GOAL-INTEND
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(defop TEST-GOAL-INTEND
+    :invocation (TEST-GOAL-INTEND)
+    :context ()
+    :body ((! (= $GOAL (MAKE-GOAL-FROM-EXPR (! (FOO @X)))))
+           (! (= @OPI (FIND-APPLICAbLE-OPS-FOR-GOAL $GOAL)))
+           (WHILE (? (~ (NULL @OPI)))
+              (IF (! (INTEND-AND-EXECUTE-AOP-FOR-GOAL (CAR @OPI) $GOAL))
+                 (! (PRINT "OK"))
+                 BREAK
+               ELSE
+                 (! (PRINT "failed this one"))
+                (! (= @OPI (CDR @OPI)))
+              )
+           )
+           (! (PRINT @X))
+          )
+    :effects ()
+)
+)

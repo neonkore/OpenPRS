@@ -1,0 +1,150 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% -*- Mode: latex -*- %%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Copyright (c) 1991-2003 Francois Felix Ingrand.
+%% All rights reserved.
+%%
+%% Redistribution and use in source and binary forms, with or without
+%% modification, are permitted provided that the following conditions
+%% are met:
+%%
+%%    - Redistributions of source code must retain the above copyright
+%%      notice, this list of conditions and the following disclaimer.
+%%    - Redistributions in binary form must reproduce the above
+%%      copyright notice, this list of conditions and the following
+%%      disclaimer in the documentation and/or other materials provided
+%%      with the distribution.
+%%
+%% THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+%% "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+%% LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+%% FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+%% COPYRIGHT HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+%% INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+%% BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+%% LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+%% CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+%% LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+%% ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+%% POSSIBILITY OF SUCH DAMAGE.
+%%
+%% $Id$
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\part{\OPC{}}
+\node{OP Compiler}
+
+\chapter*{Overview of the \OPC{}}
+\node{Overview of the OP Compiler}
+\cpindex{Overview of the \OPC{}}
+\cpindex{Introduction to the \OPC{}}
+
+
+The \OPC{}  is the program which compiles OP files (textual or graphical) in 
+\OPRS{} internal code. There are a number of good reasons to use such
+program:
+
+\begin{itemize}
+  
+\item it is nuch faster to reload compiled OPs than non compiled one (as the
+  kernel must compile them at loading time).
+
+\item the compiled code is portable, and can thus be reloaded on any
+  compatible \CPK{}.
+
+\item one needs to use compiled OPs if one has a \COPRSAE{}. Indeed,
+  \COPRSAE{} are runtime environment only and can only load OPs produced and
+  compiled in a \COPRSDE{}.
+
+\end{itemize}
+
+The \OPC{} is in fact a part of the \CPK{}, and most of the code thus shared 
+with the \CPK{}. 
+
+\chapter{How to Use the \OPC{}}
+\node{How to Use the OP Compiler}
+\cpindex{How to Use the \OPC{}}
+
+The \OPC{} is only part of the \COPRSDE{}. Moreover, if one produce \COPRS{}
+code for a \COPRSAE{}, one need to compile the OP before passing them to
+the\COPRSAE{}.
+
+\section{Argument of the \OPC{}}
+\node{Argument of the OP Compiler}
+\cpindex{Argument of the \OPC{}}
+
+Usage: \begin{verbatim}
+opc [-v] [-t] [-X] [-e]* [-o output-dopf]*
+    [-i command-file]* [-l input-opf]*
+    [-d imputdopf]* [-p oprs-data-path]* op-file*
+\end{verbatim}
+
+
+Most arguments are optional and can be used more than once. The order of the 
+argument is very important as they get executed in the ordre they are given.
+
+\begin{description}
+
+\item[\code{-v}] will produce verbose output.
+
+\item[\code{-t}] will compile ops in text mode.
+
+\item[\code{-X}] will compile ops in graphic mode, the default.
+
+\item[\code{-e}] will empty the internal op database.
+
+\item[\code{-o output-dopf}] will  the compiled op present in the op db in
+  the specified file.
+
+\item[\code{-i command-file}] will include an include .inc or symbol .sym file.
+
+\item[\code{-l input-opf}] will load a .opf file in the op db
+
+\item[\code{-d imputdopf}] will load a .dopf file in the op db.
+
+\item[\code{-p oprs-data-path}] will set the oprs-data-path (overiding any
+  previous value).
+
+\item[\code{op-file}] will empty the op db, load op-file and dump the compiled version.
+
+\end{description}
+
+\section{\OPC{} Environment Variables}
+\node{OP Compiler Environment Variables}
+\cpindex{OP Compiler Kernel Environment Variables}
+
+There is one environment variable which can be used to customize the \OPC{}.
+However, the argument passed using the command line has precedence on the one
+acquired from the environment variables.
+
+\begin{description}
+
+
+\cpindex{OPRS\_DATA\_PATH}
+\item[\code{OPRS\_DATA\_PATH}] is used  to specify a data path, i.e. a colon separated
+list of directories where the kernel will look for data files (\file{.inc},
+\file{.opf} and \file{.db}). It is used by the \CPK{} and the \XPK{}. It is
+equivalent to the \code{-p} command line argument. Note that the use of
+\code{-p} will overide any value previously set (with \code{OPRS\_DATA\_PATH} 
+or wih a previous \code{-p}).\*
+Example:
+\begin{verbatim}
+setenv OPRS_DATA_PATH ./data:/usr/local/oprs/data:${HOME}/data
+\end{verbatim}
+
+\end{description}
+
+\section{Using the \OPC{}}
+\node{Using the OP Compiler}
+\cpindex{Using the \OPC{}}
+
+\section{Errors Reported by the \OPC{}}
+\node{Errors Reported by the OP Compiler}
+\cpindex{Errors Reported by the \OPC{}}
+
+A certain number of errors can be reported by the \OPC{}.
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "oprs"
+%%% End: 

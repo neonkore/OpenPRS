@@ -1,0 +1,4 @@
+
+declare op_predicate sort-numbers
+declare op_predicate sort-small-big
+

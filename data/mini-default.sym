@@ -1,0 +1,6 @@
+declare function FORMAT
+declare op_predicate FAILED
+declare op_predicate PRINT
+declare op_predicate PRINT-LIST
+declare op_predicate PRINTF
+declare op_predicate SUCCEED

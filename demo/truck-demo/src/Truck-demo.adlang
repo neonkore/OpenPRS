@@ -1,0 +1,462 @@
+!!!!!!!!!!!!!!!!!!!!!!!!!!! -*- Mode: Fundamental -*- !!!!!!!!!!!!!!!!!!!!!!!!!
+!! Truck-demo.adlang -- 
+!! 
+!! $Id$
+!! 
+!! (c) Copyright 1992-2003 Francois Felix Ingrand.  
+!! All rights reserved. 
+!
+!   The software, data, and information contained herein are proprietary to,
+! and comprise valuable trade secrets of Francois Felix Ingrand, which intends to
+! keep such software, data, and information confidential and to preserve them
+! as trade secrets.  They are given in  confidence by Francois Felix Ingrand 
+! pursuant to a written license agreement, and may be used, copied, 
+! transmitted, and stored only in accordance with the terms of such license.
+! 
+!  Francois Felix Ingrand
+!  20, Chemin Michoun 
+!  31500 Toulouse
+!  FRANCE
+! 
+! RESTRICTED RIGHTS LEGEND
+!    Use, duplication, and disclosure by the Government are subject to 
+! restrictions as set forth in subdivision (c)(1)(ii) of the Rights in 
+! Technical Data and Computer Software Clause at DFAR 52.227-7013.  
+! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
+Truck-demo.language:lang.fr:			fr
+Truck-demo.language:lang.en:			en
+
+Truck-demo.height:	650
+Truck-demo.width:	850
+
+Truck-demo*background : gainsboro
+Truck-demo*foreground : black
+Truck-demo*controlBBoardFrame*background : LightSteelBlue2
+Truck-demo*controlBBoardFrame*foreground : Black
+Truck-demo*commandBBoardFrame*background : LightSteelBlue2
+Truck-demo*commandBBoardFrame*foreground : Black
+
+Truck-demo.talkbackBackground : gray75
+Truck-demo.barberBackground : yellow
+Truck-demo.barberForeground : OrangeRed1
+Truck-demo.red_light_onColor : red
+Truck-demo.red_light_offColor : red3
+Truck-demo.green_light_onColor :  Green
+Truck-demo.green_light_offColor : ForestGreen
+
+Truck-demo*fontList: fixed
+Truck-demo*defaultFontList: fixed
+Truck-demo*XmText.fontList: fixed
+
+!
+! Commands Menu
+!
+Truck-demo*commandsMenuFrame*shadowThickness: 2
+Truck-demo*commandsMenu*spacing:	5
+Truck-demo*commandsMenu*fontList: variable
+Truck-demo*quitDButton.labelString:lang.en:	\     Quit!
+Truck-demo*quitDButton.labelString:lang.fr:	\     Quitter
+Truck-demo*resetDButton.labelString:lang.en:	\     Reset 
+Truck-demo*resetDButton.labelString:lang.fr:	\     RAZ 
+Truck-demo*clearDButton.labelString:lang.en:	\  Clear Texts
+Truck-demo*clearDButton.labelString:lang.fr:	\  Effacer Texte
+Truck-demo*aloneDButton.labelString:lang.en:	\     Alone 
+Truck-demo*aloneDButton.labelString:lang.fr:	\     Seul 
+Truck-demo*mp_connectDButton.labelString:lang.en:	 Connect to M.P.
+Truck-demo*mp_connectDButton.labelString:lang.fr:	 Connexion au M.P.
+Truck-demo*oprs_connectDButton.labelString:lang.en: Connect to OPRS.
+Truck-demo*oprs_connectDButton.labelString:lang.fr: Connexion à OPRS.
+!
+! demo_quitQuestionDialog
+!
+Truck-demo*demo_quitQuestion.dialogTitle:lang.en: Quit Truck Demo
+Truck-demo*demo_quitQuestion.dialogTitle:lang.fr: Quitter Truck Demo
+Truck-demo*demo_quitQuestion.messageString:lang.en: Do you really want to quit?
+Truck-demo*demo_quitQuestion.messageString:lang.fr: Voulez vous réellement quitter?
+!
+! demo_resetQuestionDialog
+!
+Truck-demo*demo_resetQuestion.dialogTitle:lang.en: Reset Truck Demo
+Truck-demo*demo_resetQuestion.dialogTitle:lang.fr: RAZ Truck Demo
+Truck-demo*demo_resetQuestion.messageString:lang.en: Do you really want to reset the demo ?
+Truck-demo*demo_resetQuestion.messageString:lang.fr: Voulez vous réellement remettre à zéro la démo?
+!
+! clockBBoard
+!
+Truck-demo*clockBBoardsize.labelString:
+Truck-demo*clockBBoardsize.x:	135
+Truck-demo*clockBBoardsize.y:	280
+!
+Truck-demo*clockBBoard*shadowThickness: 2
+Truck-demo*clockBBoard*shadowType: XmSHADOW_IN
+Truck-demo*clockBBoard.XmBulletinBoard.marginHeight: 2
+Truck-demo*clockBBoard.XmBulletinBoard.marginWidth: 2
+Truck-demo*clockBBoard.XmBulletinBoard.height:	400
+Truck-demo*clockBBoard.XmBulletinBoard.width:	350
+!
+Truck-demo*clockBBoardlabel.labelString:lang.en: Clock
+Truck-demo*clockBBoardlabel.labelString:lang.fr: Heure
+Truck-demo*clockBBoardlabel*fontList: variable
+Truck-demo*clockBBoardlabel.x:	50
+Truck-demo*clockBBoardlabel.y:	240
+!
+Truck-demo*master_title_label.labelString:lang.en: Master:
+Truck-demo*master_title_label.labelString:lang.fr: Maitre:
+Truck-demo*master_title_label.x:	20
+Truck-demo*master_title_label.y:	15
+Truck-demo*master_label.labelString:
+Truck-demo*master_label*fontList: variable
+Truck-demo*master_label.x:	70
+Truck-demo*master_label.y:	15
+!
+Truck-demo*timer_title_label.labelString:lang.en: Time:
+Truck-demo*timer_title_label.labelString:lang.fr: Heure:
+Truck-demo*timer_title_label.x:	30
+Truck-demo*timer_title_label.y:	50
+Truck-demo*timer_label.labelString: 0
+Truck-demo*timer_label*fontList: variable
+Truck-demo*timer_label.x:	70
+Truck-demo*timer_label.y:	50
+!
+Truck-demo*speed_title_label.labelString:lang.en: Speed:
+Truck-demo*speed_title_label.labelString:lang.fr: Vitesse:
+Truck-demo*speed_title_label.x:	85
+Truck-demo*speed_title_label.y:	90
+Truck-demo*speed_label.labelString: 1.0
+Truck-demo*speed_label.x:	85
+Truck-demo*speed_label.y:	115
+!
+Truck-demo*speedMenu.x: 15
+Truck-demo*speedMenu.y: 85
+Truck-demo*speedFasterButton.labelString:lang.en: 	faster
+Truck-demo*speedFasterButton.labelString:lang.fr: 	+vite
+Truck-demo*speedSlowerButton.labelString:lang.en: 	slower
+Truck-demo*speedSlowerButton.labelString:lang.fr: 	-vite
+!
+Truck-demo*modeMenu.x: 50
+Truck-demo*modeMenu.y: 160
+Truck-demo*modeRunDButton.labelString:lang.en: 	run
+Truck-demo*modeRunDButton.labelString:lang.fr: 	marche
+Truck-demo*modeHaltDButton.labelString:lang.en: 	halt
+Truck-demo*modeHaltDButton.labelString:lang.fr: 	arrêt
+Truck-demo*modeRunDButton*fontList: variable
+Truck-demo*modeHaltDButton*fontList: variable
+!
+! commandBBoard
+!
+Truck-demo*commandBBoardsize.labelString:
+Truck-demo*commandBBoardsize.x:	450
+Truck-demo*commandBBoardsize.y:	130
+!
+Truck-demo*commandBBoard*shadowThickness: 2
+Truck-demo*commandBBoard.XmBulletinBoard.marginHeight: 2
+Truck-demo*commandBBoard.XmBulletinBoard.marginWidth: 2
+!
+Truck-demo*switch_valve_bb.x:	0
+Truck-demo*switch_valve_bb.y:	15
+Truck-demo*switch_valve_label.labelString:lang.en: Switch Valve
+Truck-demo*switch_valve_label.labelString:lang.fr: Inter. Vanne
+Truck-demo*switch_valve_label.x:	5
+Truck-demo*switch_valve_label.y:	10
+Truck-demo*switch_valve_Menu.x:	20
+Truck-demo*switch_valve_Menu.y:	30
+Truck-demo*switch_valve_openDButton.labelString:lang.en:	Open
+Truck-demo*switch_valve_openDButton.labelString:lang.fr:	Ouvert
+Truck-demo*switch_valve_closeDButton.labelString:lang.en:	Close
+Truck-demo*switch_valve_closeDButton.labelString:lang.fr:	Fermé
+Truck-demo*switch_valve_openDButton*fontList: variable
+Truck-demo*switch_valve_closeDButton*fontList: variable
+!
+Truck-demo*emergency_bb.x: 120
+Truck-demo*emergency_bb.y: 0
+Truck-demo*emergency_bb*shadowThickness: 0
+Truck-demo*emergency_bb*marginHeight: 0
+Truck-demo*emergency_bb*marginWidth: 0
+Truck-demo*emergency_Menu*shadowThickness: 0
+Truck-demo*emergency_Menu.x:28
+Truck-demo*emergency_Menu.y:40
+Truck-demo*emergency_stopDButton.labelString:lang.en: STOP
+Truck-demo*emergency_stopDButton.labelString:lang.fr: STOP
+Truck-demo*emergency_stopDButton*fontList: -*-courier-*-r-*--18-*
+! value for a form rather than a bb
+!*emergency_Menu.x:26 
+!*emergency_Menu.y:38
+!
+Truck-demo*queue_switch_bb.x:	250
+Truck-demo*queue_switch_bb.y:	15
+Truck-demo*queue_switch_label.labelString:lang.en:  \ Queue Light\ 
+Truck-demo*queue_switch_label.labelString:lang.fr:  \ Feu d'accès\ 
+Truck-demo*queue_switch_label.x:	5
+Truck-demo*queue_switch_label.y:	10
+Truck-demo*queue_switch_Menu.x:	25
+Truck-demo*queue_switch_Menu.y:	30
+Truck-demo*queue_switch_goDButton.labelString:lang.en:	\ Go
+Truck-demo*queue_switch_goDButton.labelString:lang.fr:	 Passer
+Truck-demo*queue_switch_stopDButton.labelString:lang.en:	Stop
+Truck-demo*queue_switch_stopDButton.labelString:lang.fr:	Stop
+Truck-demo*queue_switch_goDButton*fontList: variable
+Truck-demo*queue_switch_stopDButton*fontList: variable
+!
+Truck-demo*filling_switch_bb.x:	360
+Truck-demo*filling_switch_bb.y:	15
+Truck-demo*filling_switch_label.labelString:lang.en:  Filling Light
+Truck-demo*filling_switch_label.labelString:lang.fr:  Feu Départ
+Truck-demo*filling_switch_label.x:	5
+Truck-demo*filling_switch_label.y:	10
+Truck-demo*filling_switch_Menu.x:	25
+Truck-demo*filling_switch_Menu.y:	30
+Truck-demo*filling_switch_goDButton.labelString:lang.en:	\ Go
+Truck-demo*filling_switch_goDButton.labelString:lang.fr:	Passer
+Truck-demo*filling_switch_stopDButton.labelString:lang.en:	Stop
+Truck-demo*filling_switch_stopDButton.labelString:lang.fr:	Stop
+Truck-demo*filling_switch_goDButton*fontList: variable
+Truck-demo*filling_switch_stopDButton*fontList: variable
+!
+! controlBBoard
+!
+Truck-demo*controlBBoardsize.labelString:
+Truck-demo*controlBBoardsize.x:	450
+Truck-demo*controlBBoardsize.y:	140
+!
+Truck-demo*controlBBoard*shadowThickness: 2
+Truck-demo*controlBBoard.XmBulletinBoard.marginHeight: 2
+Truck-demo*controlBBoard.XmBulletinBoard.marginWidth: 2
+!
+Truck-demo*controlBBoardlabel1.labelString:lang.en:	Main Valve Control
+Truck-demo*controlBBoardlabel1.labelString:lang.fr:	Controle de Vanne
+Truck-demo*controlBBoardlabel1*fontList: variable
+Truck-demo*controlBBoardlabel1.x:	55
+Truck-demo*controlBBoardlabel1.y:	135
+Truck-demo*controlBBoardlabel2.labelString:lang.en:	Filling Control
+Truck-demo*controlBBoardlabel2.labelString:lang.fr:	Controle de remplissage
+Truck-demo*controlBBoardlabel2*fontList: variable
+Truck-demo*controlBBoardlabel2.x:	310
+Truck-demo*controlBBoardlabel2.y:	135
+!
+Truck-demo*sensor1_label.labelString:lang.en:	Talkback Sensor1
+Truck-demo*sensor1_label.labelString:lang.fr:	Capteur 1 Vanne
+Truck-demo*sensor1_label.x:	10
+Truck-demo*sensor1_label.y:	10
+Truck-demo*sensor1_valveMenuFrame.x: 35
+Truck-demo*sensor1_valveMenuFrame.y: 32
+Truck-demo*sensor1_openDButton.labelString:lang.en: 	\ Open
+Truck-demo*sensor1_openDButton.labelString:lang.fr: 	\ Ouvert
+Truck-demo*sensor1_movingDButton.labelString:lang.en: 	 ######
+Truck-demo*sensor1_movingDButton.labelString:lang.fr: 	 ######
+Truck-demo*sensor1_closeDButton.labelString:lang.en: 	 Close
+Truck-demo*sensor1_closeDButton.labelString:lang.fr: 	 Fermé
+!
+Truck-demo*sensor2_label.labelString:lang.en:	Talkback Sensor2
+Truck-demo*sensor2_label.labelString:lang.fr:	Capteur 2 Vanne
+Truck-demo*sensor2_label.x:	130
+Truck-demo*sensor2_label.y:	10
+Truck-demo*sensor2_valveMenuFrame.x: 155
+Truck-demo*sensor2_valveMenuFrame.y: 32
+Truck-demo*sensor2_openDButton.labelString:lang.en: 	\ Open
+Truck-demo*sensor2_openDButton.labelString:lang.fr: 	\ Ouvert
+Truck-demo*sensor2_movingDButton.labelString:lang.en: 	 ######
+Truck-demo*sensor2_movingDButton.labelString:lang.fr: 	 ######
+Truck-demo*sensor2_closeDButton.labelString:lang.en: 	Close
+Truck-demo*sensor2_closeDButton.labelString:lang.fr: 	Fermé
+!
+Truck-demo*filling_control_label.labelString:lang.en:	 Filling Talkback
+Truck-demo*filling_control_label.labelString:lang.fr:	 Capteur Remplissage
+Truck-demo*filling_control_label.x:	250
+Truck-demo*filling_control_label.y:	0
+Truck-demo*filling_controlMenuFrame.x:	275
+Truck-demo*filling_controlMenuFrame.y:	32
+Truck-demo*filling_control_fullDButton.labelString:lang.en: 	\ Full
+Truck-demo*filling_control_fullDButton.labelString:lang.fr: 	\ Plein
+Truck-demo*filling_control_fillingDButton.labelString:lang.en: 	 ######
+Truck-demo*filling_control_fillingDButton.labelString:lang.fr: 	 ######
+Truck-demo*filling_control_emptyDButton.labelString:lang.en: 	 Empty
+Truck-demo*filling_control_emptyDButton.labelString:lang.fr: 	 Vide
+!
+Truck-demo*truck_sensor_label.labelString:lang.en:  Truck in place\n Talkback
+Truck-demo*truck_sensor_label.labelString:lang.fr:  Capteur\nCamion en place
+Truck-demo*truck_sensor_label.x:	370
+Truck-demo*truck_sensor_label.y:	0
+Truck-demo*truck_sensorMenuFrame.x:	385
+Truck-demo*truck_sensorMenuFrame.y:	50
+Truck-demo*truck_sensor_busyDButton.labelString:lang.en:	\  yes \ 
+Truck-demo*truck_sensor_busyDButton.labelString:lang.fr:	oui
+Truck-demo*truck_sensor_freeDButton.labelString:lang.en:	\  no 
+Truck-demo*truck_sensor_freeDButton.labelString:lang.fr:	non
+!
+! fillingBBoard
+!
+!*fillingBBoardsize.labelString:lang.en: 
+!*fillingBBoardsize.labelString:lang.fr: 
+!*fillingBBoardsize.x:	600
+!*fillingBBoardsize.y:	220
+!
+Truck-demo*fillingBBoard*shadowThickness: 0
+Truck-demo*fillingBBoard*marginHeight: 0
+Truck-demo*fillingBBoard*marginWidth: 0
+!
+Truck-demo*fillingBBoardlabel.labelString:lang.en:	Filling Area
+Truck-demo*fillingBBoardlabel.labelString:lang.fr:	Zone remplissage
+Truck-demo*fillingBBoardlabel*fontList: variable
+Truck-demo*fillingBBoardlabel.x:	160
+Truck-demo*fillingBBoardlabel.y:	20
+!
+Truck-demo*queue_title_label.labelString:lang.en: Nb Trucks in Queue:
+Truck-demo*queue_title_label.labelString:lang.fr: Nb camions en attente:
+Truck-demo*queue_title_label.x:	85
+Truck-demo*queue_title_label.y:	190
+Truck-demo*queue_label.labelString: 0
+Truck-demo*queue_label*fontList: variable
+Truck-demo*queue_label.x:	205
+Truck-demo*queue_label.y:	190
+!
+Truck-demo*queued_truck_pix_label.x: 50
+Truck-demo*queued_truck_pix_label.y: 80
+!
+Truck-demo*valve_pix_label.x: 332
+Truck-demo*valve_pix_label.y: 0
+! filling_pix_label : valve x+= 68 y += 80
+Truck-demo*filling_pix_label.x: 400
+Truck-demo*filling_pix_label.y: 80
+! same x-y 
+Truck-demo*filling_truck_pix_label.x: 400
+Truck-demo*filling_truck_pix_label.y: 80
+!  tank_pix_label : filling x+=8 y += 11
+Truck-demo*tank_pix_label.x: 408
+Truck-demo*tank_pix_label.y: 91
+!
+Truck-demo*queue_light_pix_label.x: 230
+Truck-demo*queue_light_pix_label.y: 90
+Truck-demo*queue_light_stop_pix_label.x: 240
+Truck-demo*queue_light_stop_pix_label.y: 100
+Truck-demo*queue_light_go_pix_label.x: 240
+Truck-demo*queue_light_go_pix_label.y: 114
+!
+Truck-demo*filling_light_pix_label.x: 580
+Truck-demo*filling_light_pix_label.y: 90
+Truck-demo*filling_light_stop_pix_label.x: 590
+Truck-demo*filling_light_stop_pix_label.y: 100
+Truck-demo*filling_light_go_pix_label.x: 590
+Truck-demo*filling_light_go_pix_label.y: 114
+!
+! Text Windows
+!
+Truck-demo*editMode: XmMULTI_LINE_EDIT
+Truck-demo*scrollHorizontal: False
+Truck-demo*scrollLeftSide: False
+Truck-demo*editable: False
+Truck-demo*scrollingPolicy: XmAUTOMATIC
+Truck-demo*wordWrap: True
+! same rows number for attachment
+Truck-demo*rows : 5
+!
+Truck-demo*messageTextWindow*columns: 35
+Truck-demo*messageWindowForm*marginHeight: 0
+Truck-demo*messageWindowForm*marginWidth: 0
+Truck-demo*messageWindow_Menu*shadowThickness: 1
+Truck-demo*messageWindow_clearDButton.labelString:lang.en: clear
+Truck-demo*messageWindow_clearDButton.labelString:lang.fr: Effacer
+!*messageWindow_clearDButton*fontList: -*-courier-*-r-*--8-*
+!
+Truck-demo*warningTextWindow*columns: 40
+Truck-demo*warningWindowForm*marginHeight: 0
+Truck-demo*warningWindowForm*marginWidth: 0
+Truck-demo*warningWindow_Menu*shadowThickness: 1
+Truck-demo*warningWindow_clearDButton.labelString:lang.en: clear
+Truck-demo*warningWindow_clearDButton.labelString:lang.fr: Effacer
+!*warningWindow_clearDButton*fontList: -*-courier-*-r-*--8-*
+!
+Truck-demo*oprsTextWindow*columns: 50
+Truck-demo*oprsWindowForm*marginHeight: 0
+Truck-demo*oprsWindowForm*marginWidth: 0
+Truck-demo*oprsWindow_Menu*shadowThickness: 1
+Truck-demo*oprsWindow_clearDButton.labelString:lang.en: clear
+Truck-demo*oprsWindow_clearDButton.labelString:lang.fr: Effacer
+!*oprsWindow_clearDButton*fontList: -*-courier-*-r-*--8-*
+!
+! errorBBoard
+!
+Truck-demo*errorBBoardsize.labelString:
+Truck-demo*errorBBoardsize.x:	200
+Truck-demo*errorBBoardsize.y:	550
+!
+Truck-demo*errorBBoard*shadowThickness: 2
+Truck-demo*errorBBoard*marginHeight: 2
+Truck-demo*errorBBoard*marginWidth: 2
+!
+Truck-demo*errorBBoardlabel1.labelString:lang.en: Error BBoard
+Truck-demo*errorBBoardlabel1.labelString:lang.fr: Tableau Erreur
+Truck-demo*errorBBoardlabel1*fontList: variable
+Truck-demo*errorBBoardlabel1.x:	50
+Truck-demo*errorBBoardlabel1.y:	10
+!
+!*valve_option_frame*shadowThickness: 2
+!*valve_option_form*shadowThickness: 2
+Truck-demo*valve_option_form.x : 20
+Truck-demo*valve_option_form.y : 35
+Truck-demo*valve_option_form.width: 150
+Truck-demo*valve_option_form.height: 60
+Truck-demo*valve_option_label.labelString:lang.en: Valve Time Response
+Truck-demo*valve_option_label.labelString:lang.fr: Temps Réponse Vanne
+Truck-demo*valve_option_label.x : 5
+Truck-demo*valve_option_label.y : 5
+Truck-demo*valve_option_Menu.x: 5
+Truck-demo*valve_option_Menu.y: 25
+!
+Truck-demo*sensor1_option_form.x : 20
+Truck-demo*sensor1_option_form.y : 100
+Truck-demo*sensor1_option_form.width: 150
+Truck-demo*sensor1_option_form.height: 60
+Truck-demo*sensor1_option_label.labelString:lang.en: Sensor1 Time Checking
+Truck-demo*sensor1_option_label.labelString:lang.fr: Périod Vérif. Capt. 1
+Truck-demo*sensor1_option_label.x : 5
+Truck-demo*sensor1_option_label.y : 5
+Truck-demo*sensor1_option_Menu.x: 5
+Truck-demo*sensor1_option_Menu.y: 25
+!
+Truck-demo*sensor2_option_form.x : 20
+Truck-demo*sensor2_option_form.y : 165
+Truck-demo*sensor2_option_form.width: 150
+Truck-demo*sensor2_option_form.height: 60
+Truck-demo*sensor2_option_label.labelString:lang.en: Sensor2 Time Checking
+Truck-demo*sensor2_option_label.labelString:lang.fr: Périod Vérif. Capt. 2
+Truck-demo*sensor2_option_label.x : 5
+Truck-demo*sensor2_option_label.y : 5
+Truck-demo*sensor2_option_Menu.x: 5
+Truck-demo*sensor2_option_Menu.y: 25
+!
+Truck-demo*filling_option_form.x : 20
+Truck-demo*filling_option_form.y : 230
+Truck-demo*filling_option_form.width: 150
+Truck-demo*filling_option_form.height: 110
+Truck-demo*full_option_label.labelString:lang.en: Full Value
+Truck-demo*full_option_label.labelString:lang.fr: Remplissage
+Truck-demo*full_option_label.x : 5
+Truck-demo*full_option_label.y : 5
+Truck-demo*full_option_Menu.x: 5
+Truck-demo*full_option_Menu.y: 25
+!
+Truck-demo*delay_option_label.labelString:lang.en: Filling Delay
+Truck-demo*delay_option_label.labelString:lang.fr: Temps de remplissage
+Truck-demo*delay_option_label.x : 5
+Truck-demo*delay_option_label.y : 55
+Truck-demo*delay_option_Menu.x: 5
+Truck-demo*delay_option_Menu.y: 75
+!
+Truck-demo*sensor_truck_MenuFrame.x: 50
+Truck-demo*sensor_truck_MenuFrame.y: 460
+!
+Truck-demo*fillingSlider*orientation: vertical
+Truck-demo*fillingSlider*processingDirection: max_on_top
+Truck-demo*fillingSlider*scaleHeight: 100
+Truck-demo*fillingSlider*scaleWidth: 20
+Truck-demo*fillingSlider.x: 70
+Truck-demo*fillingSlider.y: 350
+!
+! Generic strings...
+!
+*.Cancel.labelString:lang.fr:		Annuler
+*.Help.labelString:lang.fr:		Aide
+*.Apply.labelString:lang.fr:		Appliquer

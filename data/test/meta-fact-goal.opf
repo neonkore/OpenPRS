@@ -1,0 +1,294 @@
+;;;
+;;; File: /opt/oprs/oprs-1.3/src/data/test/meta-fact-goal.opf
+;;; $Id$
+;;; Date: Fri Dec  1 16:10:59 1995
+;;; Host: pif
+;;; OP Editor Version: 1.3.3 Beta
+;;; Compiled on pif (Fri Dec  1 14:55:21 MET 1995)
+;;; OP File Format: 2
+;;; OP Editor CheckSum: 2822
+;;;
+(2 
+(
+)
+(|Iterative Factorial| (
+(INVOCATION INVOCATION (! (FACTORIAL $N $RESULT)) 11 41 1 80 0 )
+(CONTEXT CONTEXT  10 110 0 60 0 )
+(SETTING SETTING  10 210 0 60 0 )
+(EFFECTS EFFECTS  10 310 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "This OP  computes the Factorial of $n and unifies the result with $result.
+ It uses an iterative algorithm operating on local variables.
+Note the RECRUSIVE NIL property which will be used by the
+Meta level OP." 10 410 1 60 0 )
+(PROPERTIES PROPERTIES ((RECURSIVE NIL)) 10 360 1 60 0 )
+) (
+(PROCESS S1 0 0 364 161)
+(PROCESS S6 0 0 551 162)
+(END END1 0 0 189 329)
+(START START 0 1 237 35)
+(IF N0 0 0 320 261)
+(THEN N0_T 0 0 306 261)
+(ELSE N0_F 0 0 341 261)
+(PROCESS N3 1 0 245 161)
+) (
+(GOAL S6 NN S1
+(! (= @TMP (- @TMP 1)))
+()  11 -6 40 0)
+(THEN N0 NN N0_T)
+(ELSE N0 NN N0_F)
+(IF S1 NN N0
+(? (<= @TMP 1))
+()  27 -16 40 0)
+(GOAL N0_T NN END1
+(! (= $RESULT @RES))
+((206 270) )  28 1 40 0)
+(GOAL N0_F NN S6
+(! (= @RES (* @RES @TMP)))
+((561 270) )  0 1 40 0)
+(IF N3 NN N0
+(? (<= @TMP 1))
+()  -23 -16 40 0)
+(GOAL START NN N3
+(! (= @TMP $N))
+((194 107) )  0 6 40 0)
+(GOAL START NN N3
+(! (= @RES 1))
+((318 105) )  9 11 40 0)
+) )
+(|Iterative Foo| (
+(INVOCATION INVOCATION (FOO $N) 11 41 1 80 0 )
+(CONTEXT CONTEXT  10 110 0 60 0 )
+(SETTING SETTING  10 210 0 60 0 )
+(EFFECTS EFFECTS  10 310 0 60 0 )
+(DOCUMENTATION DOCUMENTATION  10 410 1 60 0 )
+(PROPERTIES PROPERTIES ((RECURSIVE NIL)) 10 360 1 60 0 )
+) (
+(PROCESS S1 0 0 320 156)
+(END END1 0 0 189 329)
+(START START 0 0 309 36)
+(IF N0 0 0 320 261)
+(THEN N0_T 0 0 306 261)
+(ELSE N0_F 0 0 341 261)
+) (
+(GOAL START NN S1
+(! (= @TMP $N))
+()  0 0 40 0)
+(GOAL N0_F NN S1
+(! (= @TMP (- @TMP 1)))
+((476 270) (476 165) )  47 -2 40 0)
+(GOAL N0_T NN END1
+(! (PRINT "Done Iterative."))
+((206 270) )  -18 29 40 0)
+(IF S1 NN N0
+(? (<= @TMP 1))
+()  -1 -3 40 0)
+(ELSE N0 NN N0_F)
+(THEN N0 NN N0_T)
+) )
+(|Meta Factorial Fact| (
+(INVOCATION INVOCATION (APPLICABLE-OPS-FACT $FACT $X) 16 37 1 80 0 )
+(CONTEXT CONTEXT (& (EQUAL (LENGTH $X) 2)
+     (== (FACT-STATEMENT $FACT) (FOO $PAR1))) 9 109 1 60 0 )
+(SETTING SETTING  10 210 0 60 0 )
+(EFFECTS EFFECTS  10 310 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "This Meta OP chooses which Factorial OP to intend according
+to the presence or not of the recursive property on the
+applicable OPs. 
+Do not use this Meta OP in other applications." 9 462 1 60 0 )
+(PROPERTIES PROPERTIES ((DECISION-PROCEDURE T)) 9 360 1 60 0 )
+) (
+(END END1 0 0 369 412)
+(END END2 0 0 686 503)
+(PROCESS N5 0 0 377 328)
+(PROCESS S7 0 0 693 339)
+(START START 0 0 283 27)
+(END END3 0 0 695 246)
+(IF N0 0 0 295 126)
+(THEN N0_T 0 0 281 126)
+(ELSE N0_F 0 0 316 126)
+(IF N6 0 0 503 180)
+(THEN N6_T 0 0 489 180)
+(ELSE N6_F 0 0 524 180)
+) (
+(GOAL S7 NN END2
+(! (INTENDED-OP (SECOND $X)))
+()  -5 11 40 0)
+(GOAL N5 NN END1
+(! (INTENDED-OP (FIRST $X)))
+()  1 -12 40 0)
+(THEN N0 NN N0_T)
+(ELSE N0 NN N0_F)
+(IF START NN N0
+(? (PREFER-ITERATIVE))
+()  0 0 40 0)
+(GOAL N0_T NN S7
+(? (PROPERTY-P RECURSIVE (FIRST $X)))
+((220 328) (330 470) (547 470) )  -98 -132 40 0)
+(GOAL N6_T NN S7
+(? (~ (PROPERTY-P
+          RECURSIVE (FIRST $X))))
+()  49 29 40 0)
+(GOAL N6_T NN N5
+(? (PROPERTY-P
+       RECURSIVE (FIRST $X)))
+()  25 -3 30 0)
+(IF N0_F NN N6
+(? (PREFER-RECURSIVE))
+((513 135) )  -60 -2 40 0)
+(ELSE N6 NN N6_F)
+(THEN N6 NN N6_T)
+(GOAL N6_F NN END3
+(! (INTENDED-OP (SELECT-RANDOMLY $X)))
+((711 189) )  -46 0 40 0)
+(GOAL N0_T NN N5
+(? (~ (PROPERTY-P
+          RECURSIVE (FIRST $X))))
+()  34 -24 40 0)
+) )
+(|Meta Factorial Goal| (
+(INVOCATION INVOCATION (APPLICABLE-OPS-GOAL $GOAL $X) 24 44 1 80 0 )
+(CONTEXT CONTEXT (& (EQUAL (LENGTH $X) 2)
+     (== (GOAL-STATEMENT $GOAL)
+         (! (FACTORIAL $PAR1 $PAR2)))
+     (> $PAR1 10)) 9 109 1 60 0 )
+(SETTING SETTING  10 210 0 60 0 )
+(EFFECTS EFFECTS  10 310 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "This Meta OP chooses which Factorial OP to intend according
+to the presence or not of the recursive property on the
+applicable OPs. 
+Do not use this Meta OP in other applications." 9 462 1 60 0 )
+(PROPERTIES PROPERTIES ((DECISION-PROCEDURE T)) 9 360 1 60 0 )
+) (
+(END END1 0 0 369 412)
+(END END2 0 0 686 503)
+(PROCESS N5 0 0 377 328)
+(PROCESS S7 0 0 693 339)
+(START START 0 0 283 27)
+(END END3 0 0 695 246)
+(IF N0 0 0 295 126)
+(THEN N0_T 0 0 281 126)
+(ELSE N0_F 0 0 316 126)
+(IF N6 0 0 503 180)
+(THEN N6_T 0 0 489 180)
+(ELSE N6_F 0 0 524 180)
+) (
+(GOAL N0_T NN N5
+(? (~ (PROPERTY-P
+          RECURSIVE (FIRST $X))))
+()  34 -24 40 0)
+(GOAL N6_F NN END3
+(! (INTENDED-OP (SELECT-RANDOMLY $X)))
+((711 189) )  -46 0 40 0)
+(THEN N6 NN N6_T)
+(ELSE N6 NN N6_F)
+(IF N0_F NN N6
+(? (PREFER-RECURSIVE))
+((513 135) )  -60 -2 40 0)
+(GOAL N6_T NN N5
+(? (PROPERTY-P
+       RECURSIVE (FIRST $X)))
+()  25 -3 30 0)
+(GOAL N6_T NN S7
+(? (~ (PROPERTY-P
+          RECURSIVE (FIRST $X))))
+()  49 29 40 0)
+(GOAL N0_T NN S7
+(? (PROPERTY-P RECURSIVE (FIRST $X)))
+((220 328) (330 470) (547 470) )  -98 -132 40 0)
+(IF START NN N0
+(? (PREFER-ITERATIVE))
+()  0 0 40 0)
+(ELSE N0 NN N0_F)
+(THEN N0 NN N0_T)
+(GOAL N5 NN END1
+(! (INTENDED-OP (FIRST $X)))
+()  1 -12 40 0)
+(GOAL S7 NN END2
+(! (INTENDED-OP (SECOND $X)))
+()  -5 11 40 0)
+) )
+(|Print Factorial| (
+(INVOCATION INVOCATION (! (PRINT-FACTORIAL $X)) 12 74 1 80 0 )
+(CONTEXT CONTEXT  15 131 0 60 0 )
+(SETTING SETTING  10 210 0 60 0 )
+(EFFECTS EFFECTS  10 310 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "This OP just looks for the factorial of $x and prints the result." 10 410 1 60 0 )
+(PROPERTIES PROPERTIES  10 360 0 60 0 )
+) (
+(START START 0 0 272 134)
+(PROCESS S1 0 0 282 208)
+(END END1 0 0 275 341)
+) (
+(GOAL START NN S1
+(! (FACTORIAL $X $N))
+()  0 -6 40 0)
+(GOAL S1 NN END1
+(! (PRINT-LIST
+       (FORMAT
+           NIL
+           "The Factorial of ~a is ~a.\n"
+           $X
+           $N)))
+()  51 -9 40 0)
+) )
+(|Recursive Factorial| (
+(INVOCATION INVOCATION (! (FACTORIAL $N $RESULT)) 11 46 1 80 0 )
+(CONTEXT CONTEXT  10 110 0 60 0 )
+(SETTING SETTING  10 210 0 60 0 )
+(EFFECTS EFFECTS  10 310 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "This OP computes the Factorial of $n in a recursive manner.
+Note the RECURSIVE T property which will be used by the 
+Meta OP to decide which OP to intend." 10 410 1 60 0 )
+(PROPERTIES PROPERTIES ((RECURSIVE T)) 10 360 1 60 0 )
+) (
+(START START 0 0 315 97)
+(PROCESS S4 0 0 422 234)
+(END END1 0 0 224 260)
+(END END2 0 0 417 310)
+(IF N1 0 0 326 175)
+(THEN N1_T 0 0 312 175)
+(ELSE N1_F 0 0 347 175)
+) (
+(GOAL S4 NN END2
+(! (= $RESULT (* $N $RES2)))
+()  40 -6 40 0)
+(THEN N1 NN N1_T)
+(ELSE N1 NN N1_F)
+(IF START NN N1
+(? (<= $N 1))
+()  0 0 40 0)
+(GOAL N1_T NN END1
+(! (= $RESULT $N))
+((240 183) )  -3 29 40 0)
+(GOAL N1_F NN S4
+(! (FACTORIAL (- $N 1) $RES2))
+((432 183) )  54 23 40 0)
+) )
+(|Recursive Foo| (
+(INVOCATION INVOCATION (FOO $N) 11 46 1 80 0 )
+(CONTEXT CONTEXT  10 110 0 60 0 )
+(SETTING SETTING  10 210 0 60 0 )
+(EFFECTS EFFECTS  10 310 0 60 0 )
+(DOCUMENTATION DOCUMENTATION  10 410 1 60 0 )
+(PROPERTIES PROPERTIES ((RECURSIVE T)) 10 360 1 60 0 )
+) (
+(START START 0 0 315 97)
+(END END2 0 0 415 260)
+(END END1 0 0 224 260)
+(IF N1 0 0 326 175)
+(THEN N1_T 0 0 312 175)
+(ELSE N1_F 0 0 347 175)
+) (
+(GOAL N1_F NN END2
+(=> (FOO (- $N 1)))
+((432 183) )  48 29 40 0)
+(GOAL N1_T NN END1
+(! (PRINT "Done."))
+((240 183) )  46 29 40 0)
+(IF START NN N1
+(? (<= $N 1))
+()  0 0 40 0)
+(ELSE N1 NN N1_F)
+(THEN N1 NN N1_T)
+) )
+)

@@ -1,0 +1,75 @@
+;;;
+;;; File: /home/felix/C/LAAS/oprs/data/new-meta-selector2.opf
+;;; $Id$
+;;; Date: Fri Oct  7 15:43:58 1994
+;;; Host: shems
+;;; OP Editor Version : 1.3.1 Beta
+;;; Compiled on hill (Fri Sep 23 16:43:55 MET DST 1994)
+;;; OP File Format: 2
+;;;
+(2 
+(
+)
+(|Meta Selector (facts preferred and ordered)| (
+(INVOCATION INVOCATION (SOAK $X) 11 46 1 80 0 )
+(CONTEXT CONTEXT (|| (> (LENGTH $X) 1)
+    (AND (EQUAL (LENGTH $X) 1)
+         (IS-FACT-INVOKED (FIRST $X))
+         (NOT-AN-INSTANCE-OF-ME (FIRST $X)))) 3 100 1 60 0 )
+(SETTING SETTING  10 210 0 60 0 )
+(EFFECTS EFFECTS  10 310 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "This Meta OP is used whenever there are one or more than
+one OP applicable. If there are fact invoked OPs, they
+are all intended (and the goal invoked OPs are discarded), otherwise
+it will randomly choose one of the goal invoked OPs. 
+It intends the fact-invoked-ops which are decision-procedure
+as root of the graph, and the other ones after the already 
+intended op-instance which are decision procedure." 11 328 1 60 0 )
+(PROPERTIES PROPERTIES ((DECISION-PROCEDURE T)) 11 247 1 60 0 )
+) (
+(END END1 0 0 631 519)
+(PROCESS N18 0 0 635 449)
+(PROCESS N17 0 0 632 370)
+(PROCESS N9 0 0 636 289)
+(END END2 0 0 314 278)
+(PROCESS N8 0 0 634 229)
+(PROCESS N1 0 0 485 100)
+(START START 0 0 474 30)
+(IF N0 0 0 485 171)
+(THEN N0_T 0 0 471 171)
+(ELSE N0_F 0 0 506 171)
+) (
+(GOAL START |E7750| N1
+(ACHIEVE (= $F (CURRENT (FACT-INVOKED-OPS-OF $X))))
+()  8 -7 80 0)
+(GOAL N8 E4 N9
+(ACHIEVE (= $R (LIST-DIFFERENCE $F $DECISION-PROCEDURES)))
+()  52 -4 60 0)
+(GOAL N9 E10 N17
+(ACHIEVE (= $INTENDED-DECISION-PROCEDURES
+            (GET-INTENDED-DECISION-PROCEDURES)))
+()  21 -11 60 0)
+(GOAL N17 E0 N18
+(ACHIEVE (INTENDED-ALL-OPS-AFTER
+             $R $INTENDED-DECISION-PROCEDURES))
+()  17 -8 60 0)
+(GOAL N18 E12 END1
+(ACHIEVE (INTENDED-ALL-OPS-AS-ROOT
+             $DECISION-PROCEDURES))
+()  -21 -10 40 0)
+(THEN N0 E1 N0_T)
+(ELSE N0 E2 N0_F)
+(IF N1 E6 N0
+(TEST (NULL $F))
+()  1 -8 40 0)
+(GOAL N0_T E7 END2
+(ACHIEVE (INTENDED-OP
+             (CURRENT
+                 (SELECT-RANDOMLY $X))))
+((331 180) )  4 25 40 0)
+(GOAL N0_F E8 N8
+(ACHIEVE (= $DECISION-PROCEDURES
+            (GET-THE-DECISION-PROCEDURES-OF $F)))
+((644 180) )  33 7 60 0)
+) )
+)

@@ -1,0 +1,373 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% -*- Mode: latex -*- %%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Copyright (c) 1991-2003 Francois Felix Ingrand.
+%% All rights reserved.
+%%
+%% Redistribution and use in source and binary forms, with or without
+%% modification, are permitted provided that the following conditions
+%% are met:
+%%
+%%    - Redistributions of source code must retain the above copyright
+%%      notice, this list of conditions and the following disclaimer.
+%%    - Redistributions in binary form must reproduce the above
+%%      copyright notice, this list of conditions and the following
+%%      disclaimer in the documentation and/or other materials provided
+%%      with the distribution.
+%%
+%% THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+%% "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+%% LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+%% FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+%% COPYRIGHT HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+%% INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+%% BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+%% LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+%% CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+%% LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+%% ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+%% POSSIBILITY OF SUCH DAMAGE.
+%%
+%% $Id$
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\part{Overview}
+\node{Overview}
+
+
+
+\chapter*{Overview of the \COPRSDE{}}
+\node{Overview of the OPRS Development Environment}
+\cpindex{Overview of the OPRS Development Environment}
+\cpindex{OPRS Development Environment Overview}
+
+
+The \COPRSDE{} is a set of programs designed to help users create applications using 
+Procedural Reasoning \cite{Ingrand-Rao-92}. The concept of
+Procedural Reasoning appeared a few years ago at SRI International in Menlo Park,
+California. To date, it has been the subject of many research projects and numerous 
+publications have been written on this new programming
+paradigm (see Bibliography \pageref{bibliography}).
+
+\COPRSDE{} is, to our knowledge, the first complete Procedural Reasoning
+development environment written in C and available under Unix. Its graphic
+interface is based on MIT's X Window version 11 ( X11), and
+Open Software Foundation's Motif widget set (Motif).
+It is the first implementation of \OPRS{} intended as a
+complete software product and environment, unlike other previous versions
+which were research prototypes usually written in different Lisp dialects.
+
+
+
+\section{What is Procedural Reasoning?}
+\node{What is Procedural Reasoning?}
+\cpindex{What is Procedural Reasoning?}
+\cpindex{Procedural Reasoning}
+
+Procedural Reasoning is a set of tools and methods representing and executing
+plans and procedures. These plans or procedures are conditional sequences of
+actions which can be run to achieve given goals or to react in particular
+situations. Procedural Reasoning differs from other commonly used knowledge
+representation (rules, frames, etc.)
+
+To a degree, procedural representation is a trade-off between purely
+declarative representations and strictly imperative representations. Declarative 
+representations suffer from a lack of control on the execution of their rules, imperative
+suffer from limited modularity. Procedural Reasoning is particularly well suited
+for problems where implicit or explicit knowledge is already formalized as
+procedures or plans. The control information (i.e. the sequence of actions and
+tests) embedded in these procedures or plans is actually preserved.
+
+\section{Overall Description of \COPRS{}}
+\node{Overall Description of OPRS}
+\cpindex{Overall Description of OPRS}
+
+The C Procedural Reasoning System (\COPRS{}) is a generic architecture for
+representing and reasoning about actions and procedures in a dynamic domain. It
+has been applied to various tasks with real-time demands, including malfunction
+monitoring for different subsystems of NASA's space shuttle
+\cite{Georgeff-Ingrand90-a}, the diagnosis, monitoring and control of
+telecommunications networks \cite{Wesley91}, the control of  mobile robots
+\cite{Revillod92} and system control for a surveillance aircraft
+\cite{Ingrand89}.
+
+\figuregif[scale=1]{global-arch}{OPRS Global Architecture}{global-arch}
+
+As shown in Figure \ref{global-arch}, the architecture of a \CPK{} consists of
+(1) a database containing the system of current beliefs about the world; (2) a
+library of plans (or procedures), called Knowledge Areas (OPs), that describe
+particular sequences of actions and tests that may be performed to achieve
+given goals or to react to certain situations; and (3) an intention graph,
+consisting of a [partially] ordered set of all plans chosen for execution at
+runtime. An interpreter (inference mechanism) manipulates these components,
+selecting an appropriate plan (OP) based on system beliefs and goals, placing
+those selected OPs on the intention structure, and finally executing them.
+
+The \CPK{} interacts with its environment through its database, which
+acquires new beliefs in response to changes in the environment, and through the
+actions it performs as it carries out its intentions. Different instances
+of \COPRS{}, running asynchronously, can be used in an application that requires
+the cooperation of more than one subsystem.
+
+In \COPRS{}, goals are descriptions of desired tasks or behaviors. In the
+logic used by \COPRS{}, the goal to achieve a certain condition \code{C} is
+written as \code{(! C)}; the test for a condition  is written as \code{(? C)};
+to wait until the condition is true is written as \code{(\^{} C)}; to passively
+maintain \code{C} is written as \code{(\# C)}; to actively maintain \code{C} is
+written as \code{(\% C)}; to assert the condition \code{C} is written as
+\code{(=> C)}; and to retract the condition \code{C} is written as \code{(~>
+C)}. For example, the goal to close valve \code{v1} could be represented as
+\code{(! (position v1 cl))}, and to test for it being closed as \code{(?
+(position v1 cl))}.
+
+Knowledge about how to accomplish given goals or to react to certain situations
+is represented in \COPRS{} by declarative procedure specifications called
+\dfn{Knowledge Areas} (OPs). Each OP consists of a \dfn{body}, which describes
+the steps of the procedure, and an \dfn{invocation condition}, which specifies
+under which situations the OP is useful. Together, the invocation condition and
+body of a OP express a declarative fact about the results and utility of
+performing certain sequences of actions under certain conditions
+\cite{Georgeff-Lansky86-a}.
+
+The set of OPs in a \COPRS{} application system not only consists of procedural
+knowledge about a specific domain, but also includes \dfn{meta level} OPs ---
+that is, information about the manipulation of the beliefs, goals, and
+intentions of \COPRS{} itself. For example, typical meta level OPs encode various
+methods for choosing among multiple applicable Ops. They determine how to achieve
+a conjunction or disjunction of goals, and compute the amount of additional
+reasoning that can be undertaken, given the real-time constraints of the
+problem domain. In achieving this, meta level OPs make use of information
+about Ops that are contained in the system database or in the property slots of
+the OP structures.
+
+\COPRS{} has several features that make it particularly powerful as a
+situated reasoning system, including: (1) the semantics of its plan (procedure)
+representation, which is important for verification and maintenance; (2) its
+ability to construct and act upon partial (rather than complete) plans; (3) its
+ability to pursue goal-directed tasks while at the same time be responsive
+to changing patterns of events in bound time; (4) its facilities for managing
+multiple tasks in real-time; (5) its default mechanisms for handling stringent
+real-time demands of its environment; and (6) its meta level (or reflective)
+reasoning capabilities. Some of these features have been discussed in earlier
+reports and papers
+\cite{Georgeff-Ingrand89,Georgeff-Ingrand90-b,Georgeff-Ingrand90-a}.
+
+\section{Example of Procedure/OP in \COPRS{}}
+\node{Example of Procedure/OP in OPRS}
+\cpindex{Example of Procedure/OP in \COPRS{}}
+
+The procedure or OP which is presented on Figure \ref{fig-proc1-fig}
+belongs to a library of procedures in the control and supervision of a tank
+truck filling station. Its goal is to appropriately close or open the filling
+valve. To control the proper execution, it monitors two position sensors placed
+on the valve. It generates an emergency stop of the
+station in case of malfunction.
+
+\figuregif[scale=0.5]{move-valve-op-exp}{Example of a OP}{fig-proc1-fig}
+
+The points shown on the figure \ref{fig-proc1-fig} are now presented and
+developed:
+
+\begin{enumerate}
+
+\item The \dfn{name} of the procedure allows the user to designate it in the
+different selection menus of the system.
+
+\item The \dfn{invocation part} specifies which goals or which events may make it
+applicable. This particular procedure is applicable whenever the system has the
+goal to put the valve in position \code{\$X} (\code{\$X} is a variable which can take two
+values: ``open'' or ``closed'', which will be known at run-time).
+
+\item The \dfn{context part} further specifies the conditions of applicability of
+the procedure. In this case, it will determine the acceptable response delays
+on the valve position sensors.
+
+\item The \dfn{effects part} specifies the facts you want to add or retract
+from the database upon successful execution of the procedure. Here, if the
+procedure successfully executes, it will conclude the new position of the valve
+in the database.
+
+\item The \dfn{documentation} field is self explanatory.
+  
+  Then, there is the ``procedural'' part which specifies the sequence of tests
+  and actions to evaluate when the procedure is executed.
+  
+\item The ``\code{START}'' node is the starting point of the procedure. To
+successfully execute a procedure, one must satisfy all the actions and
+conditions which lead to an ``\code{END}'' node. This is done by jumping from node to
+node, while satisfying the condition which label the edge connecting this two
+nodes. For the ``Move Valve'' procedure, the first action to be done is to put
+the ``switch'' in the proper position: \code{\$X}. There is only one node
+``\code{START}'' in a procedure.
+
+\item There can be more than one outgoing edge from a specific node. In
+this case, the system will try to satisfy one condition after another. As soon as a condition 
+is satisfied, we can make the transition to the pointed
+node.
+
+\item Execution proceeds from node to node until it reach an ``\code{END}'' node.
+When one ``\code{END}'' node is reached, the execution of the procedure is
+considered successful. If it was goal invoked, then this goal is
+considered  achieved. In our case, the valve will  indeed be in
+position \code{\$X}. If no ``\code{END}'' node can be reached, then the execution is
+considered to be failed, and the goal to be achieved remains to
+be satisfied.
+
+\end{enumerate}
+
+In a typical \COPRS{} application, one defines a library of such procedures and
+OPs. These procedures are then loaded in a \CPK{} which will execute them
+whenever they are applicable, e.g., when their invocation and context parts are
+true.
+
+\section{The \COPRSDE{}}
+\node{The OPRS Development Environment}
+\cpindex{The \COPRSDE{}}
+
+The \COPRS{} Development Environment is designed to allow the user to implement
+applications in control and supervision of complex systems, automatic execution
+of predefined procedures, etc. Thanks to its modular architecture, it is easy
+to integrate an application developed with \COPRS{} in already existing systems.
+
+\figuregif[]{oprsde}{\COPRSDE{}}{fig-oprsde}
+
+The \COPRS{} Development Environment is composed of different programs and
+modules:
+
+\begin{itemize}
+
+\item A \OPE{}, which enables the user to create, edit and modify its
+application procedures.
+
+\item A \OPRSS{}, which enables the user to asynchronously manages a
+number of \CPK{}s and \XPK{}s.
+
+\item A \MP{} , which is the module which enable an application and external
+modules to communicate with the different kernels of the \COPRS{} application.
+
+\item Some \CPK{}s and \XPK{}s, which execute the procedures of your
+application.
+
+\end{itemize}
+
+A \COPRS{} application is organized around a ``\MP{}'' module and a
+``\OPRSS{}'' module, which constitute, the licensing unit of the \COPRSDE{}.
+However, one can run as many \CPK{}s or \XPK{}s as required by the application on any 
+machine of the network.
+
+\section{The \COPRSAE{}}
+\node{The OPRS Application Environment}
+\cpindex{The \COPRSAE{}}
+
+The \COPRSAE{}  is designed to run \COPRS{} applications developed under the
+\COPRSDE{}. It allows the user to execute the procedures exactly as they are
+executed in the \COPRSDE{}. However, it does not allow the user to modify or
+edit the existing procedures. This environment is particularly well suited for
+a site using a \COPRS{} application developed by a third party.
+
+According to the needs of your application, the \COPRSAE{} exists in two versions:
+
+A graphic version, under X11/Motif, which enables the user to follow the
+graphic execution of the procedures and the evolution of the task graph in the
+\XPK{}s (Figure \ref{fig-oprsgae}).
+
+\figuregif[]{oprsgae}{\COPRSAE{} (graphical version)}{fig-oprsgae}
+
+An ASCII version which enables the user to execute the procedures in a standard
+Unix environment (Figure \ref{fig-oprsaae}). This version, functionally
+identical to the previous one, does not allow the user to follow the graphical
+execution of procedures.
+
+\figuregif[]{oprsaae}{\COPRSAE{} (ASCII version)}{fig-oprsaae}
+
+Whatever version is chosen, the licensing mechanism stays the same; the
+``Message Passer'' and the ``OPRS Server'' are the central and unique modules
+around which as many as required by the application, \CPK{}s or \XPK{}s are
+run.
+
+\section{The Structure of this Manual}
+\node{The Structure of this Manual}
+\cpindex{The Structure of this Manual}
+
+This manual is available in hard copy or as an on-line help function that you can access 
+while using the
+\COPRSDE{}.
+The book is a standard manual, with parts, chapters, sections, appendices,
+etc\dots{} The on-line help is structured in a similar way with each section
+accessible through a series of menus or hypertext links.
+Additionally, the appropriate section of the on-line manual is
+directly accessed when you request help from the \COPRSDE{}. For example,
+most dialog boxes in the Motif interface have a \code{HELP} button. When you activate 
+any
+\code{HELP} the system will show the appropriate
+documentation page from which you can then access any part of the manual.
+
+This manual is organized in eight parts to help you easily find the information you need. 
+Each part presents one particular
+program or module of the \COPRSDE{}. Because of the many interconnections
+and cross references between these different parts, the manual is
+structured to explain these cross references whenever
+possible.
+
+Different parts can be read in any order, although the order in which they
+are presented is certainly the preferred one. It is suggested that you read a part describing a 
+module before reading one describing the
+same module X11/Motif interface. For example, one will read the
+\CPK{} part before the \XPK{} part.
+
+\begin{description}
+
+\item[Overview:]
+
+\item[\CPK{}:] This part introduces the most important modules of the
+\COPRSDE{}.  The \CPK{} is really the central program of the \COPRSDE{}. However,
+it needs the other modules and programs to be used as a real application. It
+executes the procedures produced with the \OPE{}. It is created and can be
+interacted with, using the \OPRSS{}. It can be run under X11/Motif using the
+\XOPRS{} interface. It can communicate with the external world and other \COPRS{}
+kernels using the \MP{}. It represents the most important and biggest part of
+the present manual.
+
+\item[\OPRSS{}:] This part introduces the \OPRSS{} program which can create, kill
+and allow the user to interact with \CPK{}s.
+
+\item[\MP{}:] This part introduces the module which allows the \COPRS{} and
+\XOPRS{} kernels to communicate with one another and with external programs.
+
+\item[\XPK{}:] This is the X11/Motif companion of the \CPK{} module. In this
+interface, you can graphically trace the procedures which are executing and
+follow the various tasks the kernel is working on.
+
+\item[\OPE{}:] This part describes the program which is used to create, edit
+and modify OPs and procedures. It is a graphic editor based on X11/Motif.
+
+\item[Using \COPRS{}:] This part describes how to use the \COPRSDE{}. A step by
+step \OPE{} session is presented, as well as an example of how to run an \XPK{}
+application. This part also goes through the process of explaining the various
+choices you will need to make to set-up a \COPRS{} application, and gives some
+example of such application.
+
+\item[Appendices:] The appendices describe various topics about the \COPRSDE{}:
+installation (\pxref{How to Install the OPRS Development Environment}),
+differences with SRI \OPRS{} (\pxref{Principal Differences with SRI OPRS}),
+default OPs (\pxref{Default OPs}), the Grammar Used in the \COPRSDE{}
+(\pxref{Grammar Used in the OPRS Development Environment}), etc., as well as a glossary, a bibliography
+and various indices which point you back to the appropriate section of the
+manual.
+
+\end{description}
+
+Some chapters or sections have arbitrarily been put in a particular part,
+although they could be equally presented in another part. For example, the OP
+syntax section (\pxref{OP Syntax and Semantic}) is part of the \CPK{} part,
+although it could be in the \OPE{} part. In any case, the various indices and
+cross references will always point you to the proper section when necessary.
+
+Comments and problems about this documentation should be reported to the
+following electronic mail address: \t{oprs-manual@ingenia.fr}.
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "oprs"
+%%% End: 

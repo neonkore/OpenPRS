@@ -1,0 +1,23 @@
+
+declare cwp dmex-ln-requesting-res
+declare cwp dmex-ln-next
+declare cwp dmex-ln-token-present
+
+declare ff dmex-ln-father 1
+
+declare function dmex-ln-req
+declare function dmex-ln-token
+declare function dmex-ln-token
+
+declare op_predicate dmex-ln-init
+declare op_predicate dmex-ln-request-rsc
+declare op_predicate dmex-ln-request-one 
+declare op_predicate dmex-ln-release-rsc
+declare op_predicate dmex-ln-release-one
+
+declare predicate my-name
+declare be dmex-ln-req
+declare be dmex-ln-token
+
+
+declare id dmex-ln

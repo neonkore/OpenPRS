@@ -1,0 +1,1045 @@
+;;;
+;;; File: /users/oprs/C/LAAS/oprs-cond/data/test/maint.opf
+;;; $Id$
+;;; Date: Mon Feb  6 15:06:02 1995
+;;; Host: cascade
+;;; OP Editor Version : 1.3.1 Beta
+;;; Compiled on cascade (Tue Jan 24 13:26:47 MET 1995)
+;;; OP File Format: 2
+;;;
+(2 
+(
+BIDON
+BIDON-X
+BIDON-Y
+BIDON-Y-2
+CALLED-6-1
+CALLED-6-2
+CLEAN-TEST
+COND
+COND-6
+COND-X
+COND-Y
+COND1
+COND2
+CONTINUE-6
+FAILED-6
+INIT-6
+INIT-TEST
+STEST
+STEST1
+STEST1B
+STEST2
+STEST3
+STEST3B
+STEST3T
+STESTS
+TEST1
+TEST2
+TEST3
+TEST3B
+TEST4
+TEST5
+TEST6
+TEST6B
+TEST6T
+TESTS
+VAL1
+VAL2
+)
+(CALLED-OP (
+(INVOCATION INVOCATION (! (BIDON $A $B)) 10 50 1 60 0 )
+(CONTEXT CONTEXT  10 150 0 60 0 )
+(SETTING SETTING  10 250 0 60 0 )
+(EFFECTS EFFECTS  10 350 0 60 0 )
+(DOCUMENTATION DOCUMENTATION " Post the two goals in // ." 4 205 1 60 0 )
+(PROPERTIES PROPERTIES  10 400 0 60 0 )
+) (
+(START START 0 1 304 38)
+(PROCESS N0 1 0 312 182)
+) (
+(GOAL START E1 N0
+(! (BIDON-Y $B))
+((464 77) (463 146) )  5 8 40 0)
+(GOAL START E0 N0
+(! (BIDON-X $A))
+((203 79) (204 135) )  20 8 40 0)
+) )
+(CALLED-OP-X (
+(INVOCATION INVOCATION (! (BIDON-X $X)) 10 50 1 60 0 )
+(CONTEXT CONTEXT  10 150 0 60 0 )
+(SETTING SETTING  10 250 0 60 0 )
+(EFFECTS EFFECTS  10 350 0 60 0 )
+(DOCUMENTATION DOCUMENTATION " Add a new value of COND-X in DB,
+or delete all. " 10 166 1 60 0 )
+(PROPERTIES PROPERTIES  10 400 0 60 0 )
+) (
+(PROCESS N2 0 0 272 279)
+(START START 0 0 350 19)
+(IF N1 0 0 362 121)
+(THEN N1_T 0 0 348 121)
+(ELSE N1_F 0 0 383 121)
+(END END2 0 0 488 276)
+(END END1 0 0 263 409)
+) (
+(GOAL N2 E2 END1
+(! (PRINT "End of OP CALLED-OP-X"))
+()  0 0 40 0)
+(GOAL N1_F E6 END2
+(~> (COND-X $X2))
+()  0 0 40 0)
+(GOAL N1_T E5 N2
+(=> (COND-X (+ $X 1)))
+()  1 0 40 0)
+(IF START E3 N1
+(? (< $X 15))
+()  0 0 40 0)
+(ELSE N1 E1 N1_F)
+(THEN N1 E0 N1_T)
+) )
+(CALLED-OP-Y (
+(INVOCATION INVOCATION (! (BIDON-Y $H)) 10 50 1 60 0 )
+(CONTEXT CONTEXT  10 150 0 60 0 )
+(SETTING SETTING  10 250 0 60 0 )
+(EFFECTS EFFECTS  5 204 0 60 0 )
+(DOCUMENTATION DOCUMENTATION " This OP will fail the maintained condition,
+if $H <= 10 ." 2 123 1 60 0 )
+(PROPERTIES PROPERTIES  10 400 0 60 0 )
+) (
+(START START 0 0 323 14)
+(IF N5 0 0 333 193)
+(THEN N5_T 0 0 319 193)
+(ELSE N5_F 0 0 354 193)
+(PROCESS N3 0 0 208 299)
+(PROCESS N0 0 0 484 312)
+(PROCESS N1 0 0 486 379)
+(PROCESS N2 0 0 486 453)
+(PROCESS N4 0 0 483 242)
+) (
+(GOAL N5_F E8 N4
+(! (PRINT
+       "Failed the maintained condition"))
+((492 202) )  64 5 40 0)
+(GOAL N4 E7 N0
+(=> (COND-Y (+ $H 1)))
+()  0 0 40 0)
+(GOAL N0 E3 N1
+(~> (COND-Y $H))
+()  0 0 40 0)
+(GOAL N1 E0 N2
+(! (PRINT
+       "This message should not be printed with passive preserve."))
+()  0 0 40 0)
+(GOAL N5_T E4 N3
+(! (PRINT "fin"))
+()  0 0 40 0)
+(IF START E6 N5
+(? (> $H 10))
+()  0 0 40 0)
+(ELSE N5 E5 N5_F)
+(THEN N5 E2 N5_T)
+) )
+(CALLED-OP-Y-2 (
+(INVOCATION INVOCATION (! (BIDON-Y-2 $H)) 10 50 1 60 0 )
+(CONTEXT CONTEXT  10 150 0 60 0 )
+(SETTING SETTING  10 250 0 60 0 )
+(EFFECTS EFFECTS ((~> (COND-Y $H))) 5 204 1 60 0 )
+(DOCUMENTATION DOCUMENTATION " This OP will fail the maintained condition 
+ in effect part." 6 397 1 60 0 )
+(PROPERTIES PROPERTIES  10 400 0 60 0 )
+) (
+(START START 0 0 323 14)
+(IF N5 0 0 333 193)
+(THEN N5_T 0 0 319 193)
+(ELSE N5_F 0 0 354 193)
+(PROCESS N3 0 0 208 299)
+) (
+(THEN N5 E2 N5_T)
+(ELSE N5 E5 N5_F)
+(IF START E6 N5
+(? (> $H 10))
+()  0 0 40 0)
+(GOAL N5_T E4 N3
+(! (PRINT "fin"))
+()  0 0 40 0)
+(GOAL N5_F E0 N5_T
+(=> (COND-Y (+ $H 1)))
+((499 201) (499 274) (350 274) )  49 -29 40 0)
+) )
+(CALLED-OP-Y-3 (
+(INVOCATION INVOCATION (! (BIDON-Y-3 $H)) 10 50 1 60 0 )
+(CONTEXT CONTEXT  10 150 0 60 0 )
+(SETTING SETTING  10 250 0 60 0 )
+(EFFECTS EFFECTS  5 204 0 60 0 )
+(DOCUMENTATION DOCUMENTATION " This OP will fail the maintained condition, 
+on the last edge." 8 449 1 60 0 )
+(PROPERTIES PROPERTIES  10 400 0 60 0 )
+) (
+(START START 0 0 323 14)
+(IF N5 0 0 333 193)
+(THEN N5_T 0 0 319 193)
+(ELSE N5_F 0 0 354 193)
+(PROCESS N3 0 0 208 299)
+(PROCESS N0 0 0 486 296)
+(PROCESS N1 0 0 486 379)
+) (
+(GOAL N0 E3 N1
+(~> (COND-Y $H))
+()  0 0 40 0)
+(GOAL N5_F E1 N0
+(=> (COND-Y (+ $H 1)))
+((496 225) )  28 42 40 0)
+(GOAL N5_T E4 N3
+(! (PRINT "fin"))
+()  0 0 40 0)
+(IF START E6 N5
+(? (> $H 10))
+()  0 0 40 0)
+(ELSE N5 E5 N5_F)
+(THEN N5 E2 N5_T)
+) )
+(RESTORE-COND-6 (
+(INVOCATION INVOCATION (% (COND-6 $VAL)) 10 50 1 60 0 )
+(CONTEXT CONTEXT  10 150 0 60 0 )
+(SETTING SETTING  10 250 0 60 0 )
+(EFFECTS EFFECTS ((=> (COND-6 $VAL))) 10 108 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "Conclude the fact (cond-6 $val) ,
+ called by active preserve. " 3 180 1 60 0 )
+(PROPERTIES PROPERTIES  10 400 0 60 0 )
+) (
+(START START 0 0 308 22)
+(PROCESS N1 0 0 320 243)
+) (
+(GOAL START E2 N1
+(! (PRINT-LIST
+       (FORMAT
+           NIL
+           "We restore cond-6 ~a \n"
+           $VAL)))
+()  18 -12 40 0)
+) )
+(RESTORE-COND-X (
+(INVOCATION INVOCATION (% (COND-X $X)) 10 50 1 60 0 )
+(CONTEXT CONTEXT  10 150 0 60 0 )
+(SETTING SETTING  10 250 0 60 0 )
+(EFFECTS EFFECTS ((=> (COND-X $X))) 10 108 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "Failed to restore (cond-x $x) ,
+ called by active preserve. " 3 180 1 60 0 )
+(PROPERTIES PROPERTIES  10 400 0 60 0 )
+) (
+(START START 0 0 308 22)
+(PROCESS N0 0 0 321 160)
+(PROCESS N1 0 0 320 267)
+) (
+(GOAL N0 E1 N1
+(! (FAILED))
+()  0 0 40 0)
+(GOAL START E0 N0
+(! (PRINT "Fail to restore COND-X"))
+()  2 -4 40 0)
+) )
+(RESTORE-COND-Y (
+(INVOCATION INVOCATION (% (COND-Y $Y)) 10 50 1 60 0 )
+(CONTEXT CONTEXT  10 150 0 60 0 )
+(SETTING SETTING  10 250 0 60 0 )
+(EFFECTS EFFECTS ((=> (COND-Y $Y))) 10 108 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "Conclude the fact (cond-y $y) ,
+ called by active preserve. " 3 180 1 60 0 )
+(PROPERTIES PROPERTIES  10 400 0 60 0 )
+) (
+(START START 0 0 308 22)
+(PROCESS N0 0 0 321 160)
+) (
+(GOAL START E0 N0
+(! (PRINT "Succed to restore COND-Y"))
+()  2 -4 40 0)
+) )
+(|Called OP 6-1| (
+(INVOCATION INVOCATION (! (CALLED-6-1)) 13 56 1 80 0 )
+(CONTEXT CONTEXT  11 151 0 60 0 )
+(SETTING SETTING  11 250 0 60 0 )
+(EFFECTS EFFECTS  11 341 0 60 0 )
+(DOCUMENTATION DOCUMENTATION  10 132 1 60 0 )
+(PROPERTIES PROPERTIES  11 396 0 60 0 )
+) (
+(START START 0 0 320 9)
+(PROCESS N1 0 0 330 118)
+) (
+(GOAL START E1 N1
+(& (! (CALLED-6-2))
+   (% (COND-6 VAL2)))
+()  0 0 40 0)
+) )
+(|Called OP 6-2| (
+(INVOCATION INVOCATION (! (CALLED-6-2)) 13 56 1 80 0 )
+(CONTEXT CONTEXT  11 151 0 60 0 )
+(SETTING SETTING  11 250 0 60 0 )
+(EFFECTS EFFECTS  11 341 0 60 0 )
+(DOCUMENTATION DOCUMENTATION  10 132 1 60 0 )
+(PROPERTIES PROPERTIES  11 396 0 60 0 )
+) (
+(START START 0 0 320 9)
+(PROCESS N1 0 0 330 118)
+) (
+(GOAL START E0 N1
+(^ (CONTINUE-6))
+()  0 0 40 0)
+) )
+(|Clean-maint| (
+(INVOCATION INVOCATION (! (CLEAN-TEST)) 13 56 1 80 0 )
+(CONTEXT CONTEXT  11 151 0 60 0 )
+(SETTING SETTING  11 250 0 60 0 )
+(EFFECTS EFFECTS ((~> (COND-X $X))
+ (~> (COND-Y $Y))) 7 110 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "this op will clean the facts used
+by maint1." 2 185 1 60 0 )
+(PROPERTIES PROPERTIES  11 396 0 60 0 )
+) (
+(START START 0 0 268 51)
+) (
+) )
+(|Failed-toto| (
+(INVOCATION INVOCATION (! (TOTO $A $B)) 10 50 1 60 0 )
+(CONTEXT CONTEXT (EQUAL $A 0) 8 106 1 60 0 )
+(SETTING SETTING  10 250 0 60 0 )
+(EFFECTS EFFECTS  10 350 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "This Op ever fails the goal (! (toto 0 $B)). " 7 207 1 60 0 )
+(PROPERTIES PROPERTIES  10 400 0 60 0 )
+) (
+(START START 0 0 297 18)
+(PROCESS N1 0 0 308 139)
+) (
+(GOAL START E1 N1
+(! (FAILED))
+()  0 0 40 0)
+) )
+(|Init Test 6| (
+(INVOCATION INVOCATION (! (INIT-6)) 10 50 1 60 0 )
+(CONTEXT CONTEXT  10 150 0 60 0 )
+(SETTING SETTING  10 250 0 60 0 )
+(EFFECTS EFFECTS  10 350 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "Just conclude the two conditions used
+by test6 ." 7 189 1 60 0 )
+(PROPERTIES PROPERTIES  10 400 0 60 0 )
+) (
+(START START 0 0 310 10)
+(PROCESS N0 0 0 321 105)
+(PROCESS N1 0 0 321 222)
+) (
+(GOAL N0 E1 N1
+(=> (COND-6 VAL2))
+()  0 0 40 0)
+(GOAL START E0 N0
+(=> (COND-6 VAL1))
+()  0 0 40 0)
+) )
+(|Init-maint| (
+(INVOCATION INVOCATION (! (INIT-TEST)) 13 56 1 80 0 )
+(CONTEXT CONTEXT  11 151 0 60 0 )
+(SETTING SETTING  11 250 0 60 0 )
+(EFFECTS EFFECTS ((=> (COND-X 3))
+ (=> (COND-X 4))
+ (=> (COND-Y 7))) 7 110 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "this op will clean, and conclude the fact used
+by maint1." 2 185 1 60 0 )
+(PROPERTIES PROPERTIES  11 396 0 60 0 )
+) (
+(START START 0 0 282 17)
+(PROCESS N0 0 0 293 136)
+) (
+(GOAL START E0 N0
+(! (CLEAN-TEST))
+()  0 0 40 0)
+) )
+(|Simple Test 1 bis| (
+(INVOCATION INVOCATION (! (STEST1B $X)) 15 58 1 80 0 )
+(CONTEXT CONTEXT  11 151 0 60 0 )
+(SETTING SETTING  11 250 0 60 0 )
+(EFFECTS EFFECTS  11 341 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "Unify $Y in DB" 9 171 1 60 0 )
+(PROPERTIES PROPERTIES  11 396 0 60 0 )
+) (
+(PROCESS N1 0 0 280 169)
+(START START 0 0 268 51)
+) (
+(GOAL START E4 N1
+(& (! (PRINT $Y))
+   (# (COND $X $Y)))
+()  11 -8 40 0)
+) )
+(|Simple Test 1| (
+(INVOCATION INVOCATION (! (STEST1 $X)) 15 58 1 80 0 )
+(CONTEXT CONTEXT  11 151 0 60 0 )
+(SETTING SETTING  11 250 0 60 0 )
+(EFFECTS EFFECTS  11 341 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "Unify $Y in DB" 9 171 1 60 0 )
+(PROPERTIES PROPERTIES  11 396 0 60 0 )
+) (
+(PROCESS N1 0 0 280 169)
+(START START 0 0 268 51)
+(PROCESS N0 0 0 280 252)
+) (
+(GOAL N1 E0 N0
+(! (PRINT $Y))
+()  0 0 40 0)
+(GOAL START E4 N1
+(& (! (SUCCEED))
+   (# (COND $X $Y)))
+()  11 -8 40 0)
+) )
+(|Simple Test 2| (
+(INVOCATION INVOCATION (! (STEST2)) 13 56 1 80 0 )
+(CONTEXT CONTEXT  11 151 0 60 0 )
+(SETTING SETTING  11 250 0 60 0 )
+(EFFECTS EFFECTS  11 341 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "This Op fails because the maintained condition
+is already false. " 5 220 1 60 0 )
+(PROPERTIES PROPERTIES  11 396 0 60 0 )
+) (
+(PROCESS N1 0 0 281 191)
+(START START 0 0 268 51)
+) (
+(GOAL START E4 N1
+(& (! (TOTO $X $Y))
+   (# (& (COND1)
+         (COND2))))
+()  11 -8 40 0)
+) )
+(|Simple Test 3 bis| (
+(INVOCATION INVOCATION (! (STEST3B)) 15 58 1 80 0 )
+(CONTEXT CONTEXT  11 151 0 60 0 )
+(SETTING SETTING  11 250 0 60 0 )
+(EFFECTS EFFECTS  11 341 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "The condition is ever true, but
+ the goal (! (TOTO 0 $y)) will be failed 
+by |Toto| and |Failed-toto| .
+ $Y is unused. " 7 135 1 60 0 )
+(PROPERTIES PROPERTIES  11 396 0 60 0 )
+) (
+(START START 0 0 268 51)
+(PROCESS N3 0 0 279 164)
+) (
+(GOAL START E5 N3
+(& (! (TOTO 0 $Y))
+   (# (COND 1 2)))
+()  0 0 40 0)
+) )
+(|Simple Test 3 ter| (
+(INVOCATION INVOCATION (! (STEST3T)) 15 58 1 80 0 )
+(CONTEXT CONTEXT  11 151 0 60 0 )
+(SETTING SETTING  11 250 0 60 0 )
+(EFFECTS EFFECTS  11 341 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "The condition is ever true, it
+will succed the goal. " 7 135 1 60 0 )
+(PROPERTIES PROPERTIES  11 396 0 60 0 )
+) (
+(START START 0 0 268 51)
+(PROCESS N0 0 0 279 323)
+(PROCESS N3 0 0 279 182)
+) (
+(GOAL START E4 N3
+(& (! (TOTO 5 $Y))
+   (# (COND 1 2)))
+()  0 0 40 0)
+(GOAL N3 E6 N0
+(! (PRINTF
+       (FORMAT
+           "Succed by (TOTO 5 %d)" $Y)))
+()  0 0 40 0)
+) )
+(|Simple Test 3| (
+(INVOCATION INVOCATION (! (STEST3)) 15 58 1 80 0 )
+(CONTEXT CONTEXT  11 151 0 60 0 )
+(SETTING SETTING  11 250 0 60 0 )
+(EFFECTS EFFECTS  11 341 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "The condition is ever true, it
+will unify (TOTO $x $y) in DB. " 7 135 1 60 0 )
+(PROPERTIES PROPERTIES  11 396 0 60 0 )
+) (
+(START START 0 0 268 51)
+(PROCESS N0 0 0 279 323)
+(PROCESS N3 0 0 279 162)
+) (
+(GOAL START E4 N3
+(& (! (TOTO $X $Y))
+   (# (COND 1 2)))
+()  0 0 40 0)
+(GOAL N3 E6 N0
+(! (PRINTF
+       (FORMAT
+           "Get (TOTO %d  %d) in DB"
+           $X
+           $Y)))
+()  0 0 40 0)
+) )
+(|Simple Tests| (
+(INVOCATION INVOCATION (! (STESTS)) 10 50 1 60 0 )
+(CONTEXT CONTEXT  10 150 0 60 0 )
+(SETTING SETTING  10 250 0 60 0 )
+(EFFECTS EFFECTS  10 350 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "Run all simple test
+ and check failure. " 5 129 1 60 0 )
+(PROPERTIES PROPERTIES  10 400 0 60 0 )
+) (
+(START START 0 0 324 3)
+(IF N0 0 0 335 68)
+(THEN N0_T 0 0 321 68)
+(ELSE N0_F 0 0 356 68)
+(IF N1 0 0 335 171)
+(THEN N1_T 0 0 321 171)
+(ELSE N1_F 0 0 356 171)
+(IF N2 0 0 335 274)
+(THEN N2_T 0 0 321 274)
+(ELSE N2_F 0 0 356 274)
+(IF N3 0 0 335 378)
+(THEN N3_T 0 0 321 378)
+(ELSE N3_F 0 0 356 378)
+(IF N4 0 0 335 477)
+(THEN N4_T 0 0 321 477)
+(ELSE N4_F 0 0 356 477)
+(IF N5 0 0 335 559)
+(THEN N5_T 0 0 321 559)
+(ELSE N5_F 0 0 356 559)
+(PROCESS N6 0 0 335 102)
+(PROCESS N7 0 0 335 209)
+(PROCESS N8 0 0 335 312)
+(PROCESS N9 0 0 335 416)
+(PROCESS N10 0 0 332 514)
+(END END0 0 0 328 600)
+) (
+(THEN N0 E0 N0_T)
+(ELSE N0 E1 N0_F)
+(THEN N1 E2 N1_T)
+(ELSE N1 E3 N1_F)
+(THEN N2 E4 N2_T)
+(ELSE N2 E5 N2_F)
+(THEN N3 E6 N3_T)
+(ELSE N3 E7 N3_F)
+(THEN N4 E8 N4_T)
+(ELSE N4 E9 N4_F)
+(THEN N5 E10 N5_T)
+(ELSE N5 E11 N5_F)
+(IF START E12 N0
+(! (STEST1 1))
+()  0 0 40 0)
+(GOAL N0_T E13 N6
+(! (PRINT "May have print 2"))
+((202 77) (202 111) )  9 9 40 0)
+(GOAL N0_F E14 N6
+(! (PRINT "Error Stest1"))
+((483 77) (483 111) )  2 9 40 0)
+(IF N6 E15 N1
+(! (STEST1B 3))
+()  0 0 40 0)
+(GOAL N1_F E16 N7
+(! (PRINT "Error Stest1b"))
+((483 180) (483 218) )  3 11 40 0)
+(GOAL N2_T E18 N8
+(! (PRINT "Error Stest2"))
+((202 283) (202 321) )  0 5 40 0)
+(IF N7 E19 N2
+(! (STEST2))
+()  0 0 40 0)
+(IF N8 E20 N3
+(! (STEST3))
+()  0 0 40 0)
+(IF N9 E21 N4
+(! (STEST3B))
+()  0 0 40 0)
+(IF N10 E22 N5
+(! (STEST3T))
+()  0 0 40 0)
+(GOAL N4_F E23 N10
+(! (PRINT "Normal End"))
+((483 486) (483 523) )  -1 8 40 0)
+(GOAL N3_F E24 N9
+(! (PRINT "Error Stest3"))
+((483 387) (483 425) )  1 5 40 0)
+(GOAL N5_F E25 END0
+(! (PRINT "Error Stest3t"))
+((483 568) (483 609) )  5 3 40 0)
+(GOAL N4_T E26 N10
+(! (PRINT "Error Stest3b"))
+((202 486) (202 523) )  0 11 40 0)
+(GOAL N2_F E27 N8
+(! (PRINT "Normal End"))
+((483 283) (483 321) )  -1 7 40 0)
+(GOAL N3_T E28 N9
+(! (PRINT "Normal End"))
+((202 387) (202 425) )  0 5 40 0)
+(GOAL N5_T E29 END0
+(! (PRINT "Normal End"))
+((202 568) (202 609) )  1 6 40 0)
+(GOAL N1_T E17 N7
+(! (PRINT "May have print 4"))
+((202 180) (202 218) )  5 8 40 0)
+) )
+(|Tests| (
+(INVOCATION INVOCATION (! (TESTS)) 10 50 1 60 0 )
+(CONTEXT CONTEXT  10 150 0 60 0 )
+(SETTING SETTING  10 250 0 60 0 )
+(EFFECTS EFFECTS  10 350 0 60 0 )
+(DOCUMENTATION DOCUMENTATION  4 126 1 60 0 )
+(PROPERTIES PROPERTIES  10 400 0 60 0 )
+) (
+(START START 0 0 317 14)
+(PROCESS N0 0 0 328 74)
+(PROCESS N1 0 0 328 172)
+(PROCESS N2 0 0 328 220)
+(IF N3 0 0 328 129)
+(THEN N3_T 0 0 314 129)
+(ELSE N3_F 0 0 349 129)
+(IF N4 0 0 328 284)
+(THEN N4_T 0 0 314 284)
+(ELSE N4_F 0 0 349 284)
+(PROCESS N5 0 0 328 331)
+(PROCESS N6 0 0 328 381)
+(IF N7 0 0 328 429)
+(THEN N7_T 0 0 314 429)
+(ELSE N7_F 0 0 349 429)
+(PROCESS N8 0 0 328 472)
+(PROCESS N9 0 0 328 517)
+(IF N10 0 0 325 566)
+(THEN N10_T 0 0 311 566)
+(ELSE N10_F 0 0 352 566)
+(PROCESS N11 0 0 325 613)
+(PROCESS N12 0 0 325 665)
+(IF N13 0 0 325 721)
+(THEN N13_T 0 0 311 721)
+(ELSE N13_F 0 0 352 721)
+(PROCESS N14 0 0 325 789)
+(END END0 0 0 322 851)
+) (
+(GOAL N13_T E30 N14
+(! (PRINT "May have print 7"))
+((227 730) (227 798) )  0 0 40 0)
+(GOAL N13_F E29 N14
+(! (PRINT "Error"))
+((471 730) (471 798) )  0 0 40 0)
+(IF N12 E28 N13
+(! (TEST5))
+()  0 0 40 0)
+(GOAL N14 E27 END0
+(! (INIT-TEST))
+()  0 0 40 0)
+(ELSE N13 E26 N13_F)
+(THEN N13 E25 N13_T)
+(GOAL N11 E24 N12
+(! (INIT-TEST))
+()  0 0 40 0)
+(GOAL N10_T E23 N11
+(! (PRINT "Error"))
+((227 575) (227 622) )  0 0 40 0)
+(GOAL N7_F E22 N8
+(! (PRINT "Error"))
+((471 438) (471 481) )  0 0 40 0)
+(GOAL N4_F E21 N5
+(! (PRINT "Error"))
+((471 293) (471 340) )  0 0 40 0)
+(GOAL N10_F E20 N11
+(! (PRINT "Normal End"))
+((471 575) (471 622) )  0 0 40 0)
+(GOAL N7_T E19 N8
+(! (PRINT "May have print 7"))
+((227 438) (227 481) )  0 0 40 0)
+(GOAL N4_T E18 N5
+(! (PRINT "May have print 7"))
+((227 293) (227 340) )  0 0 40 0)
+(IF N9 E17 N10
+(! (TEST3B))
+()  0 0 40 0)
+(IF N6 E16 N7
+(! (TEST3))
+()  0 0 40 0)
+(IF N2 E15 N4
+(! (TEST2))
+()  0 0 40 0)
+(GOAL N8 E14 N9
+(! (INIT-TEST))
+()  0 0 40 0)
+(GOAL N5 E13 N6
+(! (INIT-TEST))
+()  0 0 40 0)
+(GOAL N1 E12 N2
+(! (INIT-TEST))
+()  0 0 40 0)
+(ELSE N10 E11 N10_F)
+(THEN N10 E10 N10_T)
+(ELSE N7 E9 N7_F)
+(THEN N7 E8 N7_T)
+(ELSE N4 E7 N4_F)
+(THEN N4 E6 N4_T)
+(GOAL N3_F E5 N1
+(! (PRINT "Check the DB"))
+((471 138) (471 181) )  0 0 40 0)
+(GOAL N3_T E4 N1
+(! (PRINT "May have print 11"))
+((227 138) (228 181) )  0 4 40 0)
+(IF N0 E3 N3
+(! (TEST1))
+()  0 -5 40 0)
+(ELSE N3 E2 N3_F)
+(THEN N3 E1 N3_T)
+(GOAL START E0 N0
+(! (INIT-TEST))
+()  0 -5 40 0)
+) )
+(|Toto| (
+(INVOCATION INVOCATION (! (TOTO $A1 $B1)) 10 50 1 60 0 )
+(CONTEXT CONTEXT  6 118 1 60 0 )
+(SETTING SETTING  10 250 0 60 0 )
+(EFFECTS EFFECTS  10 350 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "This Op succed if $A1 > 4 ." 5 170 1 60 0 )
+(PROPERTIES PROPERTIES  10 400 0 60 0 )
+) (
+(START START 0 0 310 10)
+(PROCESS N0 0 0 321 124)
+(PROCESS N1 0 0 320 205)
+(PROCESS N2 0 0 318 315)
+) (
+(GOAL N0 E1 N1
+(? (> $A1 4))
+()  0 0 40 0)
+(GOAL START E0 N0
+(! (PRINT "begin"))
+()  0 0 40 0)
+(GOAL N1 E2 N2
+(! (= $B1 (+ $A1 1)))
+()  0 0 40 0)
+) )
+(|failed Test 6| (
+(INVOCATION INVOCATION (! (FAILED-6)) 10 50 1 60 0 )
+(CONTEXT CONTEXT  10 150 0 60 0 )
+(SETTING SETTING  10 250 0 60 0 )
+(EFFECTS EFFECTS  10 350 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "Just delete the two conditions used
+by test6 ." 2 159 1 60 0 )
+(PROPERTIES PROPERTIES  10 400 0 60 0 )
+) (
+(START START 0 0 310 10)
+(PROCESS N0 0 0 321 111)
+) (
+(GOAL START E0 N0
+(~> (COND-6 $VAL))
+()  0 0 40 0)
+) )
+(|maint 1| (
+(INVOCATION INVOCATION (! (TEST1)) 13 56 1 80 0 )
+(CONTEXT CONTEXT  11 151 0 60 0 )
+(SETTING SETTING  11 250 0 60 0 )
+(EFFECTS EFFECTS  11 341 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "Passive preserve test :
+This op will post the goal (! (bidon $x $y)),
+the maintained condition (cond-y $y) will
+ be deleted from the DB if $Y < 10 ." 4 130 1 60 0 )
+(PROPERTIES PROPERTIES  11 396 0 60 0 )
+) (
+(PROCESS N1 0 0 301 191)
+(START START 0 0 289 33)
+(PROCESS N0 0 0 303 315)
+) (
+(GOAL N1 E0 N0
+(! (PRINT $Y))
+()  0 0 40 0)
+(GOAL START E4 N1
+(& (! (BIDON $X $Y))
+   (# (& (COND-X $X)
+         (COND-Y $Y))))
+()  11 -8 40 0)
+) )
+(|maint 2| (
+(INVOCATION INVOCATION (! (TEST2)) 13 56 1 80 0 )
+(CONTEXT CONTEXT  11 151 0 60 0 )
+(SETTING SETTING  11 250 0 60 0 )
+(EFFECTS EFFECTS  11 341 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "Active preserve test:
+the condition (cond-y $y) will be deleted 
+from the database, then restored." 7 124 1 60 0 )
+(PROPERTIES PROPERTIES  11 396 0 60 0 )
+) (
+(PROCESS N1 0 0 280 191)
+(START START 0 0 269 51)
+(PROCESS N0 0 0 281 277)
+) (
+(GOAL N1 E0 N0
+(! (PRINT $Y))
+()  0 0 40 0)
+(GOAL START E4 N1
+(& (! (BIDON-Y $Y))
+   (% (COND-Y $Y)))
+()  11 -8 40 0)
+) )
+(|maint 3 bis| (
+(INVOCATION INVOCATION (! (TEST3B)) 13 56 1 80 0 )
+(CONTEXT CONTEXT  11 151 0 60 0 )
+(SETTING SETTING  11 250 0 60 0 )
+(EFFECTS EFFECTS  11 341 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "This OP wil post a maintained goal 
+and fail the condition in // .
+The Op restore-cond-x will fail, and the
+maintained condition will be ever FALSE :
+because we delete all facts (cond-x $z)." 4 178 1 60 0 )
+(PROPERTIES PROPERTIES  11 396 0 60 0 )
+) (
+(PROCESS N1 0 0 490 270)
+(START START 0 1 328 45)
+(PROCESS N0 0 0 489 141)
+(PROCESS N2 0 0 338 242)
+(PROCESS N3 0 0 337 353)
+) (
+(GOAL N2 E1 N3
+(! (PRINT $X))
+()  0 0 40 0)
+(GOAL START E7 N2
+(& (! (BIDON-X $X))
+   (% (COND-X $X)))
+()  9 -7 40 0)
+(GOAL START E0 N0
+(! (PRINT "wait before cleaning"))
+((498 64) )  46 39 40 0)
+(GOAL N0 E2 N1
+(~> (COND-X $Z))
+()  16 -7 40 0)
+) )
+(|maint 3| (
+(INVOCATION INVOCATION (! (TEST3)) 13 56 1 80 0 )
+(CONTEXT CONTEXT  11 151 0 60 0 )
+(SETTING SETTING  11 250 0 60 0 )
+(EFFECTS EFFECTS  11 341 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "This OP wil post a maintained goal 
+and fail the condition in // .
+It will succed to restore it twice,
+(The second failure of the condition
+will be done by the called OP) ." 6 173 1 60 0 )
+(PROPERTIES PROPERTIES  11 396 0 60 0 )
+) (
+(PROCESS N1 0 0 421 234)
+(START START 0 1 268 51)
+(PROCESS N0 0 0 420 142)
+(PROCESS N2 0 0 279 250)
+(PROCESS N3 0 0 278 348)
+) (
+(GOAL N2 E1 N3
+(! (PRINT $Y))
+()  0 0 40 0)
+(GOAL START E7 N2
+(& (! (BIDON-Y $Y))
+   (% (COND-Y $Y)))
+()  0 0 40 0)
+(GOAL N0 E2 N1
+(~> (COND-Y $Z))
+()  16 -9 40 0)
+(GOAL START E0 N0
+(! (PRINT "wait before cleaning"))
+((427 62) )  46 39 40 0)
+) )
+(|maint 4| (
+(INVOCATION INVOCATION (! (TEST4)) 13 56 1 80 0 )
+(CONTEXT CONTEXT  11 151 0 60 0 )
+(SETTING SETTING  11 250 0 60 0 )
+(EFFECTS EFFECTS  11 341 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "This Op will fail :
+ We cannot post a conjonction of goal, so it 
+ will fail to restore the condition" 1 222 1 60 0 )
+(PROPERTIES PROPERTIES  11 396 0 60 0 )
+) (
+(PROCESS N1 0 0 277 317)
+(START START 0 1 268 51)
+(PROCESS N0 0 0 481 109)
+) (
+(GOAL START E0 N0
+(! (PRINT "wait before cleaning"))
+((490 60) )  1 27 40 0)
+(GOAL N0 E3 N1
+(~> (COND-Y $Y))
+((570 117) (571 208) )  0 0 40 0)
+(GOAL N0 E2 N1
+(~> (COND-X $X))
+((417 118) (418 210) )  0 0 40 0)
+(GOAL START E4 N1
+(& (! (BIDON $X $Y))
+   (% (& (COND-X $X)
+         (COND-Y $Y))))
+()  11 -8 40 0)
+) )
+(|maint 5 bis| (
+(INVOCATION INVOCATION (! (TEST5B)) 13 56 1 80 0 )
+(CONTEXT CONTEXT  11 151 0 60 0 )
+(SETTING SETTING  11 250 0 60 0 )
+(EFFECTS EFFECTS  11 341 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "In this test, the maintained condition, will be
+failed by the OP CALLED-OP-Y-3, on the last edge by
+a delete goal (~> (...)) that is always succeded,
+So the condition is failed once the goal succeded,
+and this OP will succed." 10 323 1 60 0 )
+(PROPERTIES PROPERTIES  11 396 0 60 0 )
+) (
+(PROCESS N1 0 0 280 191)
+(START START 0 0 269 51)
+(PROCESS N0 0 0 281 277)
+) (
+(GOAL N1 E0 N0
+(! (PRINT $Y))
+()  0 0 40 0)
+(GOAL START E4 N1
+(& (! (BIDON-Y-3 $Y))
+   (# (COND-Y $Y)))
+()  11 -8 40 0)
+) )
+(|maint 5| (
+(INVOCATION INVOCATION (! (TEST5)) 13 56 1 80 0 )
+(CONTEXT CONTEXT  11 151 0 60 0 )
+(SETTING SETTING  11 250 0 60 0 )
+(EFFECTS EFFECTS  11 341 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "In this test, the maintained condition, will be
+failed by the OP CALLED-OP-Y-2, in the effect parts,
+i.e. once the goal succeded, so this OP will succed." 7 324 1 60 0 )
+(PROPERTIES PROPERTIES  11 396 0 60 0 )
+) (
+(PROCESS N1 0 0 280 191)
+(START START 0 0 269 51)
+(PROCESS N0 0 0 281 277)
+) (
+(GOAL START E4 N1
+(& (! (BIDON-Y-2 $Y))
+   (# (COND-Y $Y)))
+()  11 -8 40 0)
+(GOAL N1 E0 N0
+(! (PRINT $Y))
+()  0 0 40 0)
+) )
+(|maint 6 bis| (
+(INVOCATION INVOCATION (! (TEST6B)) 13 56 1 80 0 )
+(CONTEXT CONTEXT  11 151 0 60 0 )
+(SETTING SETTING  11 250 0 60 0 )
+(EFFECTS EFFECTS ((~> (COND-6 $X))
+ (~> (CONTINUE-6))) 13 162 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "This OP will failed the conditions of the two
+active preserve goals posted in //.
+Used for testing the order of restoring conditions." 12 498 1 60 0 )
+(PROPERTIES PROPERTIES  11 396 0 60 0 )
+) (
+(PROCESS N1 0 0 285 166)
+(START START 0 1 391 27)
+(PROCESS N0 0 0 284 274)
+(PROCESS N2 0 1 569 170)
+(PROCESS N3 0 0 476 301)
+(PROCESS N5 0 0 283 370)
+(PROCESS N6 0 0 283 463)
+(PROCESS N4 0 0 677 318)
+) (
+(GOAL N2 E7 N4
+(& (! (CALLED-6-2))
+   (% (COND-6 VAL2)))
+()  42 -8 40 0)
+(GOAL N1 E0 N0
+(! (FAILED-6))
+()  0 0 40 0)
+(GOAL N2 E1 N3
+(& (! (CALLED-6-2))
+   (% (COND-6 VAL1)))
+()  -22 1 40 0)
+(GOAL START E2 N2
+(! (INIT-6))
+()  31 12 40 0)
+(GOAL START E3 N1
+(^ (ELAPSED-TIME (CURRENT (TIME)) 30))
+()  -26 15 40 0)
+(GOAL N5 E5 N6
+(=> (CONTINUE-6))
+()  0 0 40 0)
+(GOAL N0 E6 N5
+(^ (ELAPSED-TIME (CURRENT (TIME)) 20))
+()  0 0 40 0)
+) )
+(|maint 6 ter| (
+(INVOCATION INVOCATION (! (TEST6T)) 13 56 1 80 0 )
+(CONTEXT CONTEXT  11 151 0 60 0 )
+(SETTING SETTING  11 250 0 60 0 )
+(EFFECTS EFFECTS ((~> (COND-6 $X))
+ (~> (CONTINUE-6))) 13 162 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "This OP uses a forbidden syntax ( for now ),
+the conjonction of a waiting and a maintain goal.
+So it will fail.
+You may obtain the whished behaviour, with a transcient OP,
+that will post the waiting goal, like in the OP |maint 6 bis|.
+" 12 498 1 60 0 )
+(PROPERTIES PROPERTIES  11 396 0 60 0 )
+) (
+(PROCESS N1 0 0 285 166)
+(START START 0 1 391 27)
+(PROCESS N0 0 0 283 257)
+(PROCESS N2 0 0 569 170)
+(PROCESS N3 0 0 567 299)
+(PROCESS N5 0 0 283 345)
+(PROCESS N6 0 0 283 410)
+) (
+(GOAL N0 E6 N5
+(^ (ELAPSED-TIME (CURRENT (TIME)) 20))
+()  0 0 40 0)
+(GOAL N5 E5 N6
+(=> (CONTINUE-6))
+()  0 -5 40 0)
+(GOAL START E3 N1
+(^ (ELAPSED-TIME (CURRENT (TIME)) 30))
+()  -26 15 40 0)
+(GOAL START E2 N2
+(! (INIT-6))
+()  31 12 40 0)
+(GOAL N2 E1 N3
+(& (^ (CONTINUE-6))
+   (% (COND-6 VAL1)))
+()  -22 1 40 0)
+(GOAL N1 E0 N0
+(! (FAILED-6))
+()  0 0 40 0)
+) )
+(|maint 6| (
+(INVOCATION INVOCATION (! (TEST6)) 13 56 1 80 0 )
+(CONTEXT CONTEXT  11 151 0 60 0 )
+(SETTING SETTING  11 250 0 60 0 )
+(EFFECTS EFFECTS ((~> (COND-6 $X))
+ (~> (CONTINUE-6))) 13 162 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "This OP will failed the condition of the 
+active preserve goal (CALLED-6-1) posted in //, 
+and the condition of the sub-posted goal (CALLED-6-2).
+Used for testing the order of restoring conditions." 12 498 1 60 0 )
+(PROPERTIES PROPERTIES  11 396 0 60 0 )
+) (
+(PROCESS N1 0 0 285 166)
+(START START 0 1 391 27)
+(PROCESS N0 0 0 284 274)
+(PROCESS N2 0 0 529 169)
+(PROCESS N3 0 0 531 304)
+(END END1 0 0 523 435)
+(PROCESS N5 0 0 283 356)
+(PROCESS N6 0 0 282 419)
+(END END2 0 0 277 483)
+) (
+(GOAL N0 E6 N5
+(^ (ELAPSED-TIME (CURRENT (TIME)) 20))
+()  0 0 40 0)
+(GOAL N5 E5 N6
+(=> (CONTINUE-6))
+()  0 0 40 0)
+(GOAL N3 E4 END1
+(! (PRINT "We Succed"))
+()  0 0 40 0)
+(GOAL START E3 N1
+(^ (ELAPSED-TIME (CURRENT (TIME)) 30))
+()  -26 15 40 0)
+(GOAL START E2 N2
+(! (INIT-6))
+()  31 12 40 0)
+(GOAL N2 E1 N3
+(& (! (CALLED-6-1))
+   (% (COND-6 VAL1)))
+()  0 0 40 0)
+(GOAL N1 E0 N0
+(! (FAILED-6))
+()  0 0 40 0)
+(GOAL N6 E7 END2
+(! (PRINT "Wake up my brother"))
+()  0 0 40 0)
+) )
+)

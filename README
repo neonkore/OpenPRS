@@ -1,0 +1,190 @@
+Copyright (c) 1991-2003 Francois Felix Ingrand.
+All rights reserved.
+
+Open PRS is an open source version of PRS (Procedural Reasoning Systems) / Propice. 
+
+It is based on C-PRS and Propice... which were themselves inspired from the
+Lisp PRS originaly developped at SRI International.
+
+PRS has been used for a wide variety of application, from Mobile robot
+execution control to Space Shuttle operational procedure execution.
+
+If you have not idea at all what it is doing... well, you should probably
+just stop here and look at other fun open source tools.
+
+LICENCE
+-------
+
+I am not really an expert in Licence, but I believe that what I am using is
+what people call BSD like licence... i.e. you can do whatever you do with
+it, providing the original copyright and licence are included...
+
+Anyway, it is not that long, so I put it here again (please read it once, at
+least):
+
+ Copyright (c) 1991-2003 Francois Felix Ingrand.
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+
+    - Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    - Redistributions in binary form must reproduce the above
+      copyright notice, this list of conditions and the following
+      disclaimer in the documentation and/or other materials provided
+      with the distribution.
+
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ COPYRIGHT HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ POSSIBILITY OF SUCH DAMAGE.
+
+
+PREREQUISITES
+-------------
+
+Open PRS needs the following tools to be installed on the system before you can
+compile it:
+
+- cc (or gcc)
+- X11 Release 6
+- Some version of Motif, such as Morif itself, Lesstif, or Open Motif
+- Perl (I think we use it, but I am not 100% sure), but perl is a good tool
+  to have around anyway... even if I hate it.
+- The GNU make utility, version 3.79 or higher. Open PRS Makefiles use some
+  GNU make extensions and thus won't work with other make implementations. 
+  Note the GNU make is the standard make on most Linux systems.
+  (<http://www.gnu.org/software/make/make.html>).
+- mkdep, the dependencies generator from CNRS/LAAS. Mkdep has many
+  features that other dependencies generators miss, and even more. 
+  (<http://www.laas.fr/~matthieu/mkdep/>). 
+- latex if you want to typeset the documentation (to postscript or to PDF).
+- acrobat reader if you want to read the documentation.
+
+
+SUPPORTED PLATFORMS
+-------------------
+
+Open PRS is known to run on many platforms (in fact, I still have to find a Unix
+on which it did not run):
+
+- SPARC Solaris (tested on Solaris 2.5.1 through Solaris 9),
+- x86 Linux (tested on many of them)
+- MacOS X (using Apple X11)
+- VxWorks (68x00, PPC)
+- ...
+
+In any case, the source are provided and it has never been a problem to
+recompile it on a new architecture. We even had a version running under
+Windows 95, Windows NT, etc but this was a long time ago.
+
+GETTING Open PRS
+----------------
+
+The latest Open PRS version is available for download from:
+<http://www.laas.fr/~felix/openprs/>. 
+
+INSTALLATION INSTRUCTIONS
+-------------------------
+
+Open PRS does not use any automatic  configuration tool... (I never had the
+time to do it, but if you are willing to give it a shot, let me know).
+
+Usually, you just untar the source directory (src) in your open-prs
+directory, then just create a build directory at the same level than the src
+directory.
+
+If you intend to compile it for more than one architecture, just create a
+$TARGET subdirectory in the build directory ($TARGET has often a value which
+explicit the current architecture/os such as i386-linux or sparc-solaris or
+powerpc-darwin). Then cd in this $TARGET directory and execute:
+
+	../../src/util/mk_oprs_bin_tree <path to the src dir> <architecture>
+
+exemple:
+	../../src/util/mk_oprs_bin_tree /usr/local/open-prs/src sparc-solaris
+
+
+(if you did not create a $TARGET subdirectory, you can remove the first ../
+from the previous command)
+
+	make depend
+	make
+
+Do not forget the make depend (it does create files which are needed in the
+next step).
+
+	make install
+
+Can be also done (although you can run it from the build directory)... check
+the path where it will be installed in the site.make file created in your
+build/$TARGET directory.
+
+RUNNING Open PRS
+----------------
+
+There are a number of environment variable of interest to control Open PRS:
+
+OPRS_DATA_PATH
+OPRS_ID_CASE
+OPRS_MP_HOST
+OPRS_MP_PORT
+OPRS_SERVER_HOST
+OPRS_SERVER_PORT
+OPRS_DOC_DIR
+
+Check the full documentation to see what value they should take. The most
+critical one is OPRS_DATA_PATH which should point to a column separated list
+of directories where Open PRS will look for data files.
+
+if you're using the C-Shell:
+
+setenv OPRS_DATA_PATH ./data:/usr/local/open-prs/data
+
+if you're using a Bourne shell variant (sh, ksh, bash): 
+
+export OPRS_DATA_PATH=./data:/usr/local/open-prs/data
+
+You can start an OP Editor with:
+
+ope
+
+an Open XPRS with:
+
+xoprs -n foo -a -A
+
+etc... 
+
+(I think it is time for you to look at the full documentation or at the
+primer... if I can find where I put it).
+
+Reporting Problems / Getting Help
+---------------------------------
+
+A mailing list has been created for Open-PRS users. Please subscribe to
+this list if you want to send problem reports or support requests.
+To subscribe, go to <http://sympa.laas.fr/wws/open-prs/>. 
+
+Submitting Patches and Code
+---------------------------
+
+Open PRS is open... thus if you have some code to submit which fix bugs or
+improve it, you can submit me a patch (make sure your patch has the proper
+licence, i.e. the same one I am using to distribute Open PRS, so I can
+include it in the distribution).
+
+-- 
+Felix Ingrand <felix@laas.fr>
+
+$Id$
+

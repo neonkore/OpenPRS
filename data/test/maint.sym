@@ -1,0 +1,46 @@
+; predicate use by the preserve conditions
+declare predicate COND
+declare predicate COND1
+declare predicate COND2
+declare predicate COND-X
+declare predicate COND-Y
+declare predicate COND-6
+
+; some OP predicate
+declare op_predicate BIDON
+declare op_predicate BIDON-X
+declare op_predicate BIDON-Y
+declare op_predicate BIDON-Y-2
+declare op_predicate BIDON-Y-3
+declare op_predicate CALLED-6-1
+declare op_predicate CALLED-6-2
+declare op_predicate FAILED-6
+declare op_predicate INIT-6
+declare op_predicate INIT-TEST
+declare op_predicate CLEAN-TEST
+
+declare op_predicate STEST1
+declare op_predicate STEST1B
+declare op_predicate STEST2
+declare op_predicate STEST3
+declare op_predicate STEST3B
+declare op_predicate STEST3T
+declare op_predicate STESTS
+
+declare op_predicate TESTS
+declare op_predicate TEST1
+declare op_predicate TEST2
+declare op_predicate TEST3
+declare op_predicate TEST3B
+declare op_predicate TEST4
+declare op_predicate TEST5
+declare op_predicate TEST5B
+declare op_predicate TEST6
+declare op_predicate TEST6B
+declare op_predicate TEST6T
+
+declare predicate CONTINUE-6
+
+declare predicate TOTO
+
+declare function CURRENT

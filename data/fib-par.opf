@@ -1,0 +1,68 @@
+;;;
+;;; File: /riaidefix/users/felix/C/LAAS/oprs-1.1/data/fib-par.opf
+;;; $Id$
+;;; Date: Mon Dec 20 12:56:32 1993
+;;; Host: idefix
+;;; OP Editor Version : 1.1.15
+;;; Compiled on hill (Tue Dec  7 10:32:37 MET 1993)
+;;; OP File Format: 2
+;;;
+(2 
+(
+FIBONACCI
+PRINT-FIBONACCI
+)
+(|Fibonacci| (
+(INVOCATION INVOCATION (! (FIBONACCI $N $RESULT)) 9 52 1 80 0 )
+(CONTEXT CONTEXT  10 110 0 60 0 )
+(SETTING SETTING  10 210 0 60 0 )
+(EFFECTS EFFECTS () 11 313 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "This OP computes the Fibonacci of $n." 7 341 1 60 0 )
+(PROPERTIES PROPERTIES () 10 359 0 60 0 )
+) (
+(END END2 0 0 256 355)
+(END END1 0 0 48 247)
+(PROCESS N1 1 0 262 294)
+(START START 0 0 233 63)
+(IF N0 0 0 244 147)
+(THEN N0_T 0 0 230 147)
+(ELSE N0_F 0 1 265 147)
+) (
+(GOAL N1 E1 END2
+(! (= $RESULT (+ $RES2 $RES3)))
+()  -1 -9 40 0)
+(THEN N0 E2 N0_T)
+(ELSE N0 E3 N0_F)
+(IF START E4 N0
+(? (<= $N 1))
+()  0 0 40 0)
+(GOAL N0_T E5 END1
+(! (= $RESULT 1))
+((65 156) )  13 33 40 0)
+(GOAL N0_F E6 N1
+(! (FIBONACCI (- $N 1) $RES2))
+((266 180) (207 239) )  -20 29 40 0)
+(GOAL N0_F E7 N1
+(! (FIBONACCI (- $N 2) $RES3))
+((274 180) (334 240) )  53 49 40 0)
+) )
+(|Print Fibonacci| (
+(INVOCATION INVOCATION (! (PRINT-FIBONACCI $X)) 10 35 1 80 0 )
+(CONTEXT CONTEXT  10 135 1 60 0 )
+(SETTING SETTING  11 208 1 60 0 )
+(EFFECTS EFFECTS () 10 310 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "This OP just looks for the fibonacci of $x and prints the result." 10 410 1 60 0 )
+(PROPERTIES PROPERTIES () 10 360 1 60 0 )
+) (
+(END END1 0 0 266 289)
+(PROCESS S1 0 0 274 197)
+(START START 0 0 262 104)
+) (
+(GOAL START E0131 S1
+(! (FIBONACCI $X $N))
+()  0 0 40 0)
+(GOAL S1 E0155 END1
+(! (PRINT $N))
+()  0 0 40 0)
+) )
+)

@@ -1,0 +1,102 @@
+/*                               -*- Mode: C -*- 
+ * message.h -- 
+ * 
+ * $Id$
+ * 
+ * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ *    - Redistributions of source code must retain the above copyright
+ *      notice, this list of conditions and the following disclaimer.
+ *    - Redistributions in binary form must reproduce the above
+ *      copyright notice, this list of conditions and the following
+ *      disclaimer in the documentation and/or other materials provided
+ *      with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ */
+#ifndef INCLUDE_message
+#define INCLUDE_message
+
+extern char *demo_name;
+
+#define    END_CHAR             '\n'
+#define    NULL_CHAR            '\0'
+#define    SPACE_CHAR          ' '
+#define    OPEN_CHAR          '('
+#define    CLOSE_CHAR          ')'
+
+#define RUN_MESSAGE LG_STR("(RUN-DEMO)","(DEMARRER-DEMO)")
+#define CONNECT_MESSAGE LG_STR("(INIT-DEMO DEMO)","(INITIALISER-DEMO DEMO)")
+#define DISCONNECT_MESSAGE LG_STR("(GOOD-BYE DEMO)","(QUITTER DEMO)")
+#define STOP_TIME_MESSAGE LG_STR("(STOP-TIME DEMO)","(STOPPER-TEMPS DEMO)")
+#define RUN_TIME_MESSAGE LG_STR("(RUN-TIME)","(DEMARRER-TEMPS)")
+#define HALT_TIME_MESSAGE LG_STR("(HALT-TIME)","(INTERROMPRE-TEMPS)")
+
+#define SENSOR_BUSY_MESSAGE LG_STR("(TRUCK-IN-PLACE YES)","(CAMION-EN-PLACE OUI)")
+#define SENSOR_FREE_MESSAGE LG_STR("(TRUCK-IN-PLACE NO)","(CAMION-EN-PLACE NON)")
+
+#define TRUCK_READY_MESSAGE LG_STR("(TRUCK-READY)","(CAMION-PRET)")
+#define TRUCK_FULL_MESSAGE LG_STR("(TRUCK-FULL)","(CAMION-PLEIN)")
+
+#define SENSOR1_CLOSE_MESSAGE LG_STR("(POSITION SENSOR1 CLOSE)","(POSITION CAPTEUR1 FERME)")
+#define SENSOR1_BP_MESSAGE LG_STR("(POSITION SENSOR1 BP)","(POSITION CAPTEUR1 INDEFINIE)")
+#define SENSOR1_OPEN_MESSAGE LG_STR("(POSITION SENSOR1 OPEN)","(POSITION CAPTEUR1 OUVERTE)")
+
+#define SENSOR2_CLOSE_MESSAGE LG_STR("(POSITION SENSOR2 CLOSE)","(POSITION CAPTEUR2 FERME)")
+#define SENSOR2_BP_MESSAGE LG_STR("(POSITION SENSOR2 BP)","(POSITION CAPTEUR2 INDEFINIE)")
+#define SENSOR2_OPEN_MESSAGE LG_STR("(POSITION SENSOR2 OPEN)","(POSITION CAPTEUR2 OUVERTE)")
+
+#define LIGHT1_GO_MESSAGE LG_STR("(POSITION QUEUE ON)","(POSITION FEU-QUEUE VERT)")
+#define LIGHT1_STOP_MESSAGE LG_STR("(POSITION QUEUE OFF)","(POSITION FEU-QUEUE ROUGE)")
+#define LIGHT2_GO_MESSAGE LG_STR("(POSITION FILLING ON)","(POSITION FEU-REMPLISSAGE VERT)")
+#define LIGHT2_STOP_MESSAGE LG_STR("(POSITION FILLING OFF)","(POSITION FEU-REMPLISSAGE ROUGE)")
+
+#define CONNECT_COMMAND LG_STR("INIT-DEMO","INITIALISER-DEMO")
+#define DISCONNECT_COMMAND LG_STR("GOOD-BYE","QUITTER")
+#define INIT_TIME_COMMAND LG_STR("GIVE-ME-TIME","DONNE-TEMPS")
+#define STOP_TIME_COMMAND LG_STR("STOP-TIME","STOPPER-TEMPS")
+
+#define TIME_COMMAND LG_STR("OPRS-TIME","TEMPS-OPRS")
+#define ACCEPT_COMMAND LG_STR("ACCEPTED","ACCEPTE")
+#define REFUSED_COMMAND LG_STR("REFUSED","REFUSE")
+
+#define SHUTDOWN_COMMAND LG_STR("SHUTDOWN","ARRET-COMPLET")
+
+#define WARNING_COMMAND LG_STR("WARNING","ATTENTION")
+
+#define LIGHT_COMMAND LG_STR("LIGHT","FEU")
+#define LIGHT_NAME_Q LG_STR("QUEUE","FEU-QUEUE")
+#define LIGHT_NAME_F LG_STR("FILLING","FEU-REMPLISSAGE")
+#define LIGHT_ON LG_STR("ON","VERT")
+#define LIGHT_OFF LG_STR("OFF","ROUGE")
+
+#define VALVE_COMMAND LG_STR("VALVE","VANNE")
+#define VALVE_OPEN LG_STR("OPEN","OUVERTE")
+#define VALVE_CLOSE LG_STR("CLOSE","FERME")
+
+char *parse_word (char *str, char **res);
+char *parse_int (char *str, int *val);
+char *parse_open (char *str);
+char *parse_close (char *str);
+char *parse_space (char *str);
+char *parse_space_word (char *str, char **res);
+char *parse_space_between_par (char *str, char **res);
+
+#endif /* INCLUDE_message */

@@ -1,0 +1,136 @@
+;;;
+;;; File: /opt/oprs/oprs-1.4/src/contrib/data/bk-point.opf
+;;; $Id$
+;;; Date: Mon Sep 30 14:26:00 1996
+;;; Host: shems
+;;; OP Editor Version: 1.4.2 Released
+;;; Compiled on warhol (Wed May 15 12:23:42 MET DST 1996)
+;;; OP File Format: 2
+;;;
+(
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; BK-LIST
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(defop BK-LIST
+    :invocation (OR (! (BK-LIST)) (BK-LIST))
+    :body ((IF (? (BK-LIST))
+              (~> (BK-LIST))
+           )
+           (! (= @AUX (N-ALL-LIST ($NUMBER $MSG) (Z-BK-POINT $NUMBER $MSG))))
+           (! (= @AUX (CAR (VAL @AUX))))
+           (! (SORT-NUMBERS (VAL @AUX) @AUX))
+           (! (PRINT-LIST-Z-BK-POINT (VAL @AUX)))
+          )
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; BK-POINT
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(defop BK-POINT
+    :invocation (! (BK-POINT $MSG))
+    :body ((IF (? (& (BOUNDP @@BK-POINT) (NUMBERP @@BK-POINT)))
+              (! (= @@BK-POINT (+ (VAL @@BK-POINT) 1)))
+            ELSE
+              (! (= @@BK-POINT 0))
+           )
+           (! (= @LOCAL (VAL @@BK-POINT)))
+           (! (PRINTF (FORMAT "\n--- Entry BREAK-POINT %d =  %d\n" (VAL @LOCAL) (VAL $MSG))))
+           (! (PRINTF (FORMAT "--- to continue conclude (BK-CONT %d)\n" (VAL @LOCAL))))
+           (! (PRINTF (FORMAT "--- to abandon conclude (BK-FAIL %d)\n" (VAL @LOCAL))))
+           (=> (Z-BK-POINT (VAL @LOCAL) (VAL $MSG)))
+           (IF (? (BK-CONT (VAL @LOCAL)))
+              (~> (BK-CONT (VAL @LOCAL)))
+           )
+           (IF (? (BK-FAIL (VAL @LOCAL)))
+              (~> (BK-FAIL (VAL @LOCAL)))
+           )
+           (^ (V (BK-CONT (VAL @LOCAL)) (BK-FAIL (VAL @LOCAL))))
+           (~> (Z-BK-POINT (VAL @LOCAL) (VAL $MSG)))
+           (IF (? (BK-CONT (VAL @LOCAL)))
+              (~> (BK-CONT (VAL @LOCAL)))
+              (! (PRINTF (FORMAT "\n--- Exit Break point %d =  %d\n" (VAL @LOCAL) (VAL $MSG))))
+            ELSE
+              (~> (BK-FAIL (VAL @LOCAL)))
+              (! (PRINTF (FORMAT "\n--- Fail Break point %d =  %d\n" (VAL @LOCAL) (VAL $MSG))))
+              (! (FAILED))
+           )
+          )
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; CHECK-ATOMP
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(defop CHECK-ATOMP
+    :invocation (! (CHECK-ATOMP $OBJ))
+    :body ((IF (? (~ (ATOMP (VAL $OBJ))))
+              (! (PRINTF (FORMAT "\n--- CHECK-ATOMP: %d is not an atom\n" $OBJ)))
+              (! (BK-POINT "check-atomp"))
+           )
+          )
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; CHECK-BOUNDP
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(defop CHECK-BOUNDP
+    :invocation (! (CHECK-BOUNDP $OBJ))
+    :body ((IF (? (~ (BOUNDP (VAL $OBJ))))
+              (! (PRINTF (FORMAT "\n--- CHECK-BOUNDP: %d is not bound\n" $OBJ)))
+              (! (BK-POINT "check-boundp"))
+           )
+          )
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; CHECK-CONSP
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(defop CHECK-CONSP
+    :invocation (! (CHECK-CONSP $OBJ))
+    :body ((IF (? (~ (CONSP (VAL $OBJ))))
+              (! (PRINTF (FORMAT "\n--- CHECK-CONSP: %d is not a list\n" $OBJ)))
+              (! (BK-POINT "check-consp"))
+           )
+          )
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; CHECK-NUMBERP
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(defop CHECK-NUMBERP
+    :invocation (! (CHECK-NUMBERP $OBJ))
+    :body ((IF (? (~ (NUMBERP (VAL $OBJ))))
+              (! (PRINTF (FORMAT "\n--- CHECK-NUMBERP: %d is not a number\n" $OBJ)))
+              (! (BK-POINT "check-numberp"))
+           )
+          )
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; CHECK-STRINGP
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(defop CHECK-STRINGP
+    :invocation (! (CHECK-STRINGP $OBJ))
+    :body ((IF (? (~ (STRINGP (VAL $OBJ))))
+              (! (PRINTF (FORMAT "\n--- CHECK-STRINGP: %d is not a string\n" $OBJ)))
+              (! (BK-POINT "check-stringp"))
+           )
+          )
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; PRINT-LIST-Z-BK-POINT
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(defop PRINT-LIST-Z-BK-POINT
+    :invocation (! (PRINT-LIST-Z-BK-POINT $L))
+    :body ((! (PRINT "\n--- List of current breakpoints ---\n"))
+           (! (= @AUX (VAL $L)))
+           (WHILE (? (~ (NULL @AUX)))
+              (? (Z-BK-POINT (CAR @AUX) @MSG))
+              (! (PRINTF (FORMAT " BK-POINT:%d '%d'\n" (CAR @AUX) (VAL @MSG))))
+              (! (= @AUX (CDR @AUX)))
+           )
+           (! (PRINT "---"))
+          )
+)
+)

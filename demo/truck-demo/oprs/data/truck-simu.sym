@@ -1,0 +1,7 @@
+declare be truck-leaving
+declare be light
+declare ff position 1
+declare ff delay 1
+declare ff type 1
+declare ff truck-in-place 0
+declare ff tank-value 0

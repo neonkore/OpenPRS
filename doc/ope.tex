@@ -1,0 +1,1036 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% -*- Mode: latex -*- %%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Copyright (c) 1991-2003 Francois Felix Ingrand.
+%% All rights reserved.
+%%
+%% Redistribution and use in source and binary forms, with or without
+%% modification, are permitted provided that the following conditions
+%% are met:
+%%
+%%    - Redistributions of source code must retain the above copyright
+%%      notice, this list of conditions and the following disclaimer.
+%%    - Redistributions in binary form must reproduce the above
+%%      copyright notice, this list of conditions and the following
+%%      disclaimer in the documentation and/or other materials provided
+%%      with the distribution.
+%%
+%% THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+%% "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+%% LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+%% FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+%% COPYRIGHT HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+%% INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+%% BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+%% LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+%% CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+%% LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+%% ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+%% POSSIBILITY OF SUCH DAMAGE.
+%%
+%% $Id$
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\part{\OPE{}}
+\node{OP Editor}
+
+
+
+\chapter*{Overview of the \OPE{}}
+\node{Overview of the OP Editor}
+\cpindex{Overview of the \OPE{}}
+
+The \OPE{} is the graphical editing tool of the \COPRS{} development
+environment. It is not included in the \COPRS{} application environment,
+because this product does not provide any tool to create OPs and
+procedures. This tool uses X11/Motif as a graphical user interface.
+
+The OP Editor is the graphical editor for  procedures/OPs. It enables the
+user to create, edit and modify the procedures of a \COPRS{} application.
+
+\begin{itemize}
+
+\item It runs under the X11 window system with the Motif widgets toolkit.
+
+\item Its embedded lexical and syntax checker ensure that the procedure
+the user write  will be loaded in the \CPK{} or \XPK{}.
+
+\item It is upward compatible with the  GRASPER II Graph format , and
+Sun Graph format.
+
+\item It allows the user to edit more than one procedure and more than
+one procedure file at the same time.
+
+\item It provides an on-line help and documentation using the your prefered
+  HTML browser (Netscape).
+
+\item It has a friendly user interface.
+
+\end{itemize}
+
+The editor manipulates OPs and procedures which are stored in files. A
+file is called a OP File and has different formats (\pxref{OP File Format}).
+
+Each OP file can contain a certain number of OPs and procedures. When you
+edit a
+OP file, you can select the specific procedure you want to edit.
+
+When selected, OPs and procedures are visible on the screen and can be
+modified as desired by the user.
+
+The OP files produced by the \OPE{} can then be loaded in a \CPK{} or an
+\XPK{} to be executed.
+
+\chapter{How to Use the \OPE{}}
+\node{How to Use the OP Editor}
+\cpindex{How to Use the \OPE{}}
+\pgindex{op-editor command}
+
+\figuregif[height=0.5\textheight]{ope-window}{\OPE{} Window}{OP Editor Window 2}
+
+The \OPE{} is invoked from the Unix shell with the command:
+
+\code{\% op-editor}
+
+
+
+\section{Arguments of the \OPE{}}
+\node{Arguments of the OP Editor}
+\cpindex{Arguments of the \OPE{}}
+
+Usage: \begin{verbatim}
+op-editor [-D file-directory] [-F ACS-op-file] [-l upper|lower|none]
+          [-m message-passer-hostname] [-j message-passer-port-number]
+          [-c op-file*] [-pwt] [-peo] [-L en|fr] [op-file]*
+\end{verbatim}
+
+The \code{op-editor} command also accept all the standard Xt arguments
+(\pxref{Xt Command Line Arguments}). 
+
+All the arguments are optional.
+
+\begin{description}
+
+\item[\code{-D}] to specify a directory from which you want the file to
+be looked for. If you say \code{-D data}, it tries to load
+subsequent files specified in the command line from the \code{data}
+sub directory.
+
+\item[\code{-F}] to specify a file to load in OPF format. This is
+equivalent to the Load OP file command (\pxref{Load OP File}). The
+\file{.opf} extension must be omitted as it will be added by the
+argument parser.
+
+\item[\code{-m}] to specify the hostname on which the \MP{} runs or will be
+started. If the \OPE{} cannot connect to this hostname on the specified port
+(even after trying to start the \MP{}), then the program exits with an error
+message. This option only applies if your license agreement require connection
+of the \OPE{} to the \MP{}.
+
+\item[\code{-j}] to specify the port on which the \MP{} is expecting a
+connection (or will be started if necessary). This option only applies if your
+license agreement require connection of the \OPE{} to the \MP{}.
+
+\item[\code{-c}] to convert OP file in the newest OP File format. A backup copy
+of the file is done with the \file{.bak} suffix.
+
+\item[\code{-pwt}] is used to print the \OPE{} widget tree (\pxref{OP Editor Motif Widgets Hierarchy}) . This can be useful if you do not have the
+documentation at hand and still want to now the name or type of a particular
+widget.
+
+\item[\code{-peo}] (which stands for Print English Operator) can be used to
+print the temporal operator in english instead of the single letter. It will
+print \code{achieve} instead of \samp{!}, and \code{wait} instead of \samp{\^{}}
+and so on.
+
+\item[\code{-l upper|lower|none}] can be used to print and parse all the symbol
+and id in upper case, lower case or in no particular case.
+
+\item[\code{-L en|fr}] can be used to select the language of the interface
+(French or English). Note that by default your kernel is in english. Note also
+that for the applications with an X interface (i.e. \XPK{} and the \OPE{} the
+choice of the \file{app-defaults} file will select the language
+(\pxref{Xt/Motif Widgets Hierarchy and Resources}). In this case, selecting a
+different value with the option will lead to a warning and to a mix of language
+in the interface.
+
+\item[\code{op-file}] to specify files to load in OPF format. This is
+equivalent to the Load OP file command (\pxref{Load OP File}). The
+complete name must be given.
+
+\end{description}
+
+If you specify \code{-G}, \code{-S} or \code{-F}, the respective file
+extensions must be omitted.
+
+
+\section{\OPE{} Environment Variables}
+\node{OP Editor Environment Variables}
+\cpindex{OP Editor Kernel Environment Variables}
+
+There are a number of environment variables which can be used to customize the
+\OPE{} or to define default arguments. Arguments passed using the command line
+have precedence on those acquired from environment variables.
+
+\begin{description}
+
+\cpindex{OPRS\_DOC\_DIR}
+\item[\code{OPRS\_DOC\_DIR}] is used  to specify the location of the online \COPRSDE{}
+documentation. It is used by the \XPK{} and the \OPE{}.
+Example:
+\begin{verbatim}
+setenv OPRS_DOC_DIR /usr/local/oprs/doc
+\end{verbatim}
+
+\cpindex{OPRS\_ID\_CASE}
+\item[\code{OPRS\_ID\_CASE}] is used to specify if the program should upper case,
+lower case or should not change the case of the parsed Id. This is equivalent
+to the \code{-l} option. The possible values
+are \code{lower}, \code{upper} or \code{none}:\*
+Example:
+\begin{verbatim}
+setenv OPRS_ID_CASE none
+\end{verbatim}
+
+\end{description}
+
+\section{Creating a OP}
+\node{Creating a OP}
+\cpindex{Creating a OP}
+
+Creating a OP is a fairly easy task. In the \OPE{}, select the Create OP menu
+item (\pxref{Create OP}) in the OP pull down menu. This pops up a large dialog
+box (shown on figure \ref{cre-gra-op}) which can be filled with some of the
+information needed to create a OP.  Do not worry if you mistype or forget
+something. The \OPE{} checks the syntax, and you can change or edit the
+different fields afterwards. Note that you can select the type of OP to create:
+a Graph OP or an Action OP (this is not something you can change afterwards, so
+you must choose now). According to your choice, you will get a OP with a start
+node or (exclusive or) an action field. Click OK to create the OP. If any
+syntax error is found, the \OPE{} tells you in which field it was located.
+
+As soon as the create dialog box disappears, you see your OP on the screen,
+or more precisely its squeleton, as it only contains the fields you
+have filled up and the start node (or the action field). By selecting
+the various operations of the working menu (\pxref{Working Menu Items}) and by following the instructions in the Footer help window
+(\pxref{Footer and Dialog Box Help}), you can then create nodes or
+edges, edit them, and so on.
+
+\section{Editing an Existing OP}
+\node{Editing an Existing OP}
+\cpindex{Editing an Existing OP}
+
+Editing an existing OP is also a fairly easy operation. In the \OPE{},
+select the Select OP menu item (\pxref{Select OP}) in the OP pull down
+menu. This pops up a selection list dialog box containing all the OPs
+present in this OP file. You can then select the one you want to see in
+the editing area.
+
+\section{Scroll Bars}
+\node{Scroll Bars}
+\cpindex{Scroll Bars}
+
+Scroll bars can be used at any time to change the view port of the drawing
+area. The drawing area is virtually ``as big as needed'', so do not be afraid
+to draw OPs as big as you want. When the \OPE{} starts, it ``creates'' a window
+big enough to contain the biggest OP you loaded.  However, you can increase the
+maximum size of the window by selecting the Change Drawing Size (\pxref{Change Drawing Size}) menu item in the Misc Menu.
+
+\section{Selection Pane}
+\node{Selection Pane}
+\cpindex{Selection Pane}
+
+\figuregif[scale=0.5]{ope-sel-pan}{Selection Pane}{selection-pane}
+
+This pane (Figure \ref{selection-pane}) is located just below the menu bar and
+gives the following information to the user: the file name which is currently
+edited, the OP name which is currently selected, and a marker indicating
+whether the file has been modified or not.
+
+\section{Footer and Dialog Box Help}
+\node{Footer and Dialog Box Help}
+\cpindex{Footer and Dialog Box Help}
+
+\figuregif[scale=0.5]{ope-help-pan}{Footer Help Pane}{help-pane}
+
+At any time, the user can get information and valuable help on what he is
+expected to do by looking at the footer window of the \OPE{} (Figure
+\ref{help-pane}). Moreover, most dialog boxes have ``HELP'' button pointing at
+the proper section of the on line manual (the present manual), which can be
+browsed with your HTML browser.
+
+\section{Pretty Printing}
+\node{Pretty Printing}
+\cpindex{Pretty Printing}
+
+All text objects displayed by the \OPE{} (but also the \XPK{}) are pretty
+printed. Pretty printing is usually appreciated when one has complex
+expressions to edit, it makes the editing process easier and faster.
+Moreover, the user can specify on which width the pretty printer
+should try to print the object, as well as, if it should (when possible)
+fill up the lines (\pxref{Edit Object}). This information (the width and
+the line filling) is kept in the OPF format for each fields of each OP.
+
+\chapter{\OPE{} Commands}
+\node{OP Editor Commands}
+\cpindex{OP Editor Commands}
+
+The commands of the OP-editor are grouped into two different sets of menu.  The
+first set is a menu bar with cascade menus. The second set is a group of push
+buttons on the left side of the drawing pane. It is called the working menu, as
+it contains the commands which are most often used to edit OPs.
+
+
+
+\section{Menubar of the \OPE{}}
+\node{Menubar of the OP Editor}
+\cpindex{Menubar of the \OPE{}}
+
+\figuregif[scale=0.5]{ope-menu-bar}{OP Editor Menu Bar}{ope-menu-bar}
+
+The Menu Bar (Figure \ref{ope-menu-bar}) contains different buttons from
+which cascade menus pop when selected.
+
+
+
+\subsection{File Menu of the \OPE{}}
+\node{File Menu of the OP Editor}
+\cpindex{File Menu of the \OPE{}}
+
+\figuregif[scale=0.5]{ope-file-menu}{OP Editor File Menu}{ope-file-menu}
+
+The file menu (Figure \ref{ope-file-menu}) contains all the operations dealing
+with files, i.e. operations to load OP files in different formats, to save or
+write them, etc.
+
+
+
+\subsubsection{Load OP File}
+\node{Load OP File}
+\cpindex{Load OP File}
+
+\figuregif[scale=0.5]{load-op}{Load OP File Selection Box}{load-op-file}
+
+This command is used to load a OP File, in OPF format (\pxref{OPF Format}).
+The default (and recommended) extension for this file is \file{.opf} .  When
+this command is selected, a file selection dialog box appears to enable the
+user to select the file to load (see Figure \ref{load-op-file}) .
+
+If the load command is successful, the Select OP dialog box pops up,
+and the user is asked to select a OP to display.
+
+\subsubsection{Append OP File}
+\node{Append OP File}
+\cpindex{Append OP File}
+
+This command is used to append a OP File, in OPF format (\pxref{OPF Format}),
+to the currently selected OP file. When this command is selected, a file
+selection dialog box appears to enable the user to select the file to append.
+
+If the append command is successful, the Select OP dialog box pops up,
+and the user is asked to select a OP to display.
+
+\subsubsection{New OP File}
+\node{New OP File}
+\cpindex{New OP File}
+
+This command can be used to create a new OP file. By default, the name of
+this new file is \file{Untitled} with an increasing suffix number. The
+name of the file is chosen and defined the first time you save
+it with the save or write command.
+
+\subsubsection{Load Grasper OP File}
+\node{Load Grasper OP File}
+\cpindex{Load Grasper OP File}
+
+This command is provided for upward compatibility with SRI Lisp OPRS.
+
+This command is used to load a OP File in Grasper Graph format
+(\pxref{GGRAPH Format}). The default (and recommended) extension for these
+files is \file{.ggraph} . When this command is selected, a File Selection
+dialog box appears to allow the user to select the file to load.
+
+\subsubsection{Load Sun OP File}
+\node{Load Sun OP File}
+\cpindex{Load Sun OP File}
+
+This command is provided for upward compatibility with SRI Lisp OPRS.
+
+This command is used to load a OP File in Sun Graph format
+(\pxref{SGRAPH Format}). The default (and recommended) extension for this
+file is \file{.sgraph}. When this command is selected, a File Selection
+dialog box appears to allow the user to select the file to load. Note that
+nothing appears on the screen as the result of this command. You first need
+to save the file (in OPF format), and then reload the saved file.
+
+\subsubsection{Save OP File}
+\node{Save OP File}
+\cpindex{Save OP File}
+
+The OP Editor can only save in OPF File format (\pxref{OPF Format}). By
+default, the save command saves the currently selected OP File. If this
+OP file has no real filename (if it has been created with the New OP File
+command), then a Selection File dialog box pops up for you to choose the
+filename. The default and recommended extension is \file{.opf}.
+
+If the currently selected OP file is not in the OPF File Format, an error
+dialog box pops up to advise you to use the write command instead.
+
+\subsubsection{Write OP File}
+\node{Write OP File}
+\cpindex{Write OP File}
+
+The write command can be used to write the currently selected OP File in OPF
+format in the filename specified in the Selection File dialog box.
+
+\subsubsection{Write TeX Doc File}
+\node{Write TeX Doc File}
+\cpindex{Write TeX Doc File}
+
+The write tex doc file command can be used to write a \TeX{}/\LaTeX{} format documentation
+of the selected file in the filename specified in the Selection File dialog
+box. This documentation can the be included in \TeX{}/\LaTeX{} document.
+
+\subsubsection{Quit}
+\node{Quit}
+\cpindex{Quit}
+
+This command is used when you want to quit the \OPEditor. If some files
+have not been saved, you are asked to confirm you want to quit
+without saving them.
+
+\subsection{Edit Menu of the \OPE{}}
+\node{Edit Menu of the OP Editor}
+\cpindex{Edit Menu of the \OPE{}}
+
+\figuregif[scale=0.5]{ope-edit-menu}{OP Editor Edit Menu}{ope-edit-menu}
+
+This menu (Figure \ref{ope-edit-menu}) contains the commands to deal with
+loaded OP Files. 
+
+
+
+\subsubsection{Select OP File}
+\node{Select OP File}
+\cpindex{Select OP File}
+
+This command allows you to change the currently selected file. A list of
+currently loaded or known OP Files is presented in a Selection Dialog Box. If
+the selection is successful, a Select OP dialog box pops up for you to choose
+the OP to display.
+
+\subsubsection{Print OP File}
+\node{Print OP File}
+\cpindex{Print OP File}
+
+This command applies the ``print'' command (\pxref{OP Editor Resources}, and
+\pxref{Change Print Command}) to all the OPs of the current OP
+file. Beware, this can be a rather long process.
+
+\subsubsection{Unload OP File}
+\node{Unload OP File}
+\cpindex{Unload OP File}
+
+This command allows the user to unload a OP file. As a result, the file
+will not appear in the Select OP file menu any longer.
+
+\subsection{OP Menu}
+\node{OP Menu}
+\cpindex{OP Menu}
+
+\figuregif[scale=0.5]{ope-op-menu}{OP Editor Op Menu}{ope-op-menu}
+
+This menu (Figure \ref{ope-op-menu}) contains all the commands which deal with OPs and, most often,
+with the Selected OP.
+
+
+
+\subsubsection{Select OP}
+\node{Select OP}
+\cpindex{Select OP}
+
+This command allows the user to change the Selected OP. Keep in mind that
+the name of the Selected OP is visible at any time in the information
+pane just below the Menu Bar.
+
+\subsubsection{Create OP}
+\node{Create OP}
+\cpindex{Create OP}
+
+\figuregif[scale=0.5]{ope-cre-op-gra}{Create OP Dialog Box (Graph OP)}{cre-gra-op}
+
+\figuregif[scale=0.5]{ope-op-gra}{Resulting Graph OP}{gra-op}
+
+This command allows the user to create a new OP. A big dialog box pops up on
+the screen (see figure \ref{cre-gra-op}), and you are asked to fill up the
+various fields of the OP you want to create. Note that only two fields are
+really required: the name and the invocation part. The resulting OP is shown
+on Figure \ref{gra-op}. 
+
+\figuregif[scale=0.5]{ope-cre-op-act}{Create OP Dialog Box (Action OP)}{cre-act-op}
+
+\figuregif[scale=0.5]{ope-op-act}{Resulting Action OP}{act-op}
+
+If you click on the Action toggle button, the Dialog Box will change as shown
+on Figure \ref{cre-act-op}). An Action field is added, and you can enter the
+action part of the OP. The resulting OP is shown on Figure \ref{act-op}.
+
+\figuregif[scale=0.5]{ope-cre-op-txt}{Create OP Dialog Box (Text OP)}{cre-txt-op}
+
+\figuregif[scale=0.5]{ope-op-txt}{Resulting Text OP}{txt-op}
+
+If you click on the Text toggle button, the Dialog Box will change as shown
+on Figure \ref{cre-txt-op}). A Body field is added, and you can enter the
+body part of the OP. The resulting OP is shown on Figure \ref{txt-op}.
+
+\subsubsection{Duplicate OP}
+\node{Duplicate OP}
+\cpindex{Duplicate OP}
+
+This command allows the user to duplicate the currently Selected OP. A
+prompt dialog box pops up for you to give the name of the duplicate
+OP.
+
+\subsubsection{Rename OP}
+\node{Rename OP}
+\cpindex{Rename OP}
+
+This command allows the user to rename the currently Selected OP. A
+prompt dialog box pops up for you to give the new name of the selected
+OP. The text field is initialized with the previous name.
+
+\subsubsection{Print OP}
+\node{Print OP}
+\cpindex{Print OP}
+
+Will print the current OP using the print command (\pxref{Change Print Command}). This is done by dumping a bitmap of the OP in a temporary file, and
+then by processing the resulting file with the print command. The temporary
+file is then deleted. This OP is dumped in \code{xwd} format. It used to be in
+\code{xpm} format, but the \code{xwd} format is much smaller on disk and
+much faster
+to produce.
+
+\subsubsection{Dump OP Pixmap to File}
+\node{Dump OP Pixmap to File}
+\cpindex{Dump OP Pixmap to File}
+
+This command allows the user to dump a bitmap or pixmap of the current OP.  A
+file selection dialog box pops up to allow the user to choose in which file the
+pixmap should be dumped. Note that the resulting file is \strong{HUGE}...
+
+\subsubsection{Destroy Current OP}
+\node{Destroy Current OP}
+\cpindex{Destroy Current OP}
+
+This command allows the user to destroy the current  OP.
+
+\strong{Caution:} The current version of the OP Editor does not have an
+Undo facility\dots{} So extreme care should be exercised when using this
+command.
+
+\subsubsection{Destroy A OP}
+\node{Destroy A OP}
+\cpindex{Destroy A OP}
+
+This command allows the user to destroy a OP selected with a OP Selection
+dialog box.
+
+\strong{Caution:} The current version of the OP Editor does not have an
+Undo facility\dots{} So extreme care should be exercised when using this
+command.
+
+\subsubsection{Previous OP}
+\node{Previous OP}
+\cpindex{Previous OP}
+
+This command allows the user to quickly select the previous OP in the same
+OPFile.
+
+\subsubsection{Next OP}
+\node{Next OP}
+\cpindex{Next OP}
+
+This command allows the user to quickly select the next OP in the same
+OPFile.
+
+\subsubsection{Toggle selected OPs}
+\node{Toggle selected OPs}
+\cpindex{Toggle selected OPs}
+
+This command allows the user to quickly select the previously selected OP,
+even if this OP is in another OPFile.
+
+\subsubsection{Last Selected OPs}
+\node{Last Selected OPs}
+\cpindex{Last Selected OPs}
+
+This command allows the user to quickly select a OP in the list of the
+previously selected OPs, even if this OP is in another OP File.
+
+\subsubsection{Copy OP in Buffer}
+\node{Copy OP in Buffer}
+\cpindex{Copy OP in Buffer}
+
+This command allows you to copy a OP in an internal Copy/Paste buffer.
+This OP can then be
+retrieved or pasted in another OP File, using the Paste OP from Buffer
+command.
+
+\subsubsection{Paste OP from Buffer}
+\node{Paste OP from Buffer}
+\cpindex{Paste OP from Buffer}
+
+This command enables the user to retrieve one or more OPs from the
+Copy/Paste
+internal buffer and paste it in the current OP file.
+
+\subsubsection{Clear OP Buffer}
+\node{Clear OP Buffer}
+\cpindex{Clear OP Buffer}
+
+Clear all the OPs in the Copy/Paste buffer.
+
+\subsection{Misc Menu}
+\node{Misc Menu}
+\cpindex{Misc Menu}
+
+\figuregif[scale=0.5]{ope-misc-menu}{OP Editor Misc Menu}{ope-misc-menu}
+
+This menu (Figure \ref{ope-misc-menu}) contains commands to customize the \OPE{} or the appearance of
+the OP on the screen.
+
+
+
+\subsubsection{Change Print Command}
+\node{Change Print Command}
+\cpindex{Change Print Command}
+
+Allow the user to change the print command. The default value is: \*
+\code{xwdtopnm < \%s | pnmtops -r | lpr}.
+The default value is the one defined in the \file{Op-editor.ad} resources
+file (\pxref{OP Editor Resources}). It can be modified by the user (by
+setting his own resource).
+
+In any case, you must specify a command which contains a \code{\%s} to specify
+the argument to which it will apply (the temporary file where the OP has been
+dumped). Moreover, this command must be able to send a \code{xwd} (it used to
+be in \code{xpm} format) to the printer.  We strongly advise the user to get
+the pbmplus pacopge by Jef Posopnzer to print the result \cite{pbm-manual}.
+
+The default command converts from xwd to pnm, then
+transforms it in encapsulated postscript with
+run length encoding and finally pipes it in the printer...
+
+Note that you can use this command to dump OPs in Encapsulated Postscript
+format (to include them in user manuals for example) by redirecting the last
+command in a file instead of piping it in \code{lpr}.
+
+\subsubsection{Change Drawing Size}
+\node{Change Drawing Size}
+\cpindex{Change Drawing Size}
+
+\figuregif[scale=0.5]{ope-draw-size}{Change Drawing Size Dialog Box}{drawing-size}
+
+This command pops up a small window (see Figure \ref{drawing-size}) containing
+the current size of the drawing area in pixel. You can then change it. It is
+not recommended to reduce it as you could render some parts of a OP invisible
+or undisplayable (the invisible information is still present though, you just
+cannot access it).
+
+\subsubsection{Symbols List}
+\node{Symbols List}
+\cpindex{Symbols List}
+
+\figuregif[scale=0.5]{symbol-list}{Symbol List Dialog Box}{symbol-list}
+
+This command pops up a small window (see Figure \ref{symbol-list}) containing
+the current list  of symbols declared in this OP file. You can then change the
+content of this list which is saved within the OP file.
+
+\subsubsection{Change Visible Fields}
+\node{Change Visible Fields}
+\cpindex{Change Visible Fields}
+
+\figuregif[scale=0.5]{sel-field-dialog}{Selected Fields Dialog Box}{selected-fields}
+
+When selected, this menu item pops up a dialog box (see Figure
+\ref{selected-fields}) which enables you to tune the way a OP is displayed
+on the screen, dealing with the visibility of unused or unnecessary fields.
+The dialog box offers you a list of push buttons corresponding to the
+different text fields of a OP (documentation part, context, and so on).
+These push buttons are \code{on} when the corresponding field is visible.
+They are \code{off} when it is invisible, and they are insensitive when the
+corresponding field is not empty (in which case they cannot be made
+invisible). You also have a \code{all} button and a \code{none} button
+which allow you to make all the fields (to which the operation applies)
+visible or invisible.
+
+Note that you cannot hide a non empty field, and you cannot hide the
+Invocation Part (which is always required). Similarly, to edit a field,
+you need to make it visible first.
+
+Note that you can hide the name of the OP if you want.
+
+\subsection{Mode Menu}
+\node{Mode Menu}
+\cpindex{Mode Menu}
+
+\figuregif[scale=0.5]{ope-mode-menu}{OP Editor Mode Menu}{ope-mode-menu}
+
+This Mode menu (Figure \ref{ope-mode-menu}) contains commands equivalent to the
+one in the working menu (\pxref{Working Menu Items}). Its purpose is mainly to
+enable the use of accelerators on the working menu (as Motif only allowes the
+use of accelerator on button in menu).
+
+\subsection{\OPE{} Help Menu}
+\node{OP Editor Help Menu}
+\cpindex{OP Editor Help Menu}
+
+\figuregif[scale=0.5]{ope-help-menu}{OP Editor Help Menu}{ope-help-menu}
+
+The help menu (Figure \ref{ope-help-menu}) contains a number of items which,
+when selected, pop your HTML browser with the proper documentation. The
+first item is Help and shows the top level directory of the documentation.
+The other item pops up the browser but at the selected documentation
+section.
+
+\section{Working Menu Items}
+\node{Working Menu Items}
+\cpindex{Working Menu Items}
+
+\figuregif[scale=0.5]{ope-work-menu}{OP Editor Working Menu}{ope-work-menu}
+
+The Working Menu (Figure \ref{ope-work-menu}) contains the
+commands which are most often used to edit a OP.  Most of them deal with the
+components of a OP. They remain selected until you select another mode. For
+example, if you have selected \code{Destroy Object}, you stay in this mode
+until you select another mode (this can be rather dangerous). By default, the
+OP Editor starts in the \code{Move Objects} mode. Independently of any working
+selected menu, middle click is always equivalent to Move Objects and right
+click (whenever it is available) to Edit Object.
+
+
+
+\subsection{Move Objects}
+\node{Move Objects}
+\cpindex{Move Objects}
+
+This command is used to move objects on the screen. The movable objects
+are: nodes, knots, text fields, edge texts. Just click on them and
+a bounding rectangle appears. You can then drag the object to its new
+position.
+
+Note that if you click on the background window (i.e. not on an object),
+the whole window moves. This can be faster than using the
+scrolling bar.
+
+\subsection{Create Node}
+\node{Create Node}
+\cpindex{Create Node}
+
+Create a new node wherever you click.
+
+\subsection{Open Node}
+\node{Open Node}
+\cpindex{Open Node}
+
+A new node will be created just under the node on which you click. The outgoing
+edge from the first node will be transferred on the second one. In other word,
+you just opened the node to insert an edge on it.
+
+\subsection{Create If Node}
+\node{Create If Node}
+\cpindex{Create If Node}
+
+This command can be used to create IF-THEN-ELSE nodes.
+
+\subsection{Flip Conj/Disj Out}
+\node{Flip Conj/Disj Out}
+\cpindex{Flip Conj/Disj Out}
+
+When selected, this command allow the user to flip the status
+(disjunctive/conjunctive) of the outgoing edges of a node. Conjunctive
+corresponds to creation of new threads.
+
+\subsection{Flip Conj/Disj In}
+\node{Flip Conj/Disj In}
+\cpindex{Flip Conj/Disj In}
+
+When selected, this command allow the user to flip the status
+(disjunctive/conjunctive) of the ingoing edges of a node. Conjunctive
+correspond to merge of multiple threads.
+
+\subsection{Create Edge}
+\node{Create Edge}
+\cpindex{Create Edge}
+
+\figuregif[scale=0.5]{ope-cre-edge}{Create Edge Dialog Box}{create-edge}
+
+Create an edge between the first selected node and the second one.
+You can create intermediate knots by clicking on their desired position.
+If, after selecting the first node, you change your mind and want to
+unselect it, just click on the right mouse button. This will unselect the
+first selected node.
+
+If you have selected a second node, a prompt dialog box pops up (see Figure
+\ref{create-edge}) and asks you to enter the goal to put on the edge.
+
+\subsection{Create Knot}
+\node{Create Knot}
+\cpindex{Create Knot}
+
+You first need to select an edge to which you want to add a knot by
+clicking on the text part of the edge. Then, you can add as many knots as
+you want. Click right to unselect the edge.
+
+\subsection{Duplicate Objects}
+\node{Duplicate Objects}
+\cpindex{Duplicate Objects}
+
+Duplicate a node or an edge. For the node, it will duplicate all its ingoing
+and outgoing edges.
+
+\subsection{Merge Node}
+\node{Merge Node}
+\cpindex{Merge Node}
+
+Merge two nodes and all their edges.
+
+\subsection{Edit Object}
+\node{Edit Object}
+\cpindex{Edit Object}
+
+\figuregif[scale=0.5]{ope-edit-obj}{Edit Object Dialog Box}{edit-obj}
+
+When this command is selected, the user can edit any editable object (i.e.
+text fields, edge texts and node names). A modal dialog box appear (Figure
+\ref{edit-obj}) and the user can change the object edited. This dialog box
+has two particularities, there is a text field where the user can enter a
+pretty print width, and a toggle button to specify if the pretty printer
+should
+fill up lines or not (\pxref{Pretty Printing}). The OP Editor is quite
+rigorous for the syntax allowed in the text field. If anything wrong
+is entered, you get an Error Dialog Box.
+
+\subsection{Convert End}
+\node{Convert End}
+\cpindex{Convert End}
+
+This enables the user to convert (or unconvert) node to end node. The
+system checks that the node you are converting is a leaf of the
+graph or that the node is not the Start node.
+
+\subsection{Convert Start}
+\node{Convert Start}
+\cpindex{Convert Start}
+
+This enables the user to convert a node to a start node. Considering that
+only one start node is allowed, converting a node to start node
+unconverts the current start node which will therefore automatically become
+a standard node. The \OPE{} checks that the nodes you are converting do not
+have ingoing edges or are not the start node.
+
+\subsection{Align Object}
+\node{Align Object}
+\cpindex{Align Object}
+
+This command enables the user to align nodes and text fields. You first
+select an object (the anchor) on which you want to align other objects.
+Then you click on the objects to align. It will align the other objects on the
+closest of the vertical or horizontal line going through the anchor. If you
+want to unselect the anchor, you need to press the right mouse button.
+
+\subsection{Align Object Vert}
+\node{Align Object Vert}
+\cpindex{Align Object Vert}
+
+This command enables the user to align nodes and text fields. You first select
+an object (the anchor) on which you want to align vertically other objects.
+Then you click on the objects to align. If you want to unselect the anchor, you
+need to press the right mouse button.
+
+\subsection{Align Object Hor}
+\node{Align Object Hor}
+\cpindex{Align Object Hor}
+
+This command enables the user to align nodes and text fields. You first select
+an object (the anchor) on which you want to align horizontally other objects.
+Then you click on the objects to align. If you want to unselect the anchor, you
+need to press the right mouse button.
+
+\subsection{Destroy Object}
+\node{Destroy Object}
+\cpindex{Destroy Object}
+
+This command is used when the user wants to destroy some objects on the screen.
+Note that the destroy operation is done on the mouse up event\dots{} On the
+mouse down event, the OP Editor shows you (by selecting it) the object which is
+going to be destroyed. However, if (while the button is still pressed) you move
+the mouse away from the bounding box of the object, it is not destroyed. A
+recent version of the \OPE{} allows the user to destroy the knots of an edge.
+
+\strong{Caution:} The current version of the OP Editor does not have an
+Undo facility\dots{} So extreme care should be exercised when using this
+command.
+
+\subsection{Relevant OP}
+\node{Relevant OP}
+\cpindex{Relevant OP}
+
+This command can be used to find out what are the OP relevant to a particular
+goal. When this mode is selected, click on an edge (actually, the text of the
+goal), and the \OPE{} will propose a list of relevant OP (among the OP
+currently loaded in the \OPE{}). 
+
+\chapter{OP File Format}
+\node{OP File Format}
+\cpindex{OP File Format}
+% OP Format used in the OP Editor.
+
+Version of the \OPE{} prior to 1.3 recognizes three different OP file
+formats. The OPF File format is the official format used by the various
+components of the \COPRS{} Development Environment. However, the two other
+formats are used for compatibility with SRI Lisp \OPRS{} version.
+
+Versions of the \OPE{} greater or equal to 1.3  only recognize the OPF
+format. If you still have old files, use a version of the \OPE{} prior to 1.3
+to convert them.
+
+
+
+
+\section{OPF Format}
+\node{OPF Format}
+\cpindex{OPF Format}
+
+The OPF format is the default file format used by ACS \OPEditor. It has
+been designed for \COPRS{} Development Environment. It is the one and
+only one format recognized by the \CPK{}. Moreover, the \OPE{}
+knows how to write OP files only in this format (but can read other
+formats). There exist different version of this format, but this is an
+internal flag which allow the modules of the \COPRSDE{} to distinguish
+between them.
+
+\section{GGRAPH Format}
+\node{GGRAPH Format}
+\cpindex{GGRAPH Format}
+
+The GGRAPH (Grasper Graph format) is provided for compatibility. The
+\OPE{} is able to read this format and understand the various graphical
+information it contains. However, several details
+(usually unnecessary to the \CPK{}) are not properly parsed in
+this format (such as the fonts used on a particular edge).
+
+For various reasons, one cannot guarantee that the \OPE{} will
+properly parse all the Grasper Graph files. If you have any problem with
+a particular file, check the list of known problems with this format and
+report your problem to \code{oprs-bug@ingenia.fr}.
+
+
+
+\subsection{How to Get Grasper Graph on your Lisp Machine}
+\node{How to Get Grasper Graph on your Lisp Machine}
+\cpindex{How to Get Grasper Graph on your Lisp Machine}
+
+In Grasper, load your OP graph, and select it. Make sure you are in the
+proper pacopge (most likely OPRS), and execute the following code in the
+Grasper Listener pane:
+
+\begin{verbatim}
+(let ((*print-length* nil)
+      (*print-level* nil))
+     (with-open-file (foo-graph "foo.ggraph" :direction :output)
+                          (format foo-graph "~s" (grasper:describe-graph)))
+\end{verbatim}
+
+This saves your graph in the file \file{foo.ggraph}.
+
+\strong{Warning:} These text-graphs are different from those you get when
+you
+execute the command Output-SUN under Grasper (which delivers a SGRAPH
+format)\dots{} The former contains positions and graphical information, the
+latter does not.
+
+It has been reported that a nickname given to the pacopge \code{GRASPER}
+causes Grasper to save the file with the nickname instead of the original
+\code{GRASPER} symbol. The \OPE{} expects the \code{GRASPER} symbol\dots{}
+So at worst, you need to remove this nickname before saving, or
+replace the nickname with \code{GRASPER} under a text editor.
+
+\subsection{Grasper Graph Incompatibilities}
+\node{Grasper Graph Incompatibilities}
+\cpindex{Grasper Graph Incompatibilities}
+
+While loading a Grasper Graph, few things are not properly recognized by
+the \OPEditor:
+
+
+
+\subsubsection{Unrecognized Symbol}
+\node{Unrecognized Symbol}
+\cpindex{Unrecognized Symbol}
+
+Replace \code{|\#:|} with \code{|\#} in node names like: \code{|\#:|e7756|}
+These node names come from the time of ZetaLisp.
+
+In the following forms, the \& and ! are not parsable.
+
+\code{(*FACT (EQUAL \& (CAADR (GOAL-STRUCT-STATEMENT (OP-INSTANCE-GOAL
+(FIRST \$X))))))}
+
+\code{(*FACT (EQUAL ! (CAR (GOAL-STRUCT-STATEMENT (OP-INSTANCE-GOAL (FIRST
+\$X))))))))}
+
+The reason is quite obvious: these symbols should not be used explicitly in OPs
+and these tests should be replaced with evaluable predicate doing the same
+thing.
+
+\subsubsection{Negation as Failure}
+\node{Negation as Failure}
+\cpindex{Negation as Failure}
+
+|Meta ~! (negation as failure)| (which is a OP in default-processes.graph)
+cannot be parsed because of the absence of negation as failure in \COPRS{}.  As
+a consequence, the expression \code{(! (~ \$X))} cannot be parsed as a Temporal
+Expression (according to \COPRS{} Grammar).
+
+\subsubsection{Badly Formed Goals}
+\node{Badly Formed Goals}
+\cpindex{Badly Formed Goals}
+
+The following goal is not allowed: \*
+\code{(! (SEND-COMMAND-ACTION (DISPLAY-FOO (((CURRENT \$O) (CURRENT
+\$B))))))} \*
+because \code{(((CURRENT \$O) (CURRENT \$B)))} is not a valid \dfn{Composed
+Term}.
+
+This goal: \*
+\code{( ! (\& (~> (FOOBAR \$P \$A)) (=> (FOOBAR \$P \$A)))))))} \*
+is not allowed anymore\dots{}, replace it with: \*
+\code{(\& (~> (FOOBAR \$P \$A)) (=> (FOOBAR \$P \$A))))))} \*
+
+\section{SGRAPH Format}
+\node{SGRAPH Format}
+\cpindex{SGRAPH Format}
+
+The SGRAPH or SUN Graph format is provided for compatibility with a OP
+Format which has been used on SRI Sun version of the Lisp version of \OPRS.
+
+Note that this format does not have any graphical information.
+Consequently, it should be used in the last resort.
+
+If you load a SGRAPH format file, nothing shows on the screen (this format does
+not include any graphical information\dots{}). You have to save it first (in
+OPF format) and read it again. The various OP fields are positioned at their
+default position\dots{} But all nodes and edges are grouped in one position (20
+20). You can then rearrange them as you wish. A future version of the \OPE{}
+may attempt to display these graphs with a better organization, however, the
+current one does not (Note that if you had the possibility to generate OP File
+in SGRAPH format, you could also generate it in GGRAPH format, which is
+preferred).
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "oprs"
+%%% End: 

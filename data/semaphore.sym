@@ -1,0 +1,16 @@
+;;;
+;;; Symbol declaration of the semaphore.opf file.
+;;;
+declare predicate SEMAPHORE-POS
+declare predicate SEMAPHORE-TYPE
+declare predicate SEMAPHORE-ACTIVE
+declare op_predicate SEM-RESET
+declare op_predicate SEM-CREATE
+declare op_predicate SEM-P
+declare op_predicate SEM-V
+declare op_predicate SEM-P-TIMEOUT
+declare ff SEMAPHORE 1
+declare ff SEMAPHORE-WAIT 1
+declare ff SEMAPHORE-PASSED 1
+declare symbol SEM-BASIC
+declare symbol SEM-FIFO

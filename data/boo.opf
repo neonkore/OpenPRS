@@ -1,0 +1,28 @@
+;;;
+;;; File: data/boo.opf
+;;; $Id$
+;;; Date: Wed Sep 29 12:17:14 1993
+;;; Host: idefix
+;;; OP Editor Version : 1.1.7
+;;; Compiled on idefix (Wed Sep 29 12:15:16 MET 1993)
+;;; OP File Format: 2
+;;;
+(2 
+(
+)
+(|test message| (
+(INVOCATION INVOCATION (BOO) 10 25 1 80 0 )
+(CONTEXT CONTEXT  10 110 1 60 0 )
+(SETTING SETTING  10 210 1 60 0 )
+(EFFECTS EFFECTS () 10 310 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "OP to send a message in response of another message." 10 410 1 60 0 )
+(PROPERTIES PROPERTIES () 10 360 1 60 0 )
+) (
+(END END1 0 0 429 278)
+(START START 0 0 426 73)
+) (
+(GOAL START E0087 END1
+(! (SEND-MESSAGE FOO (FOO)))
+()  0 0 40 0)
+) )
+)

@@ -1,0 +1,279 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% -*- Mode: latex -*- %%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Copyright (c) 1991-2003 Francois Felix Ingrand.
+%% All rights reserved.
+%%
+%% Redistribution and use in source and binary forms, with or without
+%% modification, are permitted provided that the following conditions
+%% are met:
+%%
+%%    - Redistributions of source code must retain the above copyright
+%%      notice, this list of conditions and the following disclaimer.
+%%    - Redistributions in binary form must reproduce the above
+%%      copyright notice, this list of conditions and the following
+%%      disclaimer in the documentation and/or other materials provided
+%%      with the distribution.
+%%
+%% THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+%% "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+%% LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+%% FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+%% COPYRIGHT HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+%% INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+%% BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+%% LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+%% CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+%% LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+%% ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+%% POSSIBILITY OF SUCH DAMAGE.
+%%
+%% $Id$
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\part{\OPRSS{}}
+\node{OPRS-Server}
+\cpindex{OPRS-Server}
+
+
+
+\chapter*{Overview of the \OPRSS{}}
+\node{Overview of the OPRS-Server}
+\cpindex{Overview of the \OPRSS{}}
+
+The \OPRSS{} is an important tool in the \COPRS{} development environment.
+The philosophy behind \COPRS{} prevents the user from interacting synchronously
+with a \CPK{}. However, one should be able to issue commands to a running
+kernel without disturbing the \CPK{} main loop. This is where the \OPRSS{}
+comes in.  The \OPRSS{} is a program which enables the user to interact
+with a \CPK{} as much as possible. Moreover, the server allows the user to
+create new kernels, kill them, and so on\dots{} As most \COPRSDE{} programs, the
+\OPRSS{} will start the \MP{} if necessary.
+
+The OPRS Server enables the user to communicate directly with \CPK{}s.
+Indeed, \CPK{}s must be able to execute their procedures
+without being disturbed synchronously by the user. That is the reason
+why, the user can communicate with \CPK{}s through the OPRS Server.
+This does not apply to \XPK{} with which the user can communicate
+using the X11/Motif interface.
+
+\chapter{How to Use the \OPRSS{}}
+\node{How to Use the OPRS-Server}
+\cpindex{How to Use the \OPRSS{}}
+\pgindex{oprs-server command}
+
+
+
+\section{Arguments of the \OPRSS{}}
+\node{Arguments of the OPRS-Server}
+\cpindex{Arguments of the \OPRSS{}}
+
+Usage: \begin{verbatim}
+oprs-server [-X] [-l upper|lower|none] [-i server-port-number]
+           [-m message-passer-hostname]
+           [-j message-passer-port-number]
+           [-l upper|lower|none ]
+\end{verbatim}
+
+All the arguments are optional.
+
+\begin{description}
+
+\item[\code{-X}] to specify that all the \CPK{}s created by using the
+\code{make} command in the \OPRSS{}, will be \XPK{}s.
+
+\item[\code{-i}] to specify the port on which the \OPRSS{} is
+listening to connections from \CPK{}s.
+
+\item[\code{-m}] to specify the hostname on which the \MP{} is running (or will
+be started).  If the \OPRSS{} cannot connect (even after starting it) to
+this hostname on the specified  port, then the program exits with an error message.
+
+\item[\code{-l upper|lower|none}] can be used to print and parse all the symbol
+and id in upper case, lower case or in no particular case.All the kernels
+created by this \OPRSS{} will inherit this property.
+
+\item[\code{-j}] to specify the port on which the \MP{} is listening.
+
+\end{description}
+
+\section{\OPRSS{} Environment Variables}
+\node{OPRS-Server Environment Variables}
+\cpindex{OPRS-Server Environment Variables}
+
+There are a number of environment variables which can be used to customize the
+\OPRSS{} or to define default arguments. Arguments passed using the command line
+have precedence on those acquired from environment variables.
+
+\begin{description}
+
+\cpindex{OPRS\_MP\_PORT}
+\item[\code{OPRS\_MP\_PORT}] is used  to specify the port on which the \MP{} will
+listen to connection. It is used by the \CPK{}, the \XPK{}, the \OPRSS{}
+and the \MP{}. It is equivalent to the \code{-j} command line argument.\*
+Example:
+\begin{verbatim}
+setenv OPRS_MP_PORT 3456
+\end{verbatim}
+
+\cpindex{OPRS\_MP\_HOST}
+\item[\code{OPRS\_MP\_HOST}] is used  to specify the host on which the \MP{} will
+listen to connection. It is used by the \CPK{}, the \XPK{}, the \MP{} and the
+\OPRSS{}.  It is equivalent to the \code{-m} command line argument.\*
+Example:
+\begin{verbatim}
+setenv OPRS_MP_HOST machine.site.domain
+\end{verbatim}
+
+\cpindex{OPRS\_SERVER\_PORT}
+\item[\code{OPRS\_SERVER\_PORT}] is used  to specify the port on which the
+\OPRSS{} will listen to connection. It is used by the \CPK{}, the \XPK{}
+and the \OPRSS{}.  It is equivalent to the \code{-i} command line argument.\*
+Example:
+\begin{verbatim}
+setenv OPRS_SERVER_PORT 3457
+\end{verbatim}
+
+\cpindex{OPRS\_ID\_CASE}
+\item[\code{OPRS\_ID\_CASE}] is used to specify if the program should upper case,
+lower case or should not change the case of the parsed Id. This is equivalent
+to the \code{-l} option. The possible values
+are \code{lower}, \code{upper} or \code{none}:\*
+Example:
+\begin{verbatim}
+setenv OPRS_ID_CASE none
+\end{verbatim}
+
+\end{description}
+
+\section{Commands of the \OPRSS{}}
+\node{Commands of the OPRS-Server}
+\cpindex{Commands of the \OPRSS{}}
+
+Here is the list of the commands the \OPRSS{} recognizes.
+
+
+
+\subsection{\OPRSS{} Commands to Handle \CPK{}}
+\node{OPRS-Server Commands to Handle OPRS Kernel}
+\cpindex{OPRS Server Commands to Handle \CPK{}}
+
+\begin{itemize}
+
+\pgindex{make (oprs-server)}
+\item \code{make \var{name}}. To create a \CPK{} named \code{name}
+(in a separate Unix process).
+
+\pgindex{make\_x (oprs-server)}
+\item \code{make-x \var{name}}. To create a \XPK{} named \code{name}
+(in a separate Unix process).
+
+\pgindex{kill (oprs-server)}
+\item \code{kill \var{name}}. To kill the \CPK{} named \code{name}.
+This can only work if the \CPK{} has been started with the
+\code{make} command.
+
+\pgindex{accept (oprs-server)}
+\item \code{accept}. To accept the connection of a new \CPK{} (or a
+\XPK{}). This is used whenever a kernel has been started from a Unix
+shell (from a remote host for example) and is waiting for the \OPRSS{}
+to accept its connection. There is a common mistake when one uses the
+\code{accept} command. If you have started a \CPK{} and the
+connection to the \OPRSS{} does not work after an \code{accept}, you
+probably started this server with a port number for it or the \MP{} which is
+not the default one. Remember to specify these numbers in the command line of
+the \CPK{} you start.
+
+\pgindex{connect (oprs-server)}
+\item \code{connect \var{name}}. To connect the standard input to the \COPRS{}
+agent named \code{name}. This puts the OPRS agent in \dfn{command}
+mode.
+
+\pgindex{disconnect (oprs)}
+\item \code{disconnect}. To instruct the connected \COPRS{} to leave the
+\code{stdin} and give it back to the \OPRSS{}. The OPRS client will
+return in \dfn{run} mode. In fact, this command is not a \OPRSS{} command
+but a \CPK{} command.
+
+\pgindex{reset kernel (oprs-server)}
+\item \code{reset kernel \var{name}}. To send a \code{reset kernel} command
+to the \CPK{} named \var{name} (\pxref{OPRS Kernel Miscellaneous Commands}).
+
+\pgindex{reset parser (oprs-server)}
+\item \code{reset parser \var{name}}. To reset the parser of the
+\CPK{} named \var{name}.
+
+\end{itemize}
+
+\subsection{\OPRSS{} Communication Commands}
+\node{OPRS-Server Communication Commands}
+\cpindex{OPRS Server Communication Commands}
+
+\begin{itemize}
+
+\pgindex{send (oprs-server)}
+\item \code{send \var{name} \var{message}}. To send the \var{message} to the
+\COPRS{} named \var{name}. \*
+Example: \code{send foo (bar boo 3)}.
+
+\pgindex{add (oprs-server)}
+\item \code{add \var{name} \var{goal|fact}}. To send a \var{goal} or a
+\var{fact} to the OPRS named \var{name}. This is how you can post new facts
+or new goals in a \COPRS{} client. \*
+Example for a fact: \code{add foo (bar boo 3)} or for a goal: \code{add foo
+(! (print-factorial 3))}.
+
+\pgindex{transmit (oprs-server)}
+\item \code{transmit \var{name} \var{string}}. To send a \var{string} command
+to a \COPRS{} client named \var{name}. This is how you can send commands to a
+\COPRS{} client without connecting to it. If the command you want to send
+contains double quotes (such as \code{include "data/foo.inc"}), then you
+must backslash double quote like in: \code{transmit foo "include
+\\"data/foo.inc\\" "}.
+
+\pgindex{transmit\_all (oprs-server)}
+\item \code{transmit\_all \var{string}}. To send a \var{string} command
+to all the \CPK{} clients named connected to this \OPRSS{}. The syntax of the
+string is similar to the one used in the \code{transmit} command.
+
+\pgindex{broadcast (oprs-server)}
+\item \code{broadcast \var{message}}. To send the \var{message} to
+all the \COPRS{} connected to this \OPRSS{}'s \MP{}. \*
+Example: \code{broadcast (bar boo 3)}.
+
+\end{itemize}
+
+\subsection{\OPRSS{} Miscellaneous Commands}
+\node{OPRS-Server Miscellaneous Commands}
+\cpindex{OPRS Server Miscellaneous Commands}
+
+\begin{itemize}
+
+\pgindex{q (oprs-server)}
+\pgindex{quit (oprs-server)}
+\pgindex{exit (oprs-server)}
+\item \code{q|quit|exit|EOF}. To quit the \OPRSS{}. This also kills
+all the \COPRS{} clients started by this \OPRSS{}.
+
+\pgindex{include (oprs-server)}
+\item \code{include \var{file\_name}}. To execute all the commands in
+\var{file\_name}. The recommended extension for these files is \file{.inc}.
+Include file can contain other include directives. Only two commands are
+forbidden in include file: \code{connect} and \code{disconnect}
+(\pxref{Include File Format}).
+
+\pgindex{show version (oprs-server)}
+\pgindex{show copyright (oprs-server)}
+\item \code{show version|copyright}. To print the version or the copyright
+notice.
+
+\pgindex{help (oprs-server)}
+\item \code{help|h|?}. To print some on-line help.
+
+\end{itemize}
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "oprs"
+%%% End: 

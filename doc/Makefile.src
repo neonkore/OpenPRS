@@ -1,0 +1,108 @@
+########################### -*- Mode: Makefile -*- #########################
+## Makefile -- 
+## 
+## Copyright (C) 1992-2003 Francois Felix Ingrand
+## 
+## Author          : Francois Felix Ingrand
+## Created On      : Wed Apr  1 15:00:21 1992
+## Last Modified By: Francois Felix Ingrand
+## Last Modified On: Mon Jan 24 09:53:38 1994
+## Update Count    : 189
+## Status          : OK
+## 
+## $Id$
+## 
+###############################################################################
+
+# Copyright (c) 1991-2003 Francois Felix Ingrand.
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions
+# are met:
+#
+#    - Redistributions of source code must retain the above copyright
+#      notice, this list of conditions and the following disclaimer.
+#    - Redistributions in binary form must reproduce the above
+#      copyright notice, this list of conditions and the following
+#      disclaimer in the documentation and/or other materials provided
+#      with the distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+# "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+# LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+# FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+# COPYRIGHT HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+# BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+# LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+# ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+
+.SUFFIXES: .Z
+
+include ../site.make
+
+EMACS = emacs
+
+OLD_DOC_INFO = op-editor op-editor.info mp mp.info oprs oprs-server oprs-server.info \
+	oprs.info xoprs xoprs-server xoprs-server.info xoprs.info
+
+OLD_DOC_DVI = op-editor.dvi mp.dvi oprs-server.dvi oprs.dvi xoprs-server.dvi xoprs.dvi
+
+OLD_DOC_PS = op-editor.ps mp.ps oprs-server.ps oprs.ps xoprs-server.ps xoprs.ps
+
+DOC_INFO = oprs
+
+DOC_DVI = oprs.dvi
+
+DOC_PS = oprs.ps
+
+FIGURES = fig/*.ps
+
+all: $(DOC_INFO) $(DOC_DVI)
+
+info: $(DOC_INFO)
+
+ps: $(DOC_PS)
+
+%:: %.Z
+	uncompress $<
+
+%.ps: %.dvi
+	dvips $< -o
+
+clean:
+	/bin/rm -f *.toc *.aux *.cp *.fn *.ky *.tp *.vr *.pg *.blg *.log *.bak $(OLD_DOC_INFO) $(OLD_DOC_DVI) $(OLD_DOC_PS) oprs.*O *.lot *.lof
+
+print_all: $(DOC_PS)
+	lpr $(DOC_PS)
+
+install: info ps dir ${DESTDIR}/doc ${DESTDIR}/doc/fig $(DOC_INFO) $(DOC_PS)
+	${INSTALL} -m 644 dir ${DESTDIR}/doc/dir
+	for i in $(DOC_INFO) $(DOC_INFO)-[0-9] $(DOC_INFO)-1[0-9] $(DOC_PS) $(DOC_DVI); do\
+		${INSTALL} $$i ${DESTDIR}/doc/$$i;\
+		chmod 644 ${DESTDIR}/doc/$$i;\
+	done
+	for i in $(FIGURES); do\
+		${INSTALL} -m 644 $$i ${DESTDIR}/doc/fig;\
+	done
+
+${DESTDIR}/doc:
+	mkdir ${DESTDIR}/doc
+
+${DESTDIR}/doc/fig:
+	mkdir ${DESTDIR}/doc/fig
+
+very-clean: check_src clean
+	/bin/rm -f  $(DOC_INFO) $(DOC_INFO)-[0-9] $(DOC_INFO)-1[0-9] $(DOC_PS) $(DOC_DVI) \
+		oprs.??s oprs.bbl $(OP_TEX) $(WIDGET_TEX) oprs.ps.a4 oprs.ps.us
+
+%.dvi:	%.tex
+
+# This entry is to make sure that you will not delete the documentation if you do not have the source of it...
+
+check_src: oprs.tex
+

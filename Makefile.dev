@@ -1,0 +1,1053 @@
+########################### -*- Mode: Makefile -*- #########################
+# Makefile -- For the OPRS system
+#
+# $Id$
+#
+# Copyright (c) 1991-2003 Francois Felix Ingrand.
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions
+# are met:
+#
+#    - Redistributions of source code must retain the above copyright
+#      notice, this list of conditions and the following disclaimer.
+#    - Redistributions in binary form must reproduce the above
+#      copyright notice, this list of conditions and the following
+#      disclaimer in the documentation and/or other materials provided
+#      with the distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+# "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+# LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+# FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+# COPYRIGHT HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+# BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+# LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+# ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+###############################################################################
+
+include path.make
+
+include site.make
+
+srcdir = $(srctop)
+
+VPATH = .:$(srcdir)
+
+.PHONY:	version
+
+#
+# the file site.make is a link to a file containing machine/site dependencies.
+#
+
+# All the C sources
+C_SRC = action.c activate.c database.c ev-function.c ev-predicate.c \
+	fact-goal.c help.c int-graph.c intend.c intention.c op-compiler.c op-dump-load.c \
+	op-instance.c op-structure.c op-x-opaque.c ope-bboard.c ope-edit.c \
+	ope-external.c ope-filesel.c ope-graphic.c ope-op-opf.c ope-main.c ope-menu.c \
+	ope-print.c ope-pxmw.c ope-save.c ope-syntax.c ope-vsblf.c oprs-subst.c\
+	lisp-list.c mp.c mp-register.c opaque-ext.c parser-funct.c oprs-array.c \
+	oprs-cat.c oprs-client.c oprs-copy.c oprs-dup.c oprs-free.c oprs-init.c oprs-main.c \
+	oprs-pprint.c oprs-print.c oprs-sprint.c oprs-send-m.c oprs-server-main.c oprs-socket.c \
+	oprs-profiling.c oprs-type.c oprs-util.c oprs.c relevant-op.c send-message.c \
+	soak.c top-lev-loop.c top-lev.c unification.c user-action.c user-trace.c\
+	user-ev-function.c user-ev-predicate.c user-external.c version.c xhelp.c \
+	xoprs-dialog.c xoprs-filesel.c xoprs-intention.c xoprs-main.c xoprs-menu.c ope-op-str.c \
+	xoprs-call.c xoprs-textwin.c xt-util.c xtop-lev-loop.c consult-rop.c ope-rop.c \
+	ope-report.c oprs-ll.c kill-mp.c top-structure.c oprs-error.c \
+	xoprs-op-graphic.c xoprs-rop.c test-malloc.c conditions.c lang.c oprs-server-opaque.c \
+	ope-opaque.c oprs-rerror.c oprs-dump.c oprs-load.c opc-main.c \
+	type.c  oprs-pred-func.c\
+	yy-funct.c
+
+# All the .h include files
+INC = action.h activate.h config.h constant-pub.h constant.h database.h \
+	ev-function.h ev-predicate.h fact-goal.h int-graph.h \
+	intend.h intention.h op-compiler.h op-instance.h op-structure.h \
+	ope-global.h ope-graphic.h lisp-list.h macro-pub.h macro.h mp.h \
+	mp-pub.h mp-register.h opaque-ext.h opaque-pub.h opaque.h oprs-sprint-pub.h \
+	parser-funct.h oprs-client.h oprs-main.h oprs-print.h oprs-server.h \
+	oprs-profiling.h oprs-type-pub.h oprs-type.h oprs.h relevant-op.h soak.h \
+	top-lev.h unification.h user-action.h user-trace.h user-ev-function.h \
+	user-ev-predicate.h user-external.h version.h xoprs.h xhelp.h \
+	xoprs-intention.h xoprs-main-pub.h xoprs-main.h xoprs.h xoprs-textwin.h ope-syntax.h \
+	op-default.h oprs-sprint.h oprs-error.h oprs-rerror.h oprs-error-pub.h \
+	conditions.h lang.h oprs-dump.h opc.h type.h oprs-pred-func.h
+
+#All the _f.h function include
+FINC = action_f.h activate_f.h database_f.h ev-function_f.h oprs-pred-func_f.h \
+	ev-predicate_f.h fact-goal_f-pub.h fact-goal_f.h \
+	help_f.h int-graph_f-pub.h int-graph_f.h intend_f.h intention_f-pub.h \
+	intention_f.h op-compiler_f.h op-instance_f-pub.h op-instance_f.h \
+	op-structure_f.h ope-bboard_f.h ope-edit_f.h ope-external_f.h \
+	ope-filesel_f.h ope-graphic_f.h ope-op-opf_f.h ope-menu_f.h \
+	ope-print_f.h ope-pxmw_f.h ope-save_f.h ope-syntax_f.h ope-vsblf_f.h \
+	lisp-list_f-pub.h lisp-list_f.h mp-register_f.h other_proto.h \
+	parser-funct_f.h oprs-array_f.h oprs-client_f.h oprs-print_f.h \
+	oprs-send-m_f.h oprs-socket_f.h oprs-profiling_f.h oprs-type_f-pub.h \
+	oprs-type_f.h oprs-util_f.h oprs_f-pub.h oprs_f.h relevant-op_f.h \
+	send-message_f.h soak_f.h socket_f.h xt-util_f.h\
+	top-lev_f.h unification_f.h usage_f.h user-external_f.h xhelp_f.h \
+	xoprs-intention_f.h xoprs-menu_f.h xoprs-textwin_f.h ope-rop_f.h ope-report_f.h \
+	oprs-pprint_f.h oprs-init_f.h oprs-sprint_f.h oprs-error_f.h \
+	oprs-rerror_f-pub.h oprs-sprint_f-pub.h conditions_f.h  oprs-rerror_f.h \
+	oprs-dump_f.h oprs-print_f-pub.h type_f.h
+
+# The X resources files
+RESOURCES_SRC = XOprs.adlang Ope.adlang
+
+RESOURCES_INC_FILES = Ope.ad.h XOprs.ad.h
+
+# Annex files to distribute
+DIST_ANNEX_FILES = $(XDEFAULT) COPYRIGHT DIFF-SRI FILE-COPYRIGHT HELP INSTALL.BIN \
+	INSTALL.DEMO INSTALL.SRC README.BIN README.DEMO README.OPE README.SRC \
+	ope-icon.bit xoprs-icon.bit
+
+ANNEX_FILES = $(DIST_ANNEX_FILES) ChangeLog MISC Makefile Makefile.src \
+	TODO TODO-VC dec.make home.make laas.make
+
+#XINFO_FILES = xinfo/Info.c xinfo/Info.h xinfo/InfoP.h xinfo/Makefile xinfo/RCS \
+#	xinfo/XInfo.ad xinfo/xinfo.c xinfo/xinfo.icon
+
+
+#
+# This is a list of files which are not used anymore. Mots likely, they have been renamed or deleted.
+#
+OLD_FILES = 
+
+PUBLIC_SRC = user-action.c user-action.h user-ev-function.c user-ev-function.h \
+	user-ev-predicate.c user-ev-predicate.h user-external.c user-external.h \
+	user-external_f.h user-trace.c user-trace.h user-trace_f.h
+
+MISC_DIST = HISTORY NEWS
+
+PUBLIC_INCLUDE = action_f-pub.h constant-pub.h ev-function_f-pub.h ev-predicate_f-pub.h \
+	fact-goal_f-pub.h int-graph_f-pub.h intention_f-pub.h lang.h oprs-sprint-pub.h \
+	op-instance_f-pub.h op-structure_f-pub.h lisp-list_f-pub.h macro-pub.h \
+	mp-pub.h opaque-pub.h oprs-array_f-pub.h oprs-type-pub.h oprs-sprint_f-pub.h \
+	oprs-type_f-pub.h oprs_f-pub.h user-action.h user-ev-function.h \
+	user-ev-predicate.h user-external.h user-external_f.h xoprs-main-pub.h oprs-error-pub.h \
+	oprs-rerror_f-pub.h user-trace.h user-trace_f.h oprs-print_f-pub.h\
+	c_toolkit/hashPack.h c_toolkit/listPack.h c_toolkit/shashPack-pub.h \
+	c_toolkit/shashPack.h c_toolkit/shashPack_f.h c_toolkit/slistPack-pub.h \
+	c_toolkit/slistPack.h c_toolkit/slistPack_f.h
+
+
+YACC_SRC = ope-parser.y oprs-parser.y oprs-server-parser.y opc-parser.y
+
+LEX_SRC = ope-parser.l oprs-parser.l oprs-server-parser.l lex-parser-def.l lex-simple-def.l \
+	lex-macro.l lex-graph-op.l lex-text-op.l lex-meta-exp.l lex-exp.l opc-parser.l
+
+MAKEFILE = Makefile
+
+SRCS = $(C_SRC) $(INC) $(FINC)
+
+ALL_SRCS = $(C_SRC) $(INC) $(FINC) $(LEX_SRC) $(YACC_SRC)
+
+CONTRIB_DIR = contrib/src
+
+CONTRIB_LIB = $(CONTRIB_DIR)/libpu.a
+
+C_TOOLKIT_DIR = c_toolkit
+
+C_TOOLKIT_SRC = $(C_TOOLKIT_DIR)/mallocPack.c $(C_TOOLKIT_DIR)/shashPack.c \
+	$(C_TOOLKIT_DIR)/shashPackTest.c $(C_TOOLKIT_DIR)/slistPack-pub.h \
+	$(C_TOOLKIT_DIR)/slistPack.h $(C_TOOLKIT_DIR)/slistPack_f.h \
+	$(C_TOOLKIT_DIR)/shashPack-pub.h $(C_TOOLKIT_DIR)/shashPack.h \
+	$(C_TOOLKIT_DIR)/shashPack_f.h $(C_TOOLKIT_DIR)/slistPack.c \
+	$(C_TOOLKIT_DIR)/slistPackTest.c 
+
+C_TOOLKIT_MAKEFILE = $(C_TOOLKIT_DIR)/Makefile
+
+C_TOOLKIT_LIB = $(C_TOOLKIT_DIR)/libList.a
+
+OPRS_CAT_OBJ = oprs-cat.o
+
+KILL_MP_OBJ = kill-mp.o
+
+OPRS_OBJ = op-x-opaque.o oprs-main.o top-lev-loop.o
+
+SERVER_OBJ = oprs-client.o oprs-server-main.o oprs-server-opaque.o \
+	oprs-server-parser.tab.o oprs-server-parser.lex.o 
+
+USER_OBJ = user-action.o user-ev-function.o user-ev-predicate.o user-external.o user-trace.o
+
+MP_OBJ = mp.o
+
+OP_EDITOR_OBJ = ope-bboard.o ope-edit.o ope-filesel.o ope-op-opf.o ope-main.o \
+	ope-menu.o ope-parser.tab.o ope-parser.lex.o ope-print.o ope-pxmw.o \
+	ope-save.o ope-syntax.o \
+	ope-vsblf.o xt-util.o ope-rop.o ope-op-str.o ope-opaque.o
+
+
+OPC_OBJ = opc-main.o opc-parser.tab.o opc-parser.lex.o ope-opaque.o
+
+X_OBJ = xoprs-dialog.o xoprs-filesel.o xoprs-intention.o \
+	xoprs-main.o xoprs-menu.o xt-util.o xtop-lev-loop.o \
+	xoprs-op-graphic.o xoprs-rop.o
+
+#
+# Libraries.
+#
+
+#
+# basic stuff shared by almost every module...
+#
+
+BASIC_LIB = libBasic.a
+
+BASIC_LIB_OBJ = oprs-socket.o oprs-util.o
+
+BASIC_LIB_SRC = $(BASIC_LIB_OBJ:%.o=%.c)
+
+#
+# basic lib shared by all modules using oprs objects....
+#
+
+OPRS_LIB = libOprs.a
+
+OPRS_LIB_OBJ = help.o lisp-list.o oprs-ll.o oprs-send-m.o oprs-sprint.o\
+		parser-funct.o oprs-array.o oprs-copy.o oprs-dup.o oprs-free.o oprs-print.o \
+		oprs-error.o op-compiler.o type.o oprs-pred-func.o
+
+OPRS_LIB_SRC = $(OPRS_LIB_OBJ:%.o=%.c)
+
+#
+# basic lib shared by all oprs modules and ope....
+#
+
+TEXT_OPE_OPRS_LIB = libTOpEOprs.a
+
+GRAPHIC_OPE_OPRS_LIB = libGOpEOprs.a
+
+BOTH_OPE_OPRS_LIB_OBJ = oprs-dump.o oprs-load.o
+
+BOTH_OPE_OPRS_LIB_SRC = $(BOTH_OPE_OPRS_LIB_OBJ:%.o=%.c)
+
+#
+# basic lib shared by all modules using oprs objects...., with text and graphic version
+#
+
+TEXT_OPRS_LIB = libTOprs.a
+
+GRAPHIC_OPRS_LIB = libGOprs.a
+
+BOTH_OPRS_LIB_OBJ = op-structure.o oprs-subst.o oprs-type.o conditions.o top-structure.o consult-rop.o relevant-op.o  op-dump-load.o
+
+BOTH_OPRS_LIB_SRC = $(BOTH_OPRS_LIB_OBJ:%.o=%.c)
+
+#
+# message passer library.
+# exists in two version, oprs and external.
+#
+
+MP_LIB = libOprsMP.a
+
+EXT_MP_LIB = libMP.a
+
+MP_LIB_OBJ = mp-register.o send-message.o lang.o
+
+MP_LIB_SRC = $(MP_LIB_OBJ:%.o=%.c)
+
+#
+# basic kernel library (only used by xoprs and oprs)
+#
+
+KERNEL_LIB = libKernel.a
+
+KERNEL_LIB_OBJ = database.o ev-predicate.o fact-goal.o oprs.o oprs-rerror.o unification.o oprs-profiling.o
+
+KERNEL_LIB_SRC = $(KERNEL_LIB_OBJ:%.o=%.c)
+
+#
+# basic kernel library (only used by xoprs and oprs)
+#
+
+TEXT_KERNEL_LIB = libTKernel.a
+
+GRAPHIC_KERNEL_LIB = libGKernel.a
+
+BOTH_KERNEL_LIB_OBJ = action.o activate.o ev-function.o intend.o intention.o \
+	int-graph.o op-instance.o oprs-init.o soak.o oprs-parser.tab.o \
+	oprs-parser.lex.o top-lev.o
+
+BOTH_KERNEL_LIB_SRC = $(BOTH_KERNEL_LIB_OBJ:%.o=%.c)
+
+#
+# xoprs kernel library (only used by xoprs)
+#
+
+XOPRS_LIB = libXOprs.a
+
+XOPRS_LIB_OBJ = xoprs-call.o xoprs-textwin.o
+
+XOPRS_LIB_SRC = $(XOPRS_LIB_OBJ:%.o=%.c)
+
+#
+# opaque library... should disapear...
+#
+
+OPAQUE_LIB = libOpaque.a
+
+OPAQUE_LIB_OBJ = opaque-ext.o
+
+OPAQUE_LIB_SRC = $(OPAQUE_LIB_OBJ:%.o=%.c)
+
+
+#
+# graphic op library (used by xoprs and ope)
+#
+
+OPG_LIB = libOpG.a
+
+OPG_LIB_OBJ = ope-external.o ope-graphic.o xhelp.o oprs-pprint.o ope-report.o
+
+OPG_LIB_SRC = $(OPG_LIB_OBJ:%.o=%.c)
+
+#
+# End of libraryries
+#
+
+INCLUDE = -I. -I$(srcdir) -I$(srcdir)/$(C_TOOLKIT_DIR) -I$(srcdir)/$(CONTRIB_DIR) -I$(GNUHOME)/include
+
+XDEFAULT = XOprs Ope
+
+XDEFAULT_LANG = XOprs-en.ad Ope-en.ad XOprs-fr.ad Ope-fr.ad
+
+UTIL = mkdep ad2c install.sh install-if-change.sh adlang2ad init-oprs-env vw-script
+
+
+ifeq ($(OPRS_LANG),fr)
+LANG_FLAG = -DLANGUAGE=FRENCH
+else
+LANG_FLAG = -DLANGUAGE=ENGLISH
+endif
+
+CFLAGS = $(MT_CFLAGS) $(ANSI) $(DEBUG_FLAG) $(OPTIMIZE) $(WARNINGS) $(PROFILE) $(CFLAGS_HOST)
+
+CPPFLAGS = $(MT_CPPFLAGS) $(MACHINE) $(LANG_FLAG) $(INCLUDE) $(OTHER_INCLUDE) $(X_INCLUDE)
+
+LDFLAGS = $(OPRS_LDFLAGS) $(MT_LDFLAGS) $(ANSI) $(STATIC) $(DEBUG_FLAG) $(OPTIMIZE) $(PROFILE)
+
+LIST_LIB = -L$(C_TOOLKIT_DIR) -lList
+SYS_LIB = #-lm
+
+INSTALL = $(srcdir)/util/install.sh
+INSTALL-IF-CHANGE = $(srcdir)/util/install-if-change.sh
+
+# All the executables
+
+PROG = oprs-server mp-oprs kill-mp oprs xoprs oprs-cat ope opc
+
+# and the relocatable.
+
+RELOCATABLE = oprs-relocatable xoprs-relocatable c++-oprs-relocatable c++-xoprs-relocatable
+
+ifdef VXWORKS
+all: lib vx-mp-oprs vx-kill-mp vxoprs vx-mp-lib.o
+else
+all: lib contrib_lib $(PROG)
+endif
+
+version: version.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) -DCOMPIL_DATE="\"`date`\"" -DHOST="\"`hostname`\"" -c $<
+
+user-trace-on.o: user-trace-on-off.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) -DINSTALL_USER_TRACE=TRUE -c $< -o $@
+
+user-trace-off.o: user-trace-on-off.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) -DINSTALL_USER_TRACE=FALSE -c $< -o $@
+
+oprs: $(USER_OBJ) $(OPRS_OBJ) $(C_TOOLKIT_LIB) $(CONTRIB_LIB) $(MP_LIB) $(BASIC_LIB) $(OPRS_LIB) \
+		$(TEXT_OPE_OPRS_LIB) $(TEXT_OPRS_LIB) $(KERNEL_LIB) $(TEXT_KERNEL_LIB) \
+		user-trace-off.o
+	$(MAKE) version
+	$(PURIFY) $(CC) $(LDFLAGS) -o oprs version.o user-trace-off.o $(OPRS_OBJ) $(USER_OBJ) \
+		$(TEXT_KERNEL_LIB) $(KERNEL_LIB) $(BASIC_LIB) $(TEXT_OPRS_LIB) $(OPRS_LIB) $(MP_LIB) \
+		$(TEXT_OPE_OPRS_LIB) $(LIST_LIB) $(CONTRIB_LIB) $(SYS_LIB) $(EXTRA_LIB)
+
+poprs: lib contrib_lib $(USER_OBJ) $(OPRS_OBJ) $(C_TOOLKIT_LIB) $(CONTRIB_LIB) $(MP_LIB) $(BASIC_LIB) $(OPRS_LIB) \
+		$(TEXT_OPE_OPRS_LIB) $(TEXT_OPRS_LIB) $(KERNEL_LIB) $(TEXT_KERNEL_LIB) \
+		user-trace-off.o
+	$(MAKE) version
+	purify -chain-length="12" $(CC) $(LDFLAGS) -o $@ version.o user-trace-off.o \
+		$(OPRS_OBJ) $(USER_OBJ) $(TEXT_KERNEL_LIB) $(KERNEL_LIB) $(BASIC_LIB) \
+		$(TEXT_OPRS_LIB) $(OPRS_LIB) $(MP_LIB) $(TEXT_OPE_OPRS_LIB) \
+		$(C_TOOLKIT_LIB) $(CONTRIB_LIB) $(SYS_LIB) $(EXTRA_LIB)
+
+opc: $(OPC_OBJ) $(MP_LIB) $(BASIC_LIB) $(OPRS_LIB) $(C_TOOLKIT_LIB) \
+		$(GRAPHIC_OPE_OPRS_LIB) $(GRAPHIC_OPRS_LIB) $(OPG_LIB)
+	$(MAKE) version 
+	$(PURIFY) $(CC) $(LDFLAGS) -o opc version.o $(OPC_OBJ) $(BASIC_LIB) $(MP_LIB) \
+		$(GRAPHIC_OPRS_LIB) $(OPRS_LIB) $(GRAPHIC_OPE_OPRS_LIB) \
+		$(OPG_LIB) $(LIST_LIB) $(X_LIB) $(SYS_LIB) $(EXTRA_LIB)
+
+oprs-server: $(SERVER_OBJ) $(C_TOOLKIT_LIB) $(MP_LIB) $(BASIC_LIB) $(OPRS_LIB) $(TEXT_OPRS_LIB) \
+			${OPAQUE_LIB}
+	$(MAKE) version
+	$(PURIFY) $(CC) $(LDFLAGS) -o oprs-server version.o $(SERVER_OBJ) $(BASIC_LIB) \
+		$(TEXT_OPRS_LIB) $(OPRS_LIB) $(MP_LIB) ${OPAQUE_LIB} $(LIST_LIB) $(SYS_LIB) $(MT_LIB) $(EXTRA_LIB)
+
+mp-oprs: $(MP_OBJ) $(C_TOOLKIT_LIB) $(MP_LIB) $(BASIC_LIB)
+	$(MAKE) version
+	$(PURIFY) $(CC) $(LDFLAGS) -o mp-oprs version.o $(MP_OBJ) $(BASIC_LIB) $(MP_LIB) \
+		$(LIST_LIB) $(SYS_LIB) $(EXTRA_LIB)
+
+xoprs: $(X_OBJ) $(USER_OBJ) $(C_TOOLKIT_LIB) $(CONTRIB_LIB) $(MP_LIB) $(BASIC_LIB) $(OPRS_LIB) \
+		$(GRAPHIC_OPE_OPRS_LIB) $(GRAPHIC_OPRS_LIB) $(KERNEL_LIB) $(GRAPHIC_KERNEL_LIB) \
+		$(XOPRS_LIB) $(OPG_LIB) user-trace-off.o
+	$(MAKE) version
+	$(PURIFY) $(CC) $(LDFLAGS) -o xoprs version.o user-trace-off.o $(X_OBJ) $(USER_OBJ) \
+		$(GRAPHIC_KERNEL_LIB) $(KERNEL_LIB) $(BASIC_LIB) $(GRAPHIC_OPRS_LIB) $(OPRS_LIB) \
+		$(MP_LIB) $(GRAPHIC_OPE_OPRS_LIB) $(XOPRS_LIB) $(OPG_LIB) $(X_LIB) \
+		$(LIST_LIB) $(CONTRIB_LIB) $(SYS_LIB) $(EXTRA_LIB)
+
+ope: $(OP_EDITOR_OBJ) $(C_TOOLKIT_LIB) $(MP_LIB) $(BASIC_LIB) $(OPRS_LIB) \
+		$(GRAPHIC_OPE_OPRS_LIB) $(GRAPHIC_OPRS_LIB) $(OPG_LIB)
+	$(MAKE) version
+	$(PURIFY) $(CC) $(LDFLAGS) -o ope version.o $(OP_EDITOR_OBJ) $(BASIC_LIB) $(GRAPHIC_OPRS_LIB) $(OPRS_LIB) $(GRAPHIC_OPE_OPRS_LIB) $(MP_LIB) $(OPG_LIB) $(X_LIB) $(LIST_LIB) $(SYS_LIB) $(EXTRA_LIB)
+
+oprs-cat: $(OPRS_CAT_OBJ) $(C_TOOLKIT_LIB)
+	$(PURIFY) $(CC) $(LDFLAGS) -o oprs-cat $(OPRS_CAT_OBJ) $(LIST_LIB)
+
+kill-mp: $(KILL_MP_OBJ) $(C_TOOLKIT_LIB) $(BASIC_LIB) $(MP_LIB)
+	$(PURIFY) $(CC) $(LDFLAGS) -o kill-mp $(KILL_MP_OBJ) $(BASIC_LIB) $(MP_LIB) $(LIST_LIB) $(EXTRA_LIB)
+
+test-malloc: test-malloc.o $(C_TOOLKIT_LIB)
+	$(CC) $(LDFLAGS) -o test-malloc test-malloc.o $(LIST_LIB)
+
+#
+# These 3 entries are made to build a relocatable oprs which can then be linked with the extern evaluables.
+#
+
+# the dependencies of the ++.o on the .o is just to make sure we recompile the ++ whenever the .o has
+# been recompiled too... (because of a .h for example).
+%++.o: %.c %.o
+	$(CC) $(CFLAGS) $(CPPFLAGS) -DC_PLUS_PLUS_RELOCATABLE -c $< -o $@
+
+relocatable: $(RELOCATABLE)
+
+oprs-relocatable: $(OPRS_OBJ) $(C_TOOLKIT_LIB) $(CONTRIB_LIB) $(MP_LIB) $(BASIC_LIB) $(OPRS_LIB) \
+		$(TEXT_OPE_OPRS_LIB) $(TEXT_OPRS_LIB) $(KERNEL_LIB) $(TEXT_KERNEL_LIB)\
+		user-trace-on.o
+	$(MAKE) version
+	$(LD) -r -o $@ version.o user-trace-on.o $(OPRS_OBJ) $(TEXT_KERNEL_LIB) $(KERNEL_LIB) $(BASIC_LIB) $(TEXT_OPRS_LIB) $(OPRS_LIB) $(TEXT_OPE_OPRS_LIB) $(MP_LIB) $(LIST_LIB) $(CONTRIB_LIB) 
+
+c++-oprs-relocatable: $(filter-out oprs-main.o, $(OPRS_OBJ)) oprs-main++.o $(C_TOOLKIT_LIB) $(CONTRIB_LIB) \
+		$(MP_LIB) $(BASIC_LIB) $(OPRS_LIB) $(TEXT_OPE_OPRS_LIB) $(TEXT_OPRS_LIB)\
+		$(KERNEL_LIB) $(TEXT_KERNEL_LIB) user-trace-on.o
+	$(MAKE) version
+	$(LD) -r -o $@ version.o user-trace-on.o $(filter-out oprs-main.o, $(OPRS_OBJ)) oprs-main++.o $(TEXT_KERNEL_LIB) $(KERNEL_LIB) $(BASIC_LIB) $(TEXT_OPRS_LIB) $(OPRS_LIB) $(TEXT_OPE_OPRS_LIB) $(MP_LIB) $(LIST_LIB) $(CONTRIB_LIB)
+
+oprs-user: oprs-relocatable $(USER_OBJ)
+	$(CC) -o $@ $(USER_OBJ) oprs-relocatable $(SYS_LIB) $(EXTRA_LIB)
+
+xoprs-relocatable: $(X_OBJ) $(C_TOOLKIT_LIB) $(CONTRIB_LIB) $(BASIC_LIB) $(OPRS_LIB) $(GRAPHIC_OPE_OPRS_LIB) \
+		$(GRAPHIC_OPRS_LIB) $(KERNEL_LIB) $(GRAPHIC_KERNEL_LIB) $(MP_LIB) $(XOPRS_LIB)\
+		$(OPG_LIB) user-trace-on.o
+	$(MAKE) version
+	$(LD) -r -o $@ version.o user-trace-on.o $(X_OBJ) $(GRAPHIC_KERNEL_LIB) $(KERNEL_LIB) $(BASIC_LIB) $(GRAPHIC_OPRS_LIB) $(OPRS_LIB) $(GRAPHIC_OPE_OPRS_LIB) $(XOPRS_LIB) $(MP_LIB) $(OPG_LIB) $(LIST_LIB) $(CONTRIB_LIB)
+
+c++-xoprs-relocatable:  $(filter-out xoprs-main.o, $(X_OBJ)) xoprs-main++.o $(C_TOOLKIT_LIB) $(CONTRIB_LIB) \
+		$(BASIC_LIB) $(OPRS_LIB) $(GRAPHIC_OPE_OPRS_LIB) $(GRAPHIC_OPRS_LIB) \
+		$(GRAPHIC_KERNEL_LIB) $(KERNEL_LIB) $(MP_LIB) $(XOPRS_LIB) $(OPG_LIB)\
+		user-trace-on.o
+	$(MAKE) version
+	$(LD) -r -o $@ version.o user-trace-on.o $(filter-out xoprs-main.o, $(X_OBJ)) xoprs-main++.o $(GRAPHIC_KERNEL_LIB) $(KERNEL_LIB) $(BASIC_LIB) $(GRAPHIC_OPRS_LIB) $(OPRS_LIB) $(GRAPHIC_OPE_OPRS_LIB) $(XOPRS_LIB) $(MP_LIB) $(OPG_LIB) $(LIST_LIB) $(CONTRIB_LIB)
+
+xoprs-user: xoprs-relocatable $(USER_OBJ)
+	$(CC) -o $@ xoprs-relocatable $(USER_OBJ) $(SYS_LIB) $(X_LIB) $(EXTRA_LIB)
+
+#
+# Libraries
+#
+
+lib $(C_TOOLKIT_LIB):
+	(cd $(C_TOOLKIT_DIR) ; $(MAKE))
+
+contrib_lib $(CONTRIB_LIB):
+	(cd contrib/src ; $(MAKE))
+
+$(BASIC_LIB): $(BASIC_LIB_OBJ:%=$(BASIC_LIB)(%))
+	$(RANLIB) $@
+
+$(OPRS_LIB): $(OPRS_LIB_OBJ:%=$(OPRS_LIB)(%))
+	$(RANLIB) $@
+
+$(GRAPHIC_OPE_OPRS_LIB): $(BOTH_OPE_OPRS_LIB_OBJ:%=$(GRAPHIC_OPE_OPRS_LIB)(%))
+	$(RANLIB) $@
+
+$(TEXT_OPE_OPRS_LIB): $(BOTH_OPE_OPRS_LIB_OBJ:%=$(TEXT_OPE_OPRS_LIB)(%))
+	$(RANLIB) $@
+
+$(TEXT_OPRS_LIB): $(BOTH_OPRS_LIB_OBJ:%=$(TEXT_OPRS_LIB)(%))
+	$(RANLIB) $@
+
+$(GRAPHIC_OPRS_LIB): $(BOTH_OPRS_LIB_OBJ:%=$(GRAPHIC_OPRS_LIB)(%))
+	$(RANLIB) $@
+
+$(MP_LIB): $(MP_LIB_OBJ:%=$(MP_LIB)(%))
+	$(RANLIB) $@
+
+$(EXT_MP_LIB): $(MP_LIB_OBJ:%=$(EXT_MP_LIB)(%))
+	$(RANLIB) $@
+
+$(KERNEL_LIB): $(KERNEL_LIB_OBJ:%=$(KERNEL_LIB)(%))
+	$(RANLIB) $@
+
+$(TEXT_KERNEL_LIB): $(BOTH_KERNEL_LIB_OBJ:%=$(TEXT_KERNEL_LIB)(%))
+	$(RANLIB) $@
+
+$(GRAPHIC_KERNEL_LIB): $(BOTH_KERNEL_LIB_OBJ:%=$(GRAPHIC_KERNEL_LIB)(%))
+	$(RANLIB) $@
+
+$(XOPRS_LIB): $(XOPRS_LIB_OBJ:%=$(XOPRS_LIB)(%))
+	$(RANLIB) $@
+
+$(OPG_LIB): $(OPG_LIB_OBJ:%=$(OPG_LIB)(%))
+	$(RANLIB) $@
+
+$(OPAQUE_LIB): $(OPAQUE_LIB_OBJ:%=$(OPAQUE_LIB)(%))
+	$(RANLIB) $@
+
+$(TEXT_KERNEL_LIB)(%.o): %.c
+	$(CC) $(CFLAGS) -DNO_GRAPHIX -DOPRS_KERNEL $(CPPFLAGS) -c $< -o $%
+	$(AR) r $@ $*.o
+	$(RM) $*.o
+
+$(TEXT_OPRS_LIB)(%.o): %.c
+	$(CC) $(CFLAGS) -DNO_GRAPHIX $(CPPFLAGS) -c $< -o $%
+	$(AR) r $@ $*.o
+	$(RM) $*.o
+
+$(TEXT_OPE_OPRS_LIB)(%.o): %.c
+	$(CC) $(CFLAGS) -DNO_GRAPHIX $(CPPFLAGS) -c $< -o $%
+	$(AR) r $@ $*.o
+	$(RM) $*.o
+
+$(GRAPHIC_KERNEL_LIB)(%.o): %.c
+	$(CC) $(CFLAGS) -UNO_GRAPHIX -DOPRS_KERNEL $(CPPFLAGS) -c $< -o $%
+	$(AR) r $@ $*.o
+	$(RM) $*.o
+
+$(GRAPHIC_OPRS_LIB)(%.o): %.c
+	$(CC) $(CFLAGS) -UNO_GRAPHIX $(CPPFLAGS) -c $< -o $%
+	$(AR) r $@ $*.o
+	$(RM) $*.o
+
+$(GRAPHIC_OPE_OPRS_LIB)(%.o): %.c
+	$(CC) $(CFLAGS) -UNO_GRAPHIX $(CPPFLAGS) -c $< -o $%
+	$(AR) r $@ $*.o
+	$(RM) $*.o
+
+#
+# Some general rules
+#
+
+(%.o): %.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $%
+	$(AR) r $@ $*.o
+	$(RM) $*.o
+
+$(EXT_MP_LIB)(%.o): %.c
+	$(CC) -DEXT_MALLOC $(CFLAGS) $(CPPFLAGS) -c $< -o $%
+	$(AR) r $@ $*.o
+	$(RM) $*.o
+
+#
+# This rule says that some c and h depend of the yacc they come from.
+#
+%.yy: %.y util/lex-includer
+	rm -f $*.yy
+	util/lex-includer -p$(VPATH) < $< > $*.yy
+	chmod -w  $*.yy
+
+#For debuging, use:
+#%.tab.c %.tab.h: %.yy
+#	$(YACC) $(YFLAGS) --debug --verbose -p oprs_yy -b $* $<
+
+%.tab.c %.tab.h: %.yy
+	$(YACC) $(YFLAGS) -p oprs_yy -o $*.tab.c $<
+
+oprs-parser.yy ope-parser.yy opc-parser.yy: yacc-file.y yacc-graph-op.y
+oprs-parser.yy ope-parser.yy opc-parser.yy: yacc-exp.y yacc-text-op.y
+
+# VxWorks handle stdin and stdout in a way which does not please lex... 
+# initializer element for `yyin' is not constant
+# initializer element for `yyout' is not constant
+# So we need to remove the static initialization and initialize them in the oprs_main.
+#
+# the "(NULL)" is here for the Iris4d Lex which put this as a file name which then confuse mkdep...
+#
+
+%.ll: %.l util/lex-includer
+	rm -f $*.ll
+	util/lex-includer -p$(VPATH) < $< > $*.ll
+	chmod -w  $*.ll
+
+
+%.lex.c: %.ll
+	$(LEX) $(LFLAGS) -L -Poprs_yy -t $< > $@
+
+#For debuging, use:
+#%.lex.c: %.ll
+#	$(LEX) $(LFLAGS) -L -Poprs_yy -d -t $< > $@
+
+util/lex-includer:
+	(cd util ; $(MAKE) lex-includer)
+
+ope-parser.ll oprs-parser.ll opc-parser.ll: lex-parser-def.l lex-simple-def.l lex-macro.l \
+		lex-graph-op.l lex-text-op.l lex-meta-exp.l lex-exp.l
+
+oprs-server-parser.ll: lex-simple-def.l lex-macro.l lex-exp.l
+
+#
+# This rule says that the .ad.h are obtained with the coresponding .ad
+# I add util/ad2c in case it is not there... to avoid emptying the file.
+#
+%.ad.h: %.ad $(srcdir)/util/ad2c
+	$(srcdir)/util/ad2c $< > $@
+
+%-fr.ad: %.adlang $(srcdir)/util/adlang2ad
+	rm -f $@
+	$(srcdir)/util/adlang2ad fr < $< > $@
+# To make sure we do not modify these...
+	chmod -w $@
+
+%-en.ad: %.adlang $(srcdir)/util/adlang2ad
+	rm -f $@
+	$(srcdir)/util/adlang2ad en < $< > $@
+# To make sure we do not modify these...
+	chmod -w $@
+
+ifeq ($(OPRS_LANG),fr)
+%.ad: %-fr.ad
+	rm -f $@
+	ln -s $< $@
+else
+%.ad: %-en.ad
+	rm -f $@
+	ln -s $< $@
+endif
+
+#xinfo/Info.o: xinfo/Info.c xinfo/Info.h xinfo/InfoP.h
+#	(cd xinfo ; $(MAKE) Info.o)
+
+
+demo: truck-demo cena-demo
+
+# This is to make the demos.
+truck-demo:
+	(cd demo/truck-demo/src ; $(MAKE))
+	(cd demo/truck-demo/oprs ; $(MAKE))
+
+cena-demo:
+	(cd demo/cena/src ; $(MAKE))
+
+local-clean:
+	/bin/rm -f core a.out gmon.out *.o $(OLD_FILES)
+
+clean: local-clean
+#	-(cd xinfo ; $(MAKE) clean)
+	-(cd doc ; $(MAKE) clean)
+	-(cd util ; $(MAKE) clean)
+	-(cd demo/truck-demo/oprs ; $(MAKE) clean)
+	-(cd demo/truck-demo/src ; $(MAKE) clean)
+	-(cd demo/cena/src ; $(MAKE) clean)
+	-(cd contrib/src ; $(MAKE) clean)
+	-(cd $(C_TOOLKIT_DIR) ; $(MAKE) clean)
+
+very-clean: local-clean
+	$(RM) -f *.BAK Makefile.bak $(PROG) $(BASIC_LIB) $(OPRS_LIB) $(TEXT_OPRS_LIB) \
+	$(GRAPHIC_OPRS_LIB) $(KERNEL_LIB) $(TEXT_KERNEL_LIB) $(GRAPHIC_KERNEL_LIB) \
+	$(XOPRS_LIB) $(OPAQUE_LIB) $(OPG_LIB) $(GRAPHIC_OPE_OPRS_LIB) $(TEXT_OPE_OPRS_LIB) $(MP_LIB) \
+	$(EXT_MP_LIB) oprs-relocatable xoprs-relocatable c++-oprs-relocatable c++-xoprs-relocatable \
+	*-parser.lex.c *-parser.c *-parser.h *-parser.yy *.ad *.ad.h TAGS make.depend \
+	vxoprs vxoprs-relocatable vx-mp-oprs vx-kill-mp
+	-(cd doc ; $(MAKE) very-clean)
+	-(cd util ; $(MAKE) very-clean)
+#	-(cd xinfo ; $(MAKE) very-clean)
+	-(cd demo/truck-demo/oprs ; $(MAKE) very-clean)
+	-(cd demo/truck-demo/src ; $(MAKE) very-clean)
+	-(cd demo/cena/src ; $(MAKE) very-clean)
+	-(cd contrib/src ; $(MAKE) very-clean)
+	-(cd $(C_TOOLKIT_DIR) ; $(MAKE) very-clean)
+
+expunge:
+	expunge -r .
+
+size:
+	cat $(ALL_SRCS) | wc
+
+#
+# Installation Stuff
+#
+
+install_contrib:
+	-(cd contrib/src ; $(MAKE) install)
+
+ifndef VXWORKS
+install: install_no_doc install_doc
+
+# install all except the doc
+install_no_doc: install_code install_data \
+	install_include install_src install_util
+
+# install code
+install_just_code: all install_bin install_lib install_contrib
+
+install_code:  install_just_code install_ad install_site_make
+
+install_site_make:
+	@$(INSTALL-IF-CHANGE) -c -m 644 site.make ${DESTDIR}/${TARGET}${TARGET-SUFFIX}/site.make
+
+install_lib: $(EXT_MP_LIB) $(OPAQUE_LIB) $(C_TOOLKIT_LIB) install_relocatable
+	@-for i in $(EXT_MP_LIB) $(OPAQUE_LIB) $(C_TOOLKIT_LIB); do\
+		$(INSTALL-IF-CHANGE) -c -m 644 $$i ${DESTDIR}/${TARGET}${TARGET-SUFFIX}/lib/$$i;\
+		$(RANLIB) ${DESTDIR}/${TARGET}${TARGET-SUFFIX}/lib/$$i;\
+	done
+
+install_relocatable: $(RELOCATABLE)
+	@-for i in $^; do\
+		$(INSTALL-IF-CHANGE) -c -m 644 $$i ${DESTDIR}/${TARGET}${TARGET-SUFFIX}/lib/$$i;\
+	done
+
+install_bin: $(PROG)
+	@-for i in $^; do\
+		$(INSTALL-IF-CHANGE) -c -m 755 $$i ${DESTDIR}/${TARGET}${TARGET-SUFFIX}/bin/$$i;\
+	done
+	$(INSTALL-IF-CHANGE) -c -m 755 doc/find_url_in_doc.pl ${DESTDIR}/${TARGET}${TARGET-SUFFIX}/bin/find_url_in_doc.pl
+
+install_src: ${PUBLIC_SRC} ${MISC_DIST}
+	@-for i in $^; do\
+		$(INSTALL-IF-CHANGE) -c -m 644 $$i ${DESTDIR}/pub_src/`basename $$i`;\
+	done
+
+install_include: ${PUBLIC_INCLUDE}
+	@-for i in $^; do\
+		$(INSTALL-IF-CHANGE) -c -m 644 $$i ${DESTDIR}/include/`basename $$i`;\
+	done
+
+install_util:
+	@-for i in $(UTIL); do \
+		$(INSTALL-IF-CHANGE) -c -m 755 $(srcdir)/util/$$i ${DESTDIR}/util/$$i;\
+	done
+
+ifeq ($(OPRS_LANG),fr)
+install_ad: install_ad_lang
+	for i in $(XDEFAULT); do \
+		rm -f ${DESTDIR}/app-defaults/$$i;\
+		ln -s $$i-fr ${DESTDIR}/app-defaults/$$i;\
+	done
+else
+install_ad: install_ad_lang
+	for i in $(XDEFAULT); do \
+		rm -f ${DESTDIR}/app-defaults/$$i;\
+		ln -s $$i-en ${DESTDIR}/app-defaults/$$i;\
+	done
+endif
+
+install_ad_lang: $(XDEFAULT_LANG) 
+	for i in $^; do \
+		sed -e "s|^\*Info.infoPath:.*$$|\*Info.infoPath: ${DESTDIR}/doc|" \
+		    -e "s|\.directory:[ 	]*./data$$|.directory: .|" \
+			< $$i > $$i.tmp;\
+		$(INSTALL-IF-CHANGE) -m 644 $$i.tmp ${DESTDIR}/app-defaults/`basename $$i .ad`;\
+	done
+
+install_doc:
+	-(cd doc; $(MAKE) install)
+
+install_data:
+	-(cd data; $(MAKE) install)
+else
+install \
+install_lib \
+install_relocatable \
+install_code \
+install_just_code \
+install_no_doc \
+install_bin \
+vx-install: lib vxoprs vxoprs-relocatable vx-mp-lib.o vx-mp-oprs vx-kill-mp c_toolkit/c_toolkit.o install_contrib
+	@-for i in  vxoprs vxoprs-relocatable vx-mp-lib.o vx-mp-oprs vx-kill-mp c_toolkit/c_toolkit.o; do\
+		$(INSTALL-IF-CHANGE) -c -m 644 $$i ${DESTDIR}/${TARGET}${TARGET-SUFFIX}/lib/`basename $$i`;\
+	done
+	@$(INSTALL-IF-CHANGE) -c -m 644 site.make ${DESTDIR}/${TARGET}${TARGET-SUFFIX}/site.make
+endif
+
+user-external.c: default-user-external.c
+	@echo "*******************************"
+	@echo "*********** WARNING ***********"
+	@echo "*******************************"
+	@echo "You need to link your own my-user-external.c on user-external.c."
+	@echo "For now, I will link default-user-external.c for you with:"
+	ln -s $< $@
+
+user-external.h: default-user-external.h
+	@echo "*******************************"
+	@echo "*********** WARNING ***********"
+	@echo "*******************************"
+	@echo "You need to link your own my-user-external.h on user-external.h."
+	@echo "For now, I will link default-user-external.h for you with:"
+	ln -s $< $@
+
+user-external_f.h:  default-user-external_f.h
+	@echo "*******************************"
+	@echo "*********** WARNING ***********"
+	@echo "*******************************"
+	@echo "You need to link your own my-user-external_f.h on user-external_f.h."
+	@echo "For now, I will link default-user-external_f.h for you with:"
+	ln -s $< $@
+
+#
+# If the site.make does not exist, echo and fail.
+#
+site.make:
+	@echo "*******************************"
+	@echo "*********** WARNING ***********"
+	@echo "*******************************"
+	@echo "You need to create the site.make file as a soft link to your appropriate .make file."
+	exit 1	
+#
+# If the site.make does not exist, echo and fail.
+#
+path.make:
+	@echo "*******************************"
+	@echo "*********** WARNING ***********"
+	@echo "*******************************"
+	@echo "You need to create the path.make file, containing a line"
+	@echo "specifying where is the source directory a line such as:"
+	@echo "srctop =  /usr/local/oprs/oprs-1.3/src"
+	exit 1	
+
+#
+# Make depend stuff
+# We have to make the .lex.c files first to avoid a warning from makedepend.
+#
+# If the make.depend does not exist, just touch it.
+#
+
+#make.depend:
+#	@echo "*******************************"
+#	@echo "*********** WARNING ***********"
+#	@echo "*******************************"
+#	@echo "make.depend does not exist."
+#	@echo "I will create make.depend for you."
+#	touch make.depend
+
+ifndef VXWORKS
+
+depend make.depend:: oprs-parser.lex.c oprs-server-parser.lex.c ope-parser.lex.c opc-parser.lex.c \
+	$(RESOURCES_INC_FILES) user-external.c user-external.h user-external_f.h \
+	oprs-parser.tab.c ope-parser.tab.c opc-parser.tab.c oprs-server-parser.tab.c
+
+depend make.depend:: $(filter-out $(OPRS_LIB_SRC) \
+                                $(BOTH_OPE_OPRS_LIB_SRC) \
+				$(BOTH_OPRS_LIB_SRC) \
+				$(MP_LIB_SRC) \
+				$(EXT_MP_LIB_SRC) \
+				$(BOTH_KERNEL_LIB_SRC) \
+				$(KERNEL_LIB_SRC) \
+				$(XOPRS_LIB_SRC) \
+				$(OPAQUE_LIB_SRC) \
+				$(OPG_LIB_SRC), \
+			$(C_SRC)) 
+	$(MKDEP) -c$(CC) $(CPPFLAGS) -omake.depend $?
+
+depend make.depend:: $(BOTH_OPE_OPRS_LIB_SRC)
+	$(MKDEP) -c$(CC) $(CPPFLAGS) -omake.depend -l$(GRAPHIC_OPE_OPRS_LIB) $?
+
+depend make.depend:: $(BOTH_OPRS_LIB_SRC)
+	$(MKDEP) -c$(CC) $(CPPFLAGS) -omake.depend -l$(GRAPHIC_OPRS_LIB) $?
+
+depend make.depend:: $(BOTH_KERNEL_LIB_SRC)
+	$(MKDEP) -c$(CC) $(CPPFLAGS) -omake.depend -l$(GRAPHIC_KERNEL_LIB) $?
+
+depend make.depend:: $(XOPRS_LIB_SRC)
+	$(MKDEP) -c$(CC) $(CPPFLAGS) -omake.depend -l$(XOPRS_LIB) $?
+
+depend make.depend:: $(OPG_LIB_SRC)
+	$(MKDEP) -c$(CC) $(CPPFLAGS) -omake.depend -l$(OPG_LIB) $?
+
+else
+
+$(srcdir)/util/mkdep -c$(CC) -DNO_GRAPHIX $(CFLAGS) \
+		 -p$(VPATH) \
+		 -l$(BASIC_LIB) $(BASIC_LIB_SRC) \
+		 -l$(OPRS_LIB) $(OPRS_LIB_SRC) \
+		 -l$(TEXT_OPE_OPRS_LIB) $(BOTH_OPE_OPRS_LIB_SRC) \
+		 -l$(TEXT_OPRS_LIB) $(BOTH_OPRS_LIB_SRC) \
+		 -l$(MP_LIB) $(MP_LIB_SRC) \
+		 -l$(EXT_MP_LIB) $(MP_LIB_SRC) \
+		 -l$(KERNEL_LIB) $(KERNEL_LIB_SRC) \
+		 -l$(TEXT_KERNEL_LIB) $(BOTH_KERNEL_LIB_SRC) \
+		 -l$(OPAQUE_LIB) $(OPAQUE_LIB_SRC) \
+
+
+# Make entry for VxWorks.
+depend make.depend:: oprs-parser.lex.c user-external.c user-external.h user-external_f.h \
+	oprs-parser.tab.c
+
+
+depend make.depend:: $(filter-out $(OPRS_LIB_SRC) \
+                                $(BOTH_OPE_OPRS_LIB_SRC) \
+				$(BOTH_OPRS_LIB_SRC) \
+				$(EXT_MP_LIB_SRC) \
+				$(KERNEL_LIB_SRC) \
+				$(BOTH_KERNEL_LIB_SRC) \
+				$(OPAQUE_LIB_SRC), \
+				$(BASIC_LIB_OBJ:%.o=%.c) \
+				$(MP_LIB_OBJ:%.o=%.c) \
+				$(OPRS_OBJ:%.o=%.c) \
+				$(KILL_MP_OBJ:%.o=%.c) \
+				$(MP_OBJ:%.o=%.c) \
+				$(USER_OBJ:%.o=%.c))
+	$(MKDEP) -c$(CC) $(CPPFLAGS) -omake.depend $?
+endif
+
+depend make.depend:: $(BOTH_OPE_OPRS_LIB_SRC)
+	$(MKDEP) -c$(CC) $(CPPFLAGS) -DNO_GRAPHIX -omake.depend -l$(TEXT_OPE_OPRS_LIB) $?
+
+depend make.depend:: $(BOTH_OPRS_LIB_SRC)
+	$(MKDEP) -c$(CC) $(CPPFLAGS) -DNO_GRAPHIX -omake.depend -l$(TEXT_OPRS_LIB) $?
+
+depend make.depend:: $(BOTH_KERNEL_LIB_SRC)
+	$(MKDEP) -c$(CC) $(CPPFLAGS)  -DNO_GRAPHIX -omake.depend -l$(TEXT_KERNEL_LIB) $?
+
+depend make.depend:: $(OPAQUE_LIB_SRC)
+	$(MKDEP) -c$(CC) $(CPPFLAGS) -omake.depend -l$(OPAQUE_LIB) $?
+
+depend make.depend:: $(MP_LIB_SRC)
+	$(MKDEP) -c$(CC) $(CPPFLAGS) -omake.depend -l$(MP_LIB) $?
+
+depend make.depend:: $(MP_LIB_SRC)
+	$(MKDEP) -c$(CC) $(CPPFLAGS) -omake.depend -l$(EXT_MP_LIB) $?
+
+depend make.depend:: $(KERNEL_LIB_SRC)
+	$(MKDEP) -c$(CC) $(CPPFLAGS) -omake.depend -l$(KERNEL_LIB) $?
+
+depend make.depend:: $(BASIC_LIB_SRC)
+	$(MKDEP) -c$(CC) $(CPPFLAGS) -omake.depend -l$(BASIC_LIB) $?
+
+depend make.depend:: $(OPRS_LIB_SRC)
+	$(MKDEP) -c$(CC) $(CPPFLAGS) -omake.depend -l$(OPRS_LIB) $?
+
+depend::
+	-(cd $(C_TOOLKIT_DIR) ; $(MAKE) depend)
+	-(cd contrib/src ; $(MAKE) depend)
+
+#
+# This file contains the dependencies generated by mkdep.
+#
+include make.depend
+
+#
+# VxWorks stuff
+#
+
+ifdef VXWORKS
+vxoprs: $(USER_OBJ) $(OPRS_OBJ) $(OPRS_LIB) $(TEXT_OPE_OPRS_LIB) $(TEXT_OPRS_LIB) $(TEXT_KERNEL_LIB) $(KERNEL_LIB) ${OPAQUE_LIB} $(CONTRIB_LIB)
+
+	$(MAKE) version
+	$(LD) -r -o vxoprs version.o $(OPRS_OBJ) $(USER_OBJ) $(TEXT_KERNEL_LIB) $(KERNEL_LIB) $(OPRS_LIB) $(TEXT_OPE_OPRS_LIB) $(TEXT_OPRS_LIB) ${OPAQUE_LIB} $(CONTRIB_LIB)
+
+vxoprs-relocatable: $(OPRS_OBJ) $(OPRS_LIB) $(TEXT_OPE_OPRS_LIB) $(TEXT_OPRS_LIB) $(TEXT_KERNEL_LIB) $(KERNEL_LIB) ${OPAQUE_LIB} $(CONTRIB_LIB)
+	$(MAKE) version
+	$(LD) -r -o vxoprs-relocatable version.o $(OPRS_OBJ) $(TEXT_KERNEL_LIB) $(KERNEL_LIB) $(OPRS_LIB) $(TEXT_OPE_OPRS_LIB) $(TEXT_OPRS_LIB) ${OPAQUE_LIB} $(CONTRIB_LIB)
+
+vx-mp-lib.o: $(BASIC_LIB_OBJ) $(MP_LIB_OBJ)
+	$(LD) -r -o $@  $(BASIC_LIB_OBJ) $(MP_LIB_OBJ)
+
+vx-mp-oprs: $(MP_OBJ)
+	$(MAKE) version
+	$(LD) -r -o vx-mp-oprs version.o $(MP_OBJ)
+
+vx-kill-mp: $(KILL_MP_OBJ)
+	$(LD) -r -o vx-kill-mp  $(KILL_MP_OBJ)
+
+endif
+
+#
+# Misc
+#
+
+tags: TAGS
+
+TAGS: $(SRCS) $(YACC_SRC) $(LEX_SRC) $(C_TOOLKIT_SRC) \
+	$(RESOURCES_FILES) Makefile.dev  Makefile.src
+	etags $^
+
+# Cut here for updating the Makefile.src file
+# (DO NOT TOUCH THE PREVIOUS LINE)
+# The next entry depends on it...
+
+Makefile.src: Makefile.dev
+	sed -e '/^# Cut here for updating the Makefile.src file/,$$d'  <$< >$@
+
+doc/Makefile.src:
+	cd doc; make Makefile.src
+
+#
+# Version stuff
+#
+
+distribute: Makefile.src doc/Makefile.src
+	@(minv=`grep minor_version version.c | sed -e 's/.* = "\([0-9]*\)";/\1/'` ; \
+	  majv=`grep major_version version.c | sed -e 's/.* = "\([0-9]*\)";/\1/'` ; \
+	  patchv=`grep patchlevel version.c | sed -e 's/.* = "\([0-9]*\)";/\1/'` ; \
+	  stat=`grep status version.c | sed -e 's/.* = "\(.*\)";/\1/'` ; \
+	  echo "Update the HISTORY and the NEWS files for the version OPRS_$$majv-$$minv-$$patchv-$$stat oprs" ; \
+	  emacs HISTORY NEWS; \
+	  echo "Now commiting the files with: cvs ci -m \"Checking in distribution OPRS $$majv.$$minv.$$patchv $$stat\"" ; \
+	  cvs ci -m "Checking in distribution OPRS $$majv.$$minv.$$patchv.$$stat" ; \
+	  echo "Now taging this version with: cvs tag OPRS_$$majv-$$minv-$$patchv-$$stat" ; \
+	  cvs tag OPRS_$$majv-$$minv-$$patchv-$$stat)
+
+tag: 
+	@(minv=`grep minor_version version.c | sed -e 's/.* = "\([0-9]*\)";/\1/'` ; \
+	  majv=`grep major_version version.c | sed -e 's/.* = "\([0-9]*\)";/\1/'` ; \
+	  patchv=`grep patchlevel version.c | sed -e 's/.* = "\([0-9]*\)";/\1/'` ; \
+	  stat=`grep status version.c | sed -e 's/.* = "\(.*\)";/\1/'` ; \
+	  echo "Now taging this version with: cvs tag OPRS_$$majv-$$minv-$$patchv-$$stat" ; \
+	  cvs tag OPRS_$$majv-$$minv-$$patchv-$$stat)
+
+major: distribute major-version
+
+minor: distribute minor-version
+
+patch: distribute patch-version
+
+doc-version:
+	(minv=`grep minor_version version.c | sed -e 's/.* = "\([0-9]*\)";/\1/'` ; \
+	  majv=`grep major_version version.c | sed -e 's/.* = "\([0-9]*\)";/\1/'` ; \
+	  patchv=`grep patchlevel version.c | sed -e 's/.* = "\([0-9]*\)";/\1/'` ; \
+	  stat=`grep status version.c | sed -e 's/.* = "\(.*\)";/\1/'` ; \
+	  $(srcdir)/util/update-doc-version "$$majv.$$minv.$$patchv $$stat")
+
+minor-%: %.c
+	$(srcdir)/util/make-version minor_version $<
+	$(MAKE) doc-version
+
+major-%: %.c
+	$(srcdir)/util/make-version major_version $<
+	$(MAKE) doc-version
+
+patch-%: %.c
+	$(srcdir)/util/make-version patchlevel $<
+	$(MAKE) doc-version
+
+#
+# to touch files with a particular symbol, so subsequent make recompile 
+# them properly (assuming the make depend has bee`n made).
+#
+
+touch_symbol:
+	@echo "Which symbol do you want to look at?"
+	@(read symbol; \
+	echo "Touching files containing the string $$symbol"; \
+	find  . -name \*.[chy] -exec grep -s $$symbol {} \; -print -exec touch {} \; )

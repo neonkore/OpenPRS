@@ -1,0 +1,120 @@
+/*                               -*- Mode: C -*- 
+ * yacc-exp.y -- 
+ * 
+ * $Id$
+ * 
+ * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ *    - Redistributions of source code must retain the above copyright
+ *      notice, this list of conditions and the following disclaimer.
+ *    - Redistributions in binary form must reproduce the above
+ *      copyright notice, this list of conditions and the following
+ *      disclaimer in the documentation and/or other materials provided
+ *      with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ */
+
+list_effects:	 					{$$=NULL;}
+	| list_par_expr 		{$$=$1;}
+	;
+
+list_par_expr:
+	OPENP_TK list_expr CLOSEP_TK 		{$$=$2;}
+	| OPENP_TK CLOSEP_TK 			{$$=sl_make_slist();}
+	;
+
+list_expr:
+	expr 					{$$=sl_make_slist(); sl_add_to_tail($$,$1);}
+	| list_expr expr 			{sl_add_to_tail($1,$2);$$=$1;}
+	;
+
+expr:
+	OPENP_TK pred_func term_list CLOSEP_TK 	{$$=build_expr_pfr_terms($2,$3);}
+	|  OPENP_TK pred_func error CLOSEP_TK		{warning(LG_STR("badly formed expression",
+								"expression mal formée")); YYABORT;}
+	;
+
+pred_func: variable				{$$ = create_var_pred_func($1);}
+	| SYMBOL_TK				{$$ = find_or_create_pred_func($1);}
+	;
+        
+term_list:
+	/*nothing*/ 				{$$=(TermList)sl_make_slist();}
+	| term_list term 			{$$=build_term_list($1,$2);}
+	;
+
+file_name: QSTRING_TK				{$$=canonicalize_file_name($1);}
+	;
+
+term:
+	INTEGER_TK 				{$$=build_integer($1);}
+	| POINTER_TK  				{$$=build_pointer($1);}
+	| REAL_TK  				{$$=build_float($1);}
+	| QSTRING_TK				{$$=build_qstring($1);}
+	| symbol 				{$$=build_id($1);}
+	| variable  				{$$=build_term_from_var($1);}
+	| expr	 				{$$=build_term_expr($1);}
+	| OP_LISP_TK term_list CP_LISP_TK 	{$$=build_term_l_list_from_c_list($2);}
+	| OP_ARRAY_TK term_list CP_ARRAY_TK	{$$=build_term_array_from_c_list($2);}
+	| OP_ARRAY_TK error CP_ARRAY_TK		{warning(LG_STR("badly formed ARRAY term",
+								"ARRAY term mal formée")); YYABORT;}
+	| OP_ARRAY_TK error CLOSEP_TK		{warning(LG_STR("badly formed composed term, bad matching [ )",
+								"composed term mal formée, mauvaise correspondance [ )")); YYABORT;}
+	| OP_ARRAY_TK error CP_LISP_TK		{warning(LG_STR("badly formed composed term, bad matching [ .)",
+								"composed term mal formée, mauvaise correspondance [ .)")); YYABORT;}
+	| OPENP_TK error CLOSEP_TK			{warning(LG_STR("badly formed composed term",
+								"composed term mal formée")); YYABORT;}
+	| OPENP_TK error CP_LISP_TK		{warning(LG_STR("badly formed composed term, bad matching ( .)",
+								"composed term mal formée, mauvaise correspondance ( .)")); YYABORT;}
+	| OPENP_TK error CP_ARRAY_TK		{warning(LG_STR("badly formed composed term, bad matching ( ]",
+								"composed term mal formée, mauvaise correspondance ( ]")); YYABORT;}
+	| OP_LISP_TK error CP_LISP_TK	 	{warning(LG_STR("badly formed LISP_LIST term",
+								"LISP_LIST term mal formée")); YYABORT;}
+	| OP_LISP_TK error CLOSEP_TK	 	{warning(LG_STR("badly formed composed term, bad matching (. )",
+								"composed term mal formée, mauvaise correspondance (. )")); YYABORT;}
+	| OP_LISP_TK error CP_ARRAY_TK	 	{warning(LG_STR("badly formed composed term, bad matching (. ]",
+								"composed term mal formée, mauvaise correspondance (. ]")); YYABORT;}
+	;
+
+var_list:
+	variable 				{$$=(VarList)sl_make_slist(); sl_add_to_head($$,$1);}
+	| var_list variable			{sl_add_to_tail($1,$2); $$=$1;}
+	;
+
+
+/*
+date:
+	INTEGER_TK                              {$$=$1;}
+	;
+*/
+
+property:
+	OPENP_TK prop_name term CLOSEP_TK 		{$$=build_property($2,$3);}
+
+	| OPENP_TK prop_name error CLOSEP_TK		{warning(LG_STR("expecting a term after a property name",
+								"attendait un term aprés un nom de propriété")); YYABORT;}
+	| OPENP_TK error CLOSEP_TK	 		{warning(LG_STR("expecting a property name",
+								"attendait un mnom de propriété")); YYABORT;}
+	;
+
+prop_name:
+	SYMBOL_TK				{$$=$1;}
+	;

@@ -1,0 +1,151 @@
+;;;
+;;; File: /opt/oprs/oprs-1.4/src/contrib/data/dmex-logn.opf
+;;; $Id$
+;;; Date: Wed Oct 30 14:59:11 1996
+;;; Host: warhol
+;;; OP Editor Version: 1.4.3 Released
+;;; Compiled on warhol (Fri Oct 18 15:45:31 MET DST 1996)
+;;; OP File Format: 2
+;;;
+(
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; |DMEX-logn : Initialize|
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(defop |DMEX-logn : Initialize|
+    :invocation (! (DMEX-LN-INIT $FATHER $RESOURCES))
+    :body ((! (SEM-CREATE DMEX-LN 1 SEM-FIFO))
+           (! (= @RES $RESOURCES))
+           (WHILE (? (~ (NULL @RES)))
+              (IF (? (MY-NAME $FATHER))
+                 ;;;Its me
+                 (=> (DMEX-LN-TOKEN-PRESENT (CAR @RES)))
+               ELSE
+                 (=> (DMEX-LN-FATHER (CAR @RES) $FATHER))
+              )
+              (! (= @RES (CDR @RES)))
+           )
+          )
+    :documentation "DMEX-LN-INIT must be called with the nameof the original father,
+and the list of resources.
+It creates the dmex-ln demaphore,
+Then, for each resource, conclude the appropriate DMEX-LN-TOKEN-PRESENT or 
+DMEX-LN-FATHER accordingly."
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; |DMEX-logn : receive-request|
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(defop |DMEX-logn : receive-request|
+    :invocation (DMEX-LN-REQ $REQ $RES)
+    :body ((! (SEM-P DMEX-LN))
+           (IF (? (DMEX-LN-FATHER $RES $FATHER))
+              (! (SEND-MESSAGE $FATHER (DMEX-LN-REQ $REQ $RES)))
+            ELSE
+              (IF (? (DMEX-LN-REQUESTING-RES $RES))
+                 (=> (DMEX-LN-NEXT $RES $REQ))
+               ELSE
+                 (~> (DMEX-LN-TOKEN-PRESENT $RES))
+                 (! (SEND-MESSAGE $REQ (DMEX-LN-TOKEN $RES)))
+              )
+           )
+           (=> (DMEX-LN-FATHER $RES $REQ))
+           (! (SEM-V DMEX-LN))
+          )
+    :documentation "Triggered upon reception of a request.
+Check if we are the father of this resource.
+If not, transmit the request to the father.
+If yes, we check if we are using it.
+        if yes, we chain the requester as next in line to get the res.
+        if no, we give it the resource.
+IN any case, update the new father (i.e. the last requester)."
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; |DMEX-logn : receive-token|
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(defop |DMEX-logn : receive-token|
+    :invocation (DMEX-LN-TOKEN $RES)
+    :body ((=> (DMEX-LN-TOKEN-PRESENT $RES))
+          )
+    :documentation "We got the res token... conclude it is present."
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; |DMEX-logn : release-one|
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(defop |DMEX-logn : release-one|
+    :invocation (! (DMEX-LN-RELEASE-ONE $RES))
+    :body ((IF (? (DMEX-LN-TOKEN-PRESENT $RES))
+              (! (SEM-P DMEX-LN))
+              (~> (DMEX-LN-REQUESTING-RES $RES))
+              (IF (? (DMEX-LN-NEXT $RES $NEXT))
+                 (~> (DMEX-LN-TOKEN-PRESENT $RES))
+                 (! (SEND-MESSAGE $NEXT (DMEX-LN-TOKEN $RES)))
+                 (~> (DMEX-LN-NEXT $RES $NEXT))
+              )
+              (! (SEM-V DMEX-LN))
+            ELSE
+              (! (PRINTF (FORMAT "DMEX-LN: Error: Cannot release %d which is not present.\n" $RES)))
+           )
+          )
+    :documentation "Called when releasing one resource.
+If any next, pass it the resource."
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; |DMEX-logn : release-resources|
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(defop |DMEX-logn : release-resources|
+    :invocation (! (DMEX-LN-RELEASE-RSC $RESOURCES))
+    :body ((! (= @RES (SORT-ALPHA $RESOURCES)))
+           (WHILE (? (~ (NULL @RES)))
+              (! (DMEX-LN-RELEASE-ONE (CAR @RES)))
+              (! (= @RES (CDR @RES)))
+           )
+          )
+    :documentation "Called when we want to release some resources.
+Sort them, and relase them one by one."
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; |DMEX-logn : request-one|
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(defop |DMEX-logn : request-one|
+    :invocation (! (DMEX-LN-REQUEST-ONE $RES))
+    :body ((! (SEM-P DMEX-LN))
+           (IF (? (DMEX-LN-REQUESTING-RES $RES))
+              (! (PRINTF (FORMAT "DMEX-LN: Error: It looks like you have already requested %d.\n" $RES)))
+            ELSE
+              (? (MY-NAME $ME))
+              (=> (DMEX-LN-REQUESTING-RES $RES))
+              (IF (? (DMEX-LN-FATHER $RES $FATHER))
+                 (! (SEND-MESSAGE $FATHER (DMEX-LN-REQ $ME $RES)))
+                 (~> (DMEX-LN-FATHER $RES $FATHER))
+              )
+           )
+           (! (SEM-V DMEX-LN))
+          )
+    :documentation "Request one resource.
+If we are not the father,
+Send a request to the father.
+We are now the new father."
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; |DMEX-logn : request-resources|
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(defop |DMEX-logn : request-resources|
+    :invocation (! (DMEX-LN-REQUEST-RSC $RESOURCES))
+    :body ((! (= @RES (SORT-ALPHA $RESOURCES)))
+           (WHILE (? (~ (NULL @RES)))
+              (! (DMEX-LN-REQUEST-ONE (CAR @RES)))
+              (^ (DMEX-LN-TOKEN-PRESENT (CAR @RES)))
+              (! (= @RES (CDR @RES)))
+           )
+          )
+    :documentation "Called, when requesting resources.
+Sort them (required to prevent deadlock) and
+request them one by one (waiting after each one)."
+)
+)

@@ -1,0 +1,56 @@
+;;;
+;;; File: /home/felix/local/PORTABLE/oprs/data/example-cons.opf
+;;; $Id$
+;;; Date: Thu Dec 22 10:31:23 1994
+;;; Host: corona
+;;; OP Editor Version : 1.3.1 Beta
+;;; Compiled on corona (Thu Dec 22 10:29:53 MET 1994)
+;;; OP File Format: 2
+;;;
+(2 
+(
+)
+(EXAMPLE (
+(INVOCATION INVOCATION (! (REVERSE $LIST)) 18 74 1 80 0 )
+(CONTEXT CONTEXT  30 200 0 60 0 )
+(SETTING SETTING  28 244 0 60 0 )
+(EFFECTS EFFECTS  30 350 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "Reverse a LISP_LIST list of variable using CONS, CAR, CDR." 32 505 1 60 0 )
+(PROPERTIES PROPERTIES  30 400 0 60 0 )
+) (
+(PROCESS S9 0 0 367 167)
+(PROCESS S8 0 0 367 263)
+(PROCESS S3 0 0 196 301)
+(PROCESS S4 0 0 367 340)
+(END END1 0 0 176 412)
+(PROCESS S5 0 0 367 437)
+(PROCESS N0 0 0 367 90)
+(START START 0 0 356 23)
+) (
+(GOAL START E0 N0
+(! (PRINT $LIST))
+()  -5 -2 40 0)
+(GOAL N0 E0012 S9
+(! (= @LIST $LIST))
+()  10 -7 40 0)
+(GOAL S5 E0040 S8
+(! (= @LIST (CDR @LIST)))
+((646 446) (646 272) )  0 0 40 0)
+(GOAL S4 E0156 S5
+(! (= @NEW-LIST
+      (CONS (CAR @LIST) @NEW-LIST)))
+()  -2 -12 40 0)
+(GOAL S3 E0089 END1
+(! (PRINT @NEW-LIST))
+()  0 -5 40 0)
+(GOAL S8 E0170 S4
+(? (~ (NULL @LIST)))
+()  0 0 40 0)
+(GOAL S8 E0169 S3
+(? (NULL @LIST))
+()  0 0 40 0)
+(GOAL S9 E0024 S8
+(! (= @NEW-LIST (. .)))
+()  1 -5 40 0)
+) )
+)

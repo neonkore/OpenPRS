@@ -1,0 +1,63 @@
+;;;
+;;; File: copy-env.opf
+;;; $Id$
+;;; Date: Wed Sep 29 12:22:44 1993
+;;; Host: idefix
+;;; OP Editor Version : 1.1.7
+;;; Compiled on idefix (Wed Sep 29 12:15:16 MET 1993)
+;;; OP File Format: 2
+;;;
+(2 
+(
+)
+(TEST_COPY_ENV (
+(INVOCATION INVOCATION (FOO $X $Y) 10 25 1 80 0 )
+(CONTEXT CONTEXT (BAR $X $Z) 10 110 1 60 0 )
+(SETTING SETTING  10 210 1 60 0 )
+(EFFECTS EFFECTS () 10 310 1 60 0 )
+(DOCUMENTATION DOCUMENTATION  10 410 1 60 0 )
+(PROPERTIES PROPERTIES () 10 360 1 60 0 )
+) (
+(PROCESS N3 0 0 317 299)
+(START START 0 0 310 10)
+(PROCESS N0 0 0 316 183)
+) (
+(GOAL N0 E3 N3
+(! (BOO $X $Y))
+()  0 0 40 0)
+(GOAL START E0 N0
+(! (PRINT-LIST
+       (FORMAT
+           NIL
+           "From FACT called: X ~a, Y ~a, Z ~a~&"
+           $X
+           $Y
+           $Z)))
+()  0 0 40 0)
+) )
+(TEST_COPY_ENV_GOAL (
+(INVOCATION INVOCATION (! (BOO $X $Y)) 10 25 1 80 0 )
+(CONTEXT CONTEXT (BAR $X $Z) 10 110 1 60 0 )
+(SETTING SETTING  10 210 1 60 0 )
+(EFFECTS EFFECTS () 10 310 1 60 0 )
+(DOCUMENTATION DOCUMENTATION  10 410 1 60 0 )
+(PROPERTIES PROPERTIES () 10 360 1 60 0 )
+) (
+(PROCESS N2 0 0 315 284)
+(PROCESS N1 0 0 317 135)
+(START START 0 0 310 10)
+) (
+(GOAL START E1 N1
+(! (PRINT-LIST
+       (FORMAT
+           NIL
+           "From Goal called: X ~a, Y ~a, Z ~a~&"
+           $X
+           $Y
+           $Z)))
+()  0 0 40 0)
+(GOAL N1 E2 N2
+(! (== 1 2))
+()  9 -5 40 0)
+) )
+)

@@ -1,0 +1,13 @@
+#!/bin/csh
+echo $1
+xv gif/$1.gif &
+echo Grab it and save it...
+set ans=$<
+if ( $ans == 'y' ) then
+	mv gif/$1.gif gif/$1.gif.old
+	mv fig/$1.ps fig/$1.ps.old
+	rasttopnm <snapshot.rs | ppmtogif >gif/$1.gif
+	rasttopnm <snapshot.rs | pnmtops -noturn -rle -w 20 -h 20 >fig/$1.ps
+	rm snapshot.rs
+endif
+

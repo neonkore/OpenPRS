@@ -1,0 +1,112 @@
+;;;
+;;; File: data/meta-selector.opf
+;;; $Id$
+;;; Date: Wed Sep 29 12:17:35 1993
+;;; Host: idefix
+;;; OP Editor Version : 1.1.7
+;;; Compiled on idefix (Wed Sep 29 12:15:16 MET 1993)
+;;; OP File Format: 2
+;;;
+(2 
+(
+)
+(|Meta Selector (safety preferred rest)| (
+(INVOCATION INVOCATION (SOAK $X) 8 36 1 80 0 )
+(CONTEXT CONTEXT (> (LENGTH $X) 1) 10 110 1 60 0 )
+(SETTING SETTING  10 210 1 60 0 )
+(EFFECTS EFFECTS () 10 310 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "Meta OP used whenever
+there are more than
+one OPs applicable." 10 410 1 60 0 )
+(PROPERTIES PROPERTIES ((DECISION-PROCEDURE T)) 10 360 1 60 0 )
+) (
+(PROCESS N4 0 0 797 202)
+(PROCESS N5 0 0 650 240)
+(PROCESS N6 0 0 890 295)
+(PROCESS S6 0 0 578 294)
+(END END2 0 0 885 440)
+(PROCESS S8 0 0 718 373)
+(PROCESS S7 0 0 472 379)
+(END END6 0 0 714 510)
+(END END5 0 0 462 505)
+(PROCESS N2 0 0 722 139)
+(PROCESS N3 0 0 370 139)
+(PROCESS S3 0 0 260 201)
+(PROCESS S1 0 0 260 286)
+(PROCESS S2 0 0 260 384)
+(PROCESS N1 0 0 502 97)
+(START START 0 0 489 6)
+(PROCESS S4 0 0 260 459)
+(PROCESS S5 0 0 260 527)
+(END END4 0 0 253 587)
+) (
+(GOAL S2 E0177 S4
+(! (INTENDED-ALL-OPS $R))
+()  0 0 40 0)
+(GOAL S5 E0185 END4
+(! (INTENDED-ALL-OPS-AS-ROOT $S))
+()  0 0 40 0)
+(GOAL S4 E0175 S5
+(! (INTENDED-ALL-OPS-AS-ROOT $P))
+()  0 0 40 0)
+(GOAL START |e7750| N1
+(! (= $F
+      (CURRENT
+          (FACT-INVOKED-OPS-OF $X))))
+()  0 0 40 0)
+(GOAL N1 |Mike-Error| N3
+(? (> (CURRENT (LENGTH $F)) 0))
+()  0 0 40 0)
+(GOAL N1 |e7751| N2
+(! (NULL $F))
+()  0 0 40 0)
+(GOAL S1 E0039 S2
+(! (= $R
+      (CURRENT
+          (LIST-DIFFERENCE
+              (LIST-DIFFERENCE
+                  $F $S)
+              $P))))
+()  16 -1 40 0)
+(GOAL S3 E0171 S1
+(! (= $P (CURRENT (PREFERRED-OF $F))))
+()  0 0 40 0)
+(GOAL N3 E0168 S3
+(! (= $S
+      (CURRENT
+          (SAFETY-HANDLERS-OF $F))))
+()  0 0 40 0)
+(GOAL N2 |e7753| N4
+(! (= $S
+      (CURRENT
+          (SAFETY-HANDLERS-OF $X))))
+()  0 0 40 0)
+(GOAL S7 E0218 END5
+(! (INTENDED-OP
+       (CURRENT (SELECT-RANDOMLY $X))))
+()  0 0 40 0)
+(GOAL S8 E0207 END6
+(! (INTENDED-OP
+       (CURRENT (SELECT-RANDOMLY $P))))
+()  0 0 40 0)
+(GOAL S6 E0192 S7
+(? (NULL $P))
+()  -32 0 40 0)
+(GOAL S6 E0194 S8
+(? (> (CURRENT (LENGTH $P)) 0))
+()  14 3 40 0)
+(GOAL N6 |e7756| END2
+(! (INTENDED-OP
+       (CURRENT (SELECT-RANDOMLY $S))))
+()  0 0 40 0)
+(GOAL N5 E0188 S6
+(! (= $P (CURRENT (PREFERRED-OF $X))))
+()  -6 -3 40 0)
+(GOAL N4 |e7755| N6
+(? (> (CURRENT (LENGTH $S)) 0))
+()  2 4 40 0)
+(GOAL N4 |e7754| N5
+(? (NULL $S))
+()  0 0 40 0)
+) )
+)

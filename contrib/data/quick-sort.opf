@@ -1,0 +1,51 @@
+;;;
+;;; File: /opt/oprs/oprs-1.4/src/contrib/data/quick-sort.opf
+;;; $Id$
+;;; Date: Mon Sep 30 14:00:01 1996
+;;; Host: shems
+;;; OP Editor Version: 1.4.2 Released
+;;; Compiled on warhol (Wed May 15 12:23:42 MET DST 1996)
+;;; OP File Format: 2
+;;;
+(
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; SORT-NUMBERS
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(defop SORT-NUMBERS
+    :invocation (! (SORT-NUMBERS $L $RES))
+    :body ((IF (? (NULL (CDR $L)))
+              (! (= $RES $L))
+            ELSE
+              (! (SORT-SMALL-BIG (CAR $L) (CDR $L) @SMALL @BIG))
+              (! (SORT-NUMBERS (VAL @SMALL) @SMALL))
+              (! (SORT-NUMBERS (VAL @BIG) @BIG))
+              (! (= $RES (LIST-APPEND (VAL @SMALL) (CONS (CAR $L) @BIG))))
+           )
+          )
+    :documentation "Sort the list $L of numbers and return the result in $RES."
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; SORT-SMALL-BIG
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(defop SORT-SMALL-BIG
+    :invocation (! (SORT-SMALL-BIG $V $L $SMALL $BIG))
+    :body ((! (= @SMALL (. .)))
+           (! (= @BIG (. .)))
+           (! (= @AUX $L))
+           (WHILE (? (~ (NULL @AUX)))
+              (IF (? (< (CAR @AUX) $V))
+                 (! (= @SMALL (CONS (CAR @AUX) @SMALL)))
+               ELSE
+                 (! (= @BIG (CONS (CAR @AUX) @BIG)))
+              )
+              (! (= @AUX (CDR @AUX)))
+           )
+           (! (= $SMALL (VAL @SMALL)))
+           (! (= $BIG (VAL @BIG)))
+          )
+    :documentation "Take all the element in $L, put the one smaller than $V in $SMALL,
+ and the one biger than $V in $BIG."
+)
+)

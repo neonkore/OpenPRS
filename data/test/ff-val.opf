@@ -1,0 +1,44 @@
+;;;
+;;; File: /riaidefix/users/felix/C/LAAS/oprs-1.1/data/test/ff-val.opf
+;;; $Id$
+;;; Date: Tue Oct  5 10:52:29 1993
+;;; Host: idefix
+;;; OP Editor Version : 1.1.9
+;;; Compiled on idefix (Mon Oct  4 17:42:43 MET 1993)
+;;; OP File Format: 2
+;;;
+(2 
+(
+)
+(TEST-FF-VAL (
+(INVOCATION INVOCATION (TEST-FF-VAL) 10 50 1 60 0 )
+(CONTEXT CONTEXT  10 150 1 60 0 )
+(SETTING SETTING  10 250 1 60 0 )
+(EFFECTS EFFECTS  10 350 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "To test ff-val evaluable function." 10 450 1 60 0 )
+(PROPERTIES PROPERTIES  10 400 1 60 0 )
+) (
+(START START 0 0 310 10)
+(PROCESS N0 0 0 323 88)
+(PROCESS N1 0 0 323 174)
+(PROCESS N2 0 0 323 274)
+(PROCESS N3 0 0 323 350)
+(END END0 0 0 317 459)
+) (
+(GOAL N2 E4 N3
+(=> (POSITION A TOTO))
+()  -54 0 40 0)
+(GOAL N3 E3 END0
+(! (PRINT (FF-VAL $X (POSITION A $X))))
+()  -3 0 40 0)
+(GOAL N1 E2 N2
+(! (PRINT (FF-VAL $X (POSITION B $X))))
+()  -3 0 40 0)
+(GOAL N0 E1 N1
+(! (PRINT (FF-VAL $X (POS A $X))))
+()  -18 0 40 0)
+(GOAL START E0 N0
+(! (PRINT (FF-VAL $X (POSITION A $X))))
+()  -1 -6 40 0)
+) )
+)

@@ -1,0 +1,102 @@
+;;;
+;;; File: /users/oprs/C/ACS/oprs-1.3/data/fact-text.opf
+;;; $Id$
+;;; Date: Wed Feb 15 18:02:01 1995
+;;; Host: cascade
+;;; OP Editor Version : 1.3.1 Beta
+;;; Compiled on cascade (Wed Nov 16 12:06:21 MET 1994)
+;;; OP File Format: 2
+;;;
+(
+(defop FOO
+:invocation (|| (foo) (bar))
+:action (PRINT $N)
+:documentation "This OP prints its term."
+)
+(defop BAR
+:invocation (& (foo) (bar))
+:action (PRINT $N)
+:documentation "This OP prints its term."
+)
+(defop PRINT
+:invocation (! (PRINT $N)) 
+:action (PRINT $N)
+:documentation "This OP prints its term."
+)
+(defop |Iterative Factorial|
+:invocation (! (FACTORIAL $N $RESULT)) 
+:body
+(;;; init in parallel
+ (// ((! (= @TMP $N))
+     )
+     ((! (= @RES 1))
+     )
+ )
+ (WHILE (? (> @TMP 1))
+    (! (= @RES (* @RES @TMP)))
+    (! (= @TMP (- @TMP 1)))
+ )
+ (! (= $RESULT @RES))
+)
+:properties ((RECURSIVE NIL))
+:documentation "This is another example"
+)
+(defop |Meta Factorial|
+:invocation (APPLICABLE-OPS-GOAL $GOAL $X) 
+:context (EQUAL (LENGTH $X) 2)
+:body
+((IF (? (PREFER-ITERATIVE))
+    ;;; Look for the one which has property recursive
+    (IF (? (PROPERTY-P RECURSIVE (FIRST $X)))
+       (! (INTENDED-OP (SECOND $X)))
+     ELSE
+       (! (INTENDED-OP (FIRST $X)))
+    )
+  ELSEIF (? (PREFER-RECURSIVE))
+    ;;; Look for the one which has property recursive
+    (IF (? (PROPERTY-P RECURSIVE (FIRST $X)))
+       (! (INTENDED-OP (FIRST $X)))
+     ELSE
+       (! (INTENDED-OP (SECOND $X)))
+    )
+  ELSE
+    ;;; We do not have any preference... 
+    ;;; Choose randomly
+    (! (INTENDED-OP (SELECT-RANDOMLY $X)))
+ )
+)
+:properties ((DECISION-PROCEDURE T))
+:documentation "This Meta OP chooses which Factorial OP to intend according
+to the presence or not of the recursive property on the
+applicable OPs. 
+Do not use this Meta OP in other applications."
+)
+(defop |Meta Intend|
+:invocation (! (INTENDED-OP $X)) 
+:action (INTEND-OP $X)
+:documentation "The simplest way to intend an applicable OP 
+($X a Op Instance LISP_CAR)."
+)
+(defop |Print Factorial|
+:invocation (! (PRINT-FACTORIAL $X)) 
+:body
+(;;; Example of simple sequence
+ (! (FACTORIAL $X $RES))
+ (! (PRINT $RES))
+)
+:documentation "Print factorial example using text op."
+)
+(defop |Recursive Factorial|
+:invocation (! (FACTORIAL $X $N)) 
+:body
+((IF (? (> $X 1))
+    (! (FACTORIAL (- $X 1) $N2))
+    (! (= $N (* $X $N2)))
+  ELSE
+    (! (= $N 1))
+ )
+)
+:properties ((RECURSIVE T))
+:documentation "This is an example"
+)
+)

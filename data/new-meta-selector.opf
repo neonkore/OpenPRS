@@ -1,0 +1,54 @@
+;;;
+;;; File: data/new-meta-selector.opf
+;;; $Id$
+;;; Date: Wed Sep 29 12:17:39 1993
+;;; Host: idefix
+;;; OP Editor Version : 1.1.7
+;;; Compiled on idefix (Wed Sep 29 12:15:16 MET 1993)
+;;; OP File Format: 2
+;;;
+(2 
+(
+)
+(|Meta Selector (facts preferred)| (
+(INVOCATION INVOCATION (SOAK $X) 11 46 1 80 0 )
+(CONTEXT CONTEXT (> (LENGTH $X) 1) 11 137 1 60 0 )
+(SETTING SETTING  10 210 0 60 0 )
+(EFFECTS EFFECTS () 10 310 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "This Meta OP is used whenever there are more than
+one OP applicable. If there are fact invoked OPs, they
+are all intended (and the goal invoked OPs are discarded), otherwise
+it will randomly choose one of the goal invoked OPs. 
+As a result, the behavior of the kernel is very reactive.
+Note that it can apply to itself without any problem
+because this very Meta OP *is* fact invoked so will be
+intented by its grand brother." 11 328 1 60 0 )
+(PROPERTIES PROPERTIES ((DECISION-PROCEDURE T)) 11 247 1 60 0 )
+) (
+(START START 0 0 372 14)
+(PROCESS N1 0 0 385 102)
+(PROCESS N3 0 0 245 167)
+(PROCESS N2 0 0 546 163)
+(END END4 0 0 237 290)
+(END END5 0 0 539 291)
+) (
+(GOAL N2 E5 END5
+(! (INTENDED-OP
+       (CURRENT (SELECT-RANDOMLY $X))))
+()  0 0 40 0)
+(GOAL N3 E4 END4
+(! (INTENDED-ALL-OPS (CURRENT $F)))
+()  0 0 40 0)
+(GOAL N1 |e7751| N2
+(! (NULL $F))
+()  0 0 40 0)
+(GOAL N1 |Mike-Error| N3
+(? (> (CURRENT (LENGTH $F)) 0))
+()  -11 -2 40 0)
+(GOAL START |e7750| N1
+(! (= $F
+      (CURRENT
+          (FACT-INVOKED-OPS-OF $X))))
+()  0 0 40 0)
+) )
+)

@@ -1,0 +1,44 @@
+;;;
+;;; File: /softs0/oprs-1.1/src/data/test/special.opf
+;;; $Id$
+;;; Date: Tue Oct 12 13:54:19 1993
+;;; Host: idefix
+;;; OP Editor Version : 1.1.10
+;;; Compiled on idefix (Tue Oct 12 12:05:06 MET 1993)
+;;; OP File Format: 2
+;;;
+(2 
+(
+)
+(TEST-VAR (
+(INVOCATION INVOCATION (TEST-VAR) 10 50 1 60 0 )
+(CONTEXT CONTEXT  10 150 1 60 0 )
+(SETTING SETTING  10 250 1 60 0 )
+(EFFECTS EFFECTS  10 350 1 60 0 )
+(DOCUMENTATION DOCUMENTATION  10 450 1 60 0 )
+(PROPERTIES PROPERTIES  10 400 1 60 0 )
+) (
+(START START 0 0 310 10)
+(PROCESS N0 0 0 321 146)
+(PROCESS N1 0 0 319 272)
+) (
+(GOAL N0 E1 N1
+(! (PRINT $Y))
+()  0 0 40 0)
+(GOAL START E0 N0
+(! (TEST-GEN $Y))
+()  0 0 40 0)
+) )
+(|Test Special| (
+(INVOCATION INVOCATION (! (TEST-GEN $X)) 10 50 1 60 0 )
+(CONTEXT CONTEXT  10 150 1 60 0 )
+(SETTING SETTING  10 250 1 60 0 )
+(EFFECTS EFFECTS () 10 350 1 60 0 )
+(ACTION ACTION (*=* $X
+     (GENSYM)) 310 50 1 60 0 )
+(DOCUMENTATION DOCUMENTATION  10 450 1 60 0 )
+(PROPERTIES PROPERTIES () 10 400 1 60 0 )
+) (
+) (
+) )
+)

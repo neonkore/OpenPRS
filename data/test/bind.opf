@@ -1,0 +1,227 @@
+;;;
+;;; File: /users/oprs/C/ACS/oprs-1.1/data/test/bind.opf
+;;; $Id$
+;;; Date: Wed Nov 17 17:01:04 1993
+;;; Host: cascade
+;;; OP Editor Version : 1.1.14
+;;; Compiled on cascade (Wed Nov 17 16:44:13 MET 1993)
+;;; OP File Format: 2
+;;;
+(2 
+(
+BIND1
+BIND2
+BIND3
+TESTB
+TESTB1
+TESTB2
+TESTB3
+TESTB4
+VAL-X
+VAL-Y
+)
+(CALLED-BIND-1 (
+(INVOCATION INVOCATION (! (BIND1 $A $B)) 10 50 1 60 0 )
+(CONTEXT CONTEXT  10 150 0 60 0 )
+(SETTING SETTING  10 250 0 60 0 )
+(EFFECTS EFFECTS () 10 350 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "This OP will randomly succed.
+Bind $B to 1 if (VAL-Y  1) in DB.
+ $A unused. " 9 173 1 60 0 )
+(PROPERTIES PROPERTIES () 10 400 0 60 0 )
+) (
+(START START 0 0 301 54)
+(PROCESS N0 0 0 314 173)
+(PROCESS N1 0 0 314 258)
+) (
+(GOAL START E0 N0
+(? (VAL-Y $B))
+()  12 -4 40 0)
+(GOAL N0 E1 N1
+(? (EQUAL $B 1))
+()  0 0 40 0)
+) )
+(CALLED-BIND-2 (
+(INVOCATION INVOCATION (! (BIND2 $A $B)) 10 50 1 60 0 )
+(CONTEXT CONTEXT (VAL-Y $B) 8 109 1 60 0 )
+(SETTING SETTING  10 250 0 60 0 )
+(EFFECTS EFFECTS () 10 350 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "This OP will  succed ind bind
+$B to 1 if (VAL-Y  1) in DB.
+ $A unused. " 9 189 1 60 0 )
+(PROPERTIES PROPERTIES () 10 400 0 60 0 )
+) (
+(START START 0 0 308 56)
+(PROCESS N1 0 0 319 179)
+) (
+(GOAL START E1 N1
+(? (EQUAL $B 1))
+()  0 0 40 0)
+) )
+(CALLED-BIND-3 (
+(INVOCATION INVOCATION (|| (! (BIND3 $A 1))
+    (! (BIND3 $A 2))) 10 51 1 60 0 )
+(CONTEXT CONTEXT  10 150 0 60 0 )
+(SETTING SETTING  10 250 0 60 0 )
+(EFFECTS EFFECTS () 10 350 0 60 0 )
+(DOCUMENTATION DOCUMENTATION  7 145 1 60 0 )
+(PROPERTIES PROPERTIES () 10 400 0 60 0 )
+) (
+(START START 0 0 310 10)
+(PROCESS N0 0 0 323 176)
+) (
+(GOAL START E0 N0
+(? (EQUAL $A 1))
+()  12 -4 40 0)
+) )
+(|bind 1| (
+(INVOCATION INVOCATION (! (TESTB1)) 13 56 1 80 0 )
+(CONTEXT CONTEXT  11 151 0 60 0 )
+(SETTING SETTING  11 250 0 60 0 )
+(EFFECTS EFFECTS () 11 341 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "If (! (bind1 3 $y)) succeds then  $Y may be 1 ." 5 152 1 60 0 )
+(PROPERTIES PROPERTIES () 11 396 0 60 0 )
+) (
+(START START 0 0 349 41)
+(PROCESS N0 0 0 280 333)
+(IF N2 0 0 362 170)
+(THEN N2_T 0 0 348 170)
+(ELSE N2_F 0 0 383 170)
+(PROCESS N1 0 0 486 246)
+) (
+(GOAL N2_F E0 N1
+(! (PRINT "No luck"))
+()  8 -4 40 0)
+(GOAL N2_T E5 N0
+(! (PRINTF
+       (FORMAT
+           "the value of $Y : %d must be 1 . "
+           $Y)))
+()  -30 14 40 0)
+(IF START E3 N2
+(! (BIND1 3 $Y))
+()  0 0 40 0)
+(ELSE N2 E2 N2_F)
+(THEN N2 E1 N2_T)
+) )
+(|bind 2| (
+(INVOCATION INVOCATION (! (TESTB2)) 13 56 1 80 0 )
+(CONTEXT CONTEXT  11 151 0 60 0 )
+(SETTING SETTING  11 250 0 60 0 )
+(EFFECTS EFFECTS () 11 341 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "If (VAL_Y 1)  is in DB : $Y may be 1 ." 5 152 1 60 0 )
+(PROPERTIES PROPERTIES () 11 396 0 60 0 )
+) (
+(START START 0 0 349 41)
+(PROCESS N0 0 0 280 333)
+(IF N2 0 0 362 170)
+(THEN N2_T 0 0 348 170)
+(ELSE N2_F 0 0 383 170)
+(PROCESS N1 0 0 486 246)
+) (
+(THEN N2 E1 N2_T)
+(ELSE N2 E2 N2_F)
+(IF START E3 N2
+(! (BIND2 3 $Y))
+()  0 0 40 0)
+(GOAL N2_T E5 N0
+(! (PRINTF
+       (FORMAT
+           "the value of $Y : %d must be 1 . "
+           $Y)))
+()  -44 16 40 0)
+(GOAL N2_F E0 N1
+(! (PRINT "Check the DB"))
+()  8 -4 40 0)
+) )
+(|bind 3| (
+(INVOCATION INVOCATION (! (TESTB3)) 13 56 1 80 0 )
+(CONTEXT CONTEXT  11 151 0 60 0 )
+(SETTING SETTING  11 250 0 60 0 )
+(EFFECTS EFFECTS () 11 341 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "The binding of $Y to 1 will be done in the 
+Invocation Part of CALLED-BIND-3." 5 152 1 60 0 )
+(PROPERTIES PROPERTIES () 11 396 0 60 0 )
+) (
+(START START 0 0 349 41)
+(PROCESS N0 0 0 280 333)
+(IF N2 0 0 362 170)
+(THEN N2_T 0 0 348 170)
+(ELSE N2_F 0 0 383 170)
+(PROCESS N1 0 0 486 246)
+) (
+(THEN N2 E1 N2_T)
+(ELSE N2 E2 N2_F)
+(IF START E3 N2
+(! (BIND3 $Y $Y))
+()  0 0 40 0)
+(GOAL N2_T E5 N0
+(! (PRINTF
+       (FORMAT
+           "the value of $Y : %d must be 1 . "
+           $Y)))
+()  -30 14 40 0)
+(GOAL N2_F E0 N1
+(! (PRINT "Strange"))
+()  8 -4 40 0)
+) )
+(|bind 4| (
+(INVOCATION INVOCATION (! (TESTB4)) 13 56 1 80 0 )
+(CONTEXT CONTEXT  11 151 0 60 0 )
+(SETTING SETTING  11 250 0 60 0 )
+(EFFECTS EFFECTS () 11 341 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "The binding of $Y to 1 or 2 will be done in the 
+Invocation Part of CALLED-BIND-3." 5 152 1 60 0 )
+(PROPERTIES PROPERTIES () 11 396 0 60 0 )
+) (
+(START START 0 0 349 41)
+(PROCESS N0 0 0 280 333)
+(IF N2 0 0 362 170)
+(THEN N2_T 0 0 348 170)
+(ELSE N2_F 0 0 383 170)
+(PROCESS N1 0 0 486 246)
+) (
+(GOAL N2_F E0 N1
+(! (PRINT "Strange"))
+()  8 -4 40 0)
+(GOAL N2_T E5 N0
+(! (PRINTF
+       (FORMAT
+           "the value of $Y : %d must be 1 or 2 . 
+"
+           $Y)))
+()  -30 14 40 0)
+(IF START E3 N2
+(! (BIND3 1 $Y))
+()  0 0 40 0)
+(ELSE N2 E2 N2_F)
+(THEN N2 E1 N2_T)
+) )
+(|bind all| (
+(INVOCATION INVOCATION (! (TESTB)) 13 56 1 80 0 )
+(CONTEXT CONTEXT  11 151 0 60 0 )
+(SETTING SETTING  11 250 0 60 0 )
+(EFFECTS EFFECTS () 11 341 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "Call the various test." 5 152 1 60 0 )
+(PROPERTIES PROPERTIES () 11 396 0 60 0 )
+) (
+(START START 0 0 349 41)
+(PROCESS N0 0 0 360 115)
+(PROCESS N1 0 0 360 195)
+(PROCESS N2 0 0 360 272)
+(PROCESS N3 0 0 360 361)
+) (
+(GOAL N2 E3 N3
+(! (TESTB4))
+()  0 0 40 0)
+(GOAL N1 E2 N2
+(! (TESTB3))
+()  0 0 40 0)
+(GOAL N0 E1 N1
+(! (TESTB2))
+()  0 0 40 0)
+(GOAL START E0 N0
+(! (TESTB1))
+()  0 0 40 0)
+) )
+)

@@ -1,0 +1,16 @@
+Tue May 24 11:04:56 1994  Vianney Coutance  (vianney@cascade)
+
+	* Makefile: Now use installed libraries.
+
+Mon Nov 22 12:07:24 1993  Francois Felix Ingrand  (felix@gibbons)
+
+	* user-external.c Changed the value or main_loop_pool_usec which
+	  was a little to small for VxWorks...
+
+Fri Jun  4 15:16:45 1993  Francois Felix Ingrand  (felix at idefix)
+
+	* (Makefile) Updated the rules to take into account new position
+	in the source tree.
+
+	* (Makefile) remove the  $(X_LIB) from the prs: rule.
+

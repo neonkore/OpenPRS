@@ -1,0 +1,118 @@
+ws        [ \t]+
+real      [-\+]?[0-9]+\.[0-9]*
+exp       [eE][-\+]?[0-9]+
+integer   [-\+]?[0-9]+
+pointer    0x[0123456789abcdefABCDEF]+
+comment    ;.*$
+qstring   \"([^"]|\\["])*\"
+id        ([^ \t\n~0123456789"&\(\)\$@;\|\.[:\]][^ \t\n"\(\)\]]*)
+numberid  ([^ \t\n"&\(\)\$@;\|\.\]][^ \t\n"\(\)\]]*)
+idbar     (\|[^|]+\|)
+nl        \n
+or        V
+and       &
+op        \(
+cp        \)
+opar      \[
+cpar      \]
+oplisp    \(\.
+cplisp    \.\)
+lvar      \${numberid}
+pvar      @{numberid}
+gpvar     @@{numberid}
+
+
+{ws}                ;
+:[Ii][Nn][Vv][Oo][Cc][Aa][Tt][Ii][Oo][Nn]                
+        {return TFT_INVOCATION_TK;}
+:[Bb][Oo][Dd][Yy]                                        
+        {return TFT_BODY_TK;}
+:[Cc][Oo][Nn][Tt][Ee][Xx][Tt]                             
+        {return TFT_CONTEXT_TK;}
+:[Ss][Ee][Tt][Tt][Ii][Nn][Gg]                                
+        {return TFT_SETTING_TK;}
+:[Pp][Rr][Oo][Pp][Ee][Rr][Tt][Ii][Ee][Ss]                
+        {return TFT_PROPERTIES_TK;}
+:[Dd][Oo][Cc][Uu][Mm][Ee][Nn][Tt][Aa][Tt][Ii][Oo][Nn]        
+        {return TFT_DOCUMENTATION_TK;}
+:[Ee][Ff][Ff][Ee][Cc][Tt][Ss]                                
+        {return TFT_EFFECTS_TK;}
+:[Aa][Cc][Tt][Ii][Oo][Nn]                                
+        {return TFT_ACTION_TK;}
+
+[Dd][Ee][Ff][Kk][Aa]                                        
+        {return DEFOP_TK;}
+\/\/                                                        
+        {return PAR_TK;}
+[Ww][Hh][Ii][Ll][Ee]                                        
+        {return WHILE_TK;}
+[Dd][Oo]                                                
+        {return DO_TK;}
+[Ii][Ff]                                                
+        {return IF_TK;}
+[Ee][Ll][Ss][Ee]                                        
+        {return ELSE_TK;}
+
+{comment}                
+        {return COMMENT_TK;}
+
+[Aa][Nn][Dd]                
+        {return META_AND_TK;}
+[Oo][Rr]                
+        {return META_OR_TK;}
+[Nn][Oo][Tt]                
+        {return META_NOT_TK;}
+
+^\.\n                
+        {return RESET_DOT_TK;}
+
+{real}                |
+{real}{exp}            
+        {return REAL_TK;}
+{pointer}       
+        {return POINTER_TK;}
+{integer}       
+        {return INTEGER_TK;}
+{qstring}        
+        {return QSTRING_TK;}
+
+||                {return OR_TK;}
+&                {return AND_TK;}
+~                {return NOT_TK;}
+
+{lvar}           {return LOGICAL_VAR_TK;}
+{pvar}           {return PROGRAM_VAR_TK;}
+{gpvar}          {return PROGRAM_VAR_TK;}
+
+=>        |
+[Cc][Oo][Nn][Cc][Ll][Uu][Dd][Ee]        
+        {return TEMP_CONCLUDE_TK;}
+~>        |
+[Rr][Ee][Tt][Rr][Aa][Cc][Tt]                 
+        {return RETRACT_TK;}
+!        |
+[Aa][Cc][Hh][Ii][Ee][Vv][Ee]                 
+        {return ACHIEVE_TK;}
+\?        |
+[Tt][Ee][Ss][Tt]                         
+        {return TEST_TK;}
+#        |
+[Pp][Rr][Ee][Ss][Ee][Rr][Vv][Ee]        
+        {return PRESERVE_TK;}
+\^        |
+[Ww][Aa][Ii][Tt]                         
+        {return WAIT_TK;}
+\%        |
+[Mm][Aa][Ii][Nn][Tt][Aa][Ii][Nn]        
+        {return MAINTAIN_TK;}
+
+{oplisp}   {return OP_LISP_TK;}
+{cplisp}   {return CP_LISP_TK;}
+{opar}     {return OP_ARRAY_TK;}
+{cpar}     {return CP_ARRAY_TK;}
+
+{id}       {return SYMBOL_TK;}
+{idbar}    {return SYMBOL_TK;}
+
+{op}       {return OP_TK;}
+{cp}       {return CP_TK;}

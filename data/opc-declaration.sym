@@ -1,0 +1,203 @@
+declare be SOAK
+declare be APPLICABLE-OPS-FACT
+declare be FACT-INVOKED-OPS
+declare be DB-SATISFIED-GOAL
+declare be APPLICABLE-OPS-GOAL
+declare be GOAL-INVOKED-OPS
+declare be FAILED-GOAL
+declare be FAILED
+declare be REQUEST
+declare be ACHIEVED
+declare be INTENTION-WAKE-UP
+declare be READ-RESPONSE-ID
+declare be READ-RESPONSE
+
+declare evaluable predicate > 2
+declare evaluable predicate >= 2
+declare evaluable predicate < 2
+declare evaluable predicate <= 2
+declare evaluable predicate NULL_C 1
+declare evaluable predicate NOT-AN-INSTANCE-OF-ME 1
+declare evaluable predicate IS-FACT-INVOKED 1
+declare evaluable predicate IS-GOAL-INVOKED 1
+declare evaluable predicate BOUNDP 1
+declare evaluable predicate NULL 1
+declare evaluable predicate NULL_CAR 1
+declare evaluable predicate MEMQ 2
+declare evaluable predicate EQUAL 2
+declare evaluable predicate PROPERTY-P 2
+declare evaluable predicate ELAPSED-TIME 2
+declare evaluable predicate ELAPSED-MTIME 2
+declare evaluable predicate NUMBERP 1
+declare evaluable predicate CONSP 1
+declare evaluable predicate STRINGP 1
+declare evaluable predicate ATOMP 1
+declare evaluable predicate = 2
+declare evaluable predicate == 2
+
+declare evaluable function + -1
+declare evaluable function - -1
+declare evaluable function * -1
+declare evaluable function / -1
+declare evaluable function ABS 1
+declare evaluable function MOD 2
+declare evaluable function RAND 1
+declare evaluable function INT-TO-FLOAT 1
+declare evaluable function FLOAT-TO-INT 1
+declare evaluable function STRING-CAT 2
+declare evaluable function VAL 1
+declare evaluable function DELETE-FROM-LIST 2
+declare evaluable function LIST-DIFFERENCE 2
+declare evaluable function LIST-INTERSECTION 2
+declare evaluable function LIST-UNION 2
+declare evaluable function LIST-APPEND 2
+declare evaluable function LIST-DIFFERENCE-ORDER 2
+declare evaluable function FACT-INVOKED-OPS-OF 1
+declare evaluable function OP-INSTANCE-GOAL 1
+declare evaluable function SAFETY-HANDLERS-OF 1
+declare evaluable function PREFERRED-OF 1
+declare evaluable function LENGTH 1
+declare evaluable function SELECT-RANDOMLY 1
+declare evaluable function CONS-TERM 2
+declare evaluable function CONS 2
+declare evaluable function CONS-TAIL 2
+declare evaluable function FIRST 1
+declare evaluable function MAKE-INT-ARRAY 1
+declare evaluable function MAKE-FLOAT-ARRAY 1
+declare evaluable function GET-INT-ARRAY 2
+declare evaluable function GET-FLOAT-ARRAY 2
+declare evaluable function GET-INT-ARRAY-SIZE 1
+declare evaluable function GET-FLOAT-ARRAY-SIZE 1
+declare evaluable function CAR 1
+declare evaluable function CDR 1
+declare evaluable function CAAR 1
+declare evaluable function CADR 1
+declare evaluable function CDAR 1
+declare evaluable function CDDR 1
+declare evaluable function CAAAR 1
+declare evaluable function CAADR 1
+declare evaluable function CADAR 1
+declare evaluable function CADDR 1
+declare evaluable function CDAAR 1
+declare evaluable function CDADR 1
+declare evaluable function CDDAR 1
+declare evaluable function CDDDR 1
+declare evaluable function SECOND 1
+declare evaluable function REVERSE 1
+declare evaluable function SORT-ALPHA 1
+declare evaluable function LAST 1
+declare evaluable function GENSYM 0
+declare evaluable function FF-VAL 2
+declare evaluable function MENTION 1
+declare evaluable function ALL 2
+declare evaluable function ALL-POS 2
+declare evaluable function N-ALL 2
+declare evaluable function N-ALL-LIST 2
+declare evaluable function L-LIST -1
+declare evaluable function TERM-CAR 1
+declare evaluable function LISP-CAR-TO-TERM 1
+declare evaluable function TERM-TO-LISP-CAR 1
+declare evaluable function APPLY-SUBST-IN-GTEXPR 3
+declare evaluable function APPLY-SUBST-IN-GOAL 3
+declare evaluable function BUILD-GOAL 1
+declare evaluable function GET-CURRENT-INTENTION 0
+declare evaluable function GET-ALL-INTENTIONS 0
+declare evaluable function GET-OTHER-INTENTIONS 0
+declare evaluable function GET-SLEEPING-INTENTIONS 0
+declare evaluable function GET-ROOT-INTENTIONS 0
+declare evaluable function NUMBER-OF-INTENTIONS 0
+declare evaluable function GET-THE-DECISION-PROCEDURES-OF 1
+declare evaluable function GET-INTENDED-DECISION-PROCEDURES 0
+declare evaluable function FIND-INTENTIONS-ID 1
+declare evaluable function FIND-INTENTION-ID 1
+declare evaluable function GET-INTENTION-PRIORITY 1
+declare evaluable function GET-CURRENT-INTENTION-ID 0
+declare evaluable function GET-INTENTION-ID 1
+declare evaluable function GET-INTENTION-TIME 1
+declare evaluable function USER-SYS-CLOCK-TICK 0
+declare evaluable function USER-CLOCK-TICK 0
+declare evaluable function GOAL-STATEMENT 1
+declare evaluable function FACT-STATEMENT 1
+declare evaluable function GSTATEMENT-PREDICAT 1
+declare evaluable function FSTATEMENT-PREDICAT 1
+declare evaluable function GSTATEMENT-ARG 2
+declare evaluable function FSTATEMENT-ARG 2
+declare evaluable function GOAL-STATEMENT-COPY 1
+declare evaluable function FACT-STATEMENT-COPY 1
+declare evaluable function GSTATEMENT-ARG-COPY 2
+declare evaluable function FSTATEMENT-ARG-COPY 2
+declare evaluable function COPY-TERM 1
+declare evaluable function COPY-TERM-LITERAL-VAR 1
+declare evaluable function TERM-COMP-FUNCTION 1
+declare evaluable function TERM-COMP-ARG-COPY 2
+declare evaluable function TERM-COMP-ARG 2
+declare evaluable function MTIME 0
+declare evaluable function TIME 0
+declare evaluable function PROPERTY-OF 2
+declare evaluable function KERNEL-NAME 0
+declare evaluable function BUILD-TERM-COMP-FROM-ATOM-LLIST 2
+declare evaluable function BUILD-LLISP-FROM-TERM-COMP 1
+
+declare action GET-CURRENT-INTENTION 0
+declare action GET-ALL-INTENTIONS 0
+declare action GET-OTHER-INTENTIONS 0
+declare action GET-SLEEPING-INTENTIONS 0
+declare action GET-ROOT-INTENTIONS 0
+declare action GET-INTENTION-PRIORITY 1
+declare action GET-INTENTION-TIME 1
+declare action MAKE-INT-ARRAY 1
+declare action MAKE-FLOAT-ARRAY 1
+declare action GET-INT-ARRAY 2
+declare action GET-FLOAT-ARRAY 2
+declare action PRINT 1
+declare action PRINTF 1
+declare action PRINT-INSIDE 1
+declare action SEND-MESSAGE 2
+declare action BROADCAST-MESSAGE 1
+declare action MULTICAST-MESSAGE 2
+declare action SEND-STRING 2
+declare action INTEND-ALL-OPS-AS-ROOT 1
+declare action INTEND-ALL-OPS 1
+declare action INTEND-ALL-OPS-AFTER 2
+declare action INTEND-OP 1
+declare action INTEND-OP-AFTER 2
+declare action INTEND-OP-AFTER-BEFORE 3 
+declare action INTEND-OP-WITH-PRIORITY 2
+declare action INTEND-OP-WITH-PRIORITY-AFTER-BEFORE 4
+declare action INTEND-OP-WITH-PRIORITY-AFTER 3
+declare action INTEND-OP-BEFORE-AFTER 3 
+declare action INTEND-ALL-GOALS-// 1
+declare action INTEND-ALL-GOALS-//-AS-ROOTS 1
+declare action INTEND-ALL-GOALS-//-AFTER 2
+declare action INTEND-ALL-GOALS-//-AFTER-ROOTS 1
+declare action INTEND-ALL-GOALS-//-AS-ROOTS-WITH-PRIORITY 2
+declare action INTEND-GOAL 1
+declare action INTEND-GOAL-AFTER-BEFORE 3 
+declare action INTEND-GOAL-WITH-PRIORITY 2
+declare action INTEND-GOAL-WITH-PRIORITY-AFTER-BEFORE 4
+declare action TAG-CURRENT-INTENTION 1
+declare action KILL-INTENTIONS 1
+declare action KILL-INTENTION 1
+declare action ASLEEP-INTENTIONS 2
+declare action ASLEEP-INTENTION 2
+declare action WAKE-UP-INTENTION 1
+declare action ASLEEP-INTENTION-COND 2
+declare action ASLEEP-INTENTIONS-COND 2
+declare action APPLY-SORT-PREDICATE-TO-ALL 0
+declare action SORT-INTENTION-PRIORITY 0
+declare action SORT-INTENTION-TIME 0
+declare action SORT-INTENTION-PRIORITY-TIME 0
+declare action SORT-INTENTION-NONE 0
+declare action SET-INTENTION-PRIORITY 2
+declare action KILL-OTHER-INTENTIONS 0
+declare action READ-INSIDE-ID-VAR 2
+declare action READ-INSIDE-ID 1
+declare action READ-INSIDE 0
+declare action START-CRITICAL-SECTION 0
+declare action END-CRITICAL-SECTION 0
+declare action SHOW-MEMORY 0
+declare action EXECUTE-COMMAND 1
+declare action FAIL 0
+declare action SUCCEED 0
+declare action SET-INT-ARRAY 3
+declare action SET-FLOAT-ARRAY 3

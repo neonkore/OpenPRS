@@ -1,0 +1,69 @@
+declare cwp CLIENT
+declare cwp FIN-JOURNEE
+declare cwp POSITION
+declare cwp STOPPER-TEMPS
+declare cwp TYPE
+declare ff ALARME 0
+declare ff TEMPORISATION 1
+declare ff DONNE-TEMPS 1
+declare ff FEU 1
+declare ff POSITION 1
+declare ff ETAT 1
+declare ff CAMION-PLACE 0
+declare function ACCEPTE
+declare function FEU
+declare function EN-OPPOSITION
+declare function TEMPS-OPRS
+declare function REFUSE
+declare function ARRET-COMPLET
+declare function CAPTEUR-INDEFINIE
+declare function CAPTEURS-POS-INDEFINIE
+declare function CONFIANT
+declare function POSITION-COMMANDE-VANNE-INCONUE
+declare function VANNE
+declare function ATTENTION
+declare function DEUX-CAPTEURS
+declare predicate INTERROMPRE-TEMPS
+declare id INDEFINIE
+declare id FERME
+declare id EMPTY
+declare id FEU-REMPLISSAGE
+declare id DONNE-TEMPS
+declare id BON
+;declare id MOVE-VALVE
+declare id NON
+declare id ROUGE
+declare id VERT
+declare id UN-CAPTEUR-OK
+declare id OUVERTE
+declare id ETAT-PLACEMENT
+declare id PRIORITY
+declare id FEU-QUEUE
+declare id CAPTEUR1
+declare id CAPTEUR2
+declare id COMMANDE-VANNE
+declare id CAPTEUR 
+;declare id TANK
+;declare id TB
+declare id EN-ECHEC
+declare id CAPTEUR-ECHEC
+declare id POSITION-CAPTEUR
+declare predicate CAMION-PLEIN
+declare id DEUX-CAPTEURS-OK
+declare id OUI
+declare predicate CAPTEURS-ASSOCIES
+declare predicate PLAN-CHARGEMENT
+declare predicate ECHEC
+declare predicate PLEIN
+declare predicate QUITTER
+declare predicate INITIALISER-DEMO
+declare predicate INITIALISER-TEMPS
+declare predicate CHARGEMENT-CAMION
+declare predicate REMISE-A-ZERO
+declare predicate DEMARRER-DEMO
+declare predicate DEMARRER-TEMPS
+declare predicate ARRET-COMPLET
+declare predicate CAMION-EN-PLACE
+declare predicate CAMION-PRET
+declare predicate ATTENTION
+declare op_predicate ENVOYER-MESSAGE

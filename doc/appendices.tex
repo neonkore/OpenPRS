@@ -1,0 +1,3538 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% -*- Mode: latex -*- %%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Copyright (c) 1991-2003 Francois Felix Ingrand.
+%% All rights reserved.
+%%
+%% Redistribution and use in source and binary forms, with or without
+%% modification, are permitted provided that the following conditions
+%% are met:
+%%
+%%    - Redistributions of source code must retain the above copyright
+%%      notice, this list of conditions and the following disclaimer.
+%%    - Redistributions in binary form must reproduce the above
+%%      copyright notice, this list of conditions and the following
+%%      disclaimer in the documentation and/or other materials provided
+%%      with the distribution.
+%%
+%% THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+%% "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+%% LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+%% FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+%% COPYRIGHT HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+%% INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+%% BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+%% LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+%% CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+%% LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+%% ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+%% POSSIBILITY OF SUCH DAMAGE.
+%%
+%% $Id$
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\part{Appendices}
+\node{Appendices}
+\cpindex{Appendices}
+
+\appendix
+
+
+\chapter{Principal Differences Between C-PRS and \OPRS{}}
+\node{Principal Differences Between C-PRS and \OPRS{}}
+\cpindex{Principal Differences Between C-PRS and OPRS}
+
+
+\chapter{Principal Differences with SRI PRS}
+\node{Principal Differences with SRI OPRS}
+\cpindex{Principal Differences with SRI PRS}
+
+One of the principal concern while writing C-PRS and \COPRS{} was to
+improve some of the known problems in SRI Lisp PRS. As a consequence, there
+are minor differences between the two versions.
+
+\begin{enumerate}
+
+\item The syntax is far more rigorous in \COPRS{}. As a result, a
+number of expressions perfectly correct in the Lisp PRS are not
+recognized by \COPRS{}. For example, the following goal is not allowed: \*
+\code{(! (SEND-COMMAND-ACTION (DISPLAY-FOO (((CURRENT \$O) (CURRENT
+\$B))))))} \*
+because \*
+\code{(((CURRENT \$O) (CURRENT \$B)))} \*
+is not a valid Composed Term. Similarly, this goal: \*
+\code{( ! (\& (~> (FOOBAR \$P \$A)) (=> (FOOBAR \$P \$A)))))))} \*
+is not allowed any longer\dots{} It should be replaced with: \*
+\code{(\& (~> (FOOBAR \$P \$A)) (=> (FOOBAR \$P \$A))))))}
+
+\item The following syntax is still allowed: \*
+\code{( ! (=> (INITIAL-VALUE \$P \$O \$D \$V)))} \*
+but should be replaced with the \code{=>} temporal operator (a similar
+remark holds for \code{~>}) .
+
+\item The \code{@} variables have the expected behavior. In SRI OPRS, the
+only way to rebind a variable was to use a goal such as \code{(! (= @x
+...))}. This limitation has been removed in \COPRS{}, and the \code{@}
+variables can be rebound in any context.
+
+\item The database uses a term indexing mechanism which has been extended
+recursively (SRI OPRS version did not handle embedded composed terms
+properly).
+
+\item The wait temporal operator is cleaner in \COPRS{} as it succeeds only
+when it has been achieved\dots{} In SRI PRS, it always succeeded (but it
+sleep until the condition was satisfied).
+
+\item The database file has not quite the same format. You need to give a
+list of facts, not just the facts in a file. To convert your already
+existing files, just add an open parenthesis at the beginning, and a
+closing one at the end, and remove all the declarations of functional
+facts, basic events, and so on.
+
+\item \COPRS{} does not support the negation as a failure, nobody ever used
+it anyway.
+
+\item Closed world predicates, evaluable functions and evaluable predicates
+are ``local'' to a OPRS agent which is much better.
+
+\item SOAK and other meta facts are now basic event (\pxref{Basic Events}).
+
+\item \COPRS{} has no support for bignum\dots{} As a general rule, extreme
+caution should be exercised regarding the availability of Lisp specific
+functions or features. We do not plan to rewrite a complete Lisp
+interpreter in \COPRS{}\dots{} (this would defeat the main argument for
+writing \COPRS{}).
+
+\item \COPRS{} checks predicates, functions and symbols when you compile
+OPs.
+
+\item Basic events are just declared with their predicates, not the
+predicates and the number of arguments, since we considered this feature
+useless.
+
+\item The achiever field in OPs is not supported anymore. If it exists, it
+does not even shows up in the \OPE{} or in the \XPK, but a warning is
+issued. Moreover, its value is not taken into account by the kernel (here
+also, this feature has hardly been used\dots{} so it was not worth putting
+in the C version.)
+
+\item Lisp lists are not ``standard'' objects: you need to specify them
+with a different reader syntax (. .) to distinguish them from composed
+terms.
+
+\item The default OPs are not loaded by default in the \CPK{}. In
+fact the notion of default OPs is a little weak, and we consider that it
+is up to the end-user to decide which OPs are required in the kernel. Of
+course, we still provide a number of OP the user can load in its
+kernel(\pxref{Default OPs}).
+
+\item The \code{APPLICABLE-OPS-FACT} and the \code{APPLICABLE-OPS-GOAL}
+facts have different arguments in \CPK{}. Their syntax is: \*
+\code{(APPLICABLE-OPS-FACT fact list-of-op-instances)} \*
+and \*
+\code{(APPLICABLE-OPS-GOAL goal list-of-op-instances)}. \*
+In SRI PRS it was: \*
+\code{(APPLICABLE-OPS-FACT list-of-op-instances)} \*
+and \*
+\code{(APPLICABLE-OPS-GOAL list-of-op-instances)}.
+
+\item By default, the \CPK{} always evaluates what is evaluable in a goal
+at posting time, unless the evaluable function is quoted (\pxref{Current and Quote}). This greatly simplify the syntax of the OPs as one do not need
+to put \code{current} all over the place... Note that there is a flag in
+case you prefer the old form, see \nxref{OPRS Kernel Run Option Commands} for
+more details.
+
+\item The \code{*FACT} and \code{*GOAL} marker in the general meta expression
+are not recognized in recent version of \COPRS{}. Version of the OP-Editor prior
+to 1.3 will recognize them and will thus convert your old OP to the new format.
+
+\end{enumerate}
+
+\chapter{Principal Differences Between Subsequent Versions of C-PRS}
+\node{Principal Differences Between Subsequent Versions of C-PRS}
+\cpindex{Principal Differences Between Subsequent Versions of C-PRS}
+
+
+
+
+\section{Changes Between Version 1.0 and Version 1.1}
+\node{Changes Between Version 1.0 and Version 1.1}
+\cpindex{Changes Between Version 1.0 and Version 1.1}
+
+There are a number of small changes which can be of interest to the user. For
+more information, consult the \file{NEWS} file int the C-PRS distribution.
+
+\begin{itemize}
+
+\item Change the string pattern to allow \samp{"} in it. We are now using the C
+string syntax... But for now, just the \code{\\"}, such as in \code{"foo bar
+\\"asd asd\\""}. Internally, strings now do not have double quote around as they
+used to. Now they are just C strings.
+
+\item Added a printf function, more like the C one. Example:\*
+\code{(printf (format "The \%d of \%s is \%f." \$x \$y \$z))} 
+
+\item Added a list of symbols in the OP Editor and in the OPF format.
+
+\item The kernel is now able to read pointer values.
+
+\item Added a new way of scheduling intention. Instead of giving a
+sorting predicate, it is given the list of runnable intentions, and it can be
+ordered as the user want. This make it easier to make time sharing stuff for
+example.
+
+\item Added an extern \code{x\_oprs\_top\_level\_widget} for the user
+to create its own widget tree in \XPK{}.
+
+\item Defined the \code{OPRS\_DATA\_PATH} environment variable and the
+corresponding \code{-d} argument. This is a list of directories where C-PRS
+will look for data files.
+
+\item Defined \code{OPRS\_MP\_PORT}, \code{OPRS\_SERVER\_PORT},
+\code{OPRS\_SERVER\_HOST} and \code{OPRS\_MP\_HOST} environment variables, and
+changed the various programs accordingly to take them into account. (command
+arguments have a higher priority than environment variables).
+
+\item Defined a \code{OPRS\_DOC\_DIR} environment variable to point to the
+documentation directory.
+
+\item  Implementation of \code{INT\_ARRAY} and \code{FLOAT\_ARRAY}. Added \samp{[} and \samp{]}
+as reader characters to recognize arrays. The type of the array is determined
+from the first element.  Subsequent elements are casted appropriately.
+
+\item  Implementation of \code{U\_POINTER} user pointer to user defined objects.
+
+\end{itemize}
+
+\section{Changes Between Version 1.1 and Version 1.2}
+\node{Changes Between Version 1.1 and Version 1.2}
+\cpindex{Changes Between Version 1.1 and Version 1.2}
+
+There are a number of important changes between version 1.1 and version 1.2.
+Only the important one are listed in the following sections.
+
+
+
+\subsection{Changes in the Commands Syntax of the \CPK{}}
+\node{Changes in the Commands Syntax of the OPRS Kernel}
+\cpindex{Changes in the Commands Syntax of the \CPK{}}
+
+To clarify it and to make it more easy to use, the command set of the
+\CPK{} has been greatly improved and unified.
+
+Here is a table of correspondence between the 1.1 command and their new
+syntax in 1.2 and above. The commands which are not referenced have not changed.
+
+\begin{table}
+\begin{center}
+\begin{tabular}{||l|l|l||}
+\hline
+1.0&1.1.1  & Section \\
+\hline
+ show\_db & show db & \ref{OPRS Kernel Database Commands} \\
+ save\_db & save db & \ref{OPRS Kernel Database Commands} \\
+ empty\_db & empty fact db & \ref{OPRS Kernel Database Commands} \\
+ declare\_cwp & declare cwp & \ref{OPRS Kernel Declaration Commands} \\
+ declare\_be & declare be & \ref{OPRS Kernel Declaration Commands} \\
+ undeclare\_be & undeclare be & \ref{OPRS Kernel Database Commands} \\
+ declare\_ff & declare ff & \ref{OPRS Kernel Declaration Commands} \\
+ load\_db & load db & \ref{OPRS Kernel Database Commands} \\
+ delete\_op & delete op & \ref{OPRS Kernel OP Library Commands} \\
+ unload\_opf & delete opf & \ref{OPRS Kernel OP Library Commands} \\
+ print\_op & show op & \ref{OPRS Kernel OP Library Commands} \\
+ traceg\_op & trace graphic op & \ref{OPRS Kernel OP Library Commands} \\
+ tracet\_op & trace text op & \ref{OPRS Kernel OP Library Commands} \\
+ traceg\_opf & trace graphic opf & \ref{OPRS Kernel OP Library Commands} \\
+ tracet\_opf & trace text opf & \ref{OPRS Kernel OP Library Commands} \\
+ list\_ops & list op & \ref{OPRS Kernel OP Library Commands} \\
+ list\_opfs & list opf & \ref{OPRS Kernel OP Library Commands} \\
+ compile\_ops & load opf & \ref{OPRS Kernel OP Library Commands} \\
+ empty\_op & empty op db & \ref{OPRS Kernel Loading Commands} \\
+ trace rop & trace relevant op & \ref{OPRS Kernel Trace Commands} \\
+ trace opc & trace load op & \ref{OPRS Kernel Trace Commands} \\
+ trace soak & trace applicable op & \ref{OPRS Kernel Trace Commands} \\
+ trace fact & trace fact & \ref{OPRS Kernel Trace Commands} \\
+ trace goal & trace goal & \ref{OPRS Kernel Trace Commands} \\
+ trace db\_frame & trace db frame & \ref{OPRS Kernel Trace Commands} \\
+ set fact\_inv & set meta fact & \ref{OPRS Kernel Meta Level Option Commands} \\
+ set goal\_inv & set meta goal & \ref{OPRS Kernel Meta Level Option Commands} \\
+ set app\_ops\_fact & set meta fact op & \ref{OPRS Kernel Meta Level Option Commands} \\
+ set app\_ops\_goal & set meta goal op & \ref{OPRS Kernel Meta Level Option Commands} \\
+ set eval\_on\_post & set eval post & \ref{OPRS Kernel Run Option Commands} \\
+ set par\_post & set parallel post & \ref{OPRS Kernel Run Option Commands} \\
+ set par\_intend & set parallel intend & \ref{OPRS Kernel Run Option Commands} \\
+ consult\_rop & consult relevant op & \ref{OPRS Kernel Miscellaneous Commands} \\
+ consult\_aop & consult applicable op & \ref{OPRS Kernel Miscellaneous Commands} \\
+ show\_sleep\_int & show intention & \ref{OPRS Kernel Miscellaneous Commands} \\
+ show\_mem & show memory & \ref{OPRS Kernel Miscellaneous Commands} \\
+ declare & declare id & \ref{OPRS Kernel Declaration Commands} \\
+ unifie & unify & \ref{OPRS Kernel Miscellaneous Commands} \\
+ stat\_db & stat db & \ref{OPRS Kernel Miscellaneous Commands} \\
+ stat\_op & stat op & \ref{OPRS Kernel Miscellaneous Commands} \\
+ stat\_id & stat id & \ref{OPRS Kernel Miscellaneous Commands} \\
+ stat\_all & stat all & \ref{OPRS Kernel Miscellaneous Commands} \\
+ reset\_kernel & reset kernel & \ref{OPRS Kernel Miscellaneous Commands} \\
+\hline
+\end{tabular}
+\end{center}
+\caption{Commands Equivalence Between Version 1.1 and 1.2}
+\end{table}
+
+A shell script \file{update-inc-file} in the \file{util} directory of the
+distribution, is provided to allow the user to automatically translate its
+\file{.inc} and \file{.sym} files from versions previous to 1.1 to version 1.2.
+
+\subsection{Miscellaneous Changes Between Version 1.1 and Version 1.2}
+\node{Miscellaneous Changes Between Version 1.1 and Version 1.2}
+\cpindex{Miscellaneous Changes Between Version 1.1 and Version 1.2}
+
+There are a number of small changes which can be of interest to the user. For
+more information, consult the \file{NEWS} file in the C-PRS distribution.
+
+\begin{itemize}
+
+\item Added a new option to the \CPK{} and to the \XPK{} to start
+without registering to the \OPRSS{} (\code{-a}).
+
+\item Added a new command in the \OPE{} (relevant OP) to find the
+OP relevant for a particular edge.
+
+\item Added an option to the \OPE{} to convert op files to the
+newest format \code{op-editor -c <file(s)>}.
+
+\item Time stamping is now controlled by a flag (it is too
+expensive to keep it all the time).
+
+\item Wrote a default op to broadcast a message. Wrote a broadcast-message action.
+Added a broadcast mode to the message passer. I separated the modules which can
+receive and the one which can send (the \OPE{} and the \OPRSS{} do not
+receive). Therefore, the \MP{} never sends anything to the \OPRSS{} and the
+\OPE{}.
+
+\item Added a \code{val} evaluable function which returns the value on which
+variable points... In fact it is the identity function, but it can be very
+useful to force getting the value of program variables.
+
+\item Added a number of new commands and associated tokens:
+\code{list cwp}, \code{list be}, \code{list ff}, \code{list ep}, \code{list
+ef}, \code{list action} and \code{list all}.
+
+\item Wrote a \code{show intention} command (also available as a menu item)
+which gives an extensive status of the intentions and their component (thread,
+status, waiting condition, joining, etc).
+
+\item Added code to execute all the root of the intention graph in //. This
+is controlled with a flag (\code{set parallel intention on/off}) and in the
+option menu. Default value of the flag is on.
+
+\item Added op predicate, i.e. predicate which can only be satisfied by
+OP not in the database.
+
+\item Now the \MP{} is started automatically by the application which want to
+connect to it. In other words, if a connection failed because nobody is
+listening on the host/port, then a \MP{} is started on this host/port.  We use
+\code{rsh} to start the mp on a remote host, and fork to start it on the same host.
+
+\item Added a new program \code{kill-mp} to kill the \MP{}. It registers to the
+\MP{} and kill it.
+
+\item To prevent conflict with types defined in VxWorks system includes... the
+type \code{LIST} and \code{NODE} have been renamed \code{OPRS\_LIST} and
+\code{OPRS\_NODE}. 
+
+\item Change the registration to the \MP{} mechanism to pass the registration
+protocol as argument... and to return a status to deny/allow the registration.
+This change makes the registration mechanism incompatible with the previous
+version.
+
+\end{itemize}
+
+\section{Changes Between Version 1.2 and Version 1.3}
+\node{Changes Between Version 1.2 and Version 1.3}
+\cpindex{Changes Between Version 1.2 and Version 1.3}
+
+There are a number of important changes between version 1.2 and version 1.3.
+The most important change between version 1.2 and 1.3 is the text OPs and is
+described in the \xref{Text OPs} section.
+
+
+
+\subsection{Miscellaneous Changes Between Version 1.2 and Version 1.3}
+\node{Miscellaneous Changes Between Version 1.2 and Version 1.3}
+\cpindex{Miscellaneous Changes Between Version 1.2 and Version 1.3}
+
+There are a number of small changes which can be of interest to the user. For
+more information, consult the \file{NEWS} file in the C-PRS distribution.
+
+\begin{itemize}
+
+\item Added CONS-TAIL and LAST evaluable function.
+
+\item ope-graphic.c (scroll\_bars\_moved): Wrote a function to get the
+horizontal and vertical motion at the same time (to avoid this
+the awful steppy look of the redrawing).
+
+\item mp-oprs.c: added a -l "file\_name" arg to specify an log file
+(in which mp will log all the message which went thru it).
+
+\item xp-op-graphic.c xp-rop.c: Extend the relevant OP mechanism, to
+the invocation and context parts in the \XPK{} and in the \OPE{}.
+
+\item Added a "stepped" and "all" button in the Trace OP dialog box.
+
+\item Added the next, step, halt and run commands in the oprs kernel.
+
+\item Added a "show run status" command in the \CPK{}.
+
+\item The step by step execution of OP is now controled by a separate
+flag (not the graphic traced one anymore). The commands "trace
+step op ... on/off" et "trace step opf ... on/off" have been
+added.
+
+\item Added == as evaluable predicate to allow fancy construction such
+as (? (V (== (..) (..)) (== (...) (...)))).
+
+\item Added a scheduler for parallel intententions.
+
+\item Added evaluable functions to return
+user, system and user+system clock tick:
+USER-SYS-CLOCK-TICK, USER-CLOCK-TICK, SYS-CLOCK-TICK.
+These do not work under VxWorks.
+ 
+\item Added a "transmit\_all" command in the oprs-server to transmit the same
+command to all connected kernel. 
+
+\item Added an option to have symbol in lower case or any case.
+The default is still upper case.
+The authorized options are "upper", "lower" or "none".  
+You may specify this option by setting the OPRS\_ID\_CASE
+environment variable:\*
+     setenv OPRS\_ID\_CASE none \*
+or in the command line with the '-l' option:\*
+     xoprs -n Foo -l none -x ...\*
+The command line has precedence on the envionment variable.
+This option is avaible for the \OPRSS{}, the PK{}, and the \OPE{}.
+
+\item Change the command \code{list op predicate} in \code{list op\_predicate}
+and \code{declare op predicate} in \code{declare op\_predicate}.
+
+\item Report the expr being concluded when an attempt is made to conclude such
+expr containing a variable.
+
+\item Added a LISP\_LIST intersection and a LISP\_LIST union functions. 
+
+\item \code{mp\_socket} has default value of -1 (to detect
+unitialization for example).
+
+\item Added a memq\_ep evaluable predicate MEMQ.
+
+\item \code{start\_kernel\_user\_hook} is now executed before the
+initial\_command (i.e. load with the -x).
+
+\item The name of the opfile appears in all op lists
+presented to the user.
+
+\item xp-dialog.c: Added the Conclude from Parser trace in \XPK{}.
+
+\item Added a \code{find\_atom} function which does like \code{make\_atom}
+but warn you if the symbol had not been declared previously.
+
+\item Many prompt dialog box have been changed to provide an history of the
+previously entered commands.
+
+\item Added a \code{build\_string} function to build a Term from
+a string, making a copy of the string. This is the function external users
+should use.
+
+\item Added a \code{show oprs\_data\_path} and a \code{set oprs\_data\_path <string>}
+command. 
+
+\item Added a \code{trace conclude} command to trace conclude operation
+performed by the user.
+
+\item The \XPK{} menus have been reorganized.
+
+\item Added a \code{Display Next OP} and \code{Display Previous OP} in \XPK{}.
+
+\item The \MP{} registering functions have been changed. This change make them
+incompatible with previous versions of the \MP{}.
+
+\item In the various parsers, we have added some code to check we are not
+opening a directory instead of a file.
+
+\item Added extern "C" declaration in all the public include files
+which may be used by a c++ compiler.
+
+\item Added a verbose argument \code{-v} to the \MP{} to trace all messages.
+
+\item An error handler for external code errors is now provided. 
+
+\item One can log in a file all the output made in the \XOPRS{} text window
+using the \code{-log} argument to \XOPRS{}. 
+
+\item Now we can have the text trace associated to a particular intention in
+its own window... To create this particular window, right click on the
+intention in the intention graphic pane. Middle click gives an overview of the
+intention current status.
+
+\item The database is sorted before being printed.
+
+\item Some trace messages have been shortened to make the trace less
+verbose.
+
+\item Added \code{build\_nil} and \code{build\_t} which return a Term with t or
+nil as atom. Useful for evaluable functions and actions.
+
+\item Reorganised the option menu in \XOPRS{}. We now have three different
+option dialog boxes (Run, Compiler/Parser and Meta Level).
+
+\item  Implementation of a = ev-predicate... It works... it is faster... and it
+allows setting variable in invocation part parsing. (requested by
+rachid@laas.fr).
+
+\item Added a Show Global Variable menu and a "show variable" command to print
+the global variables list. 
+
+\item The \MP{} kills itself after an hour with no new connection and when
+nobody is registered. 
+
+\item Added a show memory menu.
+
+\item Added a \code{delete fact} and \code{conclude fact} command in the \XPK{}.
+
+\item Memory consumption has been improved.
+
+\item The list of variables do not appear anymore in the frame bindings.
+
+\item Added a \code{require} command which does like include except that it
+check this file has not been already loaded with another \code{require} command
+(\pxref{OPRS Kernel Loading Commands}).
+
+\item When broadcasting, do not send the message to the sender.
+
+\item Added two new flags to control predicate and function
+declaration. They can be changed with \code{set predicate|function on|off}
+(\pxref{OPRS Kernel Compiler/Parser Option Commands}).
+
+\item Added two new commands: \code{declare predicate} and \code{declare
+function} commands (\pxref{OPRS Kernel Declaration Commands}). 
+
+\item Added a delete fact (\pxref{Delete Fact Database}) and a conclude fact
+(\pxref{Conclude Fact Database}) command in \XPK{}.
+
+\item There is a semaphore OP library available (\pxref{semaphore.opf}).
+
+\item the Write TeX Doc File command is now public (\pxref{Write TeX Doc File}).
+
+\item ope/Parser.l: Dropped the *GOAL and *FACT syntax... If you still
+have OP using this syntax, use the 1.2 OP editor to convert your
+OP file. 
+
+\item Modified the parser to count lines in files and in strings so we
+can report where are the errors more accurately. 
+
+\item Kernels and op-editor can now print the temporal operators in
+english... This is controlled by a flag which can be set at startup time with
+the "-peo" (PrintEnglishOperator) option for xoprs and op-editor and "-p"
+option for oprs. This can also be specified as a ressource named
+*printEnglishOperator (True or False). Default value is always false... and the
+OP written in files are written with the short version. Clean up all the TEST
+symbol in the various test file... (remember that TEST is now a reserved word).
+
+\item XOprs.ad: Added a resource setting to enable/disable word
+wraparound in the textWindow.
+
+\item All grammar share the same basic files. So the
+lexical grammar is now consistent other the 4 modules using it
+(oprs, xoprs,op-editor and oprs-server). 
+
+\item Removed support for grasper graph and sun graph. 
+
+\item Created accelators in the op editor to quickly access all the edit modes.
+This is user customizable with the default file. By default, they are
+accelerated with one letter (which is present as a mnemonic on the text of the
+button). No modifier are used (meta,control, nor shift).
+
+\item The id cannot start with a : character. (reserved for keywords
+in text op).
+
+\item data/new-default.opf: Removed test and test-and-set which are
+now obsolete and conflict with the test symbol used as a
+temporal operator.
+
+\item ev-predicate.c: defined some new predicates: NUMBERP, CONSP,
+STRINGP, and ATOMP.
+
+\item mp-register.c and send-message.c are using the standard
+malloc... 
+
+\item Grammars allows temporal operator in clear (achieve, test,
+preserve, maintain, wait, conclude and retract).
+
+\item The function \code{make\_and\_declare\_action}, 
+\code{make\_and\_declare\_eval\_func} and \code{make\_and\_declare\_eval\_pred} do not
+take a hash table argument anymore. Please, modify your code accordingly.
+
+\item macro-pub.h and macro.h (MALLOC): is now defined in macro-pub
+for the final user to allocate object for the kernel.
+
+\item Added OPRS\_DATA\_PATH support under VxWorks.
+
+\item ope-save.c (write\_opfile\_header): Added the version status in
+the OP file header.
+
+\item XOprs.ad. The linotype helvetica looks ugly... I had to force the
+adobe one in the font set.
+
+\end{itemize}
+
+\section{Changes Between Version 1.3 and Version 1.4}
+\node{Changes Between Version 1.3 and Version 1.4}
+\cpindex{Changes Between Version 1.3 and Version 1.4}
+
+
+
+\subsection{Main Changes Between Version 1.3 and Version 1.4}
+\node{Main Changes Between Version 1.3 and Version 1.4}
+\cpindex{Main Changes Between Version 1.3 and Version 1.4}
+
+There are a number of important changes between version 1.3 and version 1.4.
+The most important changes between version 1.3 and 1.4 are:
+
+\begin{itemize}
+
+\item The possibility to dump various internal data (OPs and database for now),
+and the various dump commands. Note that the dump format is architecture
+independant. Note also, that the garphical information may be dumped or not,
+according to the kernel from which you dump the datas. While loading OP, if a
+OP with a name and a filename is already loaded, the newly loaded OP is
+ignored. \xref{OPRS Kernel Dumping/Loading Commands} for more information on
+this. 
+
+\item A better support for the VxWorks version (which now supports the \MP{}
+and the \code{kill-mp} programs). \xref{VxWorks} for more information on
+this. 
+
+\item Support for multiple languages (French and English for now) and for
+iso-latin characters set.
+
+\item The non graphical version of the various \COPRSDE{} programs have been
+ported and work under Windows 95 and Windows NT. \xref{Windows95-NT} for more
+information on this.
+
+\item No more \code{LISP\_CAR}. \code{LISP\_LIST} now contains Terms, and Terms
+can now be Intention, Fact, Goal and Op\_Instance. They are not readable
+though. One can remove all the \code{term\_to\_car} and \code{car\_to\_term}
+fuctions, these are obsolete and NO-OP now.
+
+\item Introduction of a \code{contrib} directory in the distribution which
+contains code contributed by various people but which is not part of the \OPRS{}
+distribution. 
+
+\end{itemize}
+
+\subsection{Miscellaneous Changes Between Version 1.3 and Version 1.4}
+\node{Miscellaneous Changes Between Version 1.3 and Version 1.4}
+\cpindex{Miscellaneous Changes Between Version 1.3 and Version 1.4}
+
+There are a number of small changes which can be of interest to the user. For
+more information, consult the \file{NEWS} file in the C-PRS distribution.
+
+\begin{itemize}
+
+\item Added a \code{-x} option to the \MP{} to specify that new connection with
+already registered name should lead to the disconnection of the older client.
+
+\item Node name are printed (in graphic) without the vertical bar. 
+
+\item Replace the \code{LEXPRESSION} term type with the
+\code{GEXPRESSION} as they are easier to manipulate...
+
+\item When printing the value of a variable, still print the variable name if
+no value was found/bound.
+
+\item Allow id starting with \samp{:} (like keywords). 
+
+\item Added evaluable functions \code{mention} and \code{all-pos}.
+
+\item Added macro to warn the user of the use of obsolete user functions.
+
+\item Added functions to allow the posting of fact from user call function.
+Under VxWorks, this even can been done from another process (the posting is
+then protected with a semaphore to ensure mutual exclusion). \xref{Fact Posting Functions} for more information on this.
+
+\item oprs-type-pub.h: Due to some stupid type definition in Microsoft Windows,
+we had to replace the type FLOAT with TT\_FLOAT and ATOM with TT\_ATOM.
+
+\item Big clean up in the VxWorks version to free all the memory used
+when one exit/kill a kernel. This way, one can restart another oprs on
+the same board, without loosing any memory allocation. In fact, this mechanism
+is used on all kernels, which explain why it takes sometime a long time for a
+kernel to exit. However, this mechanism is a good leak detector.
+
+\item Check all conditions after loading a database.
+
+\item Two different commands to print graphics OP and text OPs.
+
+\item The OP printed in the file are now pretty printed.
+
+\item Do not allow id starting with a + or -
+
+\item Just one \code{"\\n.\\n"} should be necessary to reset the \OPRSS{} parser.
+
+\item ASSERT is now equivalent to CONCLUDE, and it prints ASSERT instead of
+CONCLUDE.
+
+\item Added an intention failure trace which reports when
+an intention failed, with the stack of goals which lead to the
+failure.
+
+\item XOprs.adlang: Language dependent ressource file.
+
+\end{itemize}
+
+\chapter{Hardware and Software Dependancies}
+\node{Hardware and Software Dependancies}
+\cpindex{Hardware and Software Dependancies}
+
+Although \COPRS{} is portable and runs on a large number of platforms, there
+exist some differences which are presented in this chapter.
+
+
+
+\section{VxWorks}
+\node{VxWorks}
+\cpindex{VxWorks}
+
+The VxWorks version of \COPRS{} has a lot of particulariries. Although there are
+no main programs under VxWorks, we distinguish between task spawnable code and
+library code (i.e. which may be used by more than one processes). Files with a
+\file{.o} suffix are considered as library and can be used by more than one
+processes. Files without any suffix usually contain a \code{main} which can be
+called with \code{taskSpawn} or from the shell.
+
+The VxWorks distribution is composed of three programs and two libaries:
+
+\begin{description}
+
+\item [\file{c\_toolkit.o}] This library is used by the \file{vxoprs} and
+\file{vx-mp-oprs} components. It can be shared by more than one programs. The
+proper variable are taskVar'ed.
+
+\item [\file{vx-mp-lib.o}] This library is used by any application which want
+to connect to the message passer. It can be shared by more than one
+programs. The proper variable are taskVar'ed. \file{vxoprs} require this
+library. 
+
+\item [\file{vxoprs}] This is the default VxWorks \CPK{}. It requires
+\file{c\_toolkit.o} and \file{vx-mp-lib.o} to be loaded on the same board. The
+entry point is \code{oprs\_main} (see below). 
+
+\item [\file{vxoprs-relocatable}] This is the default VxWorks \CPK{} minus the
+entry points to allow the user to link its own code. It requires
+\file{c\_toolkit.o} and \file{vx-mp-lib.o} to be loaded on the same board. The
+entry point is \code{oprs\_main} (see below). \xref{Linking C Code in the Kernels} for more on this.
+
+\item [\file{vx-mp-oprs}] This is the VxWorks \MP{} program.  It requires
+\file{c\_toolkit.o} to be loaded on the same card. The entry point is
+\code{mp\_oprs\_main} (see below).
+
+\item [\file{vx-kill-mp}] This is the VxWorks \code{kill-mp} program.  It
+requires \file{vx-mp-lib.o} to be loaded on the same card. The entry point is
+\code{kill\_mp\_main} (see below).
+
+
+\end{description}
+
+In VxWorks, there is no \code{main} in the code. The \COPRS{} main function has
+therefore been renamed and is called \code{oprs\_main} and has the following
+prototype:
+
+\begin{verbatim}
+int oprs_main(char *name_arg, char *server_hostname_arg, 
+             int server_port_arg, char *mp_hostname_arg, 
+             int mp_port_arg, char *include_filename_arg)
+\end{verbatim}
+
+The arguments are explained below:
+
+\begin{description}
+
+\item[\code{name\_arg}] is the name of the \CPK{}.
+
+\item[\code{server\_hostname\_arg}] is the hostname on which the \OPRSS{} is running.
+
+\item[\code{server\_port\_arg}] is the port on which the \OPRSS{} is listenning.
+If 0, no connection is made to the \OPRSS{}.
+
+\item[\code{mp\_hostname\_arg}] is the hostname on which the \MP{} is running.
+
+\item[\code{mp\_port\_arg}] is the port on which the \MP{} is listenning. If 0,
+then no connection is made to the \MP{}.
+
+\item[\code{include\_filename\_arg}] is an include file name to load upon
+starting. If NULL, or empty string no file is loaded.
+
+\end{description}
+
+The \CPK{} cannot be run more than once on the same board (VxWorks processes
+share the same symbol space). However, the \file{vx-mp-lib.o} library is
+shareable. More than one program can use it on the same board. The proper
+variables have been put in VxWorks \code{taskVar}.
+
+Most environment variables are ignored under VxWorks, except for the
+\code{OPRS\_DATA\_PATH} variable.
+
+The \MP{} main function has been renamed and is called \code{mp\_oprs\_main} and
+has the following prototype:
+
+\begin{verbatim}
+int mp_oprs_main(int mp_port_arg, int verbose_arg, char *mp_log_filename_arg,
+int exclude_arg)
+\end{verbatim}
+
+The arguments are explained below:
+
+\begin{description}
+
+\item[\code{mp\_port\_arg}] is the port on which the \MP{} is listenning. 
+
+\item[\code{verbose\_arg}] is the flag which says if yes or no the \MP{} should
+be verbose on the messages exchanged.
+
+\item[\code{mp\_log\_filename\_arg}] is file to which \MP{} will log the messages
+exchanged (if \code{NULL} or an empty string is given, no log are done).
+
+\item[\code{exclude\_arg}] is the exclude flag which says if the \MP{}
+should, upon a newer registration, disconnect the former client with the same
+name.
+
+\end{description}
+
+The \code{kill-mp} main function has been renamed and is called
+\code{kill\_mp\_main} and has the following prototype:
+
+\begin{verbatim}
+int kill_mp_main(int mp_port_arg)
+\end{verbatim}
+
+The argument is explained below:
+
+\begin{description}
+
+\item[\code{mp\_port\_arg}] is the port on which the \MP{} you want
+to kill is listenning.
+
+\end{description}
+
+Note that all \CPK{} should be started (using \code{taskSpawn}) with the
+\code{VX\_FP\_TASK} set. Some operations on floating point in the kernel require
+to have this option set up, as to enable the process context switch to save the
+FPU registers.
+
+When properly exiting, the \CPK{} and the other \COPRSDE{} program return the
+memory allocated. However, this memory does not show as freed in the standard
+\code{memShow}, as \CPK{} uses its own allocation mechanism and will keep its
+memory allocated for future use. Use the \code{show memory} command of the
+\CPK{} (\pxref{OPRS Kernel Miscellaneous Commands}) to see what it keeps for
+its own use. 
+
+% If you really want to free all the memory, you can call the
+% \code{free\_morecore} function (no argument), but make sure that no \COPRSDE{}
+% programs run... or you will loose big.
+
+\section{C++ Relocatables}
+\node{C++ Relocatables}
+\cpindex{C++ Relocatables}
+
+The relocatables are given in two format, the standard relocatable, and one
+which can be linked to some C++ functions, in which case the \code{main} is not
+defined to allow a C++ \code{main} to be used (the C++ main performs some
+initialization required by C++ functions). The main is then named:
+
+\begin{verbatim}
+int oprs_main(int argc, char **argv, char ** envp);
+\end{verbatim}
+
+\section{SparcStation}
+\node{SparcStation}
+\cpindex{SparcStation}
+
+There exist a multi-thread version of the \OPRSS{} available under Solaris 2.4
+which do auto accepting of new \CPK{} clients.
+
+\section{Windows95-NT}
+\node{Windows95-NT}
+\cpindex{Windows95-NT}
+\cpindex{Windows 95}
+\cpindex{Windows NT}
+
+Under Windows 95... The \code{Term\_Type} symbol \code{FLOAT} and \code{ATOM}
+are already defined. Therefore they are renamed \code{TT\_FLOAT} and
+\code{TT\_ATOM}.
+
+The various program are statically linked.
+
+Due to the lack of signal timer under Windows, the conditions echanism is
+currently more CPU consuming than under Unix.
+
+Only the non graphical program have been ported.
+
+\chapter{Commands Equivalence between the \CPK{} and the \XPK{}}
+\node{Commands Equivalence between the OPRS Kernel and the X-OPRS Kernel}
+\cpindex{Commands Equivalence between the \CPK{} and the \XPK{}}
+
+Most commands are available in both kernel (the \XPK{} and the CPK{}). The
+following tables will allow the user to find out which command correspond to
+which menu and vice verca. Note that some commands are not available in both
+interface. This is the case for most declaration commands (\code{declare be},
+\code{declare ff}, etc) which one usually put in an include file. In any case, you
+can always transmit a command from the \OPRSS{} (providing the kernel has
+been properly connected to the \OPRSS{} upon startup).
+
+\begin{table}
+\begin{center}
+\begin{tabular}{||l|l|l|l||}
+\hline
+Command Name &  Section &       Menu Item & Section \\
+\hline
+\code{add goal|fact} & \ref{OPRS Kernel Miscellaneous Commands} & Add Fact or Goal & \ref{Add Fact or Goal} \\
+\code{conclude \var{expression}} & \ref{OPRS Kernel Database Commands} & None & \\
+\code{consult \var{gexpression}} & \ref{OPRS Kernel Database Commands} & Consult Fact Database & \ref{Consult Fact Database} \\
+\code{consult applicable op goal|fact} & \ref{OPRS Kernel OP Library Commands} & Consult Applicable OP & \ref{Consult Applicable OP} \\
+\code{consult relevant op goal|fact} & \ref{OPRS Kernel OP Library Commands} & Consult Relevant OP & \ref{Consult Relevant OP} \\
+\code{declare be \var{predicate}} & \ref{OPRS Kernel Declaration Commands} & None & \\
+\code{declare cwp \var{predicate}} & \ref{OPRS Kernel Declaration Commands} & None & \\
+\code{declare ff \var{predicate} \var{integer}} & \ref{OPRS Kernel Declaration Commands} & None & \\
+\code{declare function \var{function}} & \ref{OPRS Kernel Declaration Commands} & None & \\
+\code{declare id symbol} & \ref{OPRS Kernel Miscellaneous Commands} & None & \\
+\code{declare op\_predicate \var{predicate}} & \ref{OPRS Kernel Declaration Commands} & None & \\
+\code{declare predicate \var{predicate}} & \ref{OPRS Kernel Declaration Commands} & None & \\
+\code{delete \var{expression}} & \ref{OPRS Kernel Database Commands} & None & \\
+\code{delete op \var{op\_name}} & \ref{OPRS Kernel OP Library Commands} & Delete a particular OP & \ref{Delete a OP} \\
+\code{delete opf \var{file\_name}} & \ref{OPRS Kernel OP Library Commands} & Unload OP File... & \ref{X-OPRS Unload OP File} \\
+\code{disconnect} & \ref{OPRS Kernel Miscellaneous Commands} & None & \\
+\code{echo (g|gt|gm)expression} & \ref{OPRS Kernel Miscellaneous Commands} & None & \\
+\code{empty fact db} & \ref{OPRS Kernel Database Commands} & Empty Fact Database & \ref{Empty Fact Database} \\
+\code{empty op db} & \ref{OPRS Kernel Loading Commands} & Empty OP Library & \ref{Empty OP Library} \\
+\code{help|h|?} & \ref{OPRS Kernel Miscellaneous Commands} & Help & \ref{X-OPRS Help Menu} \\
+\code{include \var{file\_name}} & \ref{OPRS Kernel Loading Commands} & Include... & \ref{Include} \\
+\hline
+\end{tabular}
+\end{center}
+\caption{Commands Equivalence Between the Kernels (First Part)}
+\label{c-x-commands-table1}
+\end{table}
+
+
+\begin{table}
+\begin{center}
+\begin{tabular}{||l|l|l|l||}
+\hline
+Command Name &  Section &       Menu Item & Section \\
+\hline
+\code{list action} & \ref{OPRS Kernel Listing Commands} & List Action & \ref{List Action} \\
+\code{list all} & \ref{OPRS Kernel Listing Commands} & List All & \ref{List All} \\
+\code{list be} & \ref{OPRS Kernel Listing Commands} & List Basic Event Predicate & \ref{List Basic Event Predicate} \\
+\code{list cwp} & \ref{OPRS Kernel Listing Commands} & List Closed World Predicate & \ref{List Closed World Predicate} \\
+\code{list evaluable function} & \ref{OPRS Kernel Listing Commands} & List Evaluable Function & \ref{List Evaluable Function} \\
+\code{list evaluable predicate} & \ref{OPRS Kernel Listing Commands} & List Evaluable Predicate & \ref{List Evaluable Predicate} \\
+\code{list ff} & \ref{OPRS Kernel Listing Commands} & List Functional Fact Predicate & \ref{List Functional Fact Predicate} \\
+\code{list function} & \ref{OPRS Kernel Listing Commands} & List Function & \ref{List Function} \\
+\code{list op\_predicate} & \ref{OPRS Kernel Listing Commands} & List OP Predicate & \ref{List OP Predicate} \\
+\code{list opfs} & \ref{OPRS Kernel OP Library Commands} & List Loaded OP Files & \ref{List Loaded OP Files} \\
+\code{list op} & \ref{OPRS Kernel OP Library Commands} & List Loaded OPs & \ref{List Loaded OPs} \\
+\code{list predicate} & \ref{OPRS Kernel Listing Commands} & List Predicate & \ref{List Predicate} \\
+\code{load db \file{file\_name}} & \ref{OPRS Kernel Database Commands} & Load Database... & \ref{Load Database} \\
+\code{load opf op\_graph|\var{file\_name}} & \ref{OPRS Kernel Loading Commands}
+& Load OP File... & \ref{Load OP File} \\
+\code{q|quit|exit|EOF} & \ref{OPRS Kernel Miscellaneous Commands} & Quit & \ref{X-OPRS Quit} \\
+\code{reload opf \file{file\_name}} & \ref{OPRS Kernel Loading Commands} & Reload OP File... & \ref{Reload OP File} \\
+\code{require \var{file\_name}} & \ref{OPRS Kernel Loading Commands} & None & \\
+\code{reset kernel} & \ref{OPRS Kernel Miscellaneous Commands} & Reset & \ref{Control Button Menu} \\
+\code{save db \file{file\_name}} & \ref{OPRS Kernel Database Commands} & Save Database... & \ref{Save Database} \\
+\code{send name message} & \ref{OPRS Kernel Miscellaneous Commands} & None & \\
+\code{set action on|off} & \ref{OPRS Kernel Compiler/Parser Option Commands} & Compiler Check Action & \ref{OPRS Compiler/Parser Option} \\
+\code{set eval post on|off} & \ref{OPRS Kernel Run Option Commands} & Eval On Post & \ref{OPRS Run Option} \\
+\code{set function on|off} & \ref{OPRS Kernel Compiler/Parser Option Commands} & Compiler Check Function & \ref{OPRS Compiler/Parser Option} \\
+\code{set meta fact op on|off} & \ref{OPRS Kernel Meta Level Option Commands} & Post Meta Fact: (APPLICABLE-OPS-FACT ...) & \ref{OPRS Meta Level Option} \\
+\code{set meta fact on|off} & \ref{OPRS Kernel Meta Level Option Commands} & Post Meta Fact: (FACT-INVOKED-OPS ...) & \ref{OPRS Meta Level Option} \\
+\code{set meta goal op on|off} & \ref{OPRS Kernel Meta Level Option Commands} & Post Meta Fact: (APPLICABLE-OPS-GOAL ...) & \ref{OPRS Meta Level Option} \\
+\code{set meta goal on|off} & \ref{OPRS Kernel Meta Level Option Commands} & Post Meta Fact: (GOAL-INVOKED-OPS ...) & \ref{OPRS Meta Level Option} \\
+\code{set meta on|off} & \ref{OPRS Kernel Meta Level Option Commands} & Meta Level & \ref{OPRS Meta Level Option} \\
+\code{set parallel intend on|off} & \ref{OPRS Kernel Run Option Commands} & Parallel Intend & \ref{OPRS Run Option} \\
+\code{set parallel intention on|off} & \ref{OPRS Kernel Run Option Commands} & Parallel Intention Execution & \ref{OPRS Run Option} \\
+\code{set parallel post on|off} & \ref{OPRS Kernel Run Option Commands} & Parallel Goal Posting & \ref{OPRS Run Option} \\
+\code{set predicate on|off} & \ref{OPRS Kernel Compiler/Parser Option Commands} & Compiler Check Predicate & \ref{OPRS Compiler/Parser Option} \\
+\code{set soak on|off} & \ref{OPRS Kernel Meta Level Option Commands} & Post Meta Fact: (SOAK ...) & \ref{OPRS Meta Level Option} \\
+\code{set symbol on|off} & \ref{OPRS Kernel Compiler/Parser Option Commands} & Compiler Check Symbol & \ref{OPRS Compiler/Parser Option} \\
+\code{set time\_stamping on|off} & \ref{OPRS Kernel Run Option Commands} & Time Stamping & \ref{OPRS Run Option} \\
+\code{show copyright} & \ref{OPRS Kernel Miscellaneous Commands} & None & \\
+\code{show db} & \ref{OPRS Kernel Database Commands} & Show Database & \ref{Show Database} \\
+\code{show variable} & \ref{OPRS Kernel Miscellaneous Commands} & Show Global
+Variables & \ref{Show Global Variables} \\
+\code{show intention} & \ref{OPRS Kernel Miscellaneous Commands} & Show Intentions & \ref{Show Intentions} \\
+\code{show memory} & \ref{OPRS Kernel Miscellaneous Commands} & Show Memory
+Usage & \ref{Show Memory Usage} \\
+\code{show op \var{op\_name}} & \ref{OPRS Kernel OP Library Commands} & Display a Particular OP & \ref{Display a Particular OP} \\
+\code{show version} & \ref{OPRS Kernel Miscellaneous Commands} & None & \\
+\code{stat all} & \ref{OPRS Kernel Miscellaneous Commands} & Stat All Hashtables & \ref{Stat All Hashtables} \\
+\code{stat db} & \ref{OPRS Kernel Miscellaneous Commands} & Stat Database Hashtables & \ref{Stat Database Hashtables} \\
+\code{stat id} & \ref{OPRS Kernel Miscellaneous Commands} & Stat Symbol Hashtable & \ref{Stat Symbol Hashtable} \\
+\hline
+\end{tabular}
+\end{center}
+\caption{Commands Equivalence Between the Kernels (Second Part)}
+\label{c-x-commands-table2}
+\end{table}
+
+
+\begin{table}
+\begin{center}
+\begin{tabular}{||l|l|l|l||}
+\hline
+Command Name &  Section &       Menu Item & Section \\
+\hline
+\code{trace all on|off} & \ref{OPRS Kernel Trace Commands} & None & \\
+\code{trace applicable op on|off} & \ref{OPRS Kernel Trace Commands} & Soak
+& \ref{OPRS Trace} \\
+\code{trace db frame on|off} & \ref{OPRS Kernel Trace Commands} & Database
+Frames & \ref{OPRS Trace} \\
+\code{trace db on|off} & \ref{OPRS Kernel Trace Commands} & Database
+operations & \ref{OPRS Trace} \\
+\code{trace fact on|off} & \ref{OPRS Kernel Trace Commands} & Fact Posting
+& \ref{OPRS Trace} \\
+\code{trace feature on|off} & \ref{OPRS Kernel Trace Commands} & Trace &
+\ref{OPRS Trace} \\
+\code{trace goal on|off} & \ref{OPRS Kernel Trace Commands} & Goal Posting
+& \ref{OPRS Trace} \\
+\code{trace graphic \var{on|off}} & \ref{OPRS Kernel Trace Commands} & OP
+Graphic & \ref{OPRS Trace} \\
+\code{trace graphic op \var{op\_name} \var{on|off}} & \ref{OPRS Kernel OP Library Commands} & OP Trace/Step... & \ref{OP Trace/Step} \\
+\code{trace graphic opf \var{file\_name} \var{on|off}} & \ref{OPRS Kernel OP Library Commands} & None & \\
+\code{trace intend on|off} & \ref{OPRS Kernel Trace Commands} & Intention &
+\ref{OPRS Trace} \\
+\code{trace load op on|off} & \ref{OPRS Kernel Trace Commands} & OP Compiler
+& \ref{OPRS Trace} \\
+\code{trace receive on|off} & \ref{OPRS Kernel Trace Commands} & Message
+Reception & \ref{OPRS Trace} \\
+\code{trace relevant op on|off} & \ref{OPRS Kernel Trace Commands} & Relevant
+OP & \ref{OPRS Trace} \\
+\code{trace send on|off} & \ref{OPRS Kernel Trace Commands} & Message Sent
+& \ref{OPRS Trace} \\
+\code{trace suc\_fail on|off} & \ref{OPRS Kernel Trace Commands} & OP Success
+Failure & \ref{OPRS Trace} \\
+\code{trace intention failure on|off} & \ref{OPRS Kernel Trace Commands} &
+Intention Failure & \ref{OPRS Trace} \\
+\code{trace text \var{on|off}} & \ref{OPRS Kernel Trace Commands} & OP Text
+& \ref{OPRS Trace} \\
+\code{trace text op \var{op\_name} \var{on|off}} & \ref{OPRS Kernel OP Library Commands} & OP Text Trace... & \ref{OPRS Trace} \\
+\code{trace text opf \var{file\_name} \var{on|off}} & \ref{OPRS Kernel OP Library Commands} & None & \\
+\code{trace thread on|off} & \ref{OPRS Kernel Trace Commands} & Thread
+Forking/Joining & \ref{OPRS Trace} \\
+\code{undeclare be \var{predicate}} & \ref{OPRS Kernel Declaration Commands} & None & \\
+\code{unify expression expression} & \ref{OPRS Kernel Miscellaneous Commands} & None & \\
+\hline
+\end{tabular}
+\end{center}
+\caption{Commands Equivalence Between the Kernels (Third Part)}
+\label{c-x-commands-table3}
+\end{table}
+
+\chapter{Default OPs}
+\node{Default OPs}
+\cpindex{Default OPs}
+
+Some default OPs are provided as is in the standard \COPRS{} distribution.
+However, unlike SRI OPRS, these default OPs are not loaded by default in all
+\CPK{}s. Most of these files comes with a \file{.sym} and \file{.inc}
+companion. If this is the case, always load the coresponding \file{.inc} file.
+
+
+
+\section{\protect\file{new-default.opf}}
+\node{new-default.opf}
+\cpindex{new-default.opf}
+
+Here is the list of default procedures provided with the current revision
+of \COPRSDE{}. They can be found in the file \file{new-default.opf}. Final user
+are encourage to make a copy of this file and select the OP they need and they
+want to keep for their application.
+
+\input{new-default}
+
+\section{\protect\file{meta-intended-goal.opf}}
+\node{meta-intended-goal.opf}
+\cpindex{meta-intended-goal.opf}
+
+Here is the list of meta OP to intend a goal directly distributed with the
+current revision of \COPRSDE{}. They can be found in the file
+\file{meta-intended-goal.opf}.
+
+\input{meta-intended-goal}
+
+\section{\protect\file{new-meta-ops.opf}}
+\node{new-meta-ops.opf}
+\cpindex{new-meta-ops.opf}
+
+Here is the list of meta procedures provided with the current revision
+of \COPRSDE{}. They can be found in the file \file{new-meta-ops.opf}.
+
+\strong{This file contains more than on meta level OP, do not load all of
+them at the same time in one application, you would get a very weird
+behavior. Just pick up the one which seems to be appropriate to your
+application.}
+
+\input{new-meta-ops}
+
+\section{\protect\file{semaphore.opf}}
+\node{semaphore.opf}
+\cpindex{semaphore.opf}
+
+Here is the list of procedures, provided with the current revision of
+\COPRSDE{}, which implement semaphores. They can be found in the file
+\file{semaphore.opf}. Make sure you do not load the \file{.opf} directly but
+include the \file{semaphore.inc} instead. Indeed, some important declaration
+are made in the  \file{semaphore.sym} file which is loaded by the
+\file{semaphore.inc} file.
+
+This OP library provides two type of semaphores: \code{SEM-BASIC} semaphores and
+\code{SEM-FIFO} semaphores. For both types, there is a give, a take and a take
+with timeout OPs. See the OP documentation for more details.
+
+\input{semaphore}
+
+\chapter{Library and Kernel Functions}
+\node{Library and Kernel Functions}
+\cpindex{Library and Kernel Functions}
+
+Few libraries (currently two) come with \COPRSDE{}. All of them are needed to
+write module to connect to the \MP{}. However, to write your own kernel, i.e.
+to extend relocatable, you may need access to functions defined in these
+relocatable (most likely to write evaluable functions, evaluable predicates and
+actions). In this chapter, we shall describe the libraries and the kernel
+functions which can or must be used by the user.
+
+
+
+\section{Kernel Functions}
+\node{Kernel Functions}
+\cpindex{Kernel Functions}
+
+The \code{oprs-relocatable} and the \code{xoprs-relocatable} files contains
+already a number of functions the user can use. Considering that these
+functions are already present in the relocatable, there is no special action to
+use them (no new file to link).
+
+
+
+\subsection{Data Structures and Types Used}
+\node{Data Structures and Types Used}
+\cpindex{Data Structures and Types Used}
+
+Most data structures are hidden behind opaque pointers. Access functions
+are provided when required. However, some structure definitions are given
+to the end user.
+
+Here is the definition of the \code{Oprs\_Date} structure:
+\begin{verbatim}
+#include <sys/time.h>
+
+typedef struct timeval PDate;
+\end{verbatim}
+
+Here is the definition of the \code{Term} structure:
+\begin{verbatim}
+/* Definition of the types used in a Term */
+/* Under Windows 95... FLOAT and ATOM are already defined. Therefore
+   they are renamed TT_FLOAT and TT_ATOM */
+typedef enum {INTEGER, FLOAT, STRING, ATOM, TERM_COMP, VARIABLE, GTEXPRESSION,
+      LEXPRESSION, LENV, LISP_LIST, INT_ARRAY, FLOAT_ARRAY, U_POINTER} Term_Type;
+
+/* Definition of a composed Term. For example in (P a (f g h) c), (f g h) is a
+ * composed term. */
+typedef struct term_comp {
+ Function function;
+ int  n_arg;
+ TermList  terms;
+} Term_Comp;
+
+/* Definition of a term (a typed union) */
+typedef struct term Term;
+
+struct term {
+ Term_Type type;
+ union {
+   int  intval;
+   double doubleval;
+   char *string;
+   char *id;
+   Term_Comp *term;
+   Gtexpression *gtexpr;
+   Lexpression *lexpr;
+   VarList var_list;
+   Envar *var;
+   L_Car l_car;
+   L_List l_list;
+   Int_array *int_array;
+   Float_array *float_array;
+   void *u_pointer;
+ }u;
+};
+\end{verbatim}
+
+\subsection{Important Variables}
+\node{Important Variables}
+\cpindex{Important Variables}
+
+The following symbols can be found in \file{oprs-type-pub.h}. (\pxref{Special Symbols})
+
+\begin{typevr}{Kernel Variable}{extern Symbol}{nil\_sym} is the \code{nil}
+symbol. This is the symbol you should return (in a Term) when an action
+fails.
+\end{typevr}
+
+\begin{typevr}{Kernel Variable}{extern Symbol}{lisp\_t\_sym} is the \code{T}
+symbol.
+\end{typevr}
+
+\begin{typevr}{Special Symbols}{extern Symbol}{wait\_sym}
+is the \code{:WAIT} symbol as returned by actions when they have not completed
+their computation.
+\end{typevr}
+
+\begin{typevr}{Kernel Variable}{extern Oprs *}{current\_oprs} is the global
+variable which points at the current OPRS kernel. It is used whenever you
+want to access some specific modules of the kernel, like the intention
+graph.
+\end{typevr}
+
+\begin{typevr}{Kernel Variable}{extern Thread\_Intention\_Block *}{current\_tib} is the global
+variable which points at the current tib.
+\end{typevr}
+
+\begin{typevr}{Kernel Function}{extern Intention*}{current\_intention} is the
+current intention of the intention graph \var{ig} (\code{NULL} if not applicable).
+\end{typevr}
+
+\begin{typevr}{Kernel Variable}{extern long}{main\_loop\_pool\_sec} is the global
+variable which points at the number of seconds the \CPK{} will wait before
+checking the sleeping conditions of the sleeping intentions. It is used in
+conjunction with \code{main\_loop\_pool\_usec} presented below. It is defined
+in \file{default-user-external.h}.
+\end{typevr}
+
+\begin{typevr}{Kernel Variable}{extern long}{main\_loop\_pool\_usec} is the
+global variable which points at the number of micro seconds the \CPK{}
+will wait
+before checking the sleeping conditions of the sleeping intentions. It is
+used
+in conjunction with \code{main\_loop\_pool\_sec} presented above. It is
+defined in
+\file{default-user-external.h}.
+\end{typevr}
+
+Example of use (withdrawn from \file{default-user-external.c}):
+
+\begin{verbatim}
+void start_kernel_user_hook()
+{
+ intention_list_sort_predicate = &my_intention_list_sort;
+ main_loop_pool_sec = 0L;
+ main_loop_pool_usec = 10000L; /* 10 milliseconds */
+
+}
+\end{verbatim}
+
+\begin{typevr}{Kernel Variable}{extern Widget}{x\_oprs\_top\_level\_widget} is the
+variable which points at the \XOPRS{} top level widget. It can be used by the
+user to hook its own Xt widget in the widget tree, for its own interface.
+It is defined in \file{xp-main-pub.h}.
+\end{typevr}
+
+
+\subsection{Important Constants}
+\node{Important Constants}
+\cpindex{Important Constants}
+
+The 2 following constants can be found in \file{constant-pub.h}.
+\begin{verbatim}
+#define TRUE 1
+#define FALSE 0
+\end{verbatim}
+
+\subsection{Oprs Manipulation Functions}
+\node{Oprs Manipulation Functions}
+\cpindex{Oprs Manipulation Functions}
+
+These function prototypes can be found in the file \file{oprs\_f-pub.h}.
+
+\begin{typefn}{Kernel Function}{Intention\_Graph *}{oprs\_intention\_graph}{(Oprs
+*\var{oprs})}
+returns a pointer to the intention graph of the OPRS passed as an argument
+(most
+likely \var{current\_oprs}).
+\end{typefn}
+
+\subsection{Array Manipulation Functions}
+\node{Array Manipulation Functions}
+\cpindex{Array Manipulation Functions}
+
+These function prototypes can be found in the file \file{oprs-array\_f-pub.h}.
+
+\begin{typefn}{Kernel Function}{Term *}{make\_float\_array\_from\_array}{(int \var{size},
+double *\var{array})}
+returns a \code{Term *} of type \code{FLOAT\_ARRAY} containing the \var{array} of size
+\var{size} passed in argument.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{Term *}{make\_int\_array\_from\_array}{(int \var{size}, int
+*\var{array})}
+returns a \code{Term *} of type \code{INT\_ARRAY} containing the \var{array} of size
+\var{size} passed in argument.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{double *}{get\_array\_from\_float\_array}{(Term *\var{t})}
+returns a double * pointer to the array of the \code{FLOAT\_ARRAY} contained in the
+term \var{t}.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{int *}{get\_array\_from\_int\_array}{(Term *\var{t})}
+returns a int * pointer to the array of the \code{INT\_ARRAY} contained in the
+term \var{t}.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{int }{get\_float\_array\_size}{(Term *\var{t})}
+returns an int which is the size of the \code{FLOAT\_ARRAY} contained in the
+term \var{t}.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{int }{get\_int\_array\_size}{(Term *\var{t})}
+returns an int which is the size of the \code{INT\_ARRAY} contained in the
+term \var{t}.
+\end{typefn}
+
+\subsection{Fact and Goal Manipulation Functions}
+\node{Fact and Goal Manipulation Functions}
+\cpindex{Fact and Goal Manipulation Functions}
+
+These function prototypes can be found in the file
+\file{fact-goal\_f-pub.h}.
+
+\begin{typefn}{Kernel Function}{void}{fprint\_goal}{(FILE *\var{file}, Goal*
+\var{goal})}
+prints the \var{goal} in the file \var{file}.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{void}{print\_goal}{(Goal *\var{goal})}
+prints the \var{goal} on stdout.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{void}{fprint\_fact}{(FILE *\var{file}, Fact
+*\var{fact})}
+prints the \var{fact} in the file \var{file}.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{void}{print\_fact}{(Fact *\var{fact})}
+prints the \var{fact} on stdout.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{Oprs\_Date}{fact\_soak}{(Fact *\var{fact})}
+returns the date at which this \var{fact} was taken into account by
+the soak mechanism. This is only meaningful if Time Stamping has been allowed
+(\pxref{OPRS Kernel Run Option Commands}, \code{set time\_stamping on|off}). 
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{PString}{fact\_sender}{(Fact *\var{fact})}
+returns the name of the sender if this fact was a message, NULL if it is an
+internally generated fact. This function can in fact be used to check if
+the
+fact is an external message or a fact.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{Oprs\_Date}{fact\_soak}{(Fact *\var{fact})}
+returns the date at which this \var{fact} was taken into account by
+the soak mechanism. This is only meaningful if Time Stamping has been allowed
+(\pxref{OPRS Kernel Run Option Commands}, \code{set time\_stamping on|off}). 
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{Oprs\_Date}{fact\_creation}{(Fact *\var{fact})}
+returns the date at which this \var{fact} was created.This is only meaningful
+if Time Stamping has been allowed 
+(\pxref{OPRS Kernel Run Option Commands}, \code{set time\_stamping on|off}). 
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{Oprs\_Date}{fact\_reception}{(Fact *\var{fact})}
+returns the date at which this \var{fact} was received by the kernel.This is
+only meaningful if Time Stamping has been allowed 
+(\pxref{OPRS Kernel Run Option Commands}, \code{set time\_stamping on|off}). 
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{Oprs\_Date}{fact\_response}{(Fact *\var{fact})}
+returns the date at which all the applicable OPs have completed because
+of this \var{fact} (if no OP was applicable, it returns a zero date). This is
+only meaningful if Time Stamping has been allowed (\pxref{OPRS Kernel Run Option Commands}, \code{set time\_stamping on|off}).
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{Oprs\_Date}{goal\_soak}{(Goal *\var{goal})}
+returns the date at which this \var{goal} was taken into account by
+the soak mechanism. This is only meaningful if Time Stamping has been allowed
+(\pxref{OPRS Kernel Run Option Commands}, \code{set time\_stamping on|off}).
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{Oprs\_Date}{goal\_creation}{(Goal *\var{goal})}
+returns the date at which this \var{goal} was created. This is
+only meaningful if Time Stamping has been allowed (\pxref{OPRS Kernel Run Option Commands}, \code{set time\_stamping on|off}). 
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{Oprs\_Date}{goal\_reception}{(Goal *\var{goal})}
+returns the date at which this \var{goal} was received by the kernel. This is
+only meaningful if Time Stamping has been allowed (\pxref{OPRS Kernel Run Option  Commands}, \code{set time\_stamping on|off}).
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{Oprs\_Date}{goal\_response}{(Goal *\var{goal})}
+returns the date at which all the applicable OPs have completed because
+of this \var{goal} (if no OP was applicable, it returns a zero date). This is
+only meaningful if Time Stamping has been allowed (\pxref{OPRS Kernel Run Option Commands}, \code{set time\_stamping on|off}).
+\end{typefn}
+
+\subsection{Fact Posting Functions}
+\node{Fact Posting Functions}
+\cpindex{Fact Posting Functions}
+
+The kernel provide a number of functions to allow the user to add a new fact
+from its own code. This mechanism can be very useful on a VxWorks
+implementation as it will allow the user to post/add a fact from a different
+process (one the same board though). Under traditional Unix system, these
+functions work too but can be more simply emulated using the
+\code{send\_command\_to\_parser} function (\pxref{Miscellaneous Kernel Functions}).
+
+\strong{One should make sure that a \CPK{} is running and is alive before
+calling these functions. If no \CPK{} is running, these functions will most
+likely crash the calling process.}
+
+These function prototypes can be found in the file
+\file{oprs\_f-pub.h}.
+
+\begin{typefn}{Kernel Function}{void }{add\_external\_fact}{(char *\var{predicat}, TermList
+\var{param\_list})} This function will add the fact built with \var{predicat}
+and \var{param\_list} in the \code{current\_oprs} kernel. The \var{param\_list}
+should be used only once. The \var{predicat} argument can be freed after the
+call. Under VXWOrks, this function can be called from another process. Proper
+variable modification is protected by mutex semaphores.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{TermList}{make\_external\_term\_list}{(int \var{nb\_arg},
+...)}  Build and return a "use once only" TermList containing \var{nb\_arg}
+elements built with the subsequent paire \code{TermType}, \code {Term *} in the
+argument list. See the example below. All the element are duplicated,
+i.e. strings, symbols are appropriately copied, except for those produce with
+\code{make\_external\_term\_comp} and \code{make\_external\_lisp\_list}. You should
+therefore appropriately free the objects passed to this function.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{Term\_Comp *}{make\_external\_term\_comp}{(char
+*\var{function}, TermList \var{param\_list})} This function will build a "use
+once only" TermComp built with \var{function} and \var{param\_list}. The
+\var{param\_list} should be used only once. The \var{function} argument can be
+freed after the call. This function is usually used inside
+\code{make\_external\_term\_list}, in which case its result should not be freed.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{L\_List}{make\_external\_lisp\_list}{(TermList
+\var{param\_list})}This function will build a "use once only" L\_List built with
+\var{param\_list}. The \var{param\_list} should be used only once. This function
+is usually used inside \code{make\_external\_term\_list}, in which case its
+result should not be freed.
+\end{typefn}
+
+Here is a complete example to illustrate the use of the functions presented
+above: 
+\begin{verbatim}
+add_external_fact(
+     "boo", 
+     make_external_term_list(
+          6, 
+          FLOAT, 3.1415, 
+          INTEGER, 5,
+          U_POINTER, 0x123456,
+          ATOM, "foobar",
+          STRING, "This is a string in the fact",
+          LISP_LIST, make_external_lisp_list(
+               make_external_term_list(
+                    2, 
+                    FLOAT, 0.0, 
+                    ATOM, "second")),
+          TERM_COMP, make_external_term_comp(
+               "bar",
+               make_external_term_list(
+                    2,
+                    INTEGER, -1,
+                    ATOM, "atom"))));
+\end{verbatim}
+
+a call to the function above will post the fact:\*
+\code{(BOO 3.1415 5 0x123456 FOOBAR "This is a string in the fact" (. 0.0
+SECOND. ) (BAR -1 ATOM))}
+
+
+\subsection{Intention Manipulation Functions}
+\node{Intention Manipulation Functions}
+\cpindex{Intention Manipulation Functions}
+
+These function prototypes can be found in the file
+\file{intention\_f-pub.h}.
+
+\begin{typefn}{Kernel Function}{void}{fprint\_intention}{(FILE *\var{file},
+Intention *\var{intention})}
+prints the \var{intention} in \var{file}.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{int}{intention\_priority}{(Intention
+*\var{intention})}
+returns the priority of \var{intention}.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{Fact *}{intention\_fact}{(Intention
+*\var{intention})}
+returns the fact which caused this \var{intention} to arise
+(\code{NULL} if not applicable).
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{PBoolean}{action\_first\_call}{()}
+when executed in a C action code, returns \code{TRUE} if this is the first time
+this action is called, \code{FALSE} otherwise. This is used for action slicing
+to distinguish the first call from the subsequent call.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{int}{action\_number\_called}{()}
+when executed in a C action code, returns the number of time this action has
+been called in this context (it is equal to 0 in the first call) . This is used
+for action slicing to distinguish subsequent calls.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{Goal *}{intention\_goal}{(Intention
+*\var{intention})} 
+returns the goal which caused this \var{intention} to arise
+(\code{NULL} if not applicable).
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{Op\_Instance *} {intention\_bottom\_op\_instance}
+{(Intention *\var{intention})}
+returns the bottom OP instance of this intention stack,
+\code{NULL} if the stack is empty.
+\end{typefn}
+
+\subsection{OP Instance Manipulation Functions}
+\node{OP Instance Manipulation Functions}
+\cpindex{OP Instance Manipulation Functions}
+
+These function prototypes can be found in the file
+\file{op-instance\_f-pub.h}.
+
+\begin{typefn}{Kernel Function}{void}{fprint\_op\_instance}{(FILE *\var{f},
+Op\_Instance *\var{opi})}
+prints the \var{opi} in \var{file}.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{Op\_Structure *}{op\_instance\_op}{(Op\_Instance
+*\var{opi})}
+returns the Op\_Structure pointed by this \var{opi}, i.e. the OP from
+which this OP\_instance is an instance...
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{Goal *}{op\_instance\_goal}{(Op\_Instance
+*\var{opi})}
+returns the goal which caused this \var{opi} to arise
+(\code{NULL} if not applicable).
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{Fact *}{op\_instance\_fact}{(Op\_Instance
+*\var{opi})}
+returns the fact which caused this \var{opi} to arise
+(\code{NULL} if not applicable).
+\end{typefn}
+
+\subsection{OP Manipulation Functions}
+\node{OP Manipulation Functions}
+\cpindex{OP Manipulation Functions}
+\cpindex{OP Structure Manipulation Functions}
+
+OPs and OP structures are the same type of object. When we say OP, we mean
+OP structure, this is explicited to avoid any confusion with OP
+instances (which are instances of applicable OP structures).
+
+These function prototypes can be found in the file
+\file{op-structure\_f-pub.h}.
+
+\begin{typefn}{Kernel Function}{PString}{op\_name}{(Op\_Structure *\var{op})}
+returns the name of the \var{op}. This function can be used to build an
+evaluable predicate which indicates (in a Meta OP) if a OP instance is an
+instance of itself...
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{PString}{op\_file\_name}{(Op\_Structure
+*\var{op})}
+returns the file name of the \var{op}.
+\end{typefn}
+
+\subsection{Intention Graph Manipulation Functions}
+\node{Intention Graph Manipulation Functions}
+\cpindex{Intention Graph Manipulation Functions}
+
+These function prototypes can be found in the file
+\file{int-graph\_f-pub.h}.
+
+\begin{typefn}{Kernel Function}{Intention\_List}{intention\_graph\_roots}{(Intention\_Graph
+*\var{ig})}
+returns the current roots of the intention graph \var{ig}.
+\end{typefn}
+
+\subsection{Allocation Functions}
+\node{Allocation Functions}
+\cpindex{Allocation Functions}
+
+\strong{Memory Allocation Rules} The standard allocation functions are of
+course available for the user to program its evaluable functions, predicates
+and actions (as well as all the linked code to the kernels). However, all the
+objects handled by the kernel itself (mostly terms and their components) must
+be allocated/freed using the following macros. Objects pointed by USER\_POINTER
+can be allocated/freed as the user want. In any situation, never mix the
+different allocation mechanism (in particular on systems where the standard
+memory allocator is used: VxWorks, Purified version, etc). Mixing them will
+lead to allocation/free error.
+
+\begin{typefn}{Kernel Macro}{void *}{OPRS\_MALLOC} {(size\_t \var{nBytes})}
+This macro allocate \var{nBytes} of memory and return a \code{void *}pointer to
+it. The allocated memory must be freed with \code{OPRS\_FREE}.  \strong{Caution:}
+All objects (and their components) returned to the kernel must be allocated
+using the
+\code{OPRS\_MALLOC} macro or the following macro \code{MAKE\_OBJECT}.
+\begin{verbatim}
+Term *toto_eval_func(TermList terms)
+{
+     Term *res;
+
+     res = MAKE_OBJECT(Term);
+
+     res->type = STRING;
+     res->u.string = (char *)OPRS_MALLOC(20);
+
+     ....
+
+     return res;
+}
+\end{verbatim}
+\end{typefn}
+
+\begin{typefn}{Kernel Macro}{type *}{MAKE\_OBJECT} {(type)}
+This macro allocates memory to store an object of type \code{type}, and
+returns a pointer to this memory block.
+
+The parameter is a type specification. The macro uses it to allocate
+the right amount of memory and to generate the proper recasting
+instructions to make both the \i{C}-compiler and \i{lint(1)} happy.
+
+\strong{Caution:} Do not allocate using your own memory allocator
+(providing it is linked in the \CPK). Always use the \code{MAKE\_OBJECT}
+macro for your memory use.
+
+\begin{verbatim}
+Term *toto_eval_func(TermList terms)
+{
+ Term *t1, *res;
+
+ res = MAKE_OBJECT(Term);
+....
+ return res;
+}
+\end{verbatim}
+\end{typefn}
+
+\begin{typefn}{Kernel Macro}{void}{OPRS\_FREE} {(void *\var{object})}
+This macro frees the memory allocated with \code{MAKE\_OBJECT}.
+\strong{Caution:} Do not attempt to free memory you did not allocate... You
+should only free temporary variables you created for your own use.
+\begin{verbatim}
+Term *toto_eval_func(TermList terms)
+{
+ Term *temporary, *res;
+
+ res = MAKE_OBJECT(Term);
+ temporary = MAKE_OBJECT(Term);
+....
+ OPRS_FREE(temporary);
+ return res;
+}
+\end{verbatim}
+\end{typefn}
+
+The prototypes of the following functions are defined in
+\file{oprs-type\_f-pub.h}.
+
+\begin{typefn}{Kernel Function}{char *}{make\_atom}{(char *atom)}
+return an atom which can then be stored in a built Term.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{char *}{find\_atom}{(char *atom)}
+it does exactly like \code{make\_atom} but warn you if the symbol has not been
+declared previously.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{char *}{declare\_atom}{(char *atom)}
+it does exactly like \code{make\_atom} but does not warn you if the symbol had
+not been declared previously.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{Term *}{build\_string}{(char *string)} build a Term
+containing a copy of the (\code{STRING}) string. It returns the pointer to this
+Term. 
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{Term *}{build\_integer}{(int i)} build a Term
+containing the integer (\code{INTEGER}) i. It returns the pointer to this Term.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{Term *}{build\_float}{(double i)} build a Term
+containing the double (\code{FLOAT}) i. It returns the pointer to this Term.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{Term *}{build\_l\_list}{(L\_List l)} build a Term
+containing the L\_List (\code{LISP\_LIST}) i. It returns the pointer to this Term.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{Term *}{build\_c\_list}{(OPRS\_LIST l)} build a Term
+containing the OPRS\_LIST (\code{OPRS\_LIST}) l. It returns the pointer to this Term.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{Term *}{build\_qstring}{(char *i)} build a Term
+containing the string (\code{STRING}) i. It returns the pointer to this Term.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{Term *}{build\_id}{(char *id)} build a Term
+containing the id (\code{ATOM}) id. It returns the pointer to this Term.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{Term *}{build\_t}{(void)} build a Term
+containing the (\code{T}) id. It returns the pointer to this Term.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{Term *}{build\_nil}{(void)} build a Term
+containing the (\code{NIL}) id. It returns the pointer to this Term.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{void }{free\_term}{(Term *term)} Free a Term.
+\end{typefn}
+
+\subsection{LISP\_LIST Manipulation Functions}
+\node{LISPLIST Manipulation Functions}
+\cpindex{LISP\_LIST Manipulation Functions}
+
+These function prototypes can be found in the file
+\file{lisp-list\_f-pub.h}.
+
+\begin{typefn}{Kernel Function}{L\_Car}{l\_car}{(L\_List \var{l})}
+returns the car of an L\_List.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{L\_List}{l\_cdr}{(L\_List \var{l})}
+returns the cdr of an L\_List.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{L\_List}{l\_cons}{(L\_Car \var{car}, L\_List
+\var{cdr})}
+returns a new L\_List, created by consing the car with the cons. The car is
+duplicated, but not the cdr.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{L\_List}{l\_add\_to\_tail}{(L\_List \var{list},
+L\_Car \var{car})}
+adds a car at the end of an L\_List. The car is duplicated, not the list.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{int}{l\_length}{(L\_List \var{l})}
+returns and int, the length of the L\_List.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{L\_Car}{l\_nth}{(L\_List \var{l}, int \var{i})}
+returns the nth L\_Car element of the L\_List.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{L\_Car}{make\_l\_car\_from\_term}{(Term *\var{t})}
+returns a L\_Car containing the copy of the term t.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{Term *}{get\_term\_from\_l\_car}{(L\_Car \var{l})}
+returns a pointer to the term contained in the L\_Car.
+\end{typefn}
+
+\begin{typefn}{Kernel Function}{L\_List}{copy\_l\_list}{(L\_List \var{l})}
+returns a copy of the L\_List.
+\end{typefn}
+
+\subsection{Miscellaneous Kernel Functions}
+\node{Miscellaneous Kernel Functions}
+\cpindex{Miscellaneous Kernel Functions}
+
+\begin{typefn}{Kernel Function}{void}{send\_command\_to\_parser}{(PString \var{command})}
+is used to get the kernel to execute a particular command. This can be used to
+conclude something in the database, or adding a fact, or any command parsable
+by the parser. You should make sure that the command has the proper syntax, or
+you may hang the kernel for ever... It is strongly advised to terminate the
+command with a new line.
+\end{typefn}
+
+
+\section{Registration and Communication Functions, \protect\file{libmp.a}}
+\node{Registration and Communication Functions libmp.a}
+\cpindex{Registration and Communication Functions, \file{libmp.a}}
+
+\xref{How to Connect from an External Module}, for a description of the
+functions available to connect to the \MP{}. \xref{Messages Format}, for a
+description of the functions available to exchange messages with the \MP{}.
+
+\section{\protect\file{liblist.a} library}
+\node{liblist.a library}
+\cpindex{liblist.a library}
+
+The \file{liblist.a} library is a very general library which contains the
+functions dealing with lists of objects, among other things. It is
+heavily used by the various parts of the \COPRSDE{} and is needed if you
+plan to write your own evaluable predicates or functions (to parse the
+argument list for example which is a \code{TermList}).
+
+We present here a subset of this library. We do advise the user to
+stick with the functions we present below, and not to use
+undocumented functions from this library.
+
+The \i{listPack} library provides an abstract data type called a
+\code{OPRS\_LIST}, and a complete set of operations to manipulate objects of that
+type. In its simplest form, a \code{OPRS\_LIST} is an ordered collection of
+objects which the user creates. \i{listPack} functions allow the user to
+add objects at any point in a \code{OPRS\_LIST}, to retrieve objects from
+\code{OPRS\_LIST}s, to delete objects from \code{OPRS\_LIST}s, and to apply user
+functions to
+\code{OPRS\_LIST}s.  Furthermore, the notion of current object exists, and
+each \code{OPRS\_LIST} maintains the required information a step forward and
+backward
+from the current object.
+
+\i{listPack} provides the single data type \code{OPRS\_LIST}. No operation on
+variables of type \code{OPRS\_LIST} is allowed, except for assigning them the
+values returned by \i{listPack} functions and for passing them as
+parameters to \i{listPack} functions. However, it is permitted (and safe)
+to
+assign variables of type \code{OPRS\_LIST} to other variables of type
+\code{OPRS\_LIST}.
+
+
+
+\subsection{Creating Lists}
+\node{Creating Lists}
+
+Before the user may place objects in a \code{OPRS\_LIST}, he must create it with
+the function - \code{make\_list()} - which returns a pointer to the newly
+created
+ list.
+
+\begin{typefn}{listPack Function}{OPRS\_LIST}{make\_list}{()}
+simply creates a new list and returns a pointer to it. The value returned
+by
+\code{make\_list()}
+\i{must} be saved by the caller in order to use that \code{OPRS\_LIST} with
+subsequent \i{listPack} functions.
+\end{typefn}
+
+\subsection{Destroying Lists}
+\node{Destroying Lists}
+
+When the user no longer needs a \code{OPRS\_LIST}, he may destroy it.
+
+\begin{typefn}{listPack Macro}{void}{FREE\_OPRS\_LIST}{(OPRS\_LIST \var{list})}
+deallocates the storage needed for a \code{OPRS\_LIST}. After a
+\code{OPRS\_LIST} has been passed to \code{FREE\_OPRS\_LIST} it may not be used in any
+subsequent \i{listPack} function. \var{list} is the list which is to be
+freed.
+\end{typefn}
+
+\subsection{Placing Elements in a List}
+\node{Placing Elements in a List}
+
+\i{listPack} provides many different ways of inserting elements into
+\code{OPRS\_LIST}s. The one to use depends on where in the list the user wishes
+to place the element.
+
+Conventionally, every list has two ends called the \var{head} and the
+\var{tail}. An element may be added at either end and thus becomes
+the new head or tail.
+
+Alternatively, each list may be seen as an array of elements. The head
+is the first element, the tail is the \code{list\_length(list)-th}.
+Elements may be added in the middle of a list by specifying the position
+before which they are to be inserted. The position is then simply the
+distance from the head of the list.
+
+\begin{typefn}{listPack Function}{OPRS\_NODE} {add\_to\_head} {(OPRS\_LIST \var{list}, OPRS\_NODE
+\var{element})}
+The element is added before the head of the specified list, thus becoming the
+new head. For convenience, \code{add\_to\_head()} returns (\code{OPRS\_NODE}
+\var{element}). This allows the user to perform operations like
+\begin{verbatim}
+save = add_to_head( list_1, read_next_element() );
+\end{verbatim}
+or anything else.  \i{listPack} tries to impose
+no hidden restriction on the use of lists.
+\end{typefn}
+
+\begin{typefn}{listPack Function}{OPRS\_NODE} {add\_to\_tail} {(OPRS\_LIST \var{list}, OPRS\_NODE
+\var{element})}
+The element is added after the tail of the specified list and thus becomes the
+new tail. For convenience, \code{add\_to\_tail()} returns (\code{OPRS\_NODE}
+\var{element}).
+\end{typefn}
+
+\begin{typefn}{listPack Function}{OPRS\_NODE} {insert\_list\_pos} {( OPRS\_LIST \var{list},
+OPRS\_NODE \var{element}, int \var{pos})}
+\code{(OPRS\_NODE \var{element})} is inserted into \code{(OPRS\_LIST \var{list})}
+before an element number \code{int \var{pos}}. The positions of all elements
+subsequent to the inserted element are thus incremented.
+
+If \var{pos} is less than or equal to one, it is inserted before the head of
+\var{list}. If \var{pos} is greater than \code{list\_length( list )}, it is
+added after the tail.
+
+For convenience, \code{insert\_list\_pos()} returns \code{(OPRS\_NODE
+\var{element})}.
+\end{typefn}
+
+\begin{typefn}{listPack Function}{int} {replace\_list} {( OPRS\_LIST \var{list}, OPRS\_NODE
+\var{old}, OPRS\_NODE \var{new})}
+The first appearance of \code{OPRS\_NODE \var{old}} in the specified list is replaced
+with \code{(OPRS\_NODE \var{new})}. No other part of \code{(OPRS\_LIST
+\var{list})} is affected. \code{replace\_list()} returns a boolean
+\code{TRUE} if the replacement succeeded and a boolean
+\code{FALSE} otherwise. Thus, replacing all occurrences of an element in a
+list may be done via
+\begin{verbatim}
+while ( replace_list( list, old, new ) )    /* null body */ ;
+\end{verbatim}
+\end{typefn}
+
+\begin{typefn}{listPack Function} {OPRS\_LIST} {append\_list} {( OPRS\_LIST \var{first},
+OPRS\_LIST \var{second})}
+\code{append\_list()} adds all the elements of \code{(OPRS\_LIST \var{second})}
+after the tail of \code{(OPRS\_LIST \var{first})}.
+
+The algorithm used to append lists \emph{destroys the second list}.
+Therefore, \code{(OPRS\_LIST \var{second})} may not be used in subsequent
+\i{listPack} functions. It may be thus desirable to use
+\code{append\_list()} as:
+\begin{verbatim}
+append_list( first, copy_list(second, flag) );   /* append a copy of list 2 */
+\end{verbatim}
+\code{append\_list()} returns \code{(OPRS\_LIST \var{first})} to the caller.
+This allows the following convenient operation:
+\begin{verbatim}
+new_list = append_list( copy_list(first, flag), l2 );    /* l2 is destroyed! */
+\end{verbatim}
+Of course, these are also valid uses of \code{append\_list()}:
+\begin{verbatim}
+new_list = append_list( copy_list(first, flag), copy_list(second, flag) );
+append_list( first, second );
+append_list( first, append_list( second, third ) );
+\end{verbatim}
+\end{typefn}
+
+\subsection{Examining the Elements of a List}
+\node{Examining the Elements of a List}
+
+Once elements have been placed in a \code{OPRS\_LIST}, they are accessible to the
+user through any pointer pointing to them that the user has maintained. The
+user does not often want to maintain his own pointers, and relies on
+\i{listPack} functions to return pointers to the elements in a list.
+
+\begin{typefn}{listPack Function} {OPRS\_NODE} {get\_list\_head} {(OPRS\_LIST \var{list})}
+
+\code{get\_list\_head()} returns a pointer to the first element in the
+specified list.  If the \code{OPRS\_LIST} is empty, \code{NULL} is returned.
+\end{typefn}
+
+\begin{typefn}{listPack Function} {OPRS\_NODE} {get\_list\_tail} {(OPRS\_LIST \var{list})}
+
+\code{get\_list\_tail()} returns a pointer to the last element in the
+specified list.  If the \code{OPRS\_LIST} is empty, \code{NULL} is returned.
+\end{typefn}
+
+\begin{typefn}{listPack Function} {OPRS\_NODE} {get\_list\_pos} {(OPRS\_LIST \var{list}, int
+\var{pos})}\code{get\_list\_pos()} returns a pointer to the \code{pos-th}
+elements in the specified list. If the \code{OPRS\_LIST} is empty, \var{pos} is
+less than one, or \var{pos} is greater than the length of the list,
+\code{NULL} is returned.
+\end{typefn}
+
+\subsection{Removing Elements from Lists }
+\node{Removing Elements from Lists}
+
+Elements may be removed from \code{OPRS\_LIST}s with the appropriate \i{listPack}
+functions. All these functions return a pointer to the element removed
+from the list, so the user does not need to save the pointer before
+removing the
+element.
+
+\begin{typefn}{listPack Function} {OPRS\_NODE} {get\_from\_head} {(OPRS\_LIST \var{list})}
+\code{get\_from\_head()} returns a pointer to the first element in the
+specified list. The element is removed from the list, and the next
+element becomes the new head. If the \code{OPRS\_LIST} is empty, \code{NULL}
+is returned.
+\end{typefn}
+
+\begin{typefn}{listPack Function} {OPRS\_NODE} {get\_from\_tail} {(OPRS\_LIST \var{list})}
+\code{get\_from\_tail()} returns a pointer to the last element in the
+specified list. The element is removed from the list, and the previous
+element becomes the new tail. If the \code{OPRS\_LIST} is empty, \code{NULL}
+is returned.
+\end{typefn}
+
+\begin{typefn}{listPack Function} {OPRS\_NODE} {delete\_list\_pos} {(OPRS\_LIST \var{list},
+int \var{pos})}
+\code{delete\_list\_pos()} returns a pointer to the \code{pos-th} element in
+the specified list. The element is removed from the list, and the position of
+subsequent elements is decremented. If the \code{OPRS\_LIST} is empty, \var{pos} is
+less than one, or \var{pos} is greater than the length of the list, then
+\code{NULL} is returned.
+\end{typefn}
+
+\begin{typefn}{listPack Function} {OPRS\_NODE} {delete\_list\_node} {(OPRS\_LIST \var{list},
+OPRS\_NODE \var{element})}
+The first appearance of \code{(OPRS\_NODE} \var{element}) in the specified
+\code{OPRS\_LIST} is deleted. For convenience, \code{(OPRS\_NODE} \var{element}) is
+returned to the caller, but if the list is empty or \code{(OPRS\_NODE
+\var{element})} is not present, then \code{NULL} is returned.
+\end{typefn}
+
+\subsection{Examining the Lists}
+\node{Examining the Lists}
+
+\i{listPack} provides several functions which return boolean values
+based on inquiries being done upon \code{OPRS\_LIST}s.
+
+\begin{typefn}{listPack Function}{int} {list\_length} {(OPRS\_LIST \var{list})}
+This function returns the number of elements in the specified list.
+\end{typefn}
+
+\begin{typefn}{listPack Function}{int} {in\_list} {( OPRS\_LIST \var{list}, OPRS\_NODE
+\var{element})}
+This function returns \code{0} (boolean \code{FALSE}) if \code{(OPRS\_NODE
+\var{element})} does not appear in the specified \code{(OPRS\_LIST \var{list})}.
+Otherwise, it returns the position of the element in the list (in the range
+1..\code{list\_length(list)}).
+\end{typefn}
+
+\begin{typefn}{listPack Function}{int} {list\_empty} {(OPRS\_LIST \var{list})}
+This function returns boolean \code{TRUE} if the specified \code{OPRS\_LIST} has no
+element, it returns boolean \code{FALSE} otherwise.
+\end{typefn}
+
+\begin{typefn}{listPack Function}{int} {first\_in\_list} {(OPRS\_LIST \var{list}, OPRS\_NODE
+\var{element})}
+It returns \code{TRUE} if the head of the \code{OPRS\_LIST} is the specified
+\code{(OPRS\_NODE \var{element})}.
+\end{typefn}
+
+\begin{typefn}{listPack Function}{int} {last\_in\_list} {(OPRS\_LIST \var{list}, OPRS\_NODE
+\var{element})}
+It returns \code{TRUE} if the tail of the \code{OPRS\_LIST} is the specified
+\code{(OPRS\_NODE \var{element})}.
+\end{typefn}
+
+\subsection{Applying Functions to Lists}
+\node{Applying Functions to Lists}
+
+The \i{C} language provides the capability to pass functions as parameters to
+other functions. This is utilized by \i{listPack} to allow users to write list
+processing functions. Instead of having the user walk through each
+\code{OPRS\_LIST} (i.e. with get\_list\_pos()) and pass each returned element to
+some function, the function is passed to \i{listPack} and calls the user
+function.
+
+List processing always begins at the head of the \code{OPRS\_LIST}, and proceeds
+towards the tail.
+
+\strong{Warning:} It is extremely dangerous to add or remove elements from
+a \code{OPRS\_LIST} \i{while a function is being applied to it}. \i{listPack} can
+handle most of the common cases that occur when this happens, however such code
+should be rigorously exercised.
+
+\begin{typefn}{listPack Function} {int} {for\_all\_list} {( OPRS\_LIST \var{list},
+(OPRS\_NODE) ptr, (PFI) func)}
+The user may have some functions like \code{(int) func( (OPRS\_NODE) ptr, OPRS\_NODE
+\var{element})} he wishes to call with every element in the \code{(OPRS\_LIST
+\var{list})}. \code{for\_all\_list()} invokes \code{func()} for the user (as
+often as necessary), adds up the returned values, and returns the total value
+to the user. \code{(OPRS\_NODE \var{ptr})} is a pointer to whatever the user wishes
+to pass to the function (i.e. it is a free pointer with which the user may
+play). There are two related forms of \code{for\_all\_list}:
+
+\begin{verbatim}
+(int) for_all_2list( (OPRS_LIST) list, (OPRS_NODE) ptr, ptr2, (PFI) func )
+(int) for_all_3list( (OPRS_LIST) list, (OPRS_NODE) ptr, ptr2, ptr3, (PFI) func )
+\end{verbatim}
+
+They provide one or two additional pointers for the user convenience.
+In all forms, the pointer is passed to \code{func()} in order, followed
+by a \code{(OPRS\_NODE} \var{element}).
+\end{typefn}
+
+\begin{typefn}{listPack Function} {OPRS\_NODE} {search\_list} {(OPRS\_LIST \var{list},
+(OPRS\_NODE) ptr, (PFI) func)}
+\code{search\_list()} is useful for finding an element in a \code{OPRS\_LIST}
+which matches some criteria. The user writes a function \code{(int) func(OPRS\_NODE
+\var{ptr}, OPRS\_NODE \var{element})} which returns boolean \code{TRUE} when it
+matches the criteria on an element in the specified list. List processing
+stops after the first
+\code{TRUE} returns, and the element on which \code{func()} succeeded is
+returned. \code{NULL} is returned if \code{func()} never succeeds.
+\end{typefn}
+
+\begin{typefn}{listPack Function} {OPRS\_LIST} {list\_equal} {(OPRS\_LIST \var{list1}, OPRS\_LIST
+\var{list2}, PFI \var{func})}
+This function compares two \code{OPRS\_LIST}s, and returns a boolean quantity
+indicating whether they are equivalent or not.  \code{(PFI \var{func})} is a
+function which passes one element from each list, and returns the boolean
+quantity describing their equality.  The elements in each \code{OPRS\_LIST} are
+passed (in order) to \code{func}, until \code{list\_equal()} determines the
+lists are not equal.  If \code{func} is \code{NULL}, \code{list\_equal()} simply
+tests that the elements are the same.
+
+\begin{verbatim}
+int test_records( rec1, rec2 )  /* are two records equal? */
+struct record *rec1, *rec2; /* both are rec pointers */
+    {
+    /* We define them to be equivalent iff height and weight are the same */
+    return (rec1->height == rec2->height) && (rec1->weight == rec2->weight);
+    }
+
+...
+    /* Print the records in the first list, and if the second list is
+   not the same, print the records in that list */
+    for_all_list( rec_list1, stdout, print_record );
+    if (! (list_equal( rec_list1, rec_list2, test_records )))
+    for_all_list( rec_list1, stdout, print_record );
+\end{verbatim}
+\end{typefn}
+
+\subsection{Changing the Order of the Elements}
+\node{Changing the Order of the Elements}
+
+Since one of the fundamental tasks of programming entails sorting,
+\i{listPack}
+provides primitives to reorder a list of elements to the user
+specifications.
+
+\begin{typefn}{listPack Function} {OPRS\_LIST} {reverse\_list} {(OPRS\_LIST \var{list})}
+The order of elements in the \code{OPRS\_LIST} is reversed. For example, the tail
+becomes the first element, and the head becomes the last one. \code{(OPRS\_LIST
+\var{list})} is returned for the convenience of the caller.
+\end{typefn}
+
+\begin{typefn}{listPack Function} {OPRS\_LIST} {sort\_list} {(OPRS\_LIST \var{list})}
+The elements of the specified \code{list} are sorted in the ascending order of
+their tag values. The \var{list} is returned so the user can do:
+\begin{verbatim}
+new = reverse_list( sort_list( eval_list( copy_list(my_list, flag),
+my_func)) );
+\end{verbatim}
+\end{typefn}
+
+\begin{typefn}{listPack Function} {OPRS\_LIST} {sort\_list\_func} {(OPRS\_LIST \var{list},
+PFI \var{func})} This function sorts a \code{OPRS\_LIST} with more complicated
+criteria than can easily be specified by an integer tag variable. The user
+specified functions,
+\code{func( element\_a, element\_b )}, return boolean
+\code{TRUE} if they are ordered properly (i.e. element\_a precedes
+element\_b) and \code{FALSE} otherwise.
+\code{sort\_list\_func()} returns \code{(OPRS\_LIST \var{list})}
+for the user convenience.
+\emph{Note:} For efficiency reasons, \code{func()} should return
+\code{TRUE} if
+the elements are equivalent.
+\end{typefn}
+
+\begin{typefn}{listPack Function} {OPRS\_LIST} {merge\_sort\_list\_func} {(OPRS\_LIST
+\var{list}, PFI \var{func})}
+Identical to \code{sort\_list\_func()}, but uses merge sort rather than bubble
+sort.
+\end{typefn}
+
+\subsection{Marking Current Position in a OPRS\_LIST}
+\node{Marking Current Position in a OPRSLIST}
+
+A spare pointer in the \code{OPRS\_LIST} header record can be used
+to point at a particular place in a \code{OPRS\_LIST}.  This feature may be used
+to walk forwards or backwards along a \code{OPRS\_LIST}, doing incremental
+searches or loop iteration.
+
+Note that there is only one such pointer in each \code{OPRS\_LIST}.  Thus the use of
+any function which changes that pointer will affect any other software that
+uses it.  In particular, it means that the
+\code{loop\_through\_list} macro may not be used recursively on the
+same \code{list}.  If this is necessary, use the \code{for\_all\_list()} function
+or \code{for\_list\_loop()} macro.
+
+\begin{typefn}{listPack Function} {OPRS\_NODE} {get\_list\_next} {(OPRS\_LIST \var{list},
+OPRS\_NODE \var{current})}
+This function advances the current \code{OPRS\_LIST} element to be the one
+immediately following \code{(OPRS\_NODE \var{current})}, and that element is
+returned.
+
+If \var{current} is not in \code{(OPRS\_LIST \var{list})}, \code{NULL} is
+returned.
+If \var{current} is \code{NULL}, the head of the list becomes the
+current element, and is returned.
+
+This function is particularly useful for iterating on two lists
+simultaneously:
+\begin{verbatim}
+ptr1 = get_list_next( list1, NULL );    /* get first element of list1 */
+ptr2 = get_list_next( list2, NULL );    /* get first element of list2 */
+
+while ( ptr1 != NULL && ptr2 != NULL){    /* loop on each element */
+
+    printf( "Nodes %x and %x\n", ptr1, ptr2 );    /* code to deal with elements */
+
+    ptr1 = get_list_next( list1, ptr1 );    /* now get next from list1 */
+    ptr2 = get_list_next( list2, ptr2 );    /* now get next from list2 */
+    }
+\end{verbatim}
+\end{typefn}
+
+\begin{typefn}{listPack Function} {OPRS\_NODE} {get\_list\_prev} {( OPRS\_LIST \var{list},
+OPRS\_NODE
+\var{current})}
+This function retreats the current \code{OPRS\_LIST} element to be the one
+immediately preceding \code{(OPRS\_NODE \var{current})}, and that element is
+returned.
+
+If \var{current} is not in \code{(OPRS\_LIST \var{list})}, \code{NULL} is returned.
+If \var{current} is \code{NULL}, the tail of the list becomes the current
+element, and is returned.
+\end{typefn}
+
+\begin{typefn}{listPack Function} {OPRS\_NODE} {get\_list\_next\_func} {( OPRS\_LIST
+\var{list},
+OPRS\_NODE \var{current}, OPRS\_NODE \var{ptr}, PFI \var{func})} This function advances the
+current \code{OPRS\_LIST} element to be the first one in
+\code{(OPRS\_LIST \var{list})} after \code{(OPRS\_NODE \var{current})} upon which the
+function
+\var{func} returns boolean \code{TRUE}. That element is returned.
+
+If \var{current} is not in \code{(OPRS\_LIST \var{list})}, \code{NULL} is returned.
+If \var{current} is \code{NULL}, processing starts with the first element.
+
+\code{(OPRS\_NODE \var{ptr})} is passed to the function, \var{func} as a free
+parameter. Hence the signature for \var{func} should look like:
+\begin{verbatim}
+int my_function( parameter, list_element )
+OPRS_NODE parameter, list_element;    /* or any other pointer type */
+    {
+    }
+\end{verbatim}
+
+This function is useful for processing selected elements in a \code{OPRS\_LIST}:
+\begin{verbatim}
+ptr = NULL;
+while ((ptr = get_list_next_func( list, ptr, NULL, my_function )) != NULL)
+{
+
+    ...    /* process each element that my_function found */
+
+    }
+\end{verbatim}
+\end{typefn}
+
+\begin{typefn}{listPack Macro} {void} {loop\_through\_list} {(OPRS\_LIST \var{list},
+type
+\var{pointer}, type)}
+This macro is provided by \i{listPack} to serve as a
+\code{for} loop in normal programming. A \i{C}-language \code{for}
+statement is
+generated and iterates \code{pointer} through the elements in
+\code{(OPRS\_LIST \var{list})}.
+
+Note that only one \code{loop\_through\_list()} macro can be active on a
+given list at any time. If recursion is desired, use the
+\code{for\_list\_loop()} macro.
+
+The last parameter is a type specification, and is used by the macro to
+generate the proper recasting instructions to make both the \i{C}-compiler
+and \i{lint(1)} happy.
+\begin{verbatim}
+struct foo {
+    int x, y;
+} * temp;        /*temp is a pointer */
+OPRS_LIST my_list;
+
+...
+
+        /* for each pointer in the list */
+loop_through_list( my_list, temp, struct foo *){
+            /* process the element */
+    printf( "%d, %d\n", temp->x, temp->y );
+    }
+\end{verbatim}
+\end{typefn}
+
+\begin{typefn}{listPack Macro} {void} {for\_list\_loop} {(OPRS\_LIST \var{list}, OPRS\_LIST
+\var{temp}, type \var{pointer}, type)}
+This macro is provided by \i{listPack} to serve as a
+\code{for} loop in normal programming. A \i{C}-language \code{for}
+statement is generated and iterates \code{pointer} through the elements in
+\code{(OPRS\_LIST \var{list})}.
+
+The last parameter is a type specification, and is used by the macro to
+generate the proper recasting instructions to make both the \i{C}-compiler
+and \i{lint(1)} happy.
+
+It differs from \code{loop\_through\_list()} in that it allows recursive
+access to the list, and thus requires a local variable.  The above example
+would read.
+\begin{verbatim}
+OPRS_LIST loop_temp;
+        /* for each pointer in the list */
+for_list_loop( my_list, loop_temp, temp, struct foo *){
+            /* process the element */
+    printf( "%d, %d\n", temp->x, temp->y );
+    }
+\end{verbatim}
+\end{typefn}
+
+\chapter{Lisp and Lisp-like Functions}
+\node{Lisp and Lisp-like Functions}
+\cpindex{Lisp and Lisp-like Functions}
+\cpindex{Lisp Functions}
+\cpindex{Lisp'isms}
+
+There is no a priori reason for the \COPRSDE{} to provide Lisp like functions,
+or a Lisp environment. However, for upward compatibility reasons, and to allow
+the user familiar with Lisp lists manipulation functions to use lisp functions
+in the \CPK{}, we added various functions and data structures in the \COPRSDE{}.
+
+In this chapter, we describe the different functions and the mechanisms which
+are provided to use lispisms in the \COPRSDE{}.
+
+
+
+\section{LISP\_LIST}
+\node{LISPLIST}
+\cpindex{LISP\_LIST}
+
+% ****** un petit dessin vaux mieux que tout...
+
+First of all, it is important to note that the overall syntax used in the
+\COPRSDE{} is ``Lisp like'', and looks like Lisp. In other words, the
+various expressions are currently given in a syntax which looks a lot like the
+Lisp one (parenthesis are certainly here to remind you of this). But it does
+not mean there is a lisp interpreter behind the reader. In fact, whatever is
+read from the keyboard, or from a file is fed in a parser (or a command
+interpreter) and transformed in internal structures (the details of which are
+of no interest to the reader). Most of these structures are accessed by the
+user or the kernel in a transparent way. For example, when you conclude the
+fact \code{(foo (bar 3 4))} in the database, you cannot do a \code{car} on the
+inner expression \code{(bar 3 4)} to conclude let say \code{(foo bar)}. The
+term \code{(bar 3 4)} is not a Lisp list, it is a composed term.
+
+However, one can define Lisp like structures. They are subject to a special
+reader syntax. In Lisp, when the reader encounters a left parenthesis \samp{(},
+he builds a list until he finds the matching closing parenthesis \samp{)}. In
+\COPRS{}, the left and right parentheses do not create any Lisp list object in
+any situation. To create a \code{LISP\_LIST} (note the Term type) (on which you
+will be able to apply Lisp functions such as \code{car}, \code{cdr},
+\code{cons}), you need to use \samp{(.} and a matching \samp{.)}. As a
+mnemonic, you can remember that the dot \samp{.}  is the cons operator in
+Lisp. The \COPRS{} writer uses the same syntax to write \code{LISP\_LIST}. So, if
+you conclude \code{(foo (. bar 3 4 .))} in the database, you have a
+\code{(. bar 3 4 .)} term which is a \code{LISP\_LIST}, not a composed term, and
+you can apply to it any function requiring a \code{LISP\_LIST} as an operand.
+
+One interesting thing in Lisp is the lack of type. The various elements of a
+list are typed internally by the Lisp kernel, but you can cons anything with
+anything, and do an eval on it if you wish to. In \COPRS{}, it is the same, most
+objects are typed when read and the syntax defines exactly what can go where.
+For example, the expression \code{(foo (1 2 3 4))} is not legal because
+\code{1} is recognized as an integer and not as a symbol. However, one may want
+to manipulate integer lists, or lists of objects unknown to the reader a priori
+(probably internal structures such as OP-instances, intentions, goals, etc). In
+this case, one uses \code{LISP\_LIST}s: because of their lack of type
+requirement, they can basically handle whatever terms.  When you build a list
+like in the expression: \code{(foo (. 1 2 3 4 .))} you actually build a
+\code{LISP\_LIST} of terms which are all integers. In fact, this is how you can
+build \code{LISP\_LIST} of \code{LISP\_LIST}s... The expression \code{(foo
+(. (. 1 2 3 4 .) 2 3 4 .) )} is a predicate with one term, a \code{LISP\_LIST}
+which contains terms, the first of which is a \code{LISP\_LIST} itself. Even if
+it is not obvious at a first glance, a list of terms is the only list you can
+build from the reader.  All other lists and the objects they contain are built
+by internal operations.  For example, the \code{soak} meta fact contains a
+\code{LISP\_LIST} of OP-instances.
+
+Keep in mind that the elements of a \code{LISP\_LIST} are \code{Terms}.
+
+The empty LISP OPRS\_LIST is defined as follow in the file \file{oprs-type-pub.h}.
+\begin{verbatim}
+extern const L_List l_nil;  /* The lisp nil constant. */
+\end{verbatim}
+
+\section{Standard Lisp Functions}
+\node{Standard Lisp Functions}
+\cpindex{Standard Lisp Functions}
+
+Standard lisp functions are predefined evaluable functions
+(\pxref{Predefined Evaluable Functions}) used to manipulate \code{LISP\_LIST}.
+
+\begin{typeefa}{Evaluable Function}{INTEGER}{length}{(LISP\_LIST)}
+\xref{Predefined Evaluable Functions}.
+\end{typeefa}
+
+\begin{typeefa}{Evaluable Function}{Any Term}{select-randomly}{(LISP\_LIST)}
+\xref{Predefined Evaluable Functions}.
+\end{typeefa}
+
+\begin{typeefa}{Evaluable Function}{LISP\_LIST}{cons}{(Any Term, LISP\_LIST)}
+\xref{Predefined Evaluable Functions}.
+\end{typeefa}
+
+\begin{typeefa}{Evaluable Function}{Any Term}{first}{(LISP\_LIST)}
+\xref{Predefined Evaluable Functions}.
+\end{typeefa}
+
+\begin{typeefa}{Evaluable Function}{Any Term}{car}{(LISP\_LIST)}
+\xref{Predefined Evaluable Functions}.
+\end{typeefa}
+
+\begin{typeefa}{Evaluable Function}{LISP\_LIST}{cdr}{(LISP\_LIST)}
+\xref{Predefined Evaluable Functions}.
+\end{typeefa}
+
+\begin{typeefa}{Evaluable Function}{Any Term}{caar}{(LISP\_LIST)}
+\xref{Predefined Evaluable Functions}.
+\end{typeefa}
+
+\begin{typeefa}{Evaluable Function}{Any Term}{cadr}{(LISP\_LIST)}
+\xref{Predefined Evaluable Functions}.
+\end{typeefa}
+
+\begin{typeefa}{Evaluable Function}{LISP\_LIST}{cdar}{(LISP\_LIST)}
+\xref{Predefined Evaluable Functions}.
+\end{typeefa}
+
+\begin{typeefa}{Evaluable Function}{LISP\_LIST}{cddr}{(LISP\_LIST)}
+\xref{Predefined Evaluable Functions}.
+\end{typeefa}
+
+\begin{typeefa}{Evaluable Function}{Any Term}{caaar}{(LISP\_LIST)}
+\xref{Predefined Evaluable Functions}.
+\end{typeefa}
+
+\begin{typeefa}{Evaluable Function}{Any Term}{cadar}{(LISP\_LIST)}
+\xref{Predefined Evaluable Functions}.
+\end{typeefa}
+
+\begin{typeefa}{Evaluable Function}{LISP\_LIST}{cdaar}{(LISP\_LIST)}
+\xref{Predefined Evaluable Functions}.
+\end{typeefa}
+
+\begin{typeefa}{Evaluable Function}{LISP\_LIST}{cddar}{(LISP\_LIST)}
+\xref{Predefined Evaluable Functions}.
+\end{typeefa}
+
+\begin{typeefa}{Evaluable Function}{Any Term}{caadr}{(LISP\_LIST)}
+\xref{Predefined Evaluable Functions}.
+\end{typeefa}
+
+\begin{typeefa}{Evaluable Function}{Any Term}{caddr}{(LISP\_LIST)}
+\xref{Predefined Evaluable Functions}.
+\end{typeefa}
+
+\begin{typeefa}{Evaluable Function}{LISP\_LIST}{cdadr}{(LISP\_LIST)}
+\xref{Predefined Evaluable Functions}.
+\end{typeefa}
+
+\begin{typeefa}{Evaluable Function}{LISP\_LIST}{cdddr}{(LISP\_LIST)}
+\xref{Predefined Evaluable Functions}.
+\end{typeefa}
+
+\begin{typeefa}{Evaluable Function}{Any Term}{second}{(LISP\_LIST)}
+is the second function. It is defined for 1 term \code{LISP\_LIST}. It returns
+the second (or cadr) \code{Any Term} of the \code{LISP\_LIST}.
+\end{typeefa}
+
+\begin{typeefa}{Evaluable Function}{LISP\_LIST}{reverse}{(LISP\_LIST)}
+is the reverse function. It is defined for 1 term \code{LISP\_LIST}. It returns the
+reverse of the \code{LISP\_LIST}.
+\end{typeefa}
+
+\begin{typeefa}{Evaluable Function}{Any Term}{second}{(LISP\_LIST)}
+\xref{Predefined Evaluable Functions}.
+\end{typeefa}
+
+
+\chapter{Examples}
+\node{Examples}
+\cpindex{Examples}
+
+Several examples are included in the \COPRS{} distribution.  We shall describe
+them in this chapter in an increasing complexity order. All examples are
+available in the \file{data} sub directory of the \COPRSDE{} distribution. Feel
+free to look at these examples and to play with the various files contained in
+this directory (make a copy if you need to modify them).
+
+
+
+\section{Message Example}
+\node{Message Example}
+\cpindex{Message Example}
+
+This example presents one important feature of \COPRS: the message
+passing mechanism. To run it, you create three \COPRS{}, or \XPK{}s named
+\code{foo}, \code{bar} and \code{boo}, in which you load
+\file{data/foo.inc}, \file{data/bar.inc} and \file{data/boo.inc}
+respectively.
+
+
+
+\subsection{Message Example OPs}
+\node{Message Example OPs}
+\cpindex{Message Example OPs}
+
+Here are the procedures from one of the OP files provided for this demo.  It
+can be found in the file \file{bar.opf}.
+
+\input{bar}
+
+The other OP files are similar.
+
+\section{Test Examples}
+\node{Test Examples}
+\cpindex{Test Examples}
+
+Other OPs files are provided in the standard distribution as examples. Most of
+these examples are located in the \file{data/test} directory.
+
+
+
+\subsection{Wait OPs}
+\node{Wait OPs}
+\cpindex{Wait OPs}
+
+These OPS can be found in the file \file{test/wait.opf}.
+
+\input{wait}
+
+\subsection{LISP\_LIST manipulation OPs}
+\node{LISPLIST manipulation OPs}
+\cpindex{LISP\_LIST manipulation OPs}
+
+These OPS can be found in the file \file{example-cons.opf}.
+
+\input{example-cons}
+
+\subsection{Fibonacci OPs}
+\node{Fibonacci OPs}
+\cpindex{Fibonacci OPs}
+
+These OPS can be found in the file \file{fib.opf}.
+
+\input{fib}
+
+\subsection{Parallel Fibonacci OPs}
+\node{Parallel Fibonacci OPs}
+\cpindex{Parallel Fibonacci OPs}
+
+These OPS can be found in the file \file{fib-par.opf}.
+
+\input{fib-par}
+
+\chapter{How to Install the \COPRSDE{}}
+\node{How to Install the OPRS Development Environment}
+\cpindex{How to Install the \COPRSDE{}}
+
+The installation procedure is different (although very similar), according to
+the license you have. One general comment is that most Makefile are written for
+GNU Make \cite{GNU-make-manual}, and may not work with other \code{make}
+program. Similarly, a number of tools (such as Perl \cite{perl-manual}) may be
+required to build the system (this is particularly true for the source
+distribution).
+
+
+
+\section{Unpacking the Distribution}
+\node{Unpacking the Distribution}
+\cpindex{Unpacking the Distribution}
+
+\begin{enumerate}
+
+\item Choose a directory where you want to install the distribution. \*
+\code{\# cd /usr/local/oprs (or your preferred directory)}
+
+\item Unpack the distribution with: \*
+\code{\# tar xvf <tape-dev>} \*
+or, if you got the distribution as a compressed tar file: \*
+\code{\# gnutar zxvf <dist-file> }
+
+\end{enumerate}
+
+\section{Description of the Distribution}
+\node{Description of the Distribution}
+\cpindex{Description of the Distribution}
+
+Assuming \COPRSDE{} is installed in the directory \file{/usr/local/oprs/} you
+will find in it the directories: \file{bin}, \file{lib}, \file{include},
+\file{pub\_src}, \file{data}, \file{doc}, \file{util}, \file{app-defaults},
+\file{site.make}, \file{contrib} and \file{demo} (\file{src} if you have a
+source license).  If your distribution contains more than one architecture
+distribution, the \file{bin} and \file{lib} directory as well as the
+\file{site.make} file (which contain machine dependant stuff) will be located
+in a \code{\$TARGET} directory (as defined by tcsh, i.e sun4 for SunOS 4.1.3,
+sparc for Solaris 2.x, VxWorks, etc).
+
+According to your license, some of these directories may be present or not (if
+you do not have a source license, the \file{src} directory is not present).
+
+Here is an explanation of what you will find in each of these directories
+(after installation if you have a source license):
+
+\begin{description}
+
+\item [\file{bin}] contains all the binaries. If your license is valid for more
+than one CPU type, the various binaries (in \file{bin} and \file{lib} should be
+in their \code{\$TARGET} directory. 
+
+If you plan to use \COPRSDE{}, your \code{PATH} environment variable should
+contain the appropriate bin directory.  Consequently, you should add the
+following code to your \file{.login} or \file{.cshrc} file.
+
+\begin{verbatim}
+setenv OPRSDIR /usr/local/oprs
+setenv PATH "${PATH}:${OPRSDIR}/${TARGET}/bin"
+\end{verbatim}
+
+Here is a list of the files contained in this directory:
+
+\begin{description}
+
+\item [\file{oprs}] is the \CPK{} program.
+
+\item [\file{oprs-server}] is the \OPRSS{} program.
+
+\item [\file{xoprs}] is the \XPK{} program.
+
+\item [\file{mp-oprs}] is the \MP{} program.
+
+\item [\file{oprs-cat}] is a program which is used by the \XPK{}.
+
+\item [\file{op-editor}] is the \OPE{} program.
+
+\end{description}
+
+\item [\file{lib}] contains a number of libraries and relocatable files which
+you may need to build your application and to allow it to connect to the \MP{}.
+
+If your license is valid for more than one CPU type, the various
+binaries/libraries should be in the \code{\$TARGET} directory.
+
+The relocatable are given in two format, one which can be linked to some C++
+functions, in which case the \code{main} is not defined to allow a C++
+\code{main} to be used (the C++ main performs some initialization required by
+C++ functions).
+
+\begin{description}
+
+\item [\file{libmp.a}] is a library you can use if you want your own program to
+connect to the \MP{}.
+
+\item [\file{libopaque.a}] is a library which can be necessary if the following
+symbols are missing: \*
+\code{user\_time, user\_time\_note, user\_call\_from\_parser}.
+
+\item [\file{oprs-relocatable}] is a relocatable \CPK{},  you can use
+to build your own version of the \CPK{} (i.e. containing your own evaluable
+functions and predicates).
+
+\item [\file{xoprs-relocatable}] is a relocatable \XPK{},  you can use
+to build your own version of the \XPK{} (i.e. containing your own evaluable
+functions and predicates).
+
+\item [\file{c++-oprs-relocatable}] is a relocatable \CPK{},  you can use
+to build your own version of the \CPK{} (i.e. containing your own evaluable
+functions and predicates) with C++ code. In this relocatable the oprs
+\code{main} is called \code{oprs\_main} and takes the same argument as the real
+\code{main}: \code{argc}, \code{argv} and \code{envp}. \code{oprs\_main} does not
+return.
+
+\item [\file{ c++-xoprs-relocatable}] is a relocatable \XPK{}, you can use
+to build your own version of the \XPK{} (i.e. containing your own evaluable
+functions and predicates) with C++ code. In this relocatable the oprs
+\code{main} is called \code{oprs\_main} and takes the same argument as the real
+\code{main}: \code{argc}, \code{argv} and \code{envp}. \code{oprs\_main} does not
+return. 
+
+\end{description}
+
+\item [\file{include}] contains include files needed to build your own
+version of the \XPK{} and the \CPK{}.
+
+\item [\file{pub\_src}] contains some source example files needed to build your own
+version of the \XPK{} and the \CPK{}.
+
+\begin{description}
+
+\item [\file{user-action.c}] contains examples of how to defined your own
+actions and an example of a call to \code{declare\_user\_action},
+
+\item [\file{user-action.h}] contains definitions needed for \file{user-actions.c}.
+
+\item [\file{user-ev-function.c}] contains examples of how to defined your
+evaluable functions and example of a call to \code{declare\_user\_eval\_funct}.
+
+\item [\file{user-ev-function.h}] contains definitions needed for \file{user-ev-function.c}.
+
+\item [\file{user-ev-predicate.c}] contains examples of how to defined your own
+evaluable  and an example of a call to \code{declare\_user\_eval\_pred}.
+
+\item [\file{user-ev-predicate.h}] contains definitions needed for \file{user-ev-predicate.c}.
+
+\item [\file{user-external.c}] contains examples of how to call
+\code{start\_kernel\_user\_hook} and \code{end\_kernel\_user\_hook}.
+
+\item [\file{user-external.h}] contains definitions needed for \file{user-external.c}.
+
+\item [\file{user-external\_f.h}] contains function definitions needed for
+\file{user-external.c}.
+
+\end{description}
+
+\item [\file{doc}] contains the documentation of the \COPRSDE{}. Here is a
+list of the files contained in this directory:
+
+\begin{description}
+
+\item [\file{dir}] Info top level dir for the documentation.
+
+\item [\file{oprs}] is the oprs master info file.
+
+\item [\file{oprs-[0-9][0-9]}] are the oprs info files.
+
+\item [\file{oprs.dvi}] is the oprs.dvi file (dvi format).
+
+\item [\file{oprs.ps}] is the postscript version of the documentation.
+
+\item [\file{fig}] is a directory containing the postscript figures of the
+manual.
+
+\end{description}
+
+\item [\file{contrib}] contains some code (source) contributed by other people.
+For now, one can find a library which ease the extraction of Terms parameters
+from TermLists (as passed to evaluable functions, predicates and actions), but
+ans the building of Terms to return value from these functions.
+
+\item [\file{site.make}] contains a the Makefile variable used to produce the
+\COPRSDE{} you are using. This can be usefull if you have to produce your own
+\PK{}s.
+
+\item [\file{util}] contains a number of utilities, shells, perl scripts and C
+programs to build \COPRS{}.
+
+\begin{description}
+
+\item [\file{Makefile}] a makefile...
+
+\item [\file{ad2c}] is a shell script to transform a \file{.ad} resource file
+in a string suitable for inclusion in a \file{.c} file (to be defined as a
+fall back resources string).
+
+\item [\file{update-inc-file}] is a shell script which upgrade your \file{.inc}
+file from the pre 1.1.1 version format to the newest format.
+
+\item [\file{mkdep}] is a perl script which can be used to create dependencies
+files.
+
+\item [\file{vw-script}] is an exemple of a VxWorks script to load and run a
+\CPK{}, a \MP{} or a \MPK{}.
+
+\item [\file{lex-includer.l}] is a lex program which is used during the \COPRS{}
+compilation to build the various lex and yacc grammar files. This file is only
+present in the source distribution.
+
+\end{description}
+
+\item [\file{data}] contains a number of data files examples (\file{.opf}
+files, \file{.inc} files, \file{.db} files, \file{.sym} files, etc)
+
+\item [\file{data/test}] contains a number of test files (\file{.opf}
+files, \file{.inc} files, \file{.db} files, \file{.sym} files, etc)
+
+\item [\file{app-defaults}] contains some application default files for the
+\XPK{} application (\file{XOprs}) and the \OPE{} application
+(\file{Op-editor}). Both applications are Xt based, and can be customized
+using the resources file \cite{Xt-manual,Xlib-manual,Motif-manual}. \xref{OP Editor Motif Widgets Hierarchy and Resources} and \nxref{X-OPRS Motif Widgets Hierarchy and Resources} for a list of the widget and resources available.
+In any case, you should either put this directory in your
+\code{XFILESEARCHPATH} environment variable as in:
+
+\begin{verbatim}
+setenv OPRSDIR /usr/local/oprs
+if ( $?XFILESEARCHPATH ) then
+     setenv XFILESEARCHPATH "${XFILESEARCHPATH}:${OPRSDIR}/%T/%N%C"
+else
+     setenv XFILESEARCHPATH "${OPRSDIR}/%T/%N%C"
+endif
+\end{verbatim}
+
+The \code{\%C} suffix is very important if you want to take advantage of the
+multi language support of \COPRS{} (\pxref{Xt/Motif Widgets Hierarchy and Resources}).
+
+or copy these two files in your own app default directory pointed by the
+environment variable \code{XAPPLRESDIR} (in this case, remove the \file{.ad}
+suffix).
+
+\begin{verbatim}
+setenv  XAPPLRESDIR ${HOME}/X/app-defaults/
+\end{verbatim}
+
+\item [\file{demo}] contains some demonstration applications. In
+particular it contains the truck-demo.
+
+\item [\file{src}] contains all the source of the \COPRSDE{}. This directory is
+only present when you have a source license.
+
+\end{description}
+
+\section{Installation for Demonstration License}
+\node{Installation for Demonstration License}
+\cpindex{Installation for Demonstration License}
+
+The demonstration license is basically provided to ``play'' with the
+\COPRSDE{}. Therefore, some critical features are disabled to
+prevent the user from making a real use of the kernel. For example, the garbage
+collector is modified in such a way that the kernel will grow indefinitely
+after a period of time, so do not be surprised if you run out of swap space or
+if your application is becoming slower and slower, this is due to the swapping
+activity.
+
+Moreover, you may not get the relocatable files... As a result, you will
+not be able to include your evaluable functions or predicates in the
+kernels.
+
+\section{Installation for Binary License}
+\node{Installation for Binary License}
+\cpindex{Installation for Binary License}
+
+Binary license still comes with some sources. Some include files are
+provided, and some examples of C code are also given to help the user
+define his own evaluable predicates or functions. In fact, when you get a
+binary license, you get relocatable executables which must be linked to
+other object files to be really executable.
+
+\section{Installation for Source License}
+\node{Installation for Source License}
+\cpindex{Installation for Source License}
+
+If you have a source license, you have the source of all the \COPRSDE{}.
+The distribution contains the \file{src} directory.
+You may need to compile and install the \COPRSDE{}.
+
+For this go in the oprs directory and create a \file{build} directory at the
+same level than the  \file{src} directory. Cd in the \file{build} directory and
+then call the \file{util/mkoprsbintree} utility. Then check the site.make file
+to customize it (check the installation directory for example) and then do a:
+
+\begin{verbatim}
+make depend
+make
+make install
+\end{verbatim}
+
+The \code{make depend} command will create the dependencies between the
+sources files... This step is really require if and only if you plan to
+modify part of the sources, and you want then to recompile only the
+appropriate files. Nevertheless, it is recommended to do it.
+
+The \code{make} command will build the executables, libraries, etc.
+
+The \code{make install} command will install the various programs,
+libraries, defaults files, data, include in the appropriate directories.
+
+Note that you may have some problem while generating the lex grammar C
+files. For example, on some Sun OS version (4.1.3 for example), or under Ultrix
+(4.2a), the lex program fails to handle such a large lex grammar. If this is
+the case, you should either request a revised version of lex from th OS vendor
+or generate the C files on another machine. For this, you may defined something
+like:
+
+\begin{verbatim}
+LEX = rsh <other-host> lex
+\end{verbatim}
+
+where <other-host> is a machine which is able to parse the \COPRS{} lex grammar.
+Do not use flex as a lex replacement. This will not work (unless you hack a
+fair amount of the grammar and the macros).
+
+\chapter{Grammar Used in the \COPRSDE{}}
+\node{Grammar Used in the OPRS Development Environment}
+\cpindex{Grammar Used in the \COPRSDE{}}
+
+
+
+\section{Syntaxic Grammar Used in the \COPRSDE{}}
+\node{Syntaxic Grammar Used in the OPRS Development Environment}
+\cpindex{Syntaxic Grammar Used in the \COPRSDE{}}
+
+Here is the yacc-style grammar used in the different parsers of the
+\COPRSDE{}.
+
+\smallverbatimfile{oprs-yacc.tex}
+
+\section{Lexical Grammar Used in the \COPRSDE{}}
+\node{Lexical Grammar Used in the OPRS Development Environment}
+\cpindex{Lexical Grammar Used in the \COPRSDE{}}
+
+Here is the lex-style token grammar used in the different parsers of the
+\COPRSDE{}.
+
+\smallverbatimfile{oprs-lex.tex}
+
+\chapter{Xt/Motif Widgets Hierarchy and Resources}
+\node{Xt/Motif Widgets Hierarchy and Resources}
+\cpindex{Xt/Motif Widgets Hierarchy and Resources}
+
+Motif and Xt allow the user to set most widget resource values using the
+resource file (see the X11 \cite{Xlib-manual} and Xt \cite{Xt-manual}
+documentation for more on this topic).  \XOPRS{} and the \OPE{} takes advantage
+of this mechanism as much as possible. In fact, as few as possible resource
+values are ``hard wired'' in the code, and most of them are set in the
+\file{XOprs} and \file{Op-editor} resources files. To take full advantage
+of this mechanism, the user needs to know the widget hierarchy of the
+application. The versions of the \XOPRS{} and the \OPE{} which are based on
+X11R5/Xt/Motif 1.2 can even take advantage of the new resource protocol which
+allows the user to interactively set resource values. The user can thus make a
+lot of customization using resource setting.
+
+Since version 1.3.1, \COPRS{} offers support for different language (French and
+English). Thus the proper selection of the application default file is very
+important. A priori, if no application file is found, the default language
+resources value are stored in the kernel. 
+
+For each X application (\XOPRS{} and the \OPE{}) , the \file{app-defaults}
+directory contains 3 files.  For example, for \XOPRS{}, it contains
+\file{XOprs-fr}, \file{XOprs-en} and \file{XOprs} (which is a link on one of the
+two first file). A priori, you need to tell X where are the application
+defaults file are located. This can be done using the variable
+\code{XFILESEARCHPATH}.
+
+\begin{verbatim}
+setenv OPRSDIR /usr/local/oprs
+if ( $?XFILESEARCHPATH ) then
+     setenv XFILESEARCHPATH "${XFILESEARCHPATH}:${OPRSDIR}/%T/%N%C"
+else
+     setenv XFILESEARCHPATH "${OPRSDIR}/%T/%N%C"
+endif
+\end{verbatim}
+
+The \%C (for customization) is supported in X11 since release 5. Basically, if
+you have, for an application \code{app\_name} with \code{app\_name\_class} as
+application class, a \code{app\_name\_class.customization: res-value} resource
+defined in your \file{.Xresources} or \file{.Xdefault} files (i.e. already
+defined in the resource manager of your X server), then when you launch
+application \code{app-name}, it will look for an application default file with
+the name \%N\%C, i.e. \code{app\_name\_class} concatenated with \code{res-value}.
+
+So if you define \code{XOprs.customization: -en}, it will load \file{XOprs-en},
+while if you define \code{XOprs.customization: -fr}, it will load
+\file{XOprs-fr}. If none are defined, it will load \file{XOprs}. This mechanism
+is the same for the \code{Op-editor}. This mechanism will allow you to
+automatically select the language of the interface.
+
+Note that each application file contains a \code{*.language} resource which is
+used by the application to then select the proper string when these are not
+defined a X resources.
+
+
+
+\section{Xt Command Line Arguments}
+\node{Xt Command Line Arguments}
+\cpindex{Xt Command Line Arguments}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{||l|l|l|l||}
+\hline
+Option String & Resource Name & Argument Kind & Resource Value \\
+\hline
+-background & *background   & SepArg    & next argument \\
+-bd & *borderColor  & SepArg    & next argument \\
+-bg & *background   & SepArg    & next argument \\
+-borderwidth    & .borderWidth  & SepArg    & next argument \\
+-bordercolor    & *borderColor  & SepArg    & next argument \\
+-bw & .borderWidth  & SepArg    & next argument \\
+-display    & .display  & SepArg    & next argument \\
+-fg & *foreground   & SepArg    & next argument \\
+-fn & *font     & SepArg    & next argument \\
+-font   & *font     & SepArg    & next argument \\
+-foreground & *foreground   & SepArg    & next argument \\
+-geometry   & .geometry & SepArg    & next argument \\
+-iconic & .iconic   & NoArg     & ``true'' \\
+-name   & .name     & SepArg    & next argument \\
+-reverse    & .reverseVideo     & NoArg     & ``on'' \\
+-rv & .reverseVideo     & NoArg     & ``on'' \\
++rv & .reverseVideo     & NoArg     & ``off'' \\
+-selectionTimeout   & .selectionTimeout & SepArg    & next argument \\
+-synchronous    & .synchronous  & NoArg     & ``on'' \\
++synchronous    & .synchronous  & NoArg     & ``off'' \\
+-title  & .title    & SepArg    & next argument \\
+-xnllanguage    & .xnlLanguage  & SepArg    & next argument \\
+-xrm    & next argument  & ResArg   &next argument \\
+\hline
+\end{tabular}
+\end{center}
+\caption{Xt Application Default Line Arguments and Resources}
+\label{xt-args-table}
+\end{table}
+
+There are a number of arguments and resources which are defined by default for
+any Xt based application. These are indeed available for the \XOPRS{}
+application and the \OPE{} application. Table \ref{xt-args-table} presents
+these arguments. See \cite{Xt-manual} for more information on this subject.
+
+Example:
+\begin{verbatim}
+op-editor -iconic
+xoprs -bg blue
+\end{verbatim}
+
+\section{\XOPRS{} Motif Widgets Hierarchy and Resources}
+\node{X-OPRS Motif Widgets Hierarchy and Resources}
+\cpindex{X-OPRS Motif Widgets Hierarchy and Resources}
+\cpindex{Xt Resources}
+\cpindex{Resources}
+
+
+
+\subsection{How to Connect your Own Widget in \XOPRS{}}
+\node{How to Connect your Own Widget in X-OPRS}
+\cpindex{How to Connect your Own Widget in X-OPRS}
+
+You can if you want connect you own widget or widget tree to the \XOPRS{} one.
+They will be treated by the \XPK{} as any other widget. You can then manage
+them or unmanage them from your OPs. However, you should not make active wait
+(by starting recursively a Xt Main Loop...) or you will most likely block the
+\XPK{}.
+
+\begin{typevr}{Kernel Variable}{extern Widget}{x\_oprs\_top\_level\_widget}
+\pxref{Important Variables}
+\end{typevr}
+
+\begin{verbatim}
+void start_kernel_user_hook()
+{
+ intention_scheduler = &intention_scheduler_time_sharing;
+ create_my_widget_tree(x_oprs_top_level_widget);
+}
+\end{verbatim}
+
+\subsection{\XOPRS{} Resources}
+\node{X-OPRS Resources}
+\cpindex{X-OPRS Resources}
+
+Specific \XOPRS{} resources can be set by the user:
+
+\begin{verbatim}
+XOprs.fontList: variable=variable_cs,\
+fixed=default_cs,\
+variable=text_title_cs,\
+-adobe-helvetica-bold-r-normal-*-24-*-*-*-*-*-*-*=title_cs,\
+fixed=text_cs,\
+-adobe-helvetica-bold-r-normal-*-*-100-*-*-*-*-*-*=node_cs,\
+6x12=edge_cs
+XOprs.defaultFontList: variable=variable_cs,\
+fixed=fixed_cs
+XOprs.ipX:               10
+XOprs.ipY:               50
+XOprs.ipWidth:           80
+XOprs.ctxtX:             10
+XOprs.ctxtY:             150
+XOprs.ctxtWidth:         60
+XOprs.setX:              10
+XOprs.setY:              250
+XOprs.setWidth:          60
+XOprs.effX:              10
+XOprs.effY:              350
+XOprs.effWidth:          60
+XOprs.propX:             10
+XOprs.propY:             400
+XOprs.propWidth:         60
+XOprs.docX:              10
+XOprs.docY:              450
+XOprs.docWidth:          60
+XOprs.actX:              310
+XOprs.actY:              50
+XOprs.actWidth:          60
+XOprs.bdX:               310
+XOprs.bdY:               50
+XOprs.bdWidth:           120
+XOprs.edgeWidth:         40
+\end{verbatim}
+
+The \code{XOprs.fontList} resource defines the fonts which are used
+in the following character set:
+
+\begin{description}
+
+\item[title\_cs] is the character set used to name the OP which appear
+in the top left corner.
+
+\item[text\_title\_cs] is the character set used to name text
+fields like \code{INVOCATION, CONTEXT, etc}.
+
+\item[text\_cs] is the character set used for the text contained in the
+text field.
+
+\item[node\_cs] is the character set used for the name of the node.
+
+\item[edge\_cs] is the character set used for the edge text.
+
+\end{description}
+
+\subsection{\XOPRS{} Motif Widgets Hierarchy}
+\node{X-OPRS Motif Widgets Hierarchy}
+\cpindex{X-OPRS Motif Widgets Hierarchy}
+
+The widget hierarchy for the \XOPRS{} program can now be obtained by issuing
+the command:
+
+\begin{verbatim}
+xoprs -pwt
+\end{verbatim}
+
+Each widget is given with its path from the root and with its class name in
+parenthesis.
+
+\section{\OPE{} Motif Widgets Hierarchy and Resources}
+\node{OP Editor Motif Widgets Hierarchy and Resources}
+\cpindex{OP Editor Motif Widgets Hierarchy and Resources}
+\cpindex{Xt Resources}
+\cpindex{Resources}
+
+
+
+\subsection{\OPE{} Resources}
+\node{OP Editor Resources}
+\cpindex{OP Editor Resources}
+
+The \OPE{} has a number of resource which can be set by the user:
+
+\begin{verbatim}
+Op-editor.fontList: variable=variable_cs,\
+fixed=default_cs,\
+-adobe-helvetica-bold-r-normal-*-24-*-*-*-*-*-*-*=title_cs,\
+variable=text_title_cs,\
+fixed=text_cs,\
+-adobe-helvetica-bold-r-normal-*-*-100-*-*-*-*-*-*=node_cs,\
+6x12=edge_cs
+Op-editor.defaultFontList: variable=variable_cs,\
+fixed=fixed_cs
+!
+! Default value for the size of the drawing area 
+!
+Op-editor.workWidth:    2000
+Op-editor.workHeight:   1500
+!
+! Default value for the x, y and with
+! of the various OP fields. These values
+! are the one used for the Text OP.
+!
+Op-editor.ipX:          10
+Op-editor.ipY:          50
+Op-editor.ipWidth:      80
+Op-editor.ctxtX:        10
+Op-editor.ctxtY:        150
+Op-editor.ctxtWidth:    60
+Op-editor.setX:         10
+Op-editor.setY:         250
+Op-editor.setWidth:     60
+Op-editor.effX:         10
+Op-editor.effY:         350
+Op-editor.effWidth:     60
+Op-editor.propX:        10
+Op-editor.propY:        400
+Op-editor.propWidth:    60
+Op-editor.docX:         10
+Op-editor.docY:         450
+Op-editor.docWidth:     60
+Op-editor.actX:         310
+Op-editor.actY:         50
+Op-editor.actWidth:     60
+Op-editor.bdX:          310
+Op-editor.bdY:          50
+Op-editor.bdWidth:      120
+Op-editor.edgeWidth:    40
+!
+! Default print command
+!
+! This one is for A4 if you have the most recent pbm pacopge.
+Op-editor.printCommand: xwdtopnm < \%s |  pnmtops -r -w 8 -h 11.25 | lpr
+! For us letter
+!Op-editor.printCommand:        xwdtopnm < %s |  pnmtops -r | lpr
+\end{verbatim}
+
+The \code{Op-editor.fontList} resource defines the fonts which are used
+in the following character set:
+
+\begin{description}
+
+\item[title\_cs] is the character set used for the name of the OP which
+appear
+in the top left corner.
+
+\item[text\_title\_cs] is the character set used for the name of text
+fields like \code{INVOCATION, CONTEXT, etc}.
+
+\item[text\_cs] is the character set used for the text contained in the
+text field.
+
+\item[node\_cs] is the character set used for the name of the node.
+
+\item[edge\_cs] is the character set used for the edge text.
+
+\end{description}
+
+The \code{Op-editor.printCommand} resource defines the shell command used
+by the various print commands of the \OPE{}.
+
+The \code{Op-editor.workWidth} and \code{Op-editor.workHeight} resource
+defines the width and the height of the drawing canvas. These values can
+be changed with the ``Change Drawing Size'' command, \xref{Change Drawing Size}.
+
+\subsection{\OPE{} Motif Widgets Hierarchy}
+\node{OP Editor Motif Widgets Hierarchy}
+\cpindex{OP Editor Motif Widgets Hierarchy}
+
+
+The widget hierarchy for the \OPE{} program can now be obtained by issuing
+the command:
+
+\begin{verbatim}
+op-editor -pwt
+\end{verbatim}
+
+Each widget is given with its path from the root and with its class name in
+parenthesis.
+
+\chapter{Known Problems and Things to Avoid}
+\node{Known Problems and Things to Avoid}
+\cpindex{Known Problems and Things to Avoid}
+
+Although our goal is to constantly improve the \COPRSDE, few problems
+have been reported by users or found by our development team and, remain
+unsolved or unresolved. Most of them originate in mechanisms, tools or
+systems which are not directly under our control (such as X11, Motif or
+Unix).
+
+In any case, bugs and problems should be reported to the following electronic
+mail address:\*
+\code{oprs-bug@ingenia.fr}.\*
+If your license agreement include software support, your problem will be taken
+care of as specified in the License Agreement.
+
+
+
+\section{Known Problems}
+\node{Known Problems}
+\cpindex{Known Problems}
+\cpindex{Known Bugs}
+\cpindex{Bugs}
+
+\begin{enumerate}
+
+\item There is a terrible memory leak in X11R4 which may make the \XPK{} grows
+indefinitely. Here is the purify trace of this leak:
+
+\begin{verbatim}
+      16 bytes (3874 times).     Last memory leak at 0x779040 
+Purify (mlk): 61984 total bytes lost, allocated from:
+        malloc       [p6.o, pc=0x46d4]
+        XtMalloc     [Alloc.o, pc=0x1c8aec]
+        XtAppAddWorkProc [NextEvent.o, pc=0x1e8898]
+        register_main_loop_from_other_events [line 133, xp-main.c, pc=0x2e280]
+        register_main_loop [line 140, xp-main.c, pc=0x2e2b8]
+        DoOtherSources [NextEvent.o, pc=0x1e97a0]
+\end{verbatim}
+
+\item All the modules with a graphic interface are written under
+X11/Motif. Both X11R5/Motif1.2 and X11R4/Motif1.1.X versions are
+available. But because of some weirdness with Sun OpenWindows 3.0 X
+server, the X11R5 version does not work. So you should not try to use it.
+(A patch to Sun OpenWindows 3.0 exists which fixes this problem).
+
+\item Due to some weird interaction between OpenLook Window Manager (olwm)
+and Motif application, a number of things may not work as expected. It
+is strongly recommended to use mwm (Motif Window Manager) as window
+manager, or if not possible twm (the window manager distributed with X11).
+
+\item If Motif is not properly installed on your host, the application may
+not works has expected. A very common problem is the lack of file
+\file{/usr/lib/X11/XKeysymDB}. The symptom are very easy to identify.
+Whenever you start a Motif application, you get a number of message
+stating that some Key Sym are undefined. This problem is fixed
+in Motif 1.2 (there is now a variable XKEYSYMDB for this purpose).
+
+\item Using the \OPE{} under twm, the Information Dialog which pops up when OP
+files are loaded may not properly disappear after the load has completed.
+
+\end{enumerate}
+
+\section{Things to Avoid}
+\node{Things to Avoid}
+\cpindex{Things to Avoid}
+
+\begin{enumerate}
+
+\item Remember that the word \code{test} is reserved (as are achieve, preserve,
+maintain, wait, conclude and retract), and cannot be used as a predicate name,
+nor a symbol or a function.
+
+\item Recursive data structures are currently forbidden for many
+different reasons (printing problems in particular). So do not build structures
+which point on themselves or you will most likely break the kernel. For
+example, if \code{foo} is not an evaluable function, the following code will
+badly break the kernel (or make it loop...) \code{(! (= @x (foo @x)))}, while
+\code{(! (= @x (foo (val @x))))} will work, as it will use the value of
+\code{@x} instead of \code{@x}.
+
+\end{enumerate}
+
+\chapter{Glossary}
+\node{Glossary}
+\cpindex{Glossary}
+
+Here is an alphabetical list of some words and concepts used in this
+manual and which may have a particular meaning in \COPRS{}.
+
+\begin{description}
+
+\item[Action:] Actions are the basic operations in \OPRS{}. They are the means
+by which a \CPK{} or a \XPK{} modifies or acts on the external world. Actions
+can be as simple as printing objects, or sending messages, or complex as RPC or
+call to linked code. The user can define his own actions.
+
+\item[Command mode:]. A \CPK{} is usually in Run Mode. When the \OPRSS{}
+connects it, it switches to Command Mode (see also Run Mode).
+
+\item[Conditions:]. A condition is a particular statement the \CPK{} is
+  periodically checking. It can be a waiting condition (corresponding to a wait
+  goal in a OP) , or a preserve condition (corresponding to a passive or active
+  preserve in a OP).
+
+\item[\COPRSDE{}:] The \COPRSDE{} is the set of programs provided to
+develop an application using procedural reasoning.
+
+\item[\COPRSAE{}:] The \COPRSAE{} is the set of programs provided to
+run an application using procedural reasoning.
+
+\item[\CPK{}:] See Kernel.
+
+\item[Database:] The database is where \OPRS{} stores all the static information
+representing the state of the world.
+
+\item[Binding Environment:] Binding environments are \OPRS{} structures which
+hold the binding of a set of variables in a particular context.
+
+\item[Edge:] The edges of the OPs are the links between the nodes of a OP. They
+are labeled with goals (one goal per edge) which must be satisfied to allow
+the transition between the two nodes linked by the edge.
+
+\item[Evaluable Function:] Evaluable functions are functions which correspond
+to machine executable code and are evaluated when needed. The main difference
+between actions and evaluable functions is that evaluable functions appear as
+arguments of predicates, and can be evaluated a number of times (depending of
+the Current/Quote setting). As a result, they should not have any side effect
+which repetition could lead to unexpected results. The user can define his own
+evaluable functions.
+
+\item[Evaluable Predicate:] Evaluable predicates are predicates which are not
+stored explicitly in the database but are evaluated executing some machine
+executable code. The user can define his own evaluable predicates.
+
+\item[Fact:] A fact is an expression which represents a true statement in the
+current world state.
+
+\item[Frame:] A Frame is a synonym for binding environment (see also Binding
+Environment).
+
+\item[Goal:] A goal is a statement and a temporal operator specifying how this
+statement must be treated.
+
+\item[Include File:] Include files are files containing commands to be executed
+by a \CPK{} or a \XPK{}.
+
+\item[Intention:] An intention or a task is a stack of procedures (calling each
+other) and working towards the achievement of a goal or responding to the
+occurrence of an event. This goal or this event are responsible for the
+execution of the first procedure in the stack.
+
+\item[Join Node:] Join nodes are node corresponding to a synchronization point
+in multi threads execution. The execution can proceed from a join node, only
+when a number of threads equal to the number of incoming edges, reached the
+join node.
+
+\item[OP:] OP is more of an historical name. It means \dfn{Knowledge
+Area}, and was used at the beginning of \OPRS{} research probably to
+remind people of other \dfn{Knowledge} constructions such as \dfn{Knowledge
+Source} used in Black Board systems. See also \dfn{Procedure}.
+
+\item[\OPE{}:] The \OPE{} is the program which allows the user to build
+his own procedures, which can then be executed by a \XPK{} or \CPK{}.
+
+\item[OP File:] A OP file is a file containing a set of OPs. There are no
+particular reasons to put some OPs and other together in the same file.
+However, it is usually a good practice to break down the set of OPs used in a
+particular application into various files.
+
+\item[OP Instance:] A OP instance is a OP which is ``applicable'', i.e. a OP
+for which there is a binding environment currently satisfied. The same OP can
+have more than one instances applicable at the same time (in which case, the
+binding environments are different).
+
+\item[OP Library:] The OP library is the set of OP loaded in a particular \CPK{}
+or \XPK{}.
+
+\item[OP Predicate:] A OP predicate is a predicate which can only be satisfied
+by calling OPs. It is usually a good idea to declare OP predicates as it tends
+to speed up the kernels (OP predicate are not checked in the database as the
+system knows they can only be satisfied calling OPs).
+
+\item[Kernel:] The \CPK{} or the \XPK{} are the kernels of the \COPRSDE{}.
+However, the kernel part of both programs are identical. This is the reason why
+we refer sometimes to them as the Kernel. The Kernel is in fact the ``brain''
+of the \COPRSDE{}. In the \CPK{} environment, it displays information and
+results in a standard tty interface. In the \XPK{} environment, it displays
+graphical information and results in a X11/Motif environment. Besides, this
+X11/Motif environment enables the user to interact with the kernel in an easier
+way.
+
+\item[Message:] A message is a fact sent to or receives by a \PK{} (in fact by
+any module of a \COPRS{} application). Messages are identical to facts, except
+that they come from outside, i.e. they are not concluded by the \PK{} itself
+but are received from outside.
+
+\item[Motif:] Motif is a commercial product sold by Open Software
+Foundation. It is a popular widget set (see Xt) which can be used to
+build high level user interfaces with a consistent look and a uniform
+interaction mechanism \cite{Motif-manual}.
+
+\item[Node:] The nodes are the building blocks of OPs. They are meant to
+present states. When you have achieved a particular goal labeling an edge, you
+end up on a new node representing the new state you have reached. 
+
+\item[Plan:] In this documentation, we use interchangeably the
+word \dfn{OP}, \dfn{procedure} and even sometimes \dfn{plan}. See OP.
+
+\item[Procedure:] In this documentation, we use interchangeably the
+word \dfn{OP}, \dfn{procedure} and even sometimes \dfn{plan}. See OP.
+
+\item[\OPRSS{}:] The \OPRSS{} is used to start/kill \CPK{}s and
+\XPK{}s and to interact with the \CPK{}s.
+
+\item[Relevant OP:] Relevant OPs are OPs which ``mention'' a particular fact or
+goal in their invocation part. 
+
+\item[Relocatable:] A relocatable is a file containing linked code which can be
+relocated by the linker. The \CPK{} and the \XPK{} are distributed as pure
+executable but also as relocatable in which the final user can link his own
+actions, evaluable functions and predicates and set up a number of other
+important variables. The \COPRSDE{} comes with two kinds of relocatable, one to
+link C code, and the other to link C++ functions (in the later the main is
+called oprs\_main).
+
+\item[Run mode:] A \CPK{} is in run mode when its main loop is executing. See
+Command mode. 
+
+\item[Split Node:] A split node is the forking point in multi threads
+execution.  When execution reaches a split node, it forks as many threads as
+there are outgoing edges from this node.
+
+\item[Thread:] Thread corresponds to an execution sequence in an intention. An
+intention has always at least one thread. However, due to parallel split
+operations in OPs, more than one thread can be active in an intention.
+
+\item[Unix:] Unix is an operating system family with many members and branches.
+
+\item[Variable:] A variable is a specific symbol which can be bound or not.
+When it is, it is bound to a particular value which depends of the current
+binding environment.
+
+\item[X Toolkit Intrinsics:] The X Intrinsics is a library which provides high
+level mechanism to build user interface. However, the X Intrinsics library does
+not preclude any particular look and feel, or any particular manipulated
+object. Moreover, the X Intrinsics by itself is not enough to build a user
+interface, one needs to associate a widget set (such as the Athena widget set,
+the Motif widget, or the Olit widget set, etc) \cite{Xt-manual}.
+
+\item[X11:] X11 is a popular window system available on many platforms
+\cite{Xlib-manual}.
+
+\item[\XPK{}:] See Kernel.
+
+\item[XInfo:] XInfo is an \dfn{info} format displaying widget. It is used in
+the X application of the \COPRSDE{} to display the manuals and the documentation
+of the \COPRSDE{}.
+
+\item[Xt:] See X Toolkit Intrinsics.
+
+\end{description}
+
+\chapter*{General Index}
+\addcontentsline{toc}{chapter}{General Index}
+\node{General Index}
+\cpindex{General Index}
+
+\printindex[cp]
+
+\chapter*{Command Index}
+\addcontentsline{toc}{chapter}{Command Index}
+\node{Command Index}
+\cpindex{Command Index}
+
+\printindex[pg]
+
+\chapter*{Evaluable Function and Action Index}
+\addcontentsline{toc}{chapter}{Evaluable Function and Action Index}
+\node{Evaluable Function and Action Index}
+\cpindex{Evaluable Function and Action Index}
+
+\printindex[ef]
+
+\chapter*{Evaluable Predicate Index}
+\addcontentsline{toc}{chapter}{Evaluable Predicate Index}
+\node{Evaluable Predicate Index}
+\cpindex{Evaluable Predicate Index}
+
+\printindex[ep]
+
+\chapter*{Kernel Function Index}
+\addcontentsline{toc}{chapter}{Kernel Function Index}
+\node{Kernel and Library Function Index}
+\cpindex{Kernel Function Index}
+
+\printindex[fn]
+
+\chapter*{Variable Index}
+\addcontentsline{toc}{chapter}{Variable Index}
+\node{Variable Index}
+\cpindex{Variable Index}
+
+\printindex[vr]
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "oprs"
+%%% End: 

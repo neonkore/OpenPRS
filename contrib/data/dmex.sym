@@ -1,0 +1,85 @@
+;;Mutuelle Exclusion 
+;;
+;;Token Unique
+;;
+declare ff PR-DERNIER 0
+declare ff PR-SUIVANT 0
+declare ff PR-DEMANDE 0
+declare ff PR-PRIVILEGE 0
+
+declare predicate INIT-CRITICAL-SECTION-VARIABLES
+declare function   INIT-CRITICAL-SECTION-VARIABLES
+declare function  PR-PRIVILEGE-CS-WITH 
+
+declare predicate PR-UNIQUE-TOKEN-MESS
+declare function PR-UNIQUE-TOKEN-MESS
+;;OPs
+
+declare op_predicate DEMANDE-CRITICAL-SECTION-1-TOKEN
+declare op_predicate DEMANDE-TOKEN-UNIQUE
+declare op_predicate RELEASE-TOKEN-UNIQUE
+declare op_predicate INIT-TOKEN-UNIQUE 
+declare op_predicate CS-READ-ME
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;Mutuelle Exclusion algo2(k/n)
+;;Many Tokens
+;;DMEX
+;;
+declare id dmex
+declare id false
+declare id true
+
+declare ff DMEX-SCDEM_I 1
+declare ff DMEX-OK_I 1
+declare ff DMEX-H_I 0
+declare ff DMEX-MAXH_I 0
+declare ff DMEX-MAX-REQ 0
+declare ff DMEX-USED_I 2 
+declare ff DMEX-K_I 1
+
+declare cwp DMEX-wait-token
+declare cwp DMEX-DELAYED_I
+
+declare function DMEX-USED_I
+declare function DMEX-RESET
+declare function DMEX-FREE
+declare function DMEX-REQUEST
+declare function CCS-COMMAND-RECEIVED
+declare function INIT-MUTUELLE-EXCLUSION-DATA
+declare function STOP-MONITOR-FREE-REQ-MESS
+declare function DMEX-PROTOCOL-RESETED
+declare function DMEX-DELAYED_I
+;;
+;; OPs
+;;
+declare predicate DMEX-REQUEST
+declare predicate DMEX-ALL-TOKENS-COLLECTED
+declare predicate DMEX-RESET
+declare predicate DMEX-RSC-SIZE
+declare predicate DMEX-FREE
+declare predicate DMEX-FREE
+declare predicate MY-NAME
+declare predicate MY-DMEX-PRIO
+declare predicate CONNECTED-AGENTS
+;;
+declare op_predicate DMEX-CLEAN-DB
+declare op_predicate DMEX-CREATE
+declare op_predicate DMEX-RESET-PROTOCOL
+declare op_predicate DMEX-MONITOR-FREE-REQ-MESS
+declare op_predicate DMEX-FREE-LIST-ACTION
+declare op_predicate DMEX-MUT-EXC-CLEAN-DB
+declare op_predicate DMEX-MUT-EXC-READ-ME
+declare op_predicate DMEX-REQUEST-RSC
+declare op_predicate DMEX-FREE-ACTION
+declare op_predicate DMEX-REQUEST-ACTION
+declare op_predicate DMEX-RELEASE-RSC
+
+;;;;;;;;;;;;;
+;; Statistics
+declare op_predicate STATISTICS-TOKENS
+declare function STAT-TOKEN-PROTO
+declare function DMEX-TOKEN-PROTO
+declare function STAT
+declare function WITH-STAT
+declare ff STAT-INDEX 0

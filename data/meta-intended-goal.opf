@@ -1,0 +1,529 @@
+;;;
+;;; File: /users/oprs/C/ACS/oprs-1.3/data/meta-intended-goal.opf
+;;; $Id$
+;;; Date: Fri Feb 24 18:31:58 1995
+;;; Host: cascade
+;;; OP Editor Version : 1.3.0 Released
+;;; Compiled on cascade (Thu Feb 23 17:35:59 MET 1995)
+;;; OP File Format: 2
+;;;
+(2 
+(
+)
+(|// Apply to all after Roots| (
+(INVOCATION INVOCATION (! (//-APPLY-TO-ALL-AFTER-ROOTS (LAMBDA $VAR $GTEXPR) $LIST)) 8 55 1 80 0 )
+(CONTEXT CONTEXT  30 200 0 60 0 )
+(SETTING SETTING  28 244 0 60 0 )
+(EFFECTS EFFECTS  30 350 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "Apply the same goal to a LISP_LIST list of variables.
+Note the construction of the goal-list LISP_LIST.
+It is a kind of MAP-OP." 6 134 1 60 0 )
+(PROPERTIES PROPERTIES  30 400 0 60 0 )
+) (
+(START START 0 0 512 29)
+(PROCESS S9 0 0 524 104)
+(PROCESS S8 0 0 525 173)
+(PROCESS S4 0 0 526 310)
+(PROCESS S3 0 0 355 218)
+(PROCESS S5 0 0 653 461)
+(END END1 0 0 242 341)
+) (
+(GOAL S5 E0040 S8
+(! (= @LIST (CDR @LIST)))
+((826 483) (775 185) )  0 0 40 0)
+(GOAL S3 E0089 END1
+(! (INTENDED-ALL-GOALS-//-AFTER-ROOTS
+       @GOAL-LIST))
+()  0 0 40 0)
+(GOAL S4 E0156 S5
+(! (= @GOAL-LIST
+      (CURRENT
+          (CONS
+              (APPLY-SUBST-IN-GOAL
+                  $VAR
+                  (CAR @LIST)
+                  $GTEXPR)
+              @GOAL-LIST))))
+()  -109 5 40 0)
+(GOAL S8 E0169 S3
+(? (NULL @LIST))
+()  0 0 40 0)
+(GOAL S8 E0170 S4
+(? (~ (NULL @LIST)))
+()  0 0 40 0)
+(GOAL S9 E0024 S8
+(! (= @GOAL-LIST (. .)))
+()  1 -5 40 0)
+(GOAL START E0012 S9
+(! (= @LIST $LIST))
+()  20 -6 40 0)
+) )
+(|// Apply to all as roots with priority| (
+(INVOCATION INVOCATION (! (//-APPLY-TO-ALL-AS-ROOTS-WITH-PRIORITY (LAMBDA $VAR $GTEXPR) $LIST $L-PR)) 7 86 1 80 0 )
+(CONTEXT CONTEXT  7 200 0 60 0 )
+(SETTING SETTING  7 244 0 60 0 )
+(EFFECTS EFFECTS  7 350 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "Apply the same goal to a LISP_LIST list of variable and a LISP_LIST of priority.
+Note the construction of the goal-list.
+It is a kind of MAP-OP." 5 165 1 60 0 )
+(PROPERTIES PROPERTIES  7 400 0 60 0 )
+) (
+(PROCESS S5 0 0 677 443)
+(PROCESS S8 0 0 602 172)
+(PROCESS S3 0 0 502 249)
+(PROCESS S4 0 0 627 333)
+(END END1 0 0 418 352)
+(PROCESS S9 0 0 602 96)
+(START START 0 0 592 16)
+) (
+(GOAL START E0012 S9
+(! (= @LIST $LIST))
+()  20 -6 40 0)
+(GOAL S9 E0024 S8
+(! (= @GOAL-LIST (. .)))
+()  1 -5 40 0)
+(GOAL S4 E0156 S5
+(! (= @GOAL-LIST
+      (CURRENT
+          (CONS
+              (APPLY-SUBST-IN-GOAL
+                  $VAR
+                  (CAR @LIST)
+                  $GTEXPR)
+              @GOAL-LIST))))
+()  -91 14 40 0)
+(GOAL S3 E0089 END1
+(! (INTENDED-ALL-GOALS-//-AS-ROOTS-WITH-PRIORITY
+       @GOAL-LIST
+       (CURRENT (REVERSE $L-PR))))
+()  -114 -11 40 0)
+(GOAL S8 E0170 S4
+(? (~ (NULL @LIST)))
+()  35 -24 40 0)
+(GOAL S8 E0169 S3
+(? (NULL @LIST))
+()  -19 2 40 0)
+(GOAL S5 E0040 S8
+(! (= @LIST (CDR @LIST)))
+((792 456) (770 189) )  29 12 40 0)
+) )
+(|Apply to all (already built goals)| (
+(INVOCATION INVOCATION (! (INTENDED-ALL $GOAL-LIST)) 8 55 1 80 0 )
+(CONTEXT CONTEXT  30 200 0 60 0 )
+(SETTING SETTING  28 244 0 60 0 )
+(EFFECTS EFFECTS  30 350 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "Post the goal separately." 6 134 1 60 0 )
+(PROPERTIES PROPERTIES  30 400 0 60 0 )
+) (
+(START START 0 0 342 47)
+(PROCESS N1 0 0 356 126)
+(PROCESS N3 0 0 454 293)
+(IF N2 0 0 358 224)
+(THEN N2_T 0 0 344 224)
+(ELSE N2_F 0 0 379 224)
+) (
+(GOAL N2_F E3 N3
+(! (INTENDED-GOAL (CAR @LIST)))
+()  40 -1 40 0)
+(IF N1 E2 N2
+(? (NULL @LIST))
+()  0 0 40 0)
+(ELSE N2 E1 N2_F)
+(THEN N2 E0 N2_T)
+(GOAL N3 E11 N1
+(! (= @LIST (CDR @LIST)))
+((565 301) (565 135) )  5 -19 40 0)
+(GOAL START E0012 N1
+(! (= @LIST $GOAL-LIST))
+()  2 -8 40 0)
+) )
+(|Apply to all as roots| (
+(INVOCATION INVOCATION (! (APPLY-TO-ALL-AS-ROOTS (LAMBDA $VAR $GTEXPR) $LIST)) 10 56 1 80 0 )
+(CONTEXT CONTEXT  30 200 0 60 0 )
+(SETTING SETTING  28 244 0 60 0 )
+(EFFECTS EFFECTS  30 350 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "Apply the same goal to a LISP_LIST list of variables, 
+and intend its as root (before all intentions)." 6 134 1 60 0 )
+(PROPERTIES PROPERTIES  30 400 0 60 0 )
+) (
+(START START 0 0 512 29)
+(PROCESS N0 0 0 524 106)
+(PROCESS N5 0 0 524 193)
+(PROCESS N3 0 0 715 269)
+(IF N1 0 0 525 314)
+(THEN N1_T 0 0 511 314)
+(ELSE N1_F 0 0 546 314)
+) (
+(GOAL N1_F E4 N3
+(! (INTENDED-GOAL-AFTER-BEFORE
+       (APPLY-SUBST-IN-GOAL
+           $VAR (CAR @LIST) $GTEXPR)
+       (. .)
+       $ALL))
+()  52 29 40 0)
+(IF N5 E3 N1
+(? (NULL @LIST))
+()  0 0 40 0)
+(ELSE N1 E2 N1_F)
+(THEN N1 E1 N1_T)
+(GOAL N3 E22 N5
+(! (= @LIST (CDR @LIST)))
+()  43 -8 40 0)
+(GOAL N0 E14 N5
+(! (= $ALL (GET-ALL-INTENTIONS)))
+()  44 -4 40 0)
+(GOAL START E0 N0
+(! (= @LIST $LIST))
+()  0 0 40 0)
+) )
+(|Apply to all before me| (
+(INVOCATION INVOCATION (! (APPLY-TO-ALL-BEFORE-ME (LAMBDA $VAR $GTEXPR) $LIST)) 10 56 1 80 0 )
+(CONTEXT CONTEXT  30 200 0 60 0 )
+(SETTING SETTING  28 244 0 60 0 )
+(EFFECTS EFFECTS  30 350 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "Apply the same goal to a LISP_LIST list of variables, 
+and intend its as root (before the current intention)." 6 134 1 60 0 )
+(PROPERTIES PROPERTIES  30 400 0 60 0 )
+) (
+(START START 0 0 512 29)
+(PROCESS N0 0 0 524 106)
+(PROCESS N5 0 0 524 193)
+(END END0 0 0 299 230)
+(PROCESS N2 0 0 525 289)
+(PROCESS N3 0 0 715 269)
+) (
+(GOAL N3 E22 N5
+(! (= @LIST (CDR @LIST)))
+()  22 -6 40 0)
+(GOAL N2 E7 N3
+(! (INTENDED-GOAL-AFTER-BEFORE
+       (APPLY-SUBST-IN-GOAL
+           $VAR (CAR @LIST) $GTEXPR)
+       (. .)
+       $ME))
+((624 406) )  -135 -20 40 0)
+(GOAL N5 E17 N2
+(? (~ (NULL @LIST)))
+()  -4 20 40 0)
+(GOAL N5 E16 END0
+(? (NULL @LIST))
+()  0 0 40 0)
+(GOAL N0 E14 N5
+(! (= $ME
+      (CONS
+          (GET-CURRENT-INTENTION)
+          (. .))))
+()  0 0 40 0)
+(GOAL START E0 N0
+(! (= @LIST $LIST))
+()  0 0 40 0)
+) )
+(|Apply to all before other| (
+(INVOCATION INVOCATION (! (APPLY-TO-ALL-BEFORE-OTHER (LAMBDA $VAR $GTEXPR) $LIST)) 10 56 1 80 0 )
+(CONTEXT CONTEXT  30 200 0 60 0 )
+(SETTING SETTING  28 244 0 60 0 )
+(EFFECTS EFFECTS  30 350 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "Apply the same goal to a LISP_LIST list of variables, 
+and intend its as root (before all intentions)." 6 134 1 60 0 )
+(PROPERTIES PROPERTIES  30 400 0 60 0 )
+) (
+(START START 0 0 512 29)
+(PROCESS N0 0 0 524 106)
+(END END0 0 0 299 230)
+(PROCESS N2 0 0 525 289)
+(PROCESS N3 0 0 715 269)
+) (
+(GOAL N3 E4 N0
+(! (= @LIST (CDR @LIST)))
+()  8 -11 40 0)
+(GOAL N2 E7 N3
+(! (INTENDED-GOAL-AFTER-BEFORE
+       (APPLY-SUBST-IN-GOAL
+           $VAR (CAR @LIST) $GTEXPR)
+       (. .)
+       (GET-OTHER-INTENTIONS)))
+((624 406) )  -135 -20 40 0)
+(GOAL N0 E6 N2
+(? (~ (NULL @LIST)))
+()  -11 15 40 0)
+(GOAL N0 E5 END0
+(? (NULL @LIST))
+()  0 0 40 0)
+(GOAL START E0 N0
+(! (= @LIST $LIST))
+()  0 0 40 0)
+) )
+(|Apply to all with priority| (
+(INVOCATION INVOCATION (! (APPLY-TO-ALL-WITH-PRIORITY (LAMBDA $VAR $GTEXPR) $LIST $PRIOR)) 8 55 1 80 0 )
+(CONTEXT CONTEXT  30 200 0 60 0 )
+(SETTING SETTING  28 244 0 60 0 )
+(EFFECTS EFFECTS  30 350 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "Apply the same goal to a LISP_LIST list of variables, 
+and intend its respectively with the priority in $PRIOR." 6 134 1 60 0 )
+(PROPERTIES PROPERTIES  30 400 0 60 0 )
+) (
+(START START 0 0 512 29)
+(PROCESS S9 0 0 524 104)
+(PROCESS S8 0 0 525 173)
+(PROCESS S4 0 0 541 274)
+(END END0 0 0 299 230)
+(PROCESS S5 0 0 576 385)
+(PROCESS N9 0 0 696 273)
+) (
+(GOAL N9 E10 S8
+(! (= @PRIOR (CDR @PRIOR)))
+((691 180) )  0 0 40 0)
+(GOAL S5 E9 N9
+(! (= @LIST (CDR @LIST)))
+((713 385) )  0 0 40 0)
+(GOAL S4 E0156 S5
+(! (INTENDED-GOAL-WITH-PRIORITY
+       (APPLY-SUBST-IN-GOAL
+           $VAR (CAR @LIST) $GTEXPR)
+       (TERM-CAR @PRIOR)))
+()  -110 -13 40 0)
+(GOAL S8 E0169 END0
+(? (NULL @LIST))
+()  0 0 40 0)
+(GOAL S8 E0170 S4
+(? (& (~ (NULL @LIST))
+      (~ (NULL @PRIOR))))
+()  0 0 40 0)
+(GOAL S9 E8 S8
+(! (= @PRIOR $PRIOR))
+()  0 0 40 0)
+(GOAL START E0012 S9
+(! (= @LIST $LIST))
+()  20 -6 40 0)
+) )
+(|Apply to all| (
+(INVOCATION INVOCATION (! (APPLY-TO-ALL (LAMBDA $VAR $GTEXPR) $LIST)) 6 55 1 80 0 )
+(CONTEXT CONTEXT  30 200 0 60 0 )
+(SETTING SETTING  28 244 0 60 0 )
+(EFFECTS EFFECTS  30 350 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "Apply the same goal to a LISP_LIST list of variables." 6 134 1 60 0 )
+(PROPERTIES PROPERTIES  30 400 0 60 0 )
+) (
+(START START 0 0 512 29)
+(PROCESS S9 0 0 524 104)
+(PROCESS S4 0 0 543 264)
+(END END0 0 0 299 230)
+(PROCESS S5 0 0 576 385)
+) (
+(GOAL S5 E11 S9
+(! (= @LIST (CDR @LIST)))
+((699 327) (694 126) )  0 0 40 0)
+(GOAL S4 E0156 S5
+(! (INTENDED-GOAL
+       (APPLY-SUBST-IN-GOAL
+           $VAR (CAR @LIST) $GTEXPR)))
+()  -110 -13 40 0)
+(GOAL S9 E13 END0
+(? (NULL @LIST))
+()  0 0 40 0)
+(GOAL S9 E12 S4
+(? (~ (NULL @LIST)))
+()  0 0 40 0)
+(GOAL START E0012 S9
+(! (= @LIST $LIST))
+()  20 -6 40 0)
+) )
+(|Build goal list without var| (
+(INVOCATION INVOCATION (! (BUILD-GOAL-LIST-NO-VAR $LIST-GTEXPR $LIST-GOAL)) 8 55 1 80 0 )
+(CONTEXT CONTEXT  30 200 0 60 0 )
+(SETTING SETTING  28 244 0 60 0 )
+(EFFECTS EFFECTS  30 350 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "Build a Goal List using a LISP_LIST list of gtexpr." 8 110 1 60 0 )
+(PROPERTIES PROPERTIES  30 400 0 60 0 )
+) (
+(START START 0 0 512 29)
+(PROCESS S9 0 0 524 104)
+(PROCESS S8 0 0 525 173)
+(PROCESS S4 0 0 526 310)
+(PROCESS S3 0 0 355 218)
+(PROCESS S5 0 0 653 461)
+(END END1 0 0 242 341)
+) (
+(GOAL S5 E0040 S8
+(! (= @LIST (CDR @LIST)))
+((826 483) (775 185) )  0 0 40 0)
+(GOAL S3 E0089 END1
+(! (= $LIST-GOAL (REVERSE @GOAL-LIST)))
+()  -13 -9 40 0)
+(GOAL S4 E0156 S5
+(! (= @GOAL-LIST
+      (CONS
+          (BUILD-GOAL
+              (TERM-CAR @LIST))
+          @GOAL-LIST)))
+()  -22 5 40 0)
+(GOAL S8 E0169 S3
+(? (NULL @LIST))
+()  0 0 40 0)
+(GOAL S8 E0170 S4
+(? (~ (NULL @LIST)))
+()  0 0 40 0)
+(GOAL S9 E0024 S8
+(! (= @GOAL-LIST (. .)))
+()  20 -7 40 0)
+(GOAL START E0012 S9
+(! (= @LIST $LIST-GTEXPR))
+()  20 -6 40 0)
+) )
+(|Build goal list| (
+(INVOCATION INVOCATION (! (BUILD-GOAL-LIST (LAMBDA $VAR $GTEXPR) $LIST-VAR $LIST-GOAL)) 8 55 1 80 0 )
+(CONTEXT CONTEXT  30 200 0 60 0 )
+(SETTING SETTING  28 244 0 60 0 )
+(EFFECTS EFFECTS  30 350 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "Build a Goal List using the same goal to 
+a LISP_LIST list of variables." 8 110 1 60 0 )
+(PROPERTIES PROPERTIES  30 400 0 60 0 )
+) (
+(START START 0 0 512 29)
+(PROCESS N1 0 0 524 104)
+(PROCESS N2 0 0 525 173)
+(PROCESS N4 0 0 659 384)
+(END END0 0 0 303 342)
+(IF N3 0 0 524 264)
+(THEN N3_T 0 0 510 264)
+(ELSE N3_F 0 0 545 264)
+) (
+(GOAL N3_F E4 N4
+(! (= @GOAL-LIST
+      (CONS
+          (APPLY-SUBST-IN-GOAL
+              $VAR
+              (CAR @LIST)
+              $GTEXPR)
+          @GOAL-LIST)))
+()  26 -1 40 0)
+(GOAL N3_T E3 END0
+(! (= $LIST-GOAL (REVERSE @GOAL-LIST)))
+()  -32 1 40 0)
+(IF N2 E2 N3
+(? (NULL @LIST))
+()  0 0 40 0)
+(ELSE N3 E1 N3_F)
+(THEN N3 E0 N3_T)
+(GOAL N4 E0040 N2
+(! (= @LIST (CDR @LIST)))
+((775 393) (775 182) )  6 -4 40 0)
+(GOAL N1 E0024 N2
+(! (= @GOAL-LIST (. .)))
+()  17 -5 40 0)
+(GOAL START E0012 N1
+(! (= @LIST $LIST-VAR))
+()  14 -6 40 0)
+) )
+(|Meta-Intend all goals // after Roots| (
+(INVOCATION INVOCATION (! (INTENDED-ALL-GOALS-//-AFTER-ROOTS $X)) 30 100 1 80 0 )
+(CONTEXT CONTEXT  30 200 0 60 0 )
+(SETTING SETTING  33 251 0 60 0 )
+(EFFECTS EFFECTS  30 350 0 60 0 )
+(ACTION ACTION (INTEND-ALL-GOALS-//-AFTER-ROOTS $X) 459 97 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "Intend all the Goals in $X (a Goal LISP_LIST)
+ after all the roots of the intention graph." 21 162 1 60 0 )
+(PROPERTIES PROPERTIES  30 400 0 60 0 )
+) (
+) (
+) )
+(|Meta-Intend all goals // after| (
+(INVOCATION INVOCATION (! (INTENDED-ALL-GOALS-//-AFTER $X $AFTER)) 30 100 1 80 0 )
+(CONTEXT CONTEXT  30 200 0 60 0 )
+(SETTING SETTING  33 251 0 60 0 )
+(EFFECTS EFFECTS  30 350 0 60 0 )
+(ACTION ACTION (INTEND-ALL-GOALS-//-AFTER $X $AFTER) 459 97 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "Intend all the Goals in $X (a Goal LISP_LIST)
+ after all the intentions in $after." 21 162 1 60 0 )
+(PROPERTIES PROPERTIES  30 400 0 60 0 )
+) (
+) (
+) )
+(|Meta-Intend all goals // as Roots with priority| (
+(INVOCATION INVOCATION (! (INTENDED-ALL-GOALS-//-AS-ROOTS-WITH-PRIORITY $X $P)) 30 100 1 80 0 )
+(CONTEXT CONTEXT  30 200 0 60 0 )
+(SETTING SETTING  33 251 0 60 0 )
+(EFFECTS EFFECTS  30 350 0 60 0 )
+(ACTION ACTION (INTEND-ALL-GOALS-//-AS-ROOTS-WITH-PRIORITY $X $P) 459 97 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "Intend all the Goals in $X (a LISP_LIST of Goal) with
+the priority in $P (a LISP_LIST of integer priority) 
+as  roots of the intention graph." 28 146 1 60 0 )
+(PROPERTIES PROPERTIES  30 400 0 60 0 )
+) (
+) (
+) )
+(|Meta-Intend all goals // as roots| (
+(INVOCATION INVOCATION (! (INTENDED-ALL-GOALS-//-AS-ROOTS $X)) 30 100 1 80 0 )
+(CONTEXT CONTEXT  30 200 0 60 0 )
+(SETTING SETTING  33 251 0 60 0 )
+(EFFECTS EFFECTS  30 350 0 60 0 )
+(ACTION ACTION (INTEND-ALL-GOALS-//-AS-ROOTS $X) 459 97 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "Intend all the Goals in $X (a Goal LISP_LIST)
+ as roots of the intention graph." 21 162 1 60 0 )
+(PROPERTIES PROPERTIES  30 400 0 60 0 )
+) (
+) (
+) )
+(|Meta-Intend all goals //| (
+(INVOCATION INVOCATION (! (INTENDED-ALL-GOALS-// $X)) 30 100 1 80 0 )
+(CONTEXT CONTEXT  30 200 0 60 0 )
+(SETTING SETTING  33 251 0 60 0 )
+(EFFECTS EFFECTS  30 350 0 60 0 )
+(ACTION ACTION (INTEND-ALL-GOALS-// $X) 459 97 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "Intend all the Goals in $X (a Goal LISP_LIST)
+ after the current intention." 21 162 1 60 0 )
+(PROPERTIES PROPERTIES  30 400 0 60 0 )
+) (
+) (
+) )
+(|Meta-Intend goal after before with priority| (
+(INVOCATION INVOCATION (! (INTENDED-GOAL-WITH-PRIORITY-AFTER-BEFORE $X $P $AFTER $BEFORE)) 14 54 1 80 0 )
+(CONTEXT CONTEXT  30 200 0 60 0 )
+(SETTING SETTING  33 251 0 60 0 )
+(EFFECTS EFFECTS  30 350 0 60 0 )
+(ACTION ACTION (INTEND-GOAL-WITH-PRIORITY-AFTER-BEFORE
+    $X $P $AFTER $BEFORE) 364 104 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "Intend the Goal in $X (a LISP_CAR Goal)
+ with the priority $P, after all the intentions
+ in $AFTER, and before all in $BEFORE." 21 162 1 60 0 )
+(PROPERTIES PROPERTIES  30 400 0 60 0 )
+) (
+) (
+) )
+(|Meta-Intend goal after before| (
+(INVOCATION INVOCATION (! (INTENDED-GOAL-AFTER-BEFORE $X $AFTER $BEFORE)) 14 54 1 80 0 )
+(CONTEXT CONTEXT  30 200 0 60 0 )
+(SETTING SETTING  33 251 0 60 0 )
+(EFFECTS EFFECTS  30 350 0 60 0 )
+(ACTION ACTION (INTEND-GOAL-AFTER-BEFORE $X $AFTER $BEFORE) 364 104 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "Intend the Goal in $X (a LISP_CAR Goal)
+ after all the intentions in $AFTER, and before all in $BEFORE." 21 162 1 60 0 )
+(PROPERTIES PROPERTIES  30 400 0 60 0 )
+) (
+) (
+) )
+(|Meta-Intend goal with priority| (
+(INVOCATION INVOCATION (! (INTENDED-GOAL-WITH-PRIORITY $X $P)) 14 54 1 80 0 )
+(CONTEXT CONTEXT  30 200 0 60 0 )
+(SETTING SETTING  33 251 0 60 0 )
+(EFFECTS EFFECTS  30 350 0 60 0 )
+(ACTION ACTION (INTEND-GOAL-WITH-PRIORITY $X $P) 364 104 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "Intend the Goal in $X (a LISP_CAR Goal)
+ with the priority $P, after the current intention." 21 162 1 60 0 )
+(PROPERTIES PROPERTIES  30 400 0 60 0 )
+) (
+) (
+) )
+(|Meta-Intend goal| (
+(INVOCATION INVOCATION (! (INTENDED-GOAL $X)) 14 54 1 80 0 )
+(CONTEXT CONTEXT  30 200 0 60 0 )
+(SETTING SETTING  33 251 0 60 0 )
+(EFFECTS EFFECTS  30 350 0 60 0 )
+(ACTION ACTION (INTEND-GOAL $X) 364 104 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "Intend the Goal in $X (a LISP_CAR Goal),
+ after the current intention." 21 162 1 60 0 )
+(PROPERTIES PROPERTIES  30 400 0 60 0 )
+) (
+) (
+) )
+)

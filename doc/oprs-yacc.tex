@@ -1,0 +1,286 @@
+goal:
+        gtexpr
+        ;
+
+fact:
+        gexpr
+        ;
+
+invocation:
+            gmexpr
+            ;
+
+context:
+        |
+          gmexpr
+        ;
+
+setting:
+        |
+          gmexpr
+        ;
+
+properties:
+        | OP_TK properties_list CP_TK
+        ;
+
+properties_list:
+         | properties_list property
+        ;
+
+documentation:
+        | QSTRING_TK
+        ;
+
+effects:
+        | list_par_gtexpr
+        ;
+
+action:
+            action_expr
+        ;
+
+action_expr:
+        OP_TK SPEC_ACT_TK  variable
+                simple_action CP_TK
+        | OP_TK SPEC_ACT_TK  OP_TK var_list CP_TK
+                simple_action CP_TK
+        | simple_action
+;
+
+simple_action:
+        OP_TK   function
+                term_list CP_TK
+;
+
+op_name:
+        SYMBOL_TK
+        ;
+
+
+top: OP_TK DEFOP_TK op_name
+               fields_list
+        CP_TK
+;
+
+fields_list: invocation_field other_fields_list
+
+other_fields_list: field
+           | other_fields_list field
+;
+
+field: body_field
+     | action_field
+     | context_field
+     | setting_field
+     | properties_field
+     | documentation_field
+     | effects_field
+;
+
+invocation_field: TFT_INVOCATION_TK invocation
+;
+
+context_field: TFT_CONTEXT_TK context
+;
+
+setting_field: TFT_SETTING_TK setting
+;
+
+properties_field: TFT_PROPERTIES_TK properties
+;
+
+documentation_field: TFT_DOCUMENTATION_TK documentation
+;
+
+effects_field: TFT_EFFECTS_TK effects
+;
+
+action_field: TFT_ACTION_TK action
+;
+
+body_field: TFT_BODY_TK  body
+;
+
+body: OP_TK list_inst CP_TK
+;
+
+list_inst:
+         | list_inst inst
+;
+
+inst: top_gtexpr
+    | if_inst
+    | while_inst
+    | do_inst
+    | par_inst
+    | comment
+    | goto_inst
+    | label_inst
+    | break_inst
+;
+
+top_gtexpr: gtexpr
+;
+
+comment: COMMENT_TK
+;
+
+goto_inst: GOTO_TK SYMBOL_TK
+;
+
+label_inst: LABEL_TK SYMBOL_TK
+;
+
+break_inst: BREAK_TK
+;
+
+if_part_inst: gtexpr list_inst
+	| gtexpr list_inst ELSE_TK list_inst
+	| gtexpr list_inst ELSEIF_TK if_part_inst
+;
+
+if_inst: OP_TK IF_TK if_part_inst CP_TK
+;
+
+while_inst: OP_TK WHILE_TK gtexpr list_inst CP_TK
+;
+
+do_inst: OP_TK DO_TK list_inst WHILE_TK gtexpr CP_TK
+;
+
+par_inst: OP_TK PAR_TK body_list CP_TK
+;
+
+body_list:
+         | body_list body
+;
+
+gmexpr: lmexpr
+        | mexpr
+        ;
+
+lmexpr:
+        OP_TK META_NOT_TK gmexpr CP_TK
+        | OP_TK  META_OR_TK list_gmexpr CP_TK
+        | OP_TK META_AND_TK list_gmexpr CP_TK
+        ;
+
+list_gmexpr:
+        gmexpr
+        | list_gmexpr gmexpr
+        ;
+
+mexpr:
+        gexpr
+        | gtexpr
+        ;
+
+gtexpr:
+        ltexpr
+        | texpr
+        ;
+
+ltexpr:
+        OP_TK NOT_TK gtexpr CP_TK
+        | OP_TK OR_TK list_gtexpr CP_TK
+        | OP_TK AND_TK list_gtexpr CP_TK
+        ;
+
+list_par_gtexpr:
+        OP_TK list_gtexpr CP_TK
+        | OP_TK CP_TK
+        ;
+
+list_gtexpr:
+        gtexpr
+        | list_gtexpr gtexpr
+        ;
+
+texpr:
+        OP_TK temp_op gexpr CP_TK
+        ;
+
+temp_op:
+          WAIT_TK
+        | ACHIEVE_TK
+        | MAINTAIN_TK
+        | PRESERVE_TK
+        | TEMP_CONCLUDE_TK
+        | RETRACT_TK
+        | TEST_TK
+        ;
+
+gexpr:
+         lexpr
+        | expr
+        | variable
+        ;
+
+lexpr:
+        OP_TK NOT_TK OP_TK OR_TK  list_gexpr CP_TK CP_TK
+        | OP_TK  NOT_TK OP_TK AND_TK  list_gexpr CP_TK CP_TK
+        | OP_TK OR_TK list_gexpr CP_TK
+        | OP_TK AND_TK list_gexpr CP_TK
+        ;
+
+list_gexpr:
+        gexpr
+        | list_gexpr gexpr
+        ;
+
+expr:
+        OP_TK predicate term_list CP_TK
+        |  OP_TK NOT_TK OP_TK predicate
+                term_list CP_TK CP_TK
+        |  OP_TK NOT_TK OP_TK NOT_TK OP_TK
+                predicate term_list CP_TK CP_TK CP_TK
+        ;
+
+predicate:
+        SYMBOL_TK
+        ;
+
+function:
+        SYMBOL_TK
+        ;
+
+term_list:
+        | term_list term
+        ;
+
+file_name: QSTRING_TK
+        ;
+
+term:
+        INTEGER_TK
+        | POINTER_TK
+        | REAL_TK
+        | QSTRING_TK
+        | SYMBOL_TK
+        | variable
+        | OP_TK function term_list CP_TK
+        | OP_TK var_list CP_TK
+        | OP_LISP_TK term_list CP_LISP_TK
+        | OP_ARRAY_TK term_list CP_ARRAY_TK
+        | gtexpr
+        | lexpr
+        ;
+
+var_list:
+        variable
+        | var_list variable
+        ;
+
+variable:
+        LOGICAL_VAR_TK
+        | PROGRAM_VAR_TK
+        ;
+
+property:
+        OP_TK prop_name term CP_TK
+        ;
+
+prop_name:
+        SYMBOL_TK
+        ;

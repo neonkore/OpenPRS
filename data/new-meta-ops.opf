@@ -1,0 +1,290 @@
+;;;
+;;; File: /RIA/idefix/users/felix/C/LAAS/oprs-1.1/data/new-meta-ops.opf
+;;; $Id$
+;;; Date: Mon Dec 20 12:13:59 1993
+;;; Host: spike
+;;; OP Editor Version : 1.1.16
+;;; Compiled on spike (Mon Dec 20 11:09:16 MET 1993)
+;;; OP File Format: 2
+;;;
+(2 
+(
+)
+(|Called From Meta Selector With Priority| (
+(INVOCATION INVOCATION (! (META-INTENDED-ALL-WITH-PRIORITY
+       $OPS-TO-INTEND $INTENDED-DECISION-PROCEDURES)) 4 73 1 80 0 )
+(CONTEXT CONTEXT  10 110 1 60 0 )
+(SETTING SETTING  10 210 1 60 0 )
+(EFFECTS EFFECTS () 10 310 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "This meta OP will intend applicable 
+OPs based on their priority." 10 410 1 60 0 )
+(PROPERTIES PROPERTIES () 10 360 1 60 0 )
+) (
+(PROCESS S13 0 0 712 108)
+(PROCESS S6 0 0 586 202)
+(END END3 0 0 777 206)
+(PROCESS S3 0 0 383 351)
+(PROCESS S7 0 0 706 314)
+(PROCESS S14 0 0 264 553)
+(PROCESS S15 0 0 451 520)
+(PROCESS S16 0 0 543 492)
+(PROCESS S17 0 0 793 468)
+(PROCESS S8 0 0 1097 694)
+(START START 0 0 704 29)
+) (
+(GOAL S13 E0006 S6
+(? (~ (NULL @OPS-TO-INTEND)))
+((602 152) )  -20 -2 40 0)
+(GOAL S13 E0004 END3
+(? (NULL @OPS-TO-INTEND))
+()  40 -9 40 0)
+(GOAL S6 E0034 S3
+(? (PROPERTY-P
+       PRIORITY (CAR @OPS-TO-INTEND)))
+()  -73 4 40 0)
+(GOAL S6 E0037 S7
+(? (~ (PROPERTY-P
+          PRIORITY
+          (CAR @OPS-TO-INTEND))))
+()  96 -5 40 0)
+(GOAL S3 E0098 S14
+(? (NULL $INTENDED-DECISION-PROCEDURES))
+((300 416) )  -13 -5 40 0)
+(GOAL S3 E0100 S15
+(? (~ (NULL
+          $INTENDED-DECISION-PROCEDURES)))
+()  16 17 40 0)
+(GOAL S7 E0104 S16
+(? (NULL $INTENDED-DECISION-PROCEDURES))
+()  -60 -20 40 0)
+(GOAL S7 E0106 S17
+(? (~ (NULL
+          $INTENDED-DECISION-PROCEDURES)))
+()  65 13 40 0)
+(GOAL S14 E0103 S8
+(! (INTENDED-OP-WITH-PRIORITY
+       (CAR @OPS-TO-INTEND)
+       (PROPERTY-OF
+           PRIORITY
+           (CAR @OPS-TO-INTEND))))
+((276 825) (1100 824) )  -73 -4 40 0)
+(GOAL S15 E0102 S8
+(! (INTENDED-OP-WITH-PRIORITY-AFTER
+       (CAR @OPS-TO-INTEND)
+       (PROPERTY-OF
+           PRIORITY
+           (CAR @OPS-TO-INTEND))
+       $INTENDED-DECISION-PROCEDURES))
+((364 771) (955 771) )  133 -17 40 0)
+(GOAL S16 E0105 S8
+(! (INTENDED-OP (CAR @OPS-TO-INTEND)))
+((510 613) (536 658) (1011 658) )  154 -11 40 0)
+(GOAL S17 E0109 S8
+(! (INTENDED-OP-AFTER
+       (CAR @OPS-TO-INTEND)
+       $INTENDED-DECISION-PROCEDURES))
+((658 576) (1027 577) )  -12 -14 40 0)
+(GOAL START E0001 S13
+(! (= @OPS-TO-INTEND $OPS-TO-INTEND))
+()  0 0 40 0)
+(GOAL S8 E0011 S13
+(! (= @OPS-TO-INTEND
+      (CURRENT (CDR @OPS-TO-INTEND))))
+((1241 579) (942 118) )  22 -141 40 0)
+) )
+(|Meta Selector (facts preferred and ordered)| (
+(INVOCATION INVOCATION (SOAK $X) 11 46 1 80 0 )
+(CONTEXT CONTEXT (|| (> (LENGTH $X) 1)
+    (& (EQUAL (LENGTH $X) 1)
+         (IS-FACT-INVOKED (FIRST $X))
+         (NOT-AN-INSTANCE-OF-ME (FIRST $X)))) 3 100 1 60 0 )
+(SETTING SETTING  10 210 0 60 0 )
+(EFFECTS EFFECTS () 10 310 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "This Meta OP is used whenever there are one or more than
+one OP applicable. If there are fact invoked OPs, they
+are all intended (and the goal invoked OPs are discarded), otherwise
+it will randomly choose one of the goal invoked OPs. 
+It intends the fact-invoked-ops which are decision-procedure
+as root of the graph, and the other ones after the already 
+intended op-instance which are decision procedure." 11 328 1 60 0 )
+(PROPERTIES PROPERTIES ((DECISION-PROCEDURE T)) 11 247 1 60 0 )
+) (
+(START START 0 0 474 30)
+(PROCESS N1 0 0 487 100)
+(PROCESS N3 0 0 678 161)
+(PROCESS N2 0 0 304 183)
+(PROCESS N8 0 0 680 237)
+(END END5 0 0 299 278)
+(PROCESS N9 0 0 681 323)
+(PROCESS N17 0 0 680 403)
+(PROCESS N18 0 0 681 507)
+(PROCESS N11 0 0 683 616)
+) (
+(GOAL START |e7750| N1
+(! (= $F
+      (CURRENT
+          (FACT-INVOKED-OPS-OF $X))))
+()  0 0 40 0)
+(GOAL N1 |Mike-Error| N3
+(? (~ (NULL $F)))
+()  37 -6 40 0)
+(GOAL N1 |e7751| N2
+(? (NULL $F))
+()  10 -6 40 0)
+(GOAL N3 E3 N8
+(! (= $DECISION-PROCEDURES
+      (GET-THE-DECISION-PROCEDURES-OF
+          $F)))
+()  0 0 40 0)
+(GOAL N2 E5 END5
+(! (INTENDED-OP
+       (CURRENT (SELECT-RANDOMLY $X))))
+()  0 0 40 0)
+(GOAL N8 E4 N9
+(! (= $R
+      (LIST-DIFFERENCE
+          $F $DECISION-PROCEDURES)))
+()  0 0 40 0)
+(GOAL N9 E10 N17
+(! (= $INTENDED-DECISION-PROCEDURES
+      (GET-INTENDED-DECISION-PROCEDURES)))
+()  61 -1 40 0)
+(GOAL N17 E0 N18
+(! (INTENDED-ALL-OPS-AFTER
+       $R
+       $INTENDED-DECISION-PROCEDURES))
+()  0 0 40 0)
+(GOAL N18 E12 N11
+(! (INTENDED-ALL-OPS-AS-ROOT
+       $DECISION-PROCEDURES))
+()  -2 3 40 0)
+) )
+(|Meta Selector (facts preferred)| (
+(INVOCATION INVOCATION (SOAK $X) 11 46 1 80 0 )
+(CONTEXT CONTEXT (> (LENGTH $X) 1) 11 137 1 60 0 )
+(SETTING SETTING  10 210 0 60 0 )
+(EFFECTS EFFECTS () 10 310 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "This Meta OP is used whenever there are more than one OP applicable. 
+ If there are fact invoked OPs, they are all intended (and the goal 
+ invoked OPs are discarded), otherwise it will randomly choose one of
+ the goal invoked OPs. As a result, the behavior of the kernel is
+ very reactive. Note that it can apply to itself without any problem
+ because this very Meta OP *is* fact invoked so will be intented by
+ its grand brother." 11 298 1 60 0 )
+(PROPERTIES PROPERTIES ((DECISION-PROCEDURE T)) 10 220 1 60 0 )
+) (
+(START START 0 0 334 31)
+(PROCESS N1 0 0 345 93)
+(END END1 0 0 240 286)
+(END END2 0 0 452 286)
+(IF N0 0 0 345 162)
+(THEN N0_T 0 0 331 162)
+(ELSE N0_F 0 0 366 162)
+) (
+(GOAL N0_F E6 END2
+(! (INTENDED-ALL-OPS $F))
+((468 171) )  -1 40 40 0)
+(GOAL N0_T E3 END1
+(! (INTENDED-OP (SELECT-RANDOMLY $X)))
+((257 171) )  -1 40 40 0)
+(IF N1 E2 N0
+(! (NULL $F))
+()  -1 -7 40 0)
+(ELSE N0 E1 N0_F)
+(THEN N0 E0 N0_T)
+(GOAL START |e7750| N1
+(! (= $F (FACT-INVOKED-OPS-OF $X)))
+()  9 -8 40 0)
+) )
+(|Meta Selector (only facts)| (
+(INVOCATION INVOCATION (FACT-INVOKED-OPS $F) 11 46 1 80 0 )
+(CONTEXT CONTEXT (|| (> (LENGTH $F) 1)
+    (& (EQUAL (LENGTH $F) 1)
+         (NOT-AN-INSTANCE-OF-ME (FIRST $F)))) 3 100 1 60 0 )
+(SETTING SETTING  10 210 0 60 0 )
+(EFFECTS EFFECTS () 10 310 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "This Meta OP is used whenever there are one or more than
+one Fact Invoked OP applicable.
+It intends the fact-invoked-ops which are decision-procedure
+as root of the graph, and the other ones after the already 
+intended op-instance which are decision procedure." 11 328 1 60 0 )
+(PROPERTIES PROPERTIES ((DECISION-PROCEDURE T)) 11 247 1 60 0 )
+) (
+(PROCESS N11 0 0 521 595)
+(PROCESS N18 0 0 522 475)
+(PROCESS N17 0 0 522 340)
+(PROCESS N9 0 0 523 234)
+(PROCESS N8 0 0 522 127)
+(START START 0 0 510 18)
+) (
+(GOAL N18 E12 N11
+(! (INTENDED-ALL-OPS-AS-ROOT
+       $DECISION-PROCEDURES))
+()  -2 3 40 0)
+(GOAL N17 E0 N18
+(! (INTENDED-ALL-OPS-AFTER
+       $R
+       $INTENDED-DECISION-PROCEDURES))
+()  18 11 40 0)
+(GOAL N9 E10 N17
+(! (= $INTENDED-DECISION-PROCEDURES
+      (GET-INTENDED-DECISION-PROCEDURES)))
+()  61 -1 40 0)
+(GOAL N8 E4 N9
+(! (= $R
+      (LIST-DIFFERENCE
+          $F $DECISION-PROCEDURES)))
+()  0 0 40 0)
+(GOAL START E3 N8
+(! (= $DECISION-PROCEDURES
+      (GET-THE-DECISION-PROCEDURES-OF
+          $F)))
+()  0 0 40 0)
+) )
+(|Meta Selector With Priority| (
+(INVOCATION INVOCATION (FACT-INVOKED-OPS $FACT-INVOKED-OPS) 11 45 1 80 0 )
+(CONTEXT CONTEXT (|| (> (LENGTH $FACT-INVOKED-OPS) 1)
+    (& (EQUAL (LENGTH $FACT-INVOKED-OPS) 1)
+         (~ (PROPERTY-P
+                META-SELECTOR-WITH-PRIORITY
+                (FIRST $FACT-INVOKED-OPS))))) 12 100 1 60 0 )
+(SETTING SETTING  10 210 1 60 0 )
+(EFFECTS EFFECTS () 10 310 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "Meta OP used whenever there is more than
+one fact invoked OP applicable." 10 410 1 60 0 )
+(PROPERTIES PROPERTIES ((DECISION-PROCEDURE T)
+ (META-SELECTOR-WITH-PRIORITY T)) 10 360 1 60 0 )
+) (
+(START START 0 0 628 17)
+(PROCESS S3 0 0 627 119)
+(PROCESS S2 0 0 608 232)
+(PROCESS S11 0 0 617 323)
+(PROCESS S4 0 0 618 434)
+(END END6 0 0 601 555)
+) (
+(GOAL START E0002 S3
+(! (= $DECISION-PROCEDURES
+      (GET-THE-DECISION-PROCEDURES-OF
+          $FACT-INVOKED-OPS)))
+()  0 0 40 0)
+(GOAL S3 E0021 S2
+(! (= $R
+      (LIST-DIFFERENCE
+          $FACT-INVOKED-OPS
+          $DECISION-PROCEDURES)))
+()  0 0 40 0)
+(GOAL S2 E0096 S11
+(! (= $INTENDED-DECISION-PROCEDURES
+      (GET-INTENDED-DECISION-PROCEDURES)))
+()  0 0 40 0)
+(GOAL S11 E0097 S4
+(! (META-INTENDED-ALL-WITH-PRIORITY
+       $R
+       $INTENDED-DECISION-PROCEDURES))
+()  0 0 40 0)
+(GOAL S4 E0026 END6
+(! (INTENDED-ALL-OPS-AS-ROOT
+       $DECISION-PROCEDURES))
+()  1 -13 40 0)
+) )
+)

@@ -1,0 +1,166 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% -*- Mode: latex -*- %%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Copyright (c) 1991-2003 Francois Felix Ingrand.
+%% All rights reserved.
+%%
+%% Redistribution and use in source and binary forms, with or without
+%% modification, are permitted provided that the following conditions
+%% are met:
+%%
+%%    - Redistributions of source code must retain the above copyright
+%%      notice, this list of conditions and the following disclaimer.
+%%    - Redistributions in binary form must reproduce the above
+%%      copyright notice, this list of conditions and the following
+%%      disclaimer in the documentation and/or other materials provided
+%%      with the distribution.
+%%
+%% THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+%% "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+%% LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+%% FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+%% COPYRIGHT HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+%% INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+%% BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+%% LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+%% CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+%% LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+%% ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+%% POSSIBILITY OF SUCH DAMAGE.
+%%
+%% $Id$
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\OPRS}{OPRS}
+
+\newcommand{\COPRS}{OPRS}
+    
+\newcommand{\CPK}{OPRS Kernel}
+    
+\newcommand{\XOPRS}{X-OPRS}
+
+\newcommand{\XPK}{X-OPRS Kernel}
+
+\newcommand{\PK}{OPRS Kernel}
+
+\newcommand{\CXPK}{OPRS Kernel and the X-OPRS Kernel}
+
+\newcommand{\OPRSS}{OPRS-Server}
+
+\newcommand{\OP}{OP}
+
+\newcommand{\OPEditor}{OP Editor}
+
+\newcommand{\OPE}{OP Editor}
+
+\newcommand{\MP}{Message Passer}
+
+\newcommand{\OPC}{OP Compiler}
+
+\newcommand{\MPK}{Message Passer Killer}
+
+\newcommand{\COPRSDE}{OPRS Development Environment}
+
+\newcommand{\COPRSAE}{OPRS Application Environment}
+
+
+\newcommand{\dfn}[1]{\emph{#1}}
+
+\newcommand{\pxref}[1]{see [#1], \S\ref{#1}, page \pageref{#1}}
+\newcommand{\xref}[1]{See [#1], \S\ref{#1}, page \pageref{#1}}
+\newcommand{\nxref}[1]{[#1], \S\ref{#1}, page \pageref{#1}}
+
+\newcommand{\node}[1]{\label{#1}}
+
+\newcommand{\cpindex}[1]{\index[cp]{#1}}
+\newcommand{\fnindex}[1]{\index[fn]{#1}}
+\newcommand{\epindex}[1]{\index[ep]{#1}}
+\newcommand{\efindex}[1]{\index[ef]{#1}}
+\newcommand{\vrindex}[1]{\index[vr]{#1}}
+\newcommand{\pgindex}[1]{\index[pg]{#1}}
+
+\newcommand{\strong}[1]{\textbf{`#1'}}
+
+\newcommand{\key}[1]{\texttt{`#1'}}
+\newcommand{\samp}[1]{\texttt{#1}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\var}[1]{\texttt{#1}}
+\newcommand{\file}[1]{\textit{`#1'}}
+
+\newcommand{\smallverbatimfile}[1]{\verbatiminput{#1}}
+
+%\newenvironment{smallverbatim}%
+%        {\begin{verbatim}}%
+%        {\end{verbatim}}
+
+\newenvironment{typevr}[3]%
+        {\vrindex{#3} \begin{Large}\texttt{#3}\end{Large} \hfill  \textbf{#1}
+          \begin{quote} \code{#2   #3} }
+        {\end{quote}}
+
+\newenvironment{typefn}[4]%
+        {\fnindex{#3} \begin{Large}\texttt{#3}\end{Large} \hfill  \textbf{#1}
+          \begin{quote} \code{#2 #3 #4} }
+        {\end{quote}}
+
+\newenvironment{typeefa}[4]%
+        {\efindex{#3} \begin{Large}\texttt{#3}\end{Large} \hfill  \textbf{#1}
+          \begin{quote} \code{#2 #3 #4} }
+        {\end{quote}}
+
+\newenvironment{typeep}[4]%
+        {\epindex{#3} \begin{Large}\texttt{#3}\end{Large} \hfill  \textbf{#1}
+          \begin{quote} \code{#2 #3 #4} }
+        {\end{quote}}
+
+
+%begin{latexonly}
+\newcommand{\figuregif}[4][]%
+{
+\begin{figure}
+%\begin{makeimage}
+%\end{makeimage}
+\begin{center}
+\includegraphics[#1]{#2}
+\end{center}
+\caption{#3}
+\label{#4}
+\end{figure}
+}
+%end{latexonly}
+
+%\begin{htmlonly}
+%\newcommand{\figuregif}[4][]%
+%{
+%\begin{figure}
+%\begin{makeimage}
+%\end{makeimage}
+%\htmladdimg[center]{gif/#2.gif}
+%\caption{#3}
+%\label{#4}
+%\end{figure}
+%}
+%\end{htmlonly}
+
+\newcommand{\includegraphicsgif}[2][]%
+{
+\begin{latexonly}
+\begin{center}
+\includegraphics[#1]{#2}
+\end{center}
+\end{latexonly}
+%\begin{htmlonly}
+%\htmladdimg[center]{gif/#2.gif}\\
+%\end{htmlonly}
+}
+
+%%%
+%%% DO NOT CHANGE THIS LAST LINE, update-doc-version depends on it.
+%%%
+
+\def\oprsdocversion{1.0.0}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "oprs"
+%%% End: 

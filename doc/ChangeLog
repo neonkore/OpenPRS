@@ -1,0 +1,251 @@
+2000-01-27  Francois Felix Ingrand  <felix@laas.fr>
+
+	* oprs-macros.tex: Fixed tha macros for .ps/.gif images.
+
+	* oprs-kernel.tex: Change V in ||.
+
+	* oprs.tex: Introduced Oprs Software as company name.
+
+1999-01-06  Francois Felix Ingrand  <felix@laas.fr>
+
+	* oprs.tex: Introduced DEKARTES as company name.
+
+1998-03-11  Francois Felix Ingrand  <felix@dial.oleane.com>
+
+	* xprs-kernel.tex: Remove references to the xinfo stuff... Bye-bye 
+	XInfo.. 
+
+1998-03-11  Francois Felix Ingrand  <felix@laas.fr>
+
+	* kac.tex: Added a section on the kac.
+
+1998-01-24  Francois Felix Ingrand  <felix@dial.oleane.com>
+
+	* cprs-kernel.tex: Version corrected by Intellex US.
+
+Thu Sep 26 17:03:40 1996  Francois Felix Ingrand  <felix@laas.fr>
+
+	* c-prs.tex: documented multicast.
+
+Thu Apr 25 14:24:58 1996  Francois Felix Ingrand  <felix@warhol (Francois Felix Ingrand)>
+
+	* c-prs.tex: Spell checked after the Ile aux Moines update.
+
+Tue Jan 16 16:34:57 1996  Francois Felix Ingrand  <felix@pif (Francois Felix Ingrand)>
+
+	* c-prs.tex: Updated the e-mail adress to point to ingenia.fr .
+
+Wed Nov 29 17:46:35 1995  Francois Felix Ingrand  <felix@pif (Francois Felix Ingrand)>
+
+	* c-prs.tex (Example): Updated the doc for the registering functions.
+
+Fri Mar 17 15:49:25 1995  Francois Felix Ingrand  (felix@corona)
+
+	* c-prs.tex (prototypes): 
+
+Wed Apr 27 08:41:46 1994  Francois Felix Ingrand  (felix@cascade)
+
+	* c-prs.tex: documented build_t and build_nil.
+
+Fri Apr 15 11:11:53 1994  Francois Felix Ingrand  (felix@hill)
+
+	* c-prs.tex: documented "show variable" and "show memory"
+
+Sun Apr 10 10:06:50 1994  Francois Felix Ingrand  (felix@corona)
+
+	* c-prs.tex: renamed some figures.
+	reomved the Widget Trees... taking too much pages for almost
+	nothing. Now the -pwt argument is public, so everytbody can
+	generate the tree...
+
+Sat Apr  9 11:43:09 1994  Francois Felix Ingrand  (felix@corona)
+
+	* c-prs.tex: Change all the create ka dialog box figure to take
+	into account the new text ka.
+
+Wed Apr  6 19:00:27 1994  Francois Felix Ingrand  (felix@corona)
+
+	* Makefile (KA_TEX): added the semaphore.kaf entry.
+
+Tue Mar 29 10:10:15 1994  Francois Felix Ingrand  (felix@hill)
+
+	* c-prs.tex: Corrected some typos found by Rachid.
+
+Thu Mar 24 11:59:45 1994  Francois Felix Ingrand  (felix@hill)
+
+	* Makefile (KA_EDITOR): call the ka-editor with -iconic.
+
+Fri May 27 17:58:20 1994  Vianney Coutance  (vianney@cascade)
+
+	* Makefile (install): To install the fig/*.ps use basename $$i in
+	  install (only the 2nd $$i).
+
+Tue May 17 16:42:55 1994  Vianney Coutance  (vianney@cascade)
+
+	* c-prs.tex: Update the doc for the apply-subst-in-goal and
+	  apply-subst-in-gtexpr evaluable functions.
+
+Mon Feb 21 10:19:56 1994  Francois Felix Ingrand  (felix@idefix)
+
+	* Merged 1.2 branch changes: cvs update -j 'C-PRS_1-2-0-Released'
+	  -j 'C-PRS_1-2-2-Released'.
+
+	* c-prs.tex: Fixed some typos found by Anne.
+
+Tue Feb  1 11:01:40 1994  Francois Felix Ingrand  (felix@idefix)
+
+	* c-prs.tex: documented the new predicates: NUMBERP, CONSP,
+	  STRINGP, and ATOMP.
+
+Mon Jan 24 09:32:49 1994  Francois Felix Ingrand  (felix@corona)
+
+	* paper-size.tex: to create docs with different paper size.
+
+Sun Jan 23 12:20:15 1994  Francois Felix Ingrand  (felix@corona)
+
+	* dir: Fixed some typos and added a couple of entries.
+
+Fri Jan  7 11:48:56 1994  Francois Felix Ingrand  (felix@idefix)
+
+	* c-prs.tex: Spelled the doc...
+
+Wed Jan  5 10:49:59 1994  Francois Felix Ingrand  (felix@hill)
+
+	* c-prs.tex: Updated the Copyright strings.
+
+Fri Dec 17 11:31:42 1993  Francois Felix Ingrand  (felix at corona)
+
+	* (c-prs.tex) Documented extensively the changes made between 1.0,
+	1.1 and 1.2.
+
+	* (c-prs.tex) Update the doc to take into account Abdellah's
+	notes.
+
+Thu Nov 25 11:14:31 1993  Vianney Coutance  (vianney at cascade)
+
+	* (c-prs.tex) Remove old actions add-activation-condintion and
+	asleep-current-intention-from-ka. 
+	Add doc for asleep-intention[s]-on-cond.
+
+Tue Nov 16 13:57:30 1993  Francois Felix Ingrand  (felix at idefix)
+
+	* (c-prs.tex) Updated the doc for NODE and LIST replaced by
+	PRS_NODE and PRS_LIST.
+
+	* (c-prs.tex) Documented action_number_called.
+
+Thu Oct  7 14:40:04 1993  Francois Felix Ingrand  (felix at corona)
+
+	* changed the figures which are causing trouble to the printer. I
+	just simplified them (no fancy fonts).
+
+Tue Sep 14 12:24:00 1993  Francois Felix Ingrand  (felix at idefix)
+
+	* (c-prs.tex) Updated the doc to document the new -a option
+	(alone).
+
+Sun Sep 12 09:54:18 1993  Francois Felix Ingrand  (felix at corona)
+
+	* (c-prs.bib) added the perl reference.
+
+Fri Aug 27 11:57:03 1993  Francois Felix Ingrand  (felix at idefix)
+
+	* (c-prs.tex) UPdated the doc for BOUNDP.
+
+Mon Jul 19 12:12:04 1993  Francois Felix Ingrand  (felix at idefix)
+
+	* (c-prs.tex) Scale the bitmap figures differently...
+
+Fri Jul 16 13:40:41 1993  Francois Felix Ingrand  (felix at idefix)
+
+	* (c-prs.tex) Added a printout of stat_all.
+
+	* (c-prs.tex) Documented some new KAs files.
+
+Thu Jul 15 14:29:06 1993  Francois Felix Ingrand  (felix at cascade)
+
+	* (c-prs.tex) Change the bouding box of the logos to recenter it.
+
+Mon Jun 21 12:20:33 1993  Francois Felix Ingrand  (felix at idefix)
+
+	* (c-prs.tex) Documented the new variable: x_prs_top_level_widget.
+
+Wed Jun 16 10:50:55 1993  Francois Felix Ingrand  (felix at idefix)
+
+	* (c-prs.tex) Updated the doc for the new succeed action.
+
+Tue Jun  8 11:23:23 1993  Francois Felix Ingrand  (felix at idefix)
+
+	* (c-prs.tex) updated the doc for the scheduler and db_frame.
+
+Tue May 18 12:06:47 1993  Francois Felix Ingrand  (felix@idefix)
+
+	* (c-prs.tex) Removed some tabs.
+
+Thu May 13 09:35:41 1993  Francois Felix Ingrand  (felix@idefix)
+
+	* (c-prs.tex) Updated the doc for the new actions execute-command.
+
+Tue May 11 09:37:26 1993  Francois Felix Ingrand  (felix@idefix)
+
+	* (c-prs.bib) Added this file.
+
+	* (c-prs.tex) Updated soem paragraph indentation.
+
+Mon May 10 13:51:18 1993  Francois Felix Ingrand  (felix@idefix)
+
+	* (c-prs.tex) New version.
+
+Thu Apr 22 10:04:56 1993  Francois Felix Ingrand  (felix@idefix)
+
+	* (c-prs.tex) Modified the size of a drawing.
+
+Tue Apr 20 11:00:21 1993  Francois Felix Ingrand  (felix@idefix)
+
+	* (c-prs.tex) Let some figure be their natural size.
+
+	* (c-prs.tex) Removed some size constraints on figures.
+
+	* (c-prs.tex) Increased the margin size...
+
+	* (c-prs.tex) Fixed a couple of problems with the \node before
+	\part which cannot be referenced... and figure starting sections
+	seems to affect the section declaration.
+
+Tue Mar 30 09:17:55 1993  Francois Felix Ingrand  (felix@idefix)
+
+	* Changed the Makefile to load prs-macro in the command.
+
+Mon Apr  5 12:24:36 1993  Vianney Coutance  (vianney at cascade)
+
+	* Move the reset_kernel help paragraph to the "C-PRS Kernel
+	Miscellaneous Commands" section.
+
+Thu Mar 18 09:37:46 1993  Francois Felix Ingrand  (felix@idefix)
+
+	* The X-PRS commands are now in their own node.
+
+	* Added man figures in the documentation.
+
+Wed Feb  3 15:09:20 1993  Francois Felix Ingrand  (felix at idefix)
+
+	* remove all the references to the XPRS Server, as well as the
+	part devoted to it.
+
+Mon Dec  7 17:09:38 1992  Vianney Coutance  (vianney at cascade)
+
+	* Updated the documentation on the intend-goal-.. actions.
+
+Mon Dec  7 12:21:15 1992  Francois Felix Ingrand  (felix at idefix)
+
+	* Updated the action/special actions sections.
+
+Wed Nov 25 10:24:39 1992  Francois Felix Ingrand  (felix at cascade)
+
+	* Updated the documentation on the new meta facts options, the
+	current quote mechanism.
+
+	* As we are now all modifying the documentation, started a
+	ChangeLog to see who does what.
+
+$Id$

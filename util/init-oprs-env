@@ -1,0 +1,18 @@
+# Where is OPRS installed?
+setenv OPRS_TOP_DIR /usr/local/openprs
+
+setenv PATH "${OPRS_TOP_DIR}/bin:${PATH}"
+if ( $?XFILESEARCHPATH ) then
+	setenv XFILESEARCHPATH "${XFILESEARCHPATH}:${OPRS_TOP_DIR}/%T/%N"
+else
+	setenv XFILESEARCHPATH "${OPRS_TOP_DIR}/%T/%N"
+endif
+if ( ! $?OPRS_DATA_PATH ) then
+	setenv OPRS_DATA_PATH "${OPRS_TOP_DIR}/data:data"
+endif
+setenv OPRS_DOC_DIR ${OPRS_TOP_DIR}/doc
+
+# use one of these
+# setenv OPRS_KEY ${OPRS_TOP_DIR}/.oprs-key
+# or
+setenv OPRS_KEY STRING-OF-THE-KEY

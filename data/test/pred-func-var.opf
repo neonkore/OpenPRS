@@ -1,0 +1,48 @@
+;;;
+;;; File: /opt/oprs/oprs-plan/src/data/test/pred-func-var.opf
+;;; $Id$
+;;; Date: Fri Mar  5 11:58:35 1999
+;;; Host: alf
+;;; OP Editor Version: 2.0.0 Beta
+;;; Compiled on alf (Fri Mar  5 11:57:23 MET 1999)
+;;; OP File Format: 2
+;;;
+(
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; BAR
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(defop BAR
+    :invocation (! (BAR $X $Y))
+    :body ((<> (PRINT $X))
+(<> (PRINT $Y))
+          )
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; FOO
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(defop FOO
+    :invocation (! (FOO $X))
+    :body ((<> (PRINT $X))
+          )
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; TEST-PRED-VAR
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(defop TEST-PRED-VAR
+    :invocation (! (TEST-PRED-FUNC-VAR))
+    :body ((! (= $X FOO))
+           (! ($X A))
+           (! ($X ($X B)))
+           (=> ($X B))
+           (=> ($X C))
+           (~> ($X B))
+           (! (= $Y BAR))
+           (! ($Y $X $Y))
+           (! ($Y ($Y $X) ($X $Y)))
+           (=> ($Y "pred is bar" ($Y $X)))
+          )
+)
+)

@@ -1,0 +1,304 @@
+;;;
+;;; File: /opt/oprs/oprs-1.4/src/contrib/data/dmex.opf
+;;; $Id$
+;;; Date: Thu Oct 17 16:45:22 1996
+;;; Host: warhol
+;;; OP Editor Version: 1.4.3 Beta
+;;; Compiled on warhol (Fri Oct 11 15:53:32 MET DST 1996)
+;;; OP File Format: 2
+;;;
+(
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; |DMEX: Clean db|
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(defop |DMEX: Clean db|
+    :invocation (! (DMEX-CLEAN-DB))
+    :body ((~> (DMEX-H_I @H_I))
+           (~> (DMEX-ALL-TOKENS-COLLECTED @REQ))
+           (~> (DMEX-MAXH_I @MAX))
+           (~> (DMEX-USED_I @X @Y @Z))
+           (~> (DMEX-SCDEM_I @SRC @X))
+           (~> (DMEX-OK_I @X @Y))
+           (~> (DMEX-RESET @TOTO))
+           (~> (DMEX-DELAYED_I @X @D))
+           (~> (DMEX-K_I @D1 @D2))
+           (~> (DMEX-WAIT-TOKEN @W1 @W2))
+           (=> (DMEX-H_I 0))
+           (=> (DMEX-MAXH_I 0))
+	   (! (sem-reset dmex 1))
+          )
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; |DMEX: Create DMEX|
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(defop |DMEX: Create DMEX|
+    :invocation (! (DMEX-CREATE $RSC-MAX-LIST))
+    :body (;; Will create the semaphore for a special resource.
+           (! (SEM-CREATE DMEX 1 SEM-FIFO))
+           (! (= @RSC-MAX-LIST $RSC-MAX-LIST))
+           (WHILE (? (~ (NULL @RSC-MAX-LIST)))
+              (! (= @RESOURCE (CAR @RSC-MAX-LIST)))
+              (! (= @RSC-MAX-LIST (CDR @RSC-MAX-LIST)))
+              (IF (? (CONSP @RESOURCE))
+                 (! (= @SIZE (SECOND @RESOURCE)))
+                 (! (= @RESOURCE (FIRST @RESOURCE)))
+               ELSE
+                 (! (= @SIZE 1))
+              )
+              (=> (DMEX-RSC-SIZE @RESOURCE @SIZE))
+              (! (PRINTF (FORMAT "DMEX: create resource %d, size %d.\n" @RESOURCE @SIZE)))
+           )
+          )
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; |DMEX: Free list|
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(defop |DMEX: Free list|
+    :invocation (DMEX-FREE $AGENT $LIST)
+    :body ((! (SEM-P DMEX))
+           (~> (DMEX-FREE $AGENT $LIST))
+           (! (= @FREE-LIST $LIST))
+           (WHILE (? (~ (NULL @FREE-LIST)))
+              (! (= @RESOURCE (CAR @FREE-LIST)))
+              (! (= @FREE-LIST (CDR @FREE-LIST)))
+              (IF (? (CONSP @RESOURCE))
+                 (! (= @SIZE (SECOND @RESOURCE)))
+                 (! (= @RESOURCE (FIRST @RESOURCE)))
+               ELSE
+                 (! (= @SIZE 1))
+              )
+              (! (DMEX-FREE-ACTION $AGENT (VAL @RESOURCE) (VAL @SIZE)))
+           )
+           (! (SEM-V DMEX))
+          )
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; |DMEX: Receive free RSC|
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(defop |DMEX: Receive free RSC|
+    :invocation (! (DMEX-FREE-ACTION $J $RSC $NB))
+    :body (;; The semaphore is already taken by the caller.
+           (? (MY-NAME $ME))
+           (? (MY-DMEX-PRIO $PRIO))
+           (IF (? (DMEX-USED_I $J $RSC $N))
+              (IF (? (EQUAL $N $NB))
+                 ;; To diminish the size of the DB, zero value are not stored.
+                 (~> (DMEX-USED_I $J $RSC $N))
+               ELSE
+                 (=> (DMEX-USED_I $J $RSC (- $N $NB)))
+              )
+           )
+           ;;
+           (IF (? (DMEX-SCDEM_I $RSC TRUE))
+              (? (DMEX-K_I $RSC $K_I))
+              (! (= @COUNTER $K_I))
+              (! (= @LIST (N-ALL ($AGENT $X) (DMEX-USED_I $AGENT $RSC $X))))
+              (WHILE (? (~ (NULL @LIST)))
+                 (! (= @FIRST (CAR @LIST)))
+                 (! (= @LIST (CDR @LIST)))
+                 (IF (? (~ (EQUAL (CAR @FIRST) $ME)))
+                    (! (= @COUNTER (+ @COUNTER (SECOND @FIRST))))
+                 )
+              )
+              (? (DMEX-RSC-SIZE $RSC $M))
+              (IF (? (<= @COUNTER $M))
+                 (~> (DMEX-SCDEM_I (VAL $RSC) TRUE))
+                 ;;MODIF
+                 (=> (DMEX-OK_I (VAL $RSC) TRUE))
+                 ;;;;END WAIT    
+                 (IF (? (DMEX-WAIT-TOKEN $RSC $REQ))
+                    (~> (DMEX-WAIT-TOKEN $RSC $REQ))
+                    (IF (? (DMEX-WAIT-TOKEN @AUTRE-RSC $REQ))
+                     ELSE
+                       ;;all demanded rsc are collected
+                       (=> (DMEX-ALL-TOKENS-COLLECTED $REQ))
+                    )
+                 )
+              )
+           )
+          )
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; |DMEX: Receive req RSC|
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(defop |DMEX: Receive req RSC|
+    :invocation (DMEX-REQUEST $J $RSC-LIST $DMEX-PRIO $H)
+    :body (
+           (? (MY-NAME $ME))
+           (? (MY-DMEX-PRIO $MY-PRIO))
+           (IF (? (EQUAL $MY-PRIO $DMEX-PRIO))
+              (! (BK-POINT "DMEX: Found 2 agents with the same priority."))
+           )
+           (~> (DMEX-REQUEST $J $RSC-LIST $DMEX-PRIO $H))
+           (! (= @FREE-LIST (. .)))
+           ;;
+           (! (SEM-P DMEX))
+           (IF (? (DMEX-MAXH_I @MAXH_I))
+            ELSE
+              (! (= @MAXH_I 0))
+              ;;initialiaze
+              (=> (DMEX-MAXH_I 0))
+           )
+           ;;
+           (IF (? (DMEX-H_I @H_I))
+            ELSE
+              ;;initialize
+              (! (= @H_I 0))
+              (=> (DMEX-H_I 0))
+           )
+           ;;DMEX-maxh_i = max(DMEX-maxh_i, h)
+           (IF (? (< @MAXH_I $H))
+              (! (= @MAXH_I $H))
+              (=> (DMEX-MAXH_I @MAXH_I))
+           )
+           (! (= @RESOURCE-LIST $RSC-LIST))
+           (WHILE (? (~ (NULL @RESOURCE-LIST)))
+              (! (= @RESOURCE (CAR @RESOURCE-LIST)))
+              (! (= @RESOURCE-LIST (CDR @RESOURCE-LIST)))
+              (IF (? (& (V (DMEX-SCDEM_I (VAL @RESOURCE) TRUE) (DMEX-OK_I (VAL @RESOURCE) TRUE))
+                        (V (< @H_I $H) (& (EQUAL @H_I $H) (< $MY-PRIO $DMEX-PRIO)))))
+                 (! (= @PRIO_I TRUE))
+               ELSE
+                 (! (= @PRIO_I FALSE))
+              )
+              (? (DMEX-RSC-SIZE (VAL @RESOURCE) @M))
+              (IF (? (EQUAL @PRIO_I FALSE))
+                 (! (= @FREE-LIST (CONS (CONS @RESOURCE (CONS @M (. .))) @FREE-LIST)))
+               ELSE
+                 (IF (? (DMEX-DELAYED_I $J $RSC))
+                    (! (= @FREE-LIST (CONS (CONS @RESOURCE (CONS @M (. .))) @FREE-LIST)))
+                  ELSE
+                    (? (DMEX-K_I (VAL @RESOURCE) @K_I))
+                    (IF (? (~ (EQUAL @K_I @M)))
+                       (! (= @FREE-LIST (CONS (CONS @RESOURCE (CONS (- @M @K_I) (. .))) @FREE-LIST)))
+                    )
+                    (=> (DMEX-DELAYED_I $J (VAL @RESOURCE)))
+                 )
+              )
+           )
+           (IF (? (~ (NULL @FREE-LIST)))
+              (! (SEND-MESSAGE $J (DMEX-FREE $ME (VAL @FREE-LIST))))
+           )
+           (! (SEM-V DMEX))
+          )
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; |DMEX: Release RSC|
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(defop |DMEX: Release RSC|
+    :invocation (! (DMEX-RELEASE-RSC $RSC-ASKED-LIST))
+    :body (
+           (? (MY-NAME $ME))
+           (! (SEM-P DMEX))
+           (! (= @LIST $RSC-ASKED-LIST))
+           (WHILE (? (~ (NULL @LIST)))
+              (! (= @RESOURCE (CAR @LIST)))
+              (! (= @LIST (CDR @LIST)))
+              (IF (? (CONSP @RESOURCE))
+                 (! (= @SIZE (SECOND @RESOURCE)))
+                 (! (= @RESOURCE (FIRST @RESOURCE)))
+               ELSE
+                 (! (= @SIZE 1))
+              )
+              (IF (? (DMEX-K_I (VAL @RESOURCE) @SZ))
+                 (IF (? (EQUAL @SZ @SIZE))
+                    (~> (DMEX-OK_I (VAL @RESOURCE) TRUE))
+                    (~> (DMEX-K_I (VAL @RESOURCE) @SZ))
+                    ;;Find  all the agents delayed on the rsc.
+                    (! (= @AGENT-LIST (ALL $X (DMEX-DELAYED_I $X (VAL @RESOURCE)))))
+                    (WHILE (? (> (LENGTH @AGENT-LIST) 0))
+                       (! (= @THE-AGENT (CAR @AGENT-LIST)))
+                       (! (= @AGENT-LIST (CDR @AGENT-LIST)))
+                       (~> (DMEX-DELAYED_I (VAL @THE-AGENT) (VAL @RESOURCE)))
+                       (! (SEND-MESSAGE (VAL @THE-AGENT) (DMEX-FREE $ME (CONS (CONS @RESOURCE (CONS (VAL @SIZE) (. .))) (. .)))))
+                    )
+                  ELSE
+                    (! (PRINTF (FORMAT "DMEX: %d %d allocated differs from released %d\n" (VAL @RESOURCE) @SZ @SIZE)))
+                 )
+               ELSE
+                 (! (PRINTF (FORMAT "DMEX: %d not allocated...\n" (VAL @RESOURCE))))
+              )
+           )
+           (! (SEM-V DMEX))
+          )
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; |DMEX: Request RSC|
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(defop |DMEX: Request RSC|
+    :invocation (! (DMEX-REQUEST-RSC $LIST))
+    :body (
+           (? (MY-NAME $ME))
+           (? (MY-DMEX-PRIO $MY-PRIO))
+           (! (= @A-LIST $LIST))
+           (IF (? (CONNECTED-AGENTS $ALL-AGENTS))
+            ELSE
+              (! (BK-POINT "RS: MUT-EXC:  Agent-list not initialized\n Wait Debug\n"))
+           )
+           (! (= $LIST-AGENTS (DELETE-FROM-LIST $ME $ALL-AGENTS)))
+           (! (SEM-P DMEX))
+           (IF (? (DMEX-MAX-REQ @MAXRQ))
+              (! (= @MAXRQ (+ @MAXRQ 1)))
+            ELSE
+              (! (= @MAXRQ 0))
+           )
+           (=> (DMEX-MAX-REQ @MAXRQ))
+           ;;
+           ;;TimeStamp  START MODIF
+           ;; 
+           (IF (? (DMEX-MAXH_I @MAXH_I))
+              (! (= @H_I (+ @MAXH_I 1)))
+            ELSE
+              (! (PRINT "DMEX: MAXH_I not initialized."))
+              (=> (DMEX-MAXH_I 0))
+              (! (= @H_I 1))
+           )
+           (=> (DMEX-H_I @H_I))
+           (! (= @LIST-RSC (. .)))
+           (WHILE (? (~ (NULL @A-LIST)))
+              (! (= @RESOURCE (CAR @A-LIST)))
+              (! (= @A-LIST (CDR @A-LIST)))
+              (IF (? (CONSP @RESOURCE))
+                 (! (= @SIZE (SECOND @RESOURCE)))
+                 (! (= @RESOURCE (FIRST @RESOURCE)))
+               ELSE
+                 (! (= @SIZE 1))
+              )
+              (IF (? (DMEX-K_I (VAL @RESOURCE) @SZ))
+                 (! (PRINTF (FORMAT "DMEX: The resource %d is being used/asked already.\n" @RESOURCE)))
+               ELSE
+                 (! (= @LIST-RSC (CONS @RESOURCE @LIST-RSC)))
+                 (=> (DMEX-WAIT-TOKEN (VAL @RESOURCE) (VAL @MAXRQ)))
+                 (=> (DMEX-SCDEM_I (VAL @RESOURCE) TRUE))
+                 (~> (DMEX-OK_I (VAL @RESOURCE) TRUE))
+                 (=> (DMEX-K_I (VAL @RESOURCE) @SIZE))
+                 (? (DMEX-RSC-SIZE (VAL @RESOURCE) @M))
+                 (! (= @LIST-AGENTS $LIST-AGENTS))
+                 (WHILE (? (~ (NULL @LIST-AGENTS)))
+                    (! (= @A-ROB (CAR @LIST-AGENTS)))
+                    (! (= @LIST-AGENTS (CDR @LIST-AGENTS)))
+                    (IF (? (DMEX-USED_I (VAL @A-ROB) (VAL @RESOURCE) @USED_I))
+			else
+			(! (= @USED_I 0))
+                    )
+                    (=> (DMEX-USED_I @A-ROB @RESOURCE (+ @USED_I @M)))
+                 )
+              )
+           )
+           (! (SEM-V DMEX))
+           (IF (? (~ (NULL @LIST-RSC)))
+              (! (MULTICAST-MESSAGE $LIST-AGENTS (DMEX-REQUEST $ME @LIST-RSC $MY-PRIO @H_I)))
+              (^ (DMEX-ALL-TOKENS-COLLECTED (VAL @MAXRQ)))
+              (~> (DMEX-ALL-TOKENS-COLLECTED (VAL @MAXRQ)))
+           )
+          )
+    )
+
+)

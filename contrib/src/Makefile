@@ -1,0 +1,132 @@
+############################ -*- Mode: Makefile -*- ###########################
+# Makefile -- 
+#
+# $Id$
+# 
+# Copyright (c) 1991-2003 Francois Felix Ingrand.
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions
+# are met:
+#
+#    - Redistributions of source code must retain the above copyright
+#      notice, this list of conditions and the following disclaimer.
+#    - Redistributions in binary form must reproduce the above
+#      copyright notice, this list of conditions and the following
+#      disclaimer in the documentation and/or other materials provided
+#      with the distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+# "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+# LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+# FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+# COPYRIGHT HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+# BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+# LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+# ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+###############################################################################
+
+#
+# the file site.make is a link to a file containing machine/site dependencies.
+#
+
+ifdef OPRS_INSTALLED_DIR
+OPRS_INCL_DIR = ${OPRS_INSTALLED_DIR}/include
+OPRS_UTIL_DIR = ${OPRS_INSTALLED_DIR}/util
+else
+
+include ../../site.make
+
+include ../../path.make
+
+CEXTRACT	= /usr/local/Divers/bin/$(HOSTTYPE)/cextract
+
+srcdir = $(srctop)/contrib/src
+
+VPATH = $(srcdir)
+
+OPRS_INCL_DIR = $(srctop)
+OPRS_UTIL_DIR = $(srctop)/util
+endif
+
+PU_LIB_OBJ =  pu-parse-tl.o pu-mk-term.o pu-enum.o pu-genom.o
+PU_LIB_SRC = $(PU_LIB_OBJ:%.o=%.c)
+PU_LIB_PROTO = $(PU_LIB_OBJ:%.o=%_f.h)
+
+INCLUDE =  -I. -I$(OPRS_INCL_DIR) -I../.. -I$(OPRS_INCL_DIR)/c_toolkit
+
+CFLAGS = $(MT_CFLAGS) $(ANSI) $(DEBUG_FLAG) $(OPTIMIZE) $(WARNINGS) $(PROFILE) $(CFLAGS_HOST)
+
+CPPFLAGS = $(MT_CPPFLAGS) $(MACHINE) $(LANG_FLAG) $(INCLUDE) $(OTHER_INCLUDE) $(X_INCLUDE)
+
+PU_LIB = libpu.a
+
+INSTALL = $(OPRS_UTIL_DIR)/install.sh
+INSTALL-IF-CHANGE = $(OPRS_UTIL_DIR)/install-if-change.sh
+
+all: $(PU_LIB_PROTO) $(PU_LIB)
+
+$(PU_LIB): $(PU_LIB_OBJ:%=$(PU_LIB)(%))
+	$(RANLIB) $@
+
+#
+# Some rules
+#
+(%.o): %.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $%
+	$(AR) r $@ $*.o
+	$(RM) $*.o
+
+
+ifdef OPRS_INSTALLED_DIR
+install:
+	@echo "*******************************"
+	@echo "It looks like there is already an installed version of the lib."
+	@echo "*******************************"
+else
+ifndef VXWORKS
+install: all
+	@-for i in $(PU_LIB_PROTO); do\
+		$(INSTALL-IF-CHANGE) -c -m 644 $(srcdir)/$$i ${DESTDIR}/contrib/include/`basename $$i`;\
+	done
+	@-for i in $(PU_LIB_SRC) timer_create.c; do\
+		$(INSTALL-IF-CHANGE) -c -m 644 $(srcdir)/$$i ${DESTDIR}/contrib/src/$$i;\
+	done
+	@-for i in $(PU_LIB); do\
+		$(INSTALL-IF-CHANGE) -c -m 644 $$i ${DESTDIR}/contrib/${TARGET}${TARGET-SUFFIX}/lib/$$i;\
+		$(RANLIB) ${DESTDIR}/contrib/${TARGET}${TARGET-SUFFIX}/lib/$$i;\
+	done
+else
+install: all
+	@-for i in $(PU_LIB); do\
+		$(INSTALL-IF-CHANGE) -c -m 644 $$i ${DESTDIR}/contrib/${TARGET}${TARGET-SUFFIX}/lib/$$i;\
+	done
+endif
+endif
+
+%_f.h:
+	$(CEXTRACT) $(INCLUDE) $(OTHER_INCLUDE) $(X_INCLUDE) $(CPPFLAGS) $< > $@
+
+clean:
+	/bin/rm -f core a.out gmon.out *.o make.depend.tmp make.depend.bak
+
+very-clean: clean
+	/bin/rm -f $(PU_LIB) $(PU_LIB_PROTO) make.depend
+
+#
+# If the make.depend does not exist, just touch it.
+#
+
+make.depend depend: $(PU_LIB_SRC)
+	$(MKDEP) -omake.depend $(CPPFLAGS) -l$(PU_LIB) $?
+#
+# This file contains the dependencies genrated by makedepend.
+#
+
+include make.depend
+

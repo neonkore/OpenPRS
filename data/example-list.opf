@@ -1,0 +1,159 @@
+;;;
+;;; File: /users/oprs/C/ACS/oprs-1.1/data/Example-list.opf
+;;; $Id$
+;;; Date: Wed Nov 17 16:35:18 1993
+;;; Host: cascade
+;;; OP Editor Version : 1.1.14
+;;; Compiled on cascade (Wed Nov 17 12:26:04 MET 1993)
+;;; OP File Format: 2
+;;;
+(2 
+(
+)
+(EXAMPLE-ALL (
+(INVOCATION INVOCATION (! (TEST-ALL $NUM)) 14 80 1 80 0 )
+(CONTEXT CONTEXT  30 200 0 60 0 )
+(SETTING SETTING  28 244 0 60 0 )
+(EFFECTS EFFECTS () 30 350 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "Just a test to use the two functions ex-list-3 and ex-list-1
+define in user-ev-funct.c ." 11 413 1 60 0 )
+(PROPERTIES PROPERTIES () 30 400 0 60 0 )
+) (
+(PROCESS N4 0 0 367 393)
+(PROCESS N3 0 0 367 294)
+(PROCESS N0 0 0 365 215)
+(PROCESS N2 0 0 366 128)
+(START START 0 0 356 23)
+) (
+(GOAL START E6 N2
+(! (= @LIST (CURRENT (EX-LIST-3))))
+()  0 0 40 0)
+(GOAL N2 E4 N0
+(! (PRINT @LIST))
+()  0 0 40 0)
+(GOAL N0 E7 N3
+(! (= @LIST2
+      (CURRENT (EX-LIST-1 @LIST $NUM))))
+()  0 0 40 0)
+(GOAL N3 E8 N4
+(! (PRINT @LIST2))
+()  0 0 40 0)
+) )
+(EXAMPLE-REVERSE (
+(INVOCATION INVOCATION (! (REVERSE $LIST)) 14 58 1 80 0 )
+(CONTEXT CONTEXT  30 200 0 60 0 )
+(SETTING SETTING  28 244 0 60 0 )
+(EFFECTS EFFECTS () 30 350 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "Reverse a LISP_LIST list of variable using CONS, CAR, CDR." 30 462 1 60 0 )
+(PROPERTIES PROPERTIES () 30 400 0 60 0 )
+) (
+(END END1 0 0 230 442)
+(PROCESS N4 0 0 552 438)
+(PROCESS N2 0 0 379 237)
+(PROCESS N1 0 0 379 165)
+(PROCESS N0 0 0 379 82)
+(START START 0 0 368 5)
+(IF N3 0 0 379 320)
+(THEN N3_T 0 0 365 320)
+(ELSE N3_F 0 0 400 320)
+) (
+(GOAL START E0 N0
+(! (PRINT $LIST))
+()  2 -4 40 0)
+(GOAL N0 E0012 N1
+(! (= @LIST $LIST))
+()  0 -4 40 0)
+(GOAL N1 E0024 N2
+(! (= @NEW-LIST (. .)))
+()  -2 -3 40 0)
+(GOAL N4 E0040 N2
+(! (= @LIST (CDR @LIST)))
+((652 447) (652 245) )  7 -4 40 0)
+(THEN N3 E1 N3_T)
+(ELSE N3 E2 N3_F)
+(IF N2 E5 N3
+(? (NULL @LIST))
+()  0 0 40 0)
+(GOAL N3_T E6 END1
+(! (PRINT @NEW-LIST))
+()  -2 -12 40 0)
+(GOAL N3_F E7 N4
+(! (= @NEW-LIST
+      (CONS (CAR @LIST) @NEW-LIST)))
+()  20 4 40 0)
+) )
+(EXAMPLE1 (
+(INVOCATION INVOCATION (! (TEST1 $LIST $NUM)) 24 99 1 80 0 )
+(CONTEXT CONTEXT  30 200 1 60 0 )
+(SETTING SETTING  28 244 1 60 0 )
+(EFFECTS EFFECTS () 30 350 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "Build a list with all the $NUMth element of each element of $LIST.
+$LIST must be a LISP-LIST of LISP-LIST :
+(. (. a b c .) (. ... .)  ... (. 1 2 3 4 .) .)  .
+The function ex-list-1 is defined and declared in the file 
+user-ev-funct.c ." 30 462 1 60 0 )
+(PROPERTIES PROPERTIES () 30 400 1 60 0 )
+) (
+(PROCESS N1 0 0 366 245)
+(END END1 0 0 361 397)
+(START START 0 0 356 23)
+(PROCESS N0 0 0 365 131)
+) (
+(GOAL N0 E1 N1
+(! (= @NEW-LIST
+      (CURRENT (EX-LIST-1 $LIST $NUM))))
+()  0 0 40 0)
+(GOAL START E0 N0
+(! (PRINT $LIST))
+()  0 0 40 0)
+(GOAL N1 E2 END1
+(! (PRINT @NEW-LIST))
+()  0 0 40 0)
+) )
+(EXAMPLE2 (
+(INVOCATION INVOCATION (! (TEST2 $LIST $NUM)) 28 100 1 80 0 )
+(CONTEXT CONTEXT  30 200 1 60 0 )
+(SETTING SETTING  28 244 1 60 0 )
+(EFFECTS EFFECTS () 30 350 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "This OP built a new list which is the CONS of $NUM and $LIST.
+The function ex-list-2 is defined in the file user-ev-funct.c  " 30 462 1 60 0 )
+(PROPERTIES PROPERTIES () 30 400 1 60 0 )
+) (
+(PROCESS N2 0 0 366 267)
+(END END1 0 0 361 397)
+(PROCESS N0 0 0 368 150)
+(START START 0 0 356 23)
+) (
+(GOAL START E0 N0
+(! (PRINT $LIST))
+()  0 0 40 0)
+(GOAL N0 E5 N2
+(! (= @NEW-LIST
+      (CURRENT (EX-LIST-2 $NUM $LIST))))
+()  0 0 40 0)
+(GOAL N2 E4 END1
+(! (PRINT @NEW-LIST))
+()  0 0 40 0)
+) )
+(EXAMPLE3 (
+(INVOCATION INVOCATION (! (TEST3)) 28 100 1 80 0 )
+(CONTEXT CONTEXT  30 200 0 60 0 )
+(SETTING SETTING  28 244 0 60 0 )
+(EFFECTS EFFECTS () 30 350 0 60 0 )
+(DOCUMENTATION DOCUMENTATION "This op create a lisp-list of lisp-list using
+the function ex-list-3 wich is defined in the file
+user-ev-funct.c ." 23 203 1 60 0 )
+(PROPERTIES PROPERTIES () 30 400 0 60 0 )
+) (
+(START START 0 0 356 23)
+(PROCESS N2 0 0 366 267)
+(END END1 0 0 361 397)
+) (
+(GOAL N2 E4 END1
+(! (PRINT @NEW-LIST))
+()  0 0 40 0)
+(GOAL START E6 N2
+(! (= @NEW-LIST (CURRENT (EX-LIST-3))))
+()  0 0 40 0)
+) )
+)

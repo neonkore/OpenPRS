@@ -1,0 +1,257 @@
+;;;
+;;; File: data/block-world-processes.opf
+;;; $Id$
+;;; Date: Wed Sep 29 12:17:13 1993
+;;; Host: idefix
+;;; OP Editor Version : 1.1.7
+;;; Compiled on idefix (Wed Sep 29 12:15:16 MET 1993)
+;;; OP File Format: 2
+;;;
+(2 
+(
+)
+(|Clear| (
+(INVOCATION INVOCATION (! (CLEAR $X)) 30 100 1 80 0 )
+(CONTEXT CONTEXT (ON $Y $X) 30 200 1 60 0 )
+(SETTING SETTING  27 243 1 60 0 )
+(EFFECTS EFFECTS ((=> (CLEAR $X))) 30 350 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "" 30 450 1 60 0 )
+(PROPERTIES PROPERTIES () 30 400 1 60 0 )
+) (
+(START START 0 0 400 100)
+(END END1 0 0 400 278)
+) (
+(GOAL START E0113 END1
+(! (ON-TABLE $Y))
+()  0 0 40 0)
+) )
+(|Holding from block| (
+(INVOCATION INVOCATION (! (HOLDING $X)) 30 100 1 80 0 )
+(CONTEXT CONTEXT (ON $X $Y) 30 200 1 60 0 )
+(SETTING SETTING  26 249 1 60 0 )
+(EFFECTS EFFECTS ((=> (HOLDING $X))
+ (=> (CLEAR $Y))
+ (~> (ON $X $Y))) 30 350 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "" 30 450 1 60 0 )
+(PROPERTIES PROPERTIES () 30 400 1 60 0 )
+) (
+(START START 0 0 400 100)
+(PROCESS S2 0 0 400 227)
+(END END1 0 0 399 361)
+) (
+(GOAL S2 E0119 END1
+(! (PRINT-LIST
+       (FORMAT
+           NIL
+           "Grab ~a from the top of ~a"
+           $X
+           $Y)))
+()  0 0 40 0)
+(GOAL START E0127 S2
+(! (CLEAR $X))
+()  0 0 40 0)
+) )
+(|Holding from table| (
+(INVOCATION INVOCATION (! (HOLDING $X)) 30 100 1 80 0 )
+(CONTEXT CONTEXT (ON-TABLE $X) 30 200 1 60 0 )
+(SETTING SETTING  35 247 1 60 0 )
+(EFFECTS EFFECTS ((=> (HOLDING $X))
+ (~> (ON-TABLE $X))) 30 350 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "" 30 450 1 60 0 )
+(PROPERTIES PROPERTIES () 30 400 1 60 0 )
+) (
+(START START 0 0 400 100)
+(PROCESS S1 0 0 400 236)
+(END END1 0 0 400 351)
+) (
+(GOAL S1 E0128 END1
+(! (PRINT-LIST
+       (FORMAT
+           NIL
+           "Grab ~a from the table"
+           $X)))
+()  0 0 40 0)
+(GOAL START E0131 S1
+(! (CLEAR $X))
+()  0 0 40 0)
+) )
+(|Meta Selector (safety preferred rest for &)| (
+(INVOCATION INVOCATION (SOAK $X) 17 33 1 80 0 )
+(CONTEXT CONTEXT (& (EQUAL (LENGTH $X) 3)
+     (EQUAL
+         (OP-INSTANCE-GOAL (FIRST $X))
+         (OP-INSTANCE-GOAL (SECOND $X)))
+     (EQUAL
+         (OP-INSTANCE-GOAL (THIRD $X))
+         (OP-INSTANCE-GOAL (SECOND $X)))
+     (EQUAL
+         "&"
+         (CAADR
+             (GOAL-STRUCT-STATEMENT
+                 (OP-INSTANCE-GOAL (FIRST $X)))))
+     (EQUAL
+         "!"
+         (CAR
+             (GOAL-STRUCT-STATEMENT
+                 (OP-INSTANCE-GOAL (FIRST $X)))))) 4 90 1 60 0 )
+(SETTING SETTING  10 210 1 60 0 )
+(EFFECTS EFFECTS () 17 437 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "Meta OP used when there are more than one &." 17 506 1 60 0 )
+(PROPERTIES PROPERTIES ((DECISION-PROCEDURE T)) 17 385 1 60 0 )
+) (
+(START START 0 0 611 44)
+(PROCESS N4 0 0 611 143)
+(PROCESS N6 0 0 742 201)
+(PROCESS N5 0 0 493 201)
+(END END2 0 0 883 269)
+(PROCESS S6 0 0 493 286)
+(PROCESS S7 0 0 357 355)
+(PROCESS S8 0 0 644 355)
+(END END5 0 0 357 435)
+(END END6 0 0 644 435)
+) (
+(GOAL S8 E0207 END6
+(! (INTENDED-OP (SELECT-RANDOMLY $P)))
+()  0 0 40 0)
+(GOAL S7 E0218 END5
+(! (INTENDED-OP (SELECT-RANDOMLY $X)))
+()  0 0 40 0)
+(GOAL S6 E0194 S8
+(? (> (LENGTH $P) 0))
+()  0 0 40 0)
+(GOAL S6 E0192 S7
+(? (NULL $P))
+()  0 0 40 0)
+(GOAL N5 E0188 S6
+(! (= $P (PREFERRED-OF $X)))
+()  0 0 40 0)
+(GOAL N6 |#e7756| END2
+(! (INTENDED-OP (SELECT-RANDOMLY $S)))
+()  0 0 40 0)
+(GOAL N4 |#e7754| N5
+(? (NULL $S))
+()  0 0 40 0)
+(GOAL N4 |#e7755| N6
+(? (> (LENGTH $S) 0))
+()  0 0 40 0)
+(GOAL START E0145 N4
+(! (= $S (SAFETY-HANDLERS-OF $X)))
+()  0 0 40 0)
+) )
+(|Meta Selector (safety preferred rest for 2 &)| (
+(INVOCATION INVOCATION (SOAK $X) 2 33 1 80 0 )
+(CONTEXT CONTEXT (& (EQUAL (LENGTH $X) 2)
+     (EQUAL
+         (OP-INSTANCE-GOAL (FIRST $X))
+         (OP-INSTANCE-GOAL (SECOND $X)))
+     (EQUAL
+         "&"
+         (CAADR
+             (GOAL-STRUCT-STATEMENT
+                 (OP-INSTANCE-GOAL (FIRST $X)))))
+     (EQUAL
+         "!"
+         (CAR
+             (GOAL-STRUCT-STATEMENT
+                 (OP-INSTANCE-GOAL (FIRST $X)))))) 2 103 1 60 0 )
+(SETTING SETTING  2 219 1 60 0 )
+(EFFECTS EFFECTS () 2 437 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "Meta OP used when there are more than one &." 2 506 1 60 0 )
+(PROPERTIES PROPERTIES ((DECISION-PROCEDURE T)) 2 385 1 60 0 )
+) (
+(START START 0 0 611 44)
+(PROCESS N4 0 0 611 143)
+(PROCESS N6 0 0 742 201)
+(PROCESS N5 0 0 493 201)
+(END END2 0 0 883 269)
+(PROCESS S6 0 0 493 286)
+(PROCESS S7 0 0 357 355)
+(PROCESS S8 0 0 644 355)
+(END END5 0 0 357 435)
+(END END6 0 0 644 435)
+) (
+(GOAL S8 E0207 END6
+(! (INTENDED-OP (SELECT-RANDOMLY $P)))
+()  0 0 40 0)
+(GOAL S7 E0218 END5
+(! (INTENDED-OP (SELECT-RANDOMLY $X)))
+()  0 0 40 0)
+(GOAL S6 E0194 S8
+(? (> (LENGTH $P) 0))
+()  0 0 40 0)
+(GOAL S6 E0192 S7
+(? (NULL $P))
+()  0 0 40 0)
+(GOAL N5 E0188 S6
+(! (= $P (PREFERRED-OF $X)))
+()  0 0 40 0)
+(GOAL N6 |#e7756| END2
+(! (INTENDED-OP (SELECT-RANDOMLY $S)))
+()  0 0 40 0)
+(GOAL N4 |#e7754| N5
+(? (NULL $S))
+()  0 0 40 0)
+(GOAL N4 |#e7755| N6
+(? (> (LENGTH $S) 0))
+()  0 0 40 0)
+(GOAL START E0145 N4
+(! (= $S (SAFETY-HANDLERS-OF $X)))
+()  0 0 40 0)
+) )
+(|On table| (
+(INVOCATION INVOCATION (! (ON-TABLE $X)) 30 100 1 80 0 )
+(CONTEXT CONTEXT  30 200 1 60 0 )
+(SETTING SETTING  30 232 1 60 0 )
+(EFFECTS EFFECTS ((=> (ON-TABLE $X))
+ (~> (HOLDING $X))) 30 350 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "" 30 450 1 60 0 )
+(PROPERTIES PROPERTIES () 29 412 1 60 0 )
+) (
+(START START 0 0 415 100)
+(PROCESS S1 0 0 415 267)
+(PROCESS S2 0 0 415 366)
+(END END1 0 0 415 447)
+) (
+(GOAL S2 E0116 END1
+(! (PRINT-LIST
+       (FORMAT
+           NIL
+           "Put ~a on the table"
+           $X)))
+()  0 0 40 0)
+(GOAL S1 E0115 S2
+(! (HOLDING $X))
+()  0 0 40 0)
+(GOAL START E0114 S1
+(! (CLEAR $X))
+()  0 0 40 0)
+) )
+(|On| (
+(INVOCATION INVOCATION (! (ON $X $Y)) 30 100 1 80 0 )
+(CONTEXT CONTEXT  30 200 1 60 0 )
+(SETTING SETTING  34 234 1 60 0 )
+(EFFECTS EFFECTS ((=> (ON $X $Y))
+ (~> (HOLDING $X))
+ (~> (CLEAR $Y))) 27 337 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "" 30 450 1 60 0 )
+(PROPERTIES PROPERTIES () 31 415 1 60 0 )
+) (
+(START START 0 0 400 100)
+(PROCESS S1 0 0 400 225)
+(PROCESS S2 0 0 400 353)
+(END END1 0 0 400 445)
+) (
+(GOAL S2 E0092 END1
+(! (PRINT-LIST
+       (FORMAT
+           NIL "Stack ~a on ~a" $X $Y)))
+()  0 0 40 0)
+(GOAL S1 E0091 S2
+(! (HOLDING $X))
+()  0 0 40 0)
+(GOAL START E0090 S1
+(! (CLEAR $Y))
+()  0 0 40 0)
+) )
+
+)

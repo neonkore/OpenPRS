@@ -1,0 +1,14 @@
+(
+(COND-X 3)
+(COND-X 4)
+(COND-Y 7)
+
+(COND 1 2)
+(COND 2 3)
+(COND 3 4)
+
+(TOTO 2 3)
+(TOTO 1 1)
+(TOTO 1 4)
+(TOTO 3 2)
+)

@@ -1,0 +1,88 @@
+;;;
+;;; File: car-cdr.opf
+;;; $Id$
+;;; Date: Wed Sep 29 12:22:44 1993
+;;; Host: idefix
+;;; OP Editor Version : 1.1.7
+;;; Compiled on idefix (Wed Sep 29 12:15:16 MET 1993)
+;;; OP File Format: 2
+;;;
+(2 
+(
+)
+(|Test C...R| (
+(INVOCATION INVOCATION (TEST-C-R) 10 50 1 80 0 )
+(CONTEXT CONTEXT  10 150 1 60 0 )
+(SETTING SETTING  10 250 1 60 0 )
+(EFFECTS EFFECTS () 10 350 1 60 0 )
+(DOCUMENTATION DOCUMENTATION  10 450 1 60 0 )
+(PROPERTIES PROPERTIES () 10 400 1 60 0 )
+) (
+(PROCESS N14 0 0 415 489)
+(PROCESS N13 0 0 237 463)
+(PROCESS N12 0 0 415 416)
+(PROCESS N11 0 0 237 397)
+(PROCESS N10 0 0 415 362)
+(PROCESS N9 0 0 237 329)
+(PROCESS N8 0 0 415 298)
+(PROCESS N7 0 0 237 277)
+(PROCESS N6 0 0 415 253)
+(PROCESS N5 0 0 237 235)
+(PROCESS N4 0 0 415 201)
+(PROCESS N3 0 0 237 186)
+(PROCESS N2 0 0 415 155)
+(PROCESS N1 0 0 237 141)
+(PROCESS N0 0 0 415 97)
+(START START 0 0 400 12)
+) (
+(GOAL START E0 N0
+(! (= $X
+      (. (. (. A .) B C .)
+         (. D .)
+         E
+         F .)))
+()  0 0 40 0)
+(GOAL N0 E1 N1
+(! (PRINT (CAR $X)))
+()  0 0 40 0)
+(GOAL N1 E2 N2
+(! (PRINT (CDR $X)))
+()  0 0 40 0)
+(GOAL N2 E3 N3
+(! (PRINT (CAAR $X)))
+()  0 0 40 0)
+(GOAL N3 E4 N4
+(! (PRINT (CADR $X)))
+()  0 0 40 0)
+(GOAL N4 E5 N5
+(! (PRINT (CDAR $X)))
+()  0 0 40 0)
+(GOAL N5 E6 N6
+(! (PRINT (CDDR $X)))
+()  0 0 40 0)
+(GOAL N6 E7 N7
+(! (PRINT (CAAAR $X)))
+()  0 0 40 0)
+(GOAL N7 E8 N8
+(! (PRINT (CAADR $X)))
+()  0 0 40 0)
+(GOAL N8 E9 N9
+(! (PRINT (CADAR $X)))
+()  0 0 40 0)
+(GOAL N9 E10 N10
+(! (PRINT (CADDR $X)))
+()  0 0 40 0)
+(GOAL N10 E11 N11
+(! (PRINT (CDAAR $X)))
+()  0 0 40 0)
+(GOAL N11 E12 N12
+(! (PRINT (CDADR $X)))
+()  0 0 40 0)
+(GOAL N12 E13 N13
+(! (PRINT (CDDAR $X)))
+()  0 0 40 0)
+(GOAL N13 E14 N14
+(! (PRINT (CDDDR $X)))
+()  0 0 40 0)
+) )
+)

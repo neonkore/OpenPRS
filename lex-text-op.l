@@ -1,0 +1,63 @@
+/*                               -*- Mode: C -*- 
+ * lex-text-op.l -- 
+ * 
+ * $Id$
+ * 
+ * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ *    - Redistributions of source code must retain the above copyright
+ *      notice, this list of conditions and the following disclaimer.
+ *    - Redistributions in binary form must reproduce the above
+ *      copyright notice, this list of conditions and the following
+ *      disclaimer in the documentation and/or other materials provided
+ *      with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ */
+
+/* 
+ * This lex grammar file define the token for a text OP.
+ */
+
+/* Keywords. */
+:[Ii][Nn][Vv][Oo][Cc][Aa][Tt][Ii][Oo][Nn]		{return TFT_INVOCATION_TK;}
+:[Bb][Oo][Dd][Yy]					{return TFT_BODY_TK;}
+:[Cc][Oo][Nn][Tt][Ee][Xx][Tt]				{return TFT_CONTEXT_TK;}
+:[Cc][Aa][Ll][Ll]				{return TFT_CALL_TK;}
+:[Ss][Ee][Tt][Tt][Ii][Nn][Gg]				{return TFT_SETTING_TK;}
+:[Pp][Rr][Oo][Pp][Ee][Rr][Tt][Ii][Ee][Ss]		{return TFT_PROPERTIES_TK;}
+:[Dd][Oo][Cc][Uu][Mm][Ee][Nn][Tt][Aa][Tt][Ii][Oo][Nn]	{return TFT_DOCUMENTATION_TK;}
+:[Ee][Ff][Ff][Ee][Cc][Tt][Ss]				{return TFT_EFFECTS_TK;}
+:[Aa][Cc][Tt][Ii][Oo][Nn]				{return TFT_ACTION_TK;}
+
+[Dd][Ee][Ff][Kk][Aa]					{return DEFOP_TK;}
+[Dd][Ee][Ff][Oo][Pp]					{return DEFOP_TK;}
+\/\/							{return PAR_TK;}
+[Ww][Hh][Ii][Ll][Ee]					{return WHILE_TK;}
+[Dd][Oo]						{return DO_TK;}
+[Ii][Ff]						{return IF_TK;}
+[Ee][Ll][Ss][Ee]					{return ELSE_TK;}
+[Bb][Rr][Ee][Aa][Kk]					{return BREAK_TK;}
+[Gg][Oo][Tt][Oo]					{return GOTO_TK;}
+[Ll][Aa][Bb][Ee][Ll]					{return LABEL_TK;}
+[Ee][Ll][Ss][Ee][Ii][Ff]				{return ELSEIF_TK;}
+
+<COLLECT_COMMENT>{comment}		{ NEWSTR(oprs_yytext,oprs_yylval.string);
+					  return COMMENT_TK;}

@@ -1,0 +1,63 @@
+(
+ (ipp-ops bw (. pickup putdown stack unstack .))
+
+ (ipp-op
+ pickup 
+	 (var ?ob object)
+	 (prec (clear ?ob) (on-table ?ob) (arm-empty))
+	 (eff (add (holding ?ob))
+	      (del (clear ?ob) (on-table ?ob) (arm-empty ))
+	      (add-cond)
+	      (del-cond)))
+
+
+
+ (ipp-op
+ putdown
+	 (var ?ob object)
+	 (prec (holding ?ob))
+	 (eff (add (clear ?ob) (arm-empty ) (on-table ?ob))
+	      (del (holding ?ob))
+	      (add-cond)
+	      (del-cond)))
+
+ (ipp-op
+ stack
+	 (var ?ob object ?underob object)
+	 (prec (clear ?underob) (holding ?ob))
+	 (eff (add (arm-empty ) (clear ?ob) (on ?ob ?underob))
+	      (del  (clear ?underob) (holding ?ob))
+	      (add-cond)
+	      (del-cond)))
+
+ (ipp-op
+ unstack
+	 (var ?ob object ?underob object)
+	 (prec (on ?ob ?underob) (clear ?ob) (arm-empty ))
+	 (eff (add (holding ?ob) (clear ?underob))
+	      (del (on ?ob ?underob) (clear ?ob) (arm-empty ))
+	      (add-cond)
+	      (del-cond)))
+
+
+
+ (ipp-fcts t2 (.(object a b).)
+	   (. (on-table a)  (on-table b)               
+		    (clear a)  (clear b) 
+		    (arm-empty ) .)
+	   (. (on a b) .))
+
+
+ (ipp-fcts t9 (. (object a b c d e f g h i) .)
+	   (. (on-table a) (on-table b) (on-table c) (on-table d) (on-table e) 
+		    (on-table f)  (on-table g)   (on-table h) (on-table i)  
+		    (clear a)  (clear b) (clear c) (clear d)  (clear e) (clear f)
+		    (clear g)  (clear h)  (clear i)
+		    (arm-empty ) .)
+	   (. (on a b) (on b c) (on c d) (on d e) (on e f) (on f g) (on g h) (on h i) .))
+
+(ipp-rifo 1)
+
+(ipp-rifo-method 3)
+
+ )

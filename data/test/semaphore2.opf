@@ -1,0 +1,50 @@
+;;;
+;;; File: /home/oriol/oprs-perso/semaphores/testeur.opf
+;;; $Id$
+;;; Date: Fri Oct  3 16:10:32 1997
+;;; Host: gibbons
+;;; OP Editor Version: 1.5.0 Beta
+;;; Compiled on avicenne (Fri Sep 12 15:07:30 MET DST 1997)
+;;; OP File Format: 2
+;;;
+(2 
+(
+)
+(TESTEUR (
+(INVOCATION INVOCATION (! (TESTEUR $N)) 10 50 1 80 0 )
+(CONTEXT CONTEXT  10 150 1 60 0 )
+(SETTING SETTING  10 250 1 60 0 )
+(EFFECTS EFFECTS  10 350 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "permet de faire le test des deux sem appeles par la meme OP" 10 450 1 60 0 )
+(PROPERTIES PROPERTIES  10 400 1 60 0 )
+) (
+(START START 0 0 310 10)
+(PROCESS N2 0 0 327 189)
+(PROCESS N3 0 1 338 295)
+(PROCESS N4 0 0 426 398)
+(PROCESS N5 0 0 504 128)
+(PROCESS N6 1 0 548 352)
+) (
+(GOAL N2 NN N3
+(! (SEM-P-TIMEOUT TOTO 3))
+()  -8 -17 40 0)
+(GOAL START NN N5
+(! (SEM-CREATE TOTO $N SEM-BASIC))
+()  0 0 40 0)
+(GOAL N5 NN N2
+(! (SEM-P TOTO))
+()  0 0 40 0)
+(GOAL N6 NN N5
+(! (SEM-V TOTO))
+()  0 0 40 0)
+(GOAL N4 NN N6
+(! (SEM-V TOTO))
+()  0 0 40 0)
+(GOAL N3 NN N4
+(! (SEM-V TOTO))
+()  -15 -6 40 0)
+(GOAL N3 NN N6
+(! (SEM-P-TIMEOUT TOTO 3))
+()  6 -8 40 0)
+) )
+)

@@ -1,0 +1,44 @@
+;;;
+;;; File: /users/oprs/C/ACS/oprs-1.3/data/fib-text.opf
+;;; $Id$
+;;; Date: Wed Feb 15 18:00:45 1995
+;;; Host: cascade
+;;; OP Editor Version : 1.3.1 Beta
+;;; Compiled on cascade (Wed Nov 16 12:06:21 MET 1994)
+;;; OP File Format: 2
+;;;
+(
+(defop PRINT
+:invocation (! (PRINT $N)) 
+:action (PRINT $N)
+:documentation "This OP prints its term."
+)
+(defop |Fibonacci|
+:invocation (! (FIBONACCI $N $RESULT)) 
+:body
+((IF (? (< $N 1))
+    (! (= $RESULT 1))
+  ELSE
+    ;;; $N is greater than 1
+    ;;; compute the two values of fibonacci in parallel
+    (// ((! (FIBONACCI (- $N 1) $RES2))
+        )
+        ((! (FIBONACCI (- $N 2) $RES3))
+        )
+    )
+    ;;; Implicit rendez-vous
+    ;;; Compute the final result
+    (! (= $RESULT (+ $RES2 $RES3)))
+ )
+)
+:documentation "This is a // fiboncci"
+)
+(defop |Print Fibonacci|
+:invocation (! (PRINT-FIBONACCI $X)) 
+:body
+((! (FIBONACCI $X $N))
+ (! (PRINT $N))
+)
+:documentation "Print fibonacci text op."
+)
+)

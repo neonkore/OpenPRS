@@ -1,0 +1,250 @@
+/*                               -*- Mode: C -*- 
+ * config.h.in -- 
+ * 
+ * $Id$
+ * 
+ * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ *    - Redistributions of source code must retain the above copyright
+ *      notice, this list of conditions and the following disclaimer.
+ *    - Redistributions in binary form must reproduce the above
+ *      copyright notice, this list of conditions and the following
+ *      disclaimer in the documentation and/or other materials provided
+ *      with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ */
+
+/********************************************************************
+ *
+ * This is a step to concentrate in one point the system dependent
+ * features. Most variables are listed here (defined or undefined).
+ * Some are handled by the Makefile to compile some files in different
+ * ways for different libs: NO_GRAPHIX C_PLUS_PLUS_RELOCATABLE
+ * OPRS_KERNEL HOST COMPIL_DATE
+ *
+ * Most features are HAS_XXXX or XXX_UNDEFINED .... In both case, XXX
+ * is desired... and it is better if it is present. So the most
+ * HAS_XXX and the least XXX_UNDEFINED is the best.
+ *
+ ********************************************************************/
+
+
+/********************************************************************
+ *
+ * Global section.  It should contain global defines for very peculiar
+ * systems (VxWorks, Win95, etc). 
+ *
+ ********************************************************************/
+
+/* VXWORKS: should be set for VXWORKS OS. */
+#undef VXWORKS
+
+/* WIN95: should be set for Window 95. */
+#undef WIN95
+
+/********************************************************************
+ *
+ * OPRS Features section. 
+ *
+ ********************************************************************/
+
+/* OPRS_DEBUG ... This is a development SYMBOL... */
+#undef OPRS_DEBUG
+
+/* OPRS_PROFILING: should be set if you want a kernel with profiling
+   information. */
+#undef OPRS_PROFILING
+
+/* One of the following should be defined (or it default to OPRS_MALLOC). */
+/* Use standard malloc only. */
+#undef STD_MALLOC
+
+/* Use a mixe of OPRS malloc and standard one.
+   This is the preferred option. */
+#undef MIXED_MALLOC
+
+/* Use OPRS malloc only.  Quite good too.*/
+#undef OPRS_MALLOC
+
+#undef DEBUG_COMPACTION
+
+/* Allow report on the malloc bucket use. */
+#undef MALLOC_MOUCHARD
+
+/* Should be used if the OP Editor must register... Should be tested though. */
+#undef REGISTER_OP_EDITOR
+
+/* Define this to include KEY management code. */
+#undef OPRS_KEY_CODE
+
+/* This is an internal LAAS option to allow connection to IxTeT Reco. */
+#undef CONNECT_TO_IXTET
+
+/* This is a development option to find unexisting documentation node. */
+#undef FIND_UNEXISTING_NODE
+
+#undef TRUCK_DEMO
+
+/* Does the CC handle the inline keyword. */
+#undef INLINE_UNDEFINED
+
+/********************************************************************
+ *
+ * System OS Features section.
+ *
+ ********************************************************************/
+
+#undef HAS_BUFSIZ
+
+/* HP system do not like cast of double in int... They generate a
+   floating point exception. This variable should be define for them... */
+#undef CANNOT_CAST_DOUBLE_IN_INT
+
+/* HP system misses a char Error[128]; */
+#undef ERROR_UNDEFINED
+
+/* Some systems do not define/initialize yyin and yyout propely.
+ In this case define this variable. */
+#undef YY_NO_CONST
+
+/* If setbuf undefined, then use setbuffer. */
+#undef SETBUF_UNDEFINED
+
+/* On some systems these are undefined... */
+#undef HAS_STRERROR
+
+/* On these systems DEC, HP_UX, VXWORKS and IRIS4D, it looks like real_path
+   is undefined. */
+#undef REALPATH_UNDEFINED
+
+/* SysV: pid_t setpgrp(void);
+   Bsd: int setpgrp(int pid, int pgrp); */
+#undef SETPGRP_TAKE_ARGS
+
+/* Defined on Solaris 2.x etc...     */
+#undef HAS_IOCTL_TIOCNOTTY
+
+/* Self Explanatory... used by the oprs-server to have an accept thread... */
+#undef USE_MULTI_THREAD
+
+#define HAS_PTHREAD_KILL
+
+#undef HAS_GETCWD
+
+#undef HAS_GETHOSTNAME_DECLARATION
+
+/* Some sprint (SUN_BSD and DEC for example) returns the string, and
+   not the size of the printed string. */
+#undef SPRINT_RETURN_STRING
+
+/* defined(SVR4) || defined(HP_UX) || defined (IRIS4D) */
+#undef HAS_SIGACTION
+
+/* on HPUX this must be define... this define should be
+   renamed... after understanding what it really does. */
+#undef SA_SIGINFO_UNDEFINED
+
+/* One of the two following should be defined. */
+#undef HAS_LRAND48
+#undef HAS_RAND
+
+/* These are self explanatory. */
+#undef HAS_BZERO
+#undef HAS_BCOPY
+#undef HAS_INDEX
+
+/* Some system do not support TZP in gettimeofday 
+   defined(SUN_SOLARIS) || defined(VXWORKS) */
+#undef GETTIMEOFDAY_HAS_NOT_TZP
+
+/* Has the abort function call. */
+#undef HAS_ABORT
+
+#undef SUN_BSD_BRK
+
+#undef HAS_RLIMIT
+
+#undef HAS_SIGSETMASK
+
+#undef DEFINE_MEMALIGN
+
+/* tolower does not accept all char... */
+#undef HAS_TOLOWER
+
+/* If set, should have a value.  */
+#undef HAS_UNCOMPRESS
+
+/* Has getuid system call. */
+#undef HAS_GETUID
+
+/* Has unist.h */
+#undef HAS_UNISTD
+
+/* Use WinSock (Win95) */
+#undef WINSOCK
+
+/* signal.h is in sys/... */
+#undef HAS_SYS_SIGNAL
+
+/* Can fork a new process. */
+#undef HAS_FORK
+
+/* Has timer functions and SIGALARM. */
+#undef HAS_TIMER
+
+/* Has times function. */
+#undef HAS_TIMES
+
+/* has utsname.h */
+#undef HAS_UTSNAME
+
+
+/* has systeminfo.h */
+#undef HAS_SYSTEMINFO
+
+/********************************************************************
+ *
+ * System Windowing Features section.
+ *
+ ********************************************************************/
+
+/* Self explanatory. */
+#undef HAS_MOTIF_1_2
+
+/* There is a bug with non Motif widget initialization in Motif 1.2
+   and above. */
+#undef HAS_MOTIF_CLASS_INITIALIZE_BUG
+
+/* Motif has XmCreateTemplateDialog... This is usually true for
+   motif version > 1.2 */
+#undef MOTIF_HAS_TEMPLATE_DIALOG
+
+/* Should be set if _XEditResCheckMessages() is available.
+   This is usually true on X11Rx x>=5 systems. But not on HP... */
+#undef XEDITRESCHECKMESSAGES_AVAILABLE
+
+/* On some X11R5 Solaris 1, when linking statically, dlsym, dlopen and dlclose
+   are undefined. This is a sun dl bug */
+#undef DLSYMOPENCLOSE_UNDEFINED
+
+/* Define this if you wan the OPE to displaya DEBUG button giving you
+   acces to the mstats funciton. */
+#undef OPE_ADD_MSTATS_BUTTON

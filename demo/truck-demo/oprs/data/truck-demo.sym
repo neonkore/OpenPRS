@@ -1,0 +1,67 @@
+declare cwp CLIENT
+declare cwp END-OF-DAY
+declare cwp POSITION
+declare cwp STOP-TIME
+declare cwp TYPE
+declare ff ALARM 0
+declare ff DELAY 1
+declare ff GIVE-ME-TIME 1
+declare ff LIGHT 1
+declare ff POSITION 1
+declare ff STATUS 1
+declare ff TRUCK-PLACED 0
+declare function ACCEPTED
+declare function LIGHT
+declare function OPPOSED
+declare function OPRS-TIME
+declare function REFUSED
+declare function SHUTDOWN
+declare function TB-BP
+declare function TBS-BP
+declare function TRUSTED
+declare function UNKNOWN-SWITCH-POSITION
+declare function VALVE
+declare function WARNING
+declare function TWO-SENSORS
+declare predicate HALT-TIME
+declare symbol BP
+declare symbol CLOSE
+declare symbol EMPTY
+declare symbol FILLING
+declare symbol GIVE-ME-TIME
+declare symbol GOOD
+declare symbol MOVE-VALVE
+declare symbol NO
+declare symbol OFF
+declare symbol ON
+declare symbol ONE-GOOD
+declare symbol OPEN
+declare symbol PLACED-STATUS
+declare symbol PRIORITY
+declare symbol QUEUE
+declare symbol SENSOR1
+declare symbol SENSOR2
+declare symbol SWITCH-VALVE
+declare symbol TALKBACK 
+declare symbol TANK
+declare symbol TB
+declare symbol TB-FAIL
+declare symbol TB-POSITION
+declare predicate TRUCK-FULL
+declare symbol TWO-GOOD
+declare symbol YES
+declare predicate ASSOCIATED-TB
+declare predicate DAY-PLAN
+declare predicate ECHEC
+declare predicate FULL
+declare predicate GOOD-BYE
+declare predicate INIT-DEMO
+declare predicate INIT-TIME
+declare predicate LOAD-TRUCK
+declare predicate RESET
+declare predicate RUN-DEMO
+declare predicate RUN-TIME
+declare predicate SHUTDOWN
+declare predicate TRUCK-IN-PLACE
+declare predicate TRUCK-READY
+declare predicate WARNING

@@ -1,0 +1,18 @@
+declare cwp PROPERTY-P
+trace load op off
+include "data/new-default.sym"
+load opf "data/new-default.opf"
+
+declare op_predicate FACTORIAL
+declare op_predicate PRINT-FACTORIAL
+declare symbol RECURSIVE
+declare cwp PREFER-RECURSIVE
+declare cwp PREFER-ITERATIVE
+
+load opf "data/fact-meta-if-par.opf"
+trace all off
+
+trace step opf "data/fact-meta-if-par.opf" on
+trace graphic opf "data/fact-meta-if-par.opf" on
+trace text opf "data/fact-meta-if-par.opf" on
+trace graphic op |Print Factorial| off
