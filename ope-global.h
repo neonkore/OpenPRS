@@ -104,7 +104,7 @@ extern OPFile *current_opfile;
 
 extern int pretty_width;
 extern char *s_pretty_parsed;
-extern char s_parsed[BUFSIZ];
+/* extern char s_parsed[BUFSIZ]; */
 
 extern char *file_name_for_copy;
 extern char *file_name_for_print;

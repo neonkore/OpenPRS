@@ -1,7 +1,7 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ(2.57)
+AC_PREREQ(2.53)
 AC_INIT(Open PRS, 1.0b, felix@laas.fr, OpenPRS)
 AC_CONFIG_SRCDIR([oprs-main.c])
 AC_CONFIG_HEADER([config-ac.h])
@@ -39,7 +39,7 @@ AC_HEADER_SYS_WAIT
 AC_CHECK_HEADERS([arpa/inet.h fcntl.h limits.h locale.h malloc.h netdb.h netinet/in.h stddef.h stdlib.h string.h sys/file.h sys/ioctl.h sys/param.h sys/socket.h sys/time.h unistd.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
-AC_HEADER_STDBOOL
+# AC_HEADER_STDBOOL
 AC_C_CONST
 AC_TYPE_PID_T
 AC_TYPE_SIZE_T
@@ -51,12 +51,12 @@ AC_TYPE_UID_T
 AC_FUNC_FORK
 AC_PROG_GCC_TRADITIONAL
 AC_FUNC_MALLOC
-AC_FUNC_REALLOC
+#AC_FUNC_REALLOC
 AC_FUNC_SELECT_ARGTYPES
-AC_FUNC_SETPGRP
+#AC_FUNC_SETPGRP
 AC_TYPE_SIGNAL
 AC_FUNC_STAT
-AC_CHECK_FUNCS([sigaction setitimer valloc clock_gettime dup2 gethostbyname gethostname getpagesize gettimeofday pow realpath select socket strcasecmp strchr strerror strncasecmp strrchr])
+AC_CHECK_FUNCS([abort sigaction setitimer valloc clock_gettime dup2 gethostbyname gethostname getpagesize gettimeofday pow realpath select socket strcasecmp strchr strerror strncasecmp strrchr setpgid])
 
 AC_CONFIG_FILES([
 		 Makefile

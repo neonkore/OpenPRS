@@ -36,9 +36,11 @@ void no_linger_reuseaddr(int socket);
 void socket_cleanup_and_exit(int status);
 void socket_startup(void);
 
+/*
 #ifndef  HAS_GETHOSTNAME_DECLARATION
 int gethostname(char *name, int namelen);
 #endif
+*/
 
 void socket_cleanup_and_exit(int status)
 #if defined(__GNUC__) && !defined(VXWORKS)

@@ -177,8 +177,8 @@ Oprs_Client *make_oprs_client(PString name)
 	  }
 
 	  pid = getpid();	/* Get out of the caller process group (go in bg)... */
-	  if (setpgrp(0, getpid()) <0) {
-	       perror("oprs-server: setpgrp");
+	  if (setpgid(0, getpid()) <0) {
+	       perror("oprs-server: setpgid");
 	  }
 	  args[2] = (char *) MALLOC(MAX_PRINTED_INT_SIZE);
 	  args[4] = (char *) MALLOC(MAX_PRINTED_INT_SIZE);

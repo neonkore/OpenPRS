@@ -127,9 +127,6 @@ int mp_port;
 struct hostent  *gethostbyname();
 #endif
 
-#ifndef HAS_GETHOSTNAME_DECLARATION
-int gethostname(char *name, int namelen);
-#endif
 
 Slist *ope_init_arg(int argc,char **argv)
 {

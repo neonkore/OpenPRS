@@ -58,6 +58,12 @@
 #define HAS_SIGACTION
 #endif
 
+
+/* Has the abort function call. */
+#ifdef HAVE_ABORT
+#define HAS_ABORT
+#endif
+
 /********************************************************************
  *
  * OPRS Features section. 
@@ -162,9 +168,6 @@
 /* Some system do not support TZP in gettimeofday 
    defined(SUN_SOLARIS) || defined(VXWORKS) */
 #undef GETTIMEOFDAY_HAS_NOT_TZP
-
-/* Has the abort function call. */
-#undef HAS_ABORT
 
 #undef SUN_BSD_BRK
 

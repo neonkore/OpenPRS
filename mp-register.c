@@ -434,8 +434,8 @@ PBoolean start_mp_oprs(const char *mp_hostname, int mp_port)
 	       sprintf (args[2],"%d", mp_port);
 	       args[3] = NULL;
 	       pid = getpid();
-	       if (setpgrp(0, getpid()) <0) { /* will disconnect it from the term... */
-		    perror("start_mp_oprs: setpgrp");
+	       if (setpgid(0, getpid()) <0) { /* will disconnect it from the term... */
+		    perror("start_mp_oprs: setpgid");
 	       }	
 	       execvp(prog, args); /* Lets start the message passer */
 	       perror(prog);	/* If we get here, we have it bad. */

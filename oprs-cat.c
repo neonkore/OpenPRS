@@ -76,8 +76,8 @@ int main(int argc,char **argv)
      int nfound, read;
      struct timeval tv;
  
-     if (setpgrp(0, getpid()) <0) {
-               perror("setpgrp");
+     if (setpgid(0, getpid()) <0) {
+               perror("setpgid");
           }
  
      if (argc >=2 ) {
