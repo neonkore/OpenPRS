@@ -133,11 +133,11 @@ The set of OPs in a \COPRS{} application system not only consists of procedural
 knowledge about a specific domain, but also includes \dfn{meta level} OPs ---
 that is, information about the manipulation of the beliefs, goals, and
 intentions of \COPRS{} itself. For example, typical meta level OPs encode various
-methods for choosing among multiple applicable Ops. They determine how to achieve
+methods for choosing among multiple applicable OPs. They determine how to achieve
 a conjunction or disjunction of goals, and compute the amount of additional
 reasoning that can be undertaken, given the real-time constraints of the
 problem domain. In achieving this, meta level OPs make use of information
-about Ops that are contained in the system database or in the property slots of
+about OPs that are contained in the system database or in the property slots of
 the OP structures.
 
 \COPRS{} has several features that make it particularly powerful as a
@@ -145,7 +145,7 @@ situated reasoning system, including: (1) the semantics of its plan (procedure)
 representation, which is important for verification and maintenance; (2) its
 ability to construct and act upon partial (rather than complete) plans; (3) its
 ability to pursue goal-directed tasks while at the same time be responsive
-to changing patterns of events in bound time; (4) its facilities for managing
+to changing patterns of events in bounded time; (4) its facilities for managing
 multiple tasks in real-time; (5) its default mechanisms for handling stringent
 real-time demands of its environment; and (6) its meta level (or reflective)
 reasoning capabilities. Some of these features have been discussed in earlier
@@ -153,8 +153,8 @@ reports and papers
 \cite{Georgeff-Ingrand89,Georgeff-Ingrand90-b,Georgeff-Ingrand90-a}.
 
 \section{Example of Procedure/OP in \COPRS{}}
-\node{Example of Procedure/OP in OPRS}
-\cpindex{Example of Procedure/OP in \COPRS{}}
+\node{Example Procedure/OP in OPRS}
+\cpindex{Example Procedure/OP in \COPRS{}}
 
 The procedure or OP which is presented on Figure \ref{fig-proc1-fig}
 belongs to a library of procedures in the control and supervision of a tank
@@ -188,10 +188,10 @@ procedure successfully executes, it will conclude the new position of the valve
 in the database.
 
 \item The \dfn{documentation} field is self explanatory.
-  
+
   Then, there is the ``procedural'' part which specifies the sequence of tests
   and actions to evaluate when the procedure is executed.
-  
+
 \item The ``\code{START}'' node is the starting point of the procedure. To
 successfully execute a procedure, one must satisfy all the actions and
 conditions which lead to an ``\code{END}'' node. This is done by jumping from node to
@@ -202,10 +202,10 @@ the ``switch'' in the proper position: \code{\$X}. There is only one node
 
 \item There can be more than one outgoing edge from a specific node. In
 this case, the system will try to satisfy one condition after another. As soon as a condition 
-is satisfied, we can make the transition to the pointed
-node.
+is satisfied, we can make the transition to node at the head of the
+edge (the node at which the edge points).
 
-\item Execution proceeds from node to node until it reach an ``\code{END}'' node.
+\item Execution proceeds from node to node until it reaches an ``\code{END}'' node.
 When one ``\code{END}'' node is reached, the execution of the procedure is
 considered successful. If it was goal invoked, then this goal is
 considered  achieved. In our case, the valve will  indeed be in
@@ -217,7 +217,7 @@ be satisfied.
 
 In a typical \COPRS{} application, one defines a library of such procedures and
 OPs. These procedures are then loaded in a \CPK{} which will execute them
-whenever they are applicable, e.g., when their invocation and context parts are
+whenever they are applicable, i.e., when their invocation and context parts are
 true.
 
 \section{The \COPRSDE{}}
@@ -242,7 +242,7 @@ application procedures.
 \item A \OPRSS{}, which enables the user to asynchronously manages a
 number of \CPK{}s and \XPK{}s.
 
-\item A \MP{} , which is the module which enable an application and external
+\item A \MP{} , which is the module which enables an application and external
 modules to communicate with the different kernels of the \COPRS{} application.
 
 \item Some \CPK{}s and \XPK{}s, which execute the procedures of your
@@ -250,8 +250,10 @@ application.
 
 \end{itemize}
 
+\typeout{This section refers to a licensing unit and licensing mechanism.  Probably obsolete.}
+
 A \COPRS{} application is organized around a ``\MP{}'' module and a
-``\OPRSS{}'' module, which constitute, the licensing unit of the \COPRSDE{}.
+``\OPRSS{}'' module, which constitute the licensing unit of the \COPRSDE{}.
 However, one can run as many \CPK{}s or \XPK{}s as required by the application on any 
 machine of the network.
 
@@ -312,7 +314,7 @@ possible.
 Different parts can be read in any order, although the order in which they
 are presented is certainly the preferred one. It is suggested that you read a part describing a 
 module before reading one describing the
-same module X11/Motif interface. For example, one will read the
+same module's X11/Motif interface. For example, one should read the
 \CPK{} part before the \XPK{} part.
 
 \begin{description}
@@ -339,7 +341,7 @@ interface, you can graphically trace the procedures which are executing and
 follow the various tasks the kernel is working on.
 
 \item[\OPE{}:] This part describes the program which is used to create, edit
-and modify OPs and procedures. It is a graphic editor based on X11/Motif.
+and modify OPs and procedures. It is a graphical editor based on X11/Motif.
 
 \item[Using \COPRS{}:] This part describes how to use the \COPRSDE{}. A step by
 step \OPE{} session is presented, as well as an example of how to run an \XPK{}
@@ -347,9 +349,12 @@ application. This part also goes through the process of explaining the various
 choices you will need to make to set-up a \COPRS{} application, and gives some
 example of such application.
 
+\typeout{The description of the appendices talks about differences
+  with SRI OPRS.  Should this be SRI PRS with no O?}
+
 \item[Appendices:] The appendices describe various topics about the \COPRSDE{}:
 installation (\pxref{How to Install the OPRS Development Environment}),
-differences with SRI \OPRS{} (\pxref{Principal Differences with SRI OPRS}),
+differences from SRI \OPRS{} (\pxref{Principal Differences from SRI OPRS}),
 default OPs (\pxref{Default OPs}), the Grammar Used in the \COPRSDE{}
 (\pxref{Grammar Used in the OPRS Development Environment}), etc., as well as a glossary, a bibliography
 and various indices which point you back to the appropriate section of the
@@ -357,14 +362,17 @@ manual.
 
 \end{description}
 
-Some chapters or sections have arbitrarily been put in a particular part,
-although they could be equally presented in another part. For example, the OP
-syntax section (\pxref{OP Syntax and Semantic}) is part of the \CPK{} part,
-although it could be in the \OPE{} part. In any case, the various indices and
-cross references will always point you to the proper section when necessary.
+Some chapters or sections have arbitrarily been put in a particular
+part, although they could equally well be presented in elsewhere.
+For example, the OP syntax section (\pxref{OP Syntax and Semantic}) is
+part of the \CPK{} part, although it could be in the \OPE{} part. In
+any case, the various indices and cross references will always point
+you to the proper section when necessary.
 
 Comments and problems about this documentation should be reported to the
 following electronic mail address: \t{oprs-manual@ingenia.fr}.
+
+\typeout{Is this email address still accurate?}
 
 
 %%% Local Variables: 
