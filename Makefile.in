@@ -3,7 +3,7 @@
 #
 # $Id$
 #
-# Copyright (c) 1991-2004 Francois Felix Ingrand.
+# Copyright (c) 1991-2005 Francois Felix Ingrand.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -138,6 +138,9 @@ YACC_SRC = ope-parser.y oprs-parser.y oprs-server-parser.y opc-parser.y
 
 LEX_SRC = ope-parser.l oprs-parser.l oprs-server-parser.l lex-parser-def.l lex-simple-def.l \
 	lex-macro.l lex-graph-op.l lex-text-op.l lex-meta-exp.l lex-exp.l opc-parser.l
+
+LEX_YACC_C = oprs-parser.lex.c oprs-server-parser.lex.c ope-parser.lex.c opc-parser.lex.c \
+	oprs-parser.tab.c ope-parser.tab.c opc-parser.tab.c oprs-server-parser.tab.c
 
 SRCS = $(C_SRC) $(INC) $(FINC)
 
@@ -806,7 +809,7 @@ depend make.depend:: $(filter-out $(OPRS_LIB_SRC) \
 				$(XOPRS_LIB_SRC) \
 				$(OPAQUE_LIB_SRC) \
 				$(OPG_LIB_SRC), \
-			$(C_SRC)) 
+			$(C_SRC) $(LEX_YACC_C)) 
 	$(MKDEP) -c$(CC) $(CPPFLAGS) -omake.depend $?
 
 depend make.depend:: $(BOTH_OPE_OPRS_LIB_SRC)

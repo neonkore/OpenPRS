@@ -1,3 +1,8 @@
+2005-01-24  Francois Felix Ingrand  <felix@laas.fr>
+
+	* config.h.in: protect the LITTLE_ENDIAN define which can be
+	sometimes already defined.
+
 2005-01-06  Francois Felix Ingrand  <felix@laas.fr>
 
 	* ev-function.c: Add a make_atom_ef evaluable function.
