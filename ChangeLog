@@ -1,3 +1,7 @@
+2005-01-06  Francois Felix Ingrand  <felix@laas.fr>
+
+	* ev-function.c: Add a make_atom_ef evaluable function.
+
 2005-01-04  Francois Felix Ingrand  <felix@laas.fr>
 
 	* macro.h: INLINE definition now in config.h

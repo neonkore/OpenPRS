@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * ev-function.c -- Deal with evaluable functions in OPRS.
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2005 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -1306,6 +1306,17 @@ Term *tc_function_ef(TermList terms)
      res->u.id = term->u.expr->pfr->name;
 
      return res;
+}
+
+Term *make_atom_ef(TermList terms)
+{
+     Term *t;
+
+     t = (Term *)sl_get_slist_pos(terms, 1);
+     if (t->type != STRING) 
+	  report_fatal_external_error(oprs_strerror(PE_EXPECTED_STRING_TERM_TYPE));
+
+     return build_id(make_atom(t->u.string));
 }
 
 
@@ -2852,6 +2863,7 @@ void declare_ev_funct(void)
      make_and_declare_eval_funct("SURTYPES-OF-TYPE", surtypes_of_type_ef, 1);
      make_and_declare_eval_funct("TYPE-OF", type_of_ef, 1);
 
+     make_and_declare_eval_funct("MAKE-ATOM",make_atom_ef, 1);
      make_and_declare_eval_funct("GENSYM",gensym_ef, 0);
      make_and_declare_eval_funct("FF-VAL",ff_val_ef, 2);
      make_and_declare_eval_funct("MENTION",mention_ef, 1);
