@@ -1,11 +1,11 @@
-static const char* const rcsid = "xhelp.c,v 1.1 1992/04/24 17:08:40 vianney Exp";
+static const char* const rcsid = "$Id";
 
 /*                               -*- Mode: C -*- 
  * xhelp.c -- 
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2004 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -170,8 +170,7 @@ void create_help_info(Widget parent)
 #else
 void create_help_info(void)
 {
-     if (!(oprs_doc_dir = getenv("OPRS_DOC_DIR")))
-	  fprintf(stderr, "OPRS_DOC_DIR undefined, cannot load the doc.\n");
+     fprintf(stderr, "The documentation cannot be browsed from the application, use your PDF viewer to read it.\n");
 }
 #endif
 

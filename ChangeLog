@@ -1,3 +1,8 @@
+2004-05-26  Francois Felix Ingrand  <felix@laas.fr>
+
+	* xhelp.c: Change the code to warn about the online (i.e. linked to the
+	Motif widget) documentation availability.
+
 2003-09-22  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* README: creation...

@@ -141,6 +141,9 @@ The result should show up..
 you can now build the documentation (although the PDF may be available
 already...) 
 
+**** CAUTION **** it looks like one needs a recent version of Latex and its
+**** package to be able to generate the documentation...
+
 	cd doc 
 	make
 
@@ -151,7 +154,6 @@ directory.)
 
 	cd ..
 	make install
-
 
 RUNNING Open PRS
 ----------------
