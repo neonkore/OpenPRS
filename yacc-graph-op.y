@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2001 Francois Felix Ingrand.
  * All rights reserved.
  * 
  * $Id$
@@ -46,6 +46,7 @@ pp_fill: boolean	{$$ = $1;}
 	;
 
 boolean: INTEGER_TK	{$$ = ($1 ? TRUE : FALSE);}
+	;
 
 invocation:                     {check_symbol = TRUE;}
             expr		{$$ = $2;

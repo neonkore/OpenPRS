@@ -3,7 +3,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * ope-parser.y -- yacc grammaire
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2001 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -366,6 +366,7 @@ pp_fill: boolean	{$$ = $1;}
 	;
 
 boolean: INTEGER_TK	{$$ = ($1 ? TRUE : FALSE);}
+	;
 
 context: 			{$$ = NULL;}
         | expr			{$$ = sl_make_slist();sl_add_to_tail($$,$1);}
@@ -382,7 +383,7 @@ properties: 				{$$ = NULL;}
 
 properties_list:			{$$ = sl_make_slist();}
  	| properties_list property	{if ($2) sl_add_to_tail($1,$2); $$=$1;}
-
+	;
 
 ne_properties: OPENP_TK ne_properties_list CLOSEP_TK	{$$=$2;}
 	;
@@ -391,6 +392,7 @@ ne_properties_list: property			{$$=(PropertyList)sl_make_slist();
 						 if ($1) sl_add_to_head($$,$1);  }
 	| ne_properties_list property		{if ($2) sl_add_to_tail($1,$2);
 						 $$=$1;}
+	;
 
 documentation:			{$$ = NULL;}
 	| QSTRING_TK		{$$ = $1;}

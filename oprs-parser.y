@@ -3,7 +3,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * oprs-parser.y -- yacc grammaire
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2001 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -654,7 +654,7 @@ tsymbol_list: /*empty*/ {;}
 
 symbol: SYMBOL_TK {$$=$1;}
 	| SYMBOL_TK TYPE_SEP_TK SYMBOL_TK 	{set_type_by_name($3,$1);$$=$1;}
-
+;
 
 add_frame:
 	ADD_TK 					{enable_variable_parsing(); yy_begin_0();}
