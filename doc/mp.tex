@@ -31,30 +31,30 @@
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\part{\MP{}}
+\part{\MPA{}}
 \node{Message Passer}
 
 
 
-\chapter*{Overview of the \MP{}}
+\chapter*{Overview of the \MPA{}}
 \node{Overview of the Message Passer}
-\cpindex{Overview of the \MP{}}
-\cpindex{Introduction to the \MP{}}
+\cpindex{Overview of the \MPA{}}
+\cpindex{Introduction to the \MPA{}}
 
 
 The Message Passer is the program which allows an application to communicate
-with \CPK{}s and \XPK{}s. The \MP{} has one and only one function: it passes
+with \CPK{}s and \XPK{}s. The \MPA{} has one and only one function: it passes
 messages between various programs which have been registered. Most of the time,
 it is started by the \OPRSS{}, a \XPK{} or a \CPK{}, so you do not have to call
 it directly.  However, you can if you want, start it on any host, with any port
 on which to listen. In this case, you have to call it with the port number you
 want it to listen. \xref{Argument of the Message Passer}, for details. There is
-a companion program to the \MP{}: \code{kill-mp} which can be used to kill the
-\MP{}. Moreover, if the \MP{} has no client registered for more than five
+a companion program to the \MPA{}: \code{kill-mp} which can be used to kill the
+\MPA{}. Moreover, if the \MPA{} has no client registered for more than five
 hours, it will exit (to make sure your machine is not loaded by unused
-\MP{} processes). 
+\MPA{} processes). 
 
-The main characteristic of the \MP{} are:
+The main characteristic of the \MPA{} are:
 
 \begin{itemize}
 
@@ -73,24 +73,24 @@ communication functions provided in a library .
 
 \end{itemize}
 
-The \MP{} is identified by a host name and a port number. In other words,
-one can potentially run as many \MP{} as desired on a network of
-heterogeneous machines. Usually, one will run one \MP{} for one \COPRS{}
-application. This \MP{} serves as the central server for messages and
+The \MPA{} is identified by a host name and a port number. In other words,
+one can potentially run as many \MPA{} as desired on a network of
+heterogeneous machines. Usually, one will run one \MPA{} for one \COPRS{}
+application. This \MPA{} serves as the central server for messages and
 information passing between the different programs involved in a
 specific application.
 
-By default the \MP{} listens on the port 3300, however, there are means to get
+By default the \MPA{} listens on the port 3300, however, there are means to get
 it to listen onto another port. This new port can currently be specified when
-you start the \OPRSS{} using the appropriate argument (\pxref{Arguments of the OPRS-Server}, for details), or when you start the \MP{} on its own.
+you start the \OPRSS{} using the appropriate argument (\pxref{Arguments of the OPRS-Server}, for details), or when you start the \MPA{} on its own.
 
 \chapter{How to Use the Message Passer}
 \node{How to Use the Message Passer}
 \cpindex{How to Use the Message Passer}
 
 The various programs of the \COPRS{} development environment connect to the
-\MP{} without any intervention of the user. However, if you write your own
-module and want it to communicate with the \MP{}, then you need to
+\MPA{} without any intervention of the user. However, if you write your own
+module and want it to communicate with the \MPA{}, then you need to
 register it and follow a particular protocol.
 
 The registration mainly consists in connecting to a public TCP/IP Internet
@@ -100,24 +100,24 @@ registration, the client (which in most cases is a \CPK{}) is supposed to check
 from time to time its \code{mp-socket} by selecting it (in C) or listening to
 it (in Lisp).  If something is present, a message is available and should be
 read promptly.  Similarly, when a message has to be sent to another \COPRS{}
-kernel, or to an external module which has registered to the \MP{}, it is just
+kernel, or to an external module which has registered to the \MPA{}, it is just
 a matter of writing two strings on the socket \code{mp-socket}: one for the
 name of the recipient and one for the message itself. These strings are sent in
 a particular format, and the user should not attempt to send them directly but
 instead use the library functions provided for this very purpose.
 
-Note that each module needs to connect to the \MP{} with a unique name.
+Note that each module needs to connect to the \MPA{} with a unique name.
 
-The \MP{} can be killed or shutdown using the \code{kill-mp} program. 
+The \MPA{} can be killed or shutdown using the \code{kill-mp} program. 
 
 
 
-\section{Argument of the \MP{}}
+\section{Argument of the \MPA{}}
 \node{Argument of the Message Passer}
-\cpindex{Argument of the \MP{}}
+\cpindex{Argument of the \MPA{}}
 
 
-Although it is seldom started from the Unix shell, one can start the \MP{} on
+Although it is seldom started from the Unix shell, one can start the \MPA{} on
 its own. In this case, you have to specify the proper arguments in the
 \OPRSS{} command line (\pxref{Arguments of the OPRS-Server}) and the \OPRS{}
 command line (\pxref{Arguments to the oprs Command}) .
@@ -132,34 +132,34 @@ All the arguments are optional.
 
 \begin{description}
 
-\item[\code{-j}] to specify the port on which the \MP{} is listening.
+\item[\code{-j}] to specify the port on which the \MPA{} is listening.
 
 \item[\code{-l filename}] can be used to log in the file \file{filename} all
-the messages passed by the \MP{}.
+the messages passed by the \MPA{}.
 
-\item[\code{-v}] to specify a verbose mode for the \MP{}. In verbose mode, all
-messages passed by the \MP{} are traced.
+\item[\code{-v}] to specify a verbose mode for the \MPA{}. In verbose mode, all
+messages passed by the \MPA{} are traced.
 
-\item[\code{-x}] to specify that any new registration made to the \MP{} with an
+\item[\code{-x}] to specify that any new registration made to the \MPA{} with an
 already registered name lead to the deconnection of the old client. The default
 behavior is to refuse the connection to client with name already used.
 
 \end{description}
 
-\section{\MP{} Environment Variables}
+\section{\MPA{} Environment Variables}
 \node{Message Passer Environment Variables}
 \cpindex{Message Passer Kernel Environment Variables}
 
-There is one environment variable which can be used to customize the \MP{}.
+There is one environment variable which can be used to customize the \MPA{}.
 However, the argument passed using the command line has precedence on the one
 acquired from the environment variables.
 
 \begin{description}
 
 \cpindex{OPRS\_MP\_PORT}
-\item[\code{OPRS\_MP\_PORT}] is used  to specify the port on which the \MP{} will
+\item[\code{OPRS\_MP\_PORT}] is used  to specify the port on which the \MPA{} will
 listen to connection. It is used by the \CPK{}, the \XPK{}, the \OPRSS{}
-and the \MP{}.\*
+and the \MPA{}.\*
 Example:
 \begin{verbatim}
 setenv OPRS_MP_PORT 3456
@@ -171,11 +171,11 @@ setenv OPRS_MP_PORT 3456
 \node{Argument of the Message Passer Killer}
 \cpindex{Argument of the \MPK{}}
 
-One can use the \code{kill-mp} program to kill a \MP{}. Note that this program
-can kill any \MP{} you started on any host. So this command should be used with
-extreme caution. The \MP{} will check that the \MPK{} program has been started
-by the same user than the one who started it (the \MP{}). Moreover, the super
-user (the user root) can kill any \MP{}.  
+One can use the \code{kill-mp} program to kill a \MPA{}. Note that this program
+can kill any \MPA{} you started on any host. So this command should be used with
+extreme caution. The \MPA{} will check that the \MPK{} program has been started
+by the same user than the one who started it (the \MPA{}). Moreover, the super
+user (the user root) can kill any \MPA{}.  
 
 Usage: \begin{verbatim}
 kill-mp [-m message-passer-hostname]
@@ -187,10 +187,10 @@ All the arguments are optional.
 
 \begin{description}
 
-\item[\code{-m}] to specify the hostname on which the \MP{} is running (and will
+\item[\code{-m}] to specify the hostname on which the \MPA{} is running (and will
 be killed).
 
-\item[\code{-j}] to specify the port on which the \MP{} is listening (and will
+\item[\code{-j}] to specify the port on which the \MPA{} is listening (and will
 connected to to be killed).
 
 \end{description}
@@ -207,7 +207,7 @@ have precedence on the one acquired from the environment variables.
 
 \cpindex{OPRS\_MP\_PORT}
 \item[\code{OPRS\_MP\_PORT}] is used  to specify the port on which the \MPK{}
-connect to kill the \MP{}. It is equivalent to the \code{-j} command line
+connect to kill the \MPA{}. It is equivalent to the \code{-j} command line
 argument.\* 
 Example:
 \begin{verbatim}
@@ -216,7 +216,7 @@ setenv OPRS_MP_PORT 3456
 
 \cpindex{OPRS\_MP\_HOST}
 \item[\code{OPRS\_MP\_HOST}] is used  to specify the host on which the \MPK{} will
-connect to kill the \MP. It is equivalent to the \code{-m} command line argument.\* 
+connect to kill the \MPA{}. It is equivalent to the \code{-m} command line argument.\* 
 Example:
 \begin{verbatim}
 setenv OPRS_MP_HOST machine.site.domain
@@ -224,21 +224,21 @@ setenv OPRS_MP_HOST machine.site.domain
 
 \end{description}
 
-\section{How to Connect to the \MP{} from \OPRSS{} and \CPK{}}
+\section{How to Connect to the \MPA{} from \OPRSS{} and \CPK{}}
 \node{How to Connect to the Message Passer from OPRS Server and OPRS}
-\cpindex{How to Connect to the \MP{} from \OPRSS{} and \CPK{}}
+\cpindex{How to Connect to the \MPA{} from \OPRSS{} and \CPK{}}
 
 There is nothing particular to do for the \OPRSS{} or a \CPK{} to use the
-\MP{}. For all these programs, the registration to the \MP{} is mandatory and
-automatic. Upon starting, they register to the \MP{}, and they regularly check
+\MPA{}. For all these programs, the registration to the \MPA{} is mandatory and
+automatic. Upon starting, they register to the \MPA{}, and they regularly check
 if something is present for them on the appropriate socket.
 
-\section{How to Connect to the \MP{} from an External Module}
+\section{How to Connect to the \MPA{} from an External Module}
 \node{How to Connect from an External Module}
-\cpindex{How to Connect to the \MP{} from an External Module}
+\cpindex{How to Connect to the \MPA{} from an External Module}
 
-Any external module or program can register to the \MP{}. It is even the only
-way for an arbitrary program to communicate with \CPK{}s. By default, the \MP{}
+Any external module or program can register to the \MPA{}. It is even the only
+way for an arbitrary program to communicate with \CPK{}s. By default, the \MPA{}
 always reports on \code{stderr} the registration of a new client. There are two
 different protocols: the \code{MESSAGES\_PT} protocol and the \code{STRINGS\_PT}
 protocol. When you establish a connection, you need to specify the protocol
@@ -264,19 +264,19 @@ typedef enum {MESSAGES_PT, STRINGS_PT} Protocol_Type;
 \end{verbatim}
 
 \begin{typevr}{MP Library Variable}{int}{mp\_socket}
-is the \MP{} socket on which a program can send messages to and receive
-messages from the \MP{}.
+is the \MPA{} socket on which a program can send messages to and receive
+messages from the \MPA{}.
 \end{typevr}
 
 
 \begin{typevr}{MP Library Variable}{char *}{mp\_name}
-is the name of the client as set by the \MP{}. It is usually the name you gave
+is the name of the client as set by the \MPA{}. It is usually the name you gave
 as argument.
 \end{typevr}
 
 \begin{typefn}{MP Library Function}{int}{external\_register\_to\_the\_mp\_host\_prot}
         {(char *\var{name}, char *\var{host\_name}, int \var{port},
-Protocol\_Type \var{prot})} registers the calling program to the \MP{} under the
+Protocol\_Type \var{prot})} registers the calling program to the \MPA{} under the
 name \var{name}, on the host specified in \var{host\_name}, on the port
 \var{port}, with the protocol specified in \var{port}.
 \end{typefn}
@@ -284,7 +284,7 @@ name \var{name}, on the host specified in \var{host\_name}, on the port
 \begin{typefn}{MP Library Function}{int}{external\_register\_to\_the\_mp\_prot}
         {(char *\var{name},  int \var{port}, Protocol\_Type \var{prot})}
 is similar to the previous function except that the host on which the
-\MP{} is expected to run is the same as the one on which the
+\MPA{} is expected to run is the same as the one on which the
 program runs.
 \end{typefn}
 
@@ -295,10 +295,10 @@ is -1, then the connection attempt failed.
 \node{Messages Format}
 \cpindex{Messages Format}
 
-The format of data between sender and recipient using the \MP{} depends on the
+The format of data between sender and recipient using the \MPA{} depends on the
 established protocol. It is up to each module to parse and interpret them as
-they arrive. From the sender to the \MP{}, the format is always two strings
-(one for the recipient and one for the message). However, from the \MP{} to a
+they arrive. From the sender to the \MPA{}, the format is always two strings
+(one for the recipient and one for the message). However, from the \MPA{} to a
 module, it depends. In \code{MESSAGES\_PT} mode, the string \code{"receive
 <name-sender> <message>"} is sent as is. In \code{STRINGS\_PT} mode, the name and
 the message are sent as two separate strings, each string being sent as an int
@@ -306,10 +306,10 @@ the message are sent as two separate strings, each string being sent as an int
 
 For example, in \code{MESSAGES\_PT} mode, if the \CPK{} \code{FOO} wants to send
 the message \code{(position valve1 closed)} to the \CPK{} \code{BAR}, then it
-calls the function send\_message. The \MP{} sees two strings coming on
+calls the function send\_message. The \MPA{} sees two strings coming on
 \code{FOO}'s socket: \* \code{"BAR"} the recipient, and \code{"(POSITION VALVE1
 CLOSED)"} the printed representation of the message. After processing it, the
-\MP{} sends one string to \code{BAR}: \* \code{"receive FOO (POSITION VALVE1
+\MPA{} sends one string to \code{BAR}: \* \code{"receive FOO (POSITION VALVE1
 CLOSED)"} which is in fact interpreted as a command by the \code{BAR} kernel
 that the message \code{(POSITION VALVE1 CLOSED)} has been received from the
 kernel \code{FOO}.
@@ -351,9 +351,9 @@ is the function, in the \file{libmp.a} library, which is used to send a message
 \var{message} to  all the connected agents, except the sender.  
 \end{typefn}
 
-\section{Example of C Code to Connect to the \MP{}}
+\section{Example of C Code to Connect to the \MPA{}}
 \node{Example of C Code to Connect to the Message Passer}
-\cpindex{Example of C Code to Connect to the \MP{}}
+\cpindex{Example of C Code to Connect to the \MPA{}}
 
 This code comes from the Truck Loading Demo (\xref{Truck Loading Example}), and
 can be found in the file \file{demo/truck-demo/src/oprs-interface.c}.
@@ -489,12 +489,12 @@ mp_host_name, mp_port, STRINGS_PT)) == -1) {
 
 \end{verbatim}
 
-\section{Example of Lisp Code to Connect to the \MP{}}
+\section{Example of Lisp Code to Connect to the \MPA{}}
 \node{Example of Lisp Code to Connect to the Message Passer}
-\cpindex{Example of Lisp Code to Connect to the \MP{}}
+\cpindex{Example of Lisp Code to Connect to the \MPA{}}
 
 Here are the foreign function definitions to register a lisp program to
-the \MP{}, and to send messages to the \MP:
+the \MPA{}, and to send messages to the \MPA{}:
 
 \begin{verbatim}
 (in-pacopge "OPRS" :use '("LISP" "LUCID-COMMON-LISP"))
@@ -537,7 +537,7 @@ the \MP{}, and to send messages to the \MP:
 \end{verbatim}
 
 Here are some lisp functions to be used to communicate with the
-\MP{}. Note that as \COPRS{} uses a lisp like syntax, we can use read to
+\MPA{}. Note that as \COPRS{} uses a lisp like syntax, we can use read to
 read the message coming from the \CPK s.
 
 \begin{verbatim}
@@ -647,30 +647,30 @@ pacopge.
 (export *oprs-exports*)
 \end{verbatim}
 
-\section{Errors Reported by the \MP{}}
+\section{Errors Reported by the \MPA{}}
 \node{Errors Reported by the Message Passer}
-\cpindex{Errors Reported by the \MP{}}
+\cpindex{Errors Reported by the \MPA{}}
 
-A certain number of errors can be reported by the \MP{}. In
-general, the \MP{} is very verbose and notifies the user of
+A certain number of errors can be reported by the \MPA{}. In
+general, the \MPA{} is very verbose and notifies the user of
 any unexpected event or situation. Whenever it is possible, the reported
-message  indicates the host and the port number on which this \MP{} is
+message  indicates the host and the port number on which this \MPA{} is
 running. The most common problems are: 
 
 \begin{description}
 
 \item[\code{"Disconnecting the client: \%s from the message passer."}]
 This usually happens when a client died and the communicating socket
-has been closed. When the \MP{} realizes this, it prints this message.
+has been closed. When the \MPA{} realizes this, it prints this message.
 
 \item[\code{"Registering the client: \%s with protocol: \%s."}] is printed upon
-    successful connection to the \MP{}.
+    successful connection to the \MPA{}.
 
-\item[\code{"logging output in file `\%s'."}] is printed whenever the \MP{} log
+\item[\code{"logging output in file `\%s'."}] is printed whenever the \MPA{} log
     its output to a file.
 
 \item[\code{"nobody registered for more than \%d seconds, mp-oprs (\%d): exit."}]
-    is printed when the \MP{} exits when there is no connection  and no new
+    is printed when the \MPA{} exits when there is no connection  and no new
     connection have been made in a certain amount of time.
 
 \item[\code{"already has a client named: \%s. Denying registration."}]
@@ -678,12 +678,12 @@ This problem is reported if a new client tries to register
 with a name already used by somebody else.
 
 \item[\code{"EOF in get\_and\_send\_message (recipient) from \%s."}]
-This error is reported when the \MP{} gets an End of File while
+This error is reported when the \MPA{} gets an End of File while
 reading the name of the recipient on a socket. Most often it appears
 when a client dies.
 
 \item[\code{"EOF in get\_and\_send\_message, (message) from \%s."}]
-This error is reported when the \MP{} gets an End of File while
+This error is reported when the \MPA{} gets an End of File while
 reading the message part of a pair recipient-message on a socket.
 
 \item[\code{"A message has been sent to \%s, but no such agent exists."}]
@@ -694,17 +694,17 @@ This error is reported if a message is sent to a an unknown client.
     message passer.
 
 \item[\code{"Disconnecting the client: \%s from the message passer."}] This
-    message is printed when a client is disconnected by the \MP{}.
+    message is printed when a client is disconnected by the \MPA{}.
 
 \item[\code{"kill request, checking identity."}] A kill request has been
-  received by the \MP which checks if it has been sent by an authorized client.
+  received by the \MPA{} which checks if it has been sent by an authorized client.
 
 \item[\code{"denying kill-mp, you are not the user who started this message
     passer"}] is printed when a the client which sent the kill request is not
   authorized.
 
 \item[\code{"shutting down the message passer socket."}] is printed when the
-  \MP{} exit after a kill request has been sent.
+  \MPA{} exit after a kill request has been sent.
 
 \item[\code{"A message could not be delivered to \%s."}]
 This error is reported if a message cannot be properly delivered to

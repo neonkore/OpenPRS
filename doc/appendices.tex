@@ -306,7 +306,7 @@ expensive to keep it all the time).
 \item Wrote a default op to broadcast a message. Wrote a broadcast-message action.
 Added a broadcast mode to the message passer. I separated the modules which can
 receive and the one which can send (the \OPE{} and the \OPRSS{} do not
-receive). Therefore, the \MP{} never sends anything to the \OPRSS{} and the
+receive). Therefore, the \MPA{} never sends anything to the \OPRSS{} and the
 \OPE{}.
 
 \item Added a \code{val} evaluable function which returns the value on which
@@ -328,19 +328,19 @@ option menu. Default value of the flag is on.
 \item Added op predicate, i.e. predicate which can only be satisfied by
 OP not in the database.
 
-\item Now the \MP{} is started automatically by the application which want to
+\item Now the \MPA{} is started automatically by the application which want to
 connect to it. In other words, if a connection failed because nobody is
-listening on the host/port, then a \MP{} is started on this host/port.  We use
+listening on the host/port, then a \MPA{} is started on this host/port.  We use
 \code{rsh} to start the mp on a remote host, and fork to start it on the same host.
 
-\item Added a new program \code{kill-mp} to kill the \MP{}. It registers to the
-\MP{} and kill it.
+\item Added a new program \code{kill-mp} to kill the \MPA{}. It registers to the
+\MPA{} and kill it.
 
 \item To prevent conflict with types defined in VxWorks system includes... the
 type \code{LIST} and \code{NODE} have been renamed \code{OPRS\_LIST} and
 \code{OPRS\_NODE}. 
 
-\item Change the registration to the \MP{} mechanism to pass the registration
+\item Change the registration to the \MPA{} mechanism to pass the registration
 protocol as argument... and to return a status to deny/allow the registration.
 This change makes the registration mechanism incompatible with the previous
 version.
@@ -454,8 +454,8 @@ performed by the user.
 
 \item Added a \code{Display Next OP} and \code{Display Previous OP} in \XPK{}.
 
-\item The \MP{} registering functions have been changed. This change make them
-incompatible with previous versions of the \MP{}.
+\item The \MPA{} registering functions have been changed. This change make them
+incompatible with previous versions of the \MPA{}.
 
 \item In the various parsers, we have added some code to check we are not
 opening a directory instead of a file.
@@ -463,7 +463,7 @@ opening a directory instead of a file.
 \item Added extern "C" declaration in all the public include files
 which may be used by a c++ compiler.
 
-\item Added a verbose argument \code{-v} to the \MP{} to trace all messages.
+\item Added a verbose argument \code{-v} to the \MPA{} to trace all messages.
 
 \item An error handler for external code errors is now provided. 
 
@@ -493,7 +493,7 @@ rachid@laas.fr).
 \item Added a Show Global Variable menu and a "show variable" command to print
 the global variables list. 
 
-\item The \MP{} kills itself after an hour with no new connection and when
+\item The \MPA{} kills itself after an hour with no new connection and when
 nobody is registered. 
 
 \item Added a show memory menu.
@@ -609,7 +609,7 @@ OP with a name and a filename is already loaded, the newly loaded OP is
 ignored. \xref{OPRS Kernel Dumping/Loading Commands} for more information on
 this. 
 
-\item A better support for the VxWorks version (which now supports the \MP{}
+\item A better support for the VxWorks version (which now supports the \MPA{}
 and the \code{kill-mp} programs). \xref{VxWorks} for more information on
 this. 
 
@@ -640,7 +640,7 @@ more information, consult the \file{NEWS} file in the C-PRS distribution.
 
 \begin{itemize}
 
-\item Added a \code{-x} option to the \MP{} to specify that new connection with
+\item Added a \code{-x} option to the \MPA{} to specify that new connection with
 already registered name should lead to the disconnection of the older client.
 
 \item Node name are printed (in graphic) without the vertical bar. 
@@ -733,7 +733,7 @@ entry points to allow the user to link its own code. It requires
 \file{c\_toolkit.o} and \file{vx-mp-lib.o} to be loaded on the same board. The
 entry point is \code{oprs\_main} (see below). \xref{Linking C Code in the Kernels} for more on this.
 
-\item [\file{vx-mp-oprs}] This is the VxWorks \MP{} program.  It requires
+\item [\file{vx-mp-oprs}] This is the VxWorks \MPA{} program.  It requires
 \file{c\_toolkit.o} to be loaded on the same card. The entry point is
 \code{mp\_oprs\_main} (see below).
 
@@ -765,10 +765,10 @@ The arguments are explained below:
 \item[\code{server\_port\_arg}] is the port on which the \OPRSS{} is listenning.
 If 0, no connection is made to the \OPRSS{}.
 
-\item[\code{mp\_hostname\_arg}] is the hostname on which the \MP{} is running.
+\item[\code{mp\_hostname\_arg}] is the hostname on which the \MPA{} is running.
 
-\item[\code{mp\_port\_arg}] is the port on which the \MP{} is listenning. If 0,
-then no connection is made to the \MP{}.
+\item[\code{mp\_port\_arg}] is the port on which the \MPA{} is listenning. If 0,
+then no connection is made to the \MPA{}.
 
 \item[\code{include\_filename\_arg}] is an include file name to load upon
 starting. If NULL, or empty string no file is loaded.
@@ -783,7 +783,7 @@ variables have been put in VxWorks \code{taskVar}.
 Most environment variables are ignored under VxWorks, except for the
 \code{OPRS\_DATA\_PATH} variable.
 
-The \MP{} main function has been renamed and is called \code{mp\_oprs\_main} and
+The \MPA{} main function has been renamed and is called \code{mp\_oprs\_main} and
 has the following prototype:
 
 \begin{verbatim}
@@ -795,15 +795,15 @@ The arguments are explained below:
 
 \begin{description}
 
-\item[\code{mp\_port\_arg}] is the port on which the \MP{} is listenning. 
+\item[\code{mp\_port\_arg}] is the port on which the \MPA{} is listenning. 
 
-\item[\code{verbose\_arg}] is the flag which says if yes or no the \MP{} should
+\item[\code{verbose\_arg}] is the flag which says if yes or no the \MPA{} should
 be verbose on the messages exchanged.
 
-\item[\code{mp\_log\_filename\_arg}] is file to which \MP{} will log the messages
+\item[\code{mp\_log\_filename\_arg}] is file to which \MPA{} will log the messages
 exchanged (if \code{NULL} or an empty string is given, no log are done).
 
-\item[\code{exclude\_arg}] is the exclude flag which says if the \MP{}
+\item[\code{exclude\_arg}] is the exclude flag which says if the \MPA{}
 should, upon a newer registration, disconnect the former client with the same
 name.
 
@@ -820,7 +820,7 @@ The argument is explained below:
 
 \begin{description}
 
-\item[\code{mp\_port\_arg}] is the port on which the \MP{} you want
+\item[\code{mp\_port\_arg}] is the port on which the \MPA{} you want
 to kill is listenning.
 
 \end{description}
@@ -1107,7 +1107,7 @@ with timeout OPs. See the OP documentation for more details.
 \cpindex{Library and Kernel Functions}
 
 Few libraries (currently two) come with \COPRSDE{}. All of them are needed to
-write module to connect to the \MP{}. However, to write your own kernel, i.e.
+write module to connect to the \MPA{}. However, to write your own kernel, i.e.
 to extend relocatable, you may need access to functions defined in these
 relocatable (most likely to write evaluable functions, evaluable predicates and
 actions). In this chapter, we shall describe the libraries and the kernel
@@ -1788,8 +1788,8 @@ command with a new line.
 \cpindex{Registration and Communication Functions, \file{libmp.a}}
 
 \xref{How to Connect from an External Module}, for a description of the
-functions available to connect to the \MP{}. \xref{Messages Format}, for a
-description of the functions available to exchange messages with the \MP{}.
+functions available to connect to the \MPA{}. \xref{Messages Format}, for a
+description of the functions available to exchange messages with the \MPA{}.
 
 \section{\protect\file{liblist.a} library}
 \node{liblist.a library}
@@ -2629,7 +2629,7 @@ Here is a list of the files contained in this directory:
 
 \item [\file{xoprs}] is the \XPK{} program.
 
-\item [\file{mp-oprs}] is the \MP{} program.
+\item [\file{mp-oprs}] is the \MPA{} program.
 
 \item [\file{oprs-cat}] is a program which is used by the \XPK{}.
 
@@ -2638,7 +2638,7 @@ Here is a list of the files contained in this directory:
 \end{description}
 
 \item [\file{lib}] contains a number of libraries and relocatable files which
-you may need to build your application and to allow it to connect to the \MP{}.
+you may need to build your application and to allow it to connect to the \MPA{}.
 
 If your license is valid for more than one CPU type, the various
 binaries/libraries should be in the \code{\$TARGET} directory.
@@ -2651,7 +2651,7 @@ C++ functions).
 \begin{description}
 
 \item [\file{libmp.a}] is a library you can use if you want your own program to
-connect to the \MP{}.
+connect to the \MPA{}.
 
 \item [\file{libopaque.a}] is a library which can be necessary if the following
 symbols are missing: \*
@@ -2761,7 +2761,7 @@ file from the pre 1.1.1 version format to the newest format.
 files.
 
 \item [\file{vw-script}] is an exemple of a VxWorks script to load and run a
-\CPK{}, a \MP{} or a \MPK{}.
+\CPK{}, a \MPA{} or a \MPK{}.
 
 \item [\file{lex-includer.l}] is a lex program which is used during the \COPRS{}
 compilation to build the various lex and yacc grammar files. This file is only

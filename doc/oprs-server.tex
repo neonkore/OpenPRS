@@ -48,7 +48,7 @@ kernel without disturbing the \CPK{} main loop. This is where the \OPRSS{}
 comes in.  The \OPRSS{} is a program which enables the user to interact
 with a \CPK{} as much as possible. Moreover, the server allows the user to
 create new kernels, kill them, and so on\dots{} As most \COPRSDE{} programs, the
-\OPRSS{} will start the \MP{} if necessary.
+\OPRSS{} will start the \MPA{} if necessary.
 
 The OPRS Server enables the user to communicate directly with \CPK{}s.
 Indeed, \CPK{}s must be able to execute their procedures
@@ -85,7 +85,7 @@ All the arguments are optional.
 \item[\code{-i}] to specify the port on which the \OPRSS{} is
 listening to connections from \CPK{}s.
 
-\item[\code{-m}] to specify the hostname on which the \MP{} is running (or will
+\item[\code{-m}] to specify the hostname on which the \MPA{} is running (or will
 be started).  If the \OPRSS{} cannot connect (even after starting it) to
 this hostname on the specified  port, then the program exits with an error message.
 
@@ -93,7 +93,7 @@ this hostname on the specified  port, then the program exits with an error messa
 and id in upper case, lower case or in no particular case.All the kernels
 created by this \OPRSS{} will inherit this property.
 
-\item[\code{-j}] to specify the port on which the \MP{} is listening.
+\item[\code{-j}] to specify the port on which the \MPA{} is listening.
 
 \end{description}
 
@@ -108,17 +108,17 @@ have precedence on those acquired from environment variables.
 \begin{description}
 
 \cpindex{OPRS\_MP\_PORT}
-\item[\code{OPRS\_MP\_PORT}] is used  to specify the port on which the \MP{} will
+\item[\code{OPRS\_MP\_PORT}] is used  to specify the port on which the \MPA{} will
 listen to connection. It is used by the \CPK{}, the \XPK{}, the \OPRSS{}
-and the \MP{}. It is equivalent to the \code{-j} command line argument.\*
+and the \MPA{}. It is equivalent to the \code{-j} command line argument.\*
 Example:
 \begin{verbatim}
 setenv OPRS_MP_PORT 3456
 \end{verbatim}
 
 \cpindex{OPRS\_MP\_HOST}
-\item[\code{OPRS\_MP\_HOST}] is used  to specify the host on which the \MP{} will
-listen to connection. It is used by the \CPK{}, the \XPK{}, the \MP{} and the
+\item[\code{OPRS\_MP\_HOST}] is used  to specify the host on which the \MPA{} will
+listen to connection. It is used by the \CPK{}, the \XPK{}, the \MPA{} and the
 \OPRSS{}.  It is equivalent to the \code{-m} command line argument.\*
 Example:
 \begin{verbatim}
@@ -180,7 +180,7 @@ shell (from a remote host for example) and is waiting for the \OPRSS{}
 to accept its connection. There is a common mistake when one uses the
 \code{accept} command. If you have started a \CPK{} and the
 connection to the \OPRSS{} does not work after an \code{accept}, you
-probably started this server with a port number for it or the \MP{} which is
+probably started this server with a port number for it or the \MPA{} which is
 not the default one. Remember to specify these numbers in the command line of
 the \CPK{} you start.
 
@@ -238,7 +238,7 @@ string is similar to the one used in the \code{transmit} command.
 
 \pgindex{broadcast (oprs-server)}
 \item \code{broadcast \var{message}}. To send the \var{message} to
-all the \COPRS{} connected to this \OPRSS{}'s \MP{}. \*
+all the \COPRS{} connected to this \OPRSS{}'s \MPA{}. \*
 Example: \code{broadcast (bar boo 3)}.
 
 \end{itemize}

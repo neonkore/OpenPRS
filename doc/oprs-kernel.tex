@@ -106,8 +106,8 @@ The \COPRS{} can be called directly from the keyboard or, if you prefer, you can
 create, kill or modify a \CPK{} using commands of the \OPRSS{}
 (\pxref{Commands of the OPRS-Server}, for details). The \CPK{} can be run
 without being connected to the \OPRSS{} but still needs to be connected to
-the \MP{}. Connection to the \MP  is mandatory, but  automatically performed by
-the kernel. If there is already a \MP{} running on the specified host/port,
+the \MPA{}. Connection to the \MPA{}  is mandatory, but  automatically performed by
+the kernel. If there is already a \MPA{} running on the specified host/port,
 then  the kernel will connect to it. Otherwise, it will attempt to start one
 and then to connect to it.
 
@@ -142,7 +142,7 @@ or you can start a new \CPK{} with the \code{make} command of the \OPRSS{}
 
 Note that if you start \COPRS{} from the Unix shell, you may want to specify a
 number of options or arguments, for example, if the \OPRSS{} and the
-\MP{} don't use the default socket port for their socket communication,
+\MPA{} don't use the default socket port for their socket communication,
 then you need to specify in the \code{oprs} command the port number on which
 both programs expect connections. Unless you started the kernel with the
 \code{-a} argument, you are then required to register this kernel from the
@@ -192,12 +192,12 @@ connection. Do not forget to issue the \code{accept} command in the
 connected to the \OPRSS{}. In this case you do not need to issue the
 \code{accept} command in the \OPRSS{}.
 
-\item[\code{-m}] to specify the hostname on which the \MP{} runs or will be
+\item[\code{-m}] to specify the hostname on which the \MPA{} runs or will be
 started (usually the same hostname as the \OPRSS{}). If the \CPK{}
 cannot connect to this hostname on the specified port (even after trying to
-start the \MP{}), then the program exits with an error message.
+start the \MPA{}), then the program exits with an error message.
 
-\item[\code{-j}] to specify the port on which the \MP{} is expecting a
+\item[\code{-j}] to specify the port on which the \MPA{} is expecting a
 connection (or will be started if necessary).
 
 \item[\code{-x}] to specify an include file to load upon start-up. This will
@@ -284,17 +284,17 @@ setenv OPRS_DOC_DIR /usr/local/oprs/doc
 \end{verbatim}
 
 \cpindex{OPRS\_MP\_PORT}
-\item[\code{OPRS\_MP\_PORT}] is used  to specify the port on which the \MP{} will
+\item[\code{OPRS\_MP\_PORT}] is used  to specify the port on which the \MPA{} will
 listen to connection. It is used by the \CPK{}, the \XPK{}, the \OPRSS{}
-and the \MP{}. It is equivalent to the \code{-j} command line argument. \*
+and the \MPA{}. It is equivalent to the \code{-j} command line argument. \*
 Example:
 \begin{verbatim}
 setenv OPRS_MP_PORT 3456
 \end{verbatim}
 
 \cpindex{OPRS\_MP\_HOST}
-\item[\code{OPRS\_MP\_HOST}] is used  to specify the host on which the \MP{} will
-listen to connection. It is used by the \CPK{}, the \XPK{}, the \MP{} and the
+\item[\code{OPRS\_MP\_HOST}] is used  to specify the host on which the \MPA{} will
+listen to connection. It is used by the \CPK{}, the \XPK{}, the \MPA{} and the
 \OPRSS{}. It is equivalent to the \code{-m} command line argument.\*
 Example:
 \begin{verbatim}
@@ -361,10 +361,10 @@ All the communications between the various components of the \COPRSDE{} are made
 using Internet sockets. If your license agreement allows it, you can
 run a \CPK{} on a machine different from the one on which the \OPRSS{}
 runs. On some machines with notably slow process switching it is strongly
-advised to run the \OPRSS{} and the \MP{} on a host different from the one
+advised to run the \OPRSS{} and the \MPA{} on a host different from the one
 upon which the \CPK{} is running. In any case, you can start a \CPK{} from any
 host, providing you specify the proper arguments to enable the \CPK{} to
-establish connection with the \OPRSS{} and the \MP{}. Note that you need to
+establish connection with the \OPRSS{} and the \MPA{}. Note that you need to
 issue an \code{accept} command in the \OPRSS{} to establish the connection.
 
 \section{How to Connect to a \CPK{}}
@@ -374,7 +374,7 @@ issue an \code{accept} command in the \OPRSS{} to establish the connection.
 \cpindex{Command Mode}
 
 When you start a \CPK{}, it enters its main loop and is in \dfn{run} mode. In
-this mode, the kernel checks for messages from the \MP{} and commands from the
+this mode, the kernel checks for messages from the \MPA{} and commands from the
 \OPRSS{}, but does not interact directly with the user. If you want to
 interact directly with a \CPK{} (to consult the database, or load some OPs, and
 so on), you can do it using the \code{connect} command of the \OPRSS{}. This
@@ -408,7 +408,7 @@ the keyboard and will wait until the \CPK{} releases it.
 
 One problem with this scheme is that during this time, the \CPK{} is deaf to
 the rest of the world. For example, it does not check for messages from the
-\MP{}, and it does not even run its top level loop\dots{} However, the messages
+\MPA{}, and it does not even run its top level loop\dots{} However, the messages
 are queued (as much as possible) and the main loop will parse them upon
 restart.  In any case, the connection to a \CPK{} should be used as seldom as
 possible and the kernel should then be left alone to run its own life.
@@ -2058,7 +2058,7 @@ these facts are not associated with any binding environment.
 
 Messages are facts. They are called messages because they come from ``outside''
 (presumably from a different agent such as another \CPK{} or an external
-program such as a monitor). Moreover, they usually come on the \MP{} socket. As
+program such as a monitor). Moreover, they usually come on the \MPA{} socket. As
 soon as they are received by the \CPK{}, they are treated as Facts. When
 received, the message contains the name of the sender, and if the appropriate
 trace flag is on, a message on the screen advises you of the arrival of the
@@ -4421,7 +4421,7 @@ while (TRUE) {        /* Loop for ever. */
 \end{verbatim}
 
 When Ops are not being executed, the main loop is idle. However, the
-kernel monitors new events (coming from the \MP{} or from the
+kernel monitors new events (coming from the \MPA{} or from the
 \OPRSS{}). In addition, one or more OPs might be sleeping and waiting for particular 
 conditions to become true. The \OPRSS{} kernel will wake up
 every \code{main\_loop\_pool\_sec + main\_loop\_pool\_usec} (seconds and

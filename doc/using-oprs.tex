@@ -142,9 +142,9 @@ at any time you can consult the Help Footer (\pxref{Footer and Dialog Box Help})
 \cpindex{Getting Started with the \XPK{}}
 
 Before starting a \XPK{}, you must start a \OPRSS{} (this operation
-will also start a \MP{}). If you attempt to run a \XPK{} or a \CPK{}
+will also start a \MPA{}). If you attempt to run a \XPK{} or a \CPK{}
 without any \OPRSS{} running, the program will exit with an error
-message stating that it cannot connect to the \MP{} (which is mandatory
+message stating that it cannot connect to the \MPA{} (which is mandatory
 for \XPK{} and \CPK{}).
 
 So, before doing anything, you need to call a \OPRSS{} by issuing
@@ -663,8 +663,8 @@ then you will need to define some action.
 
 Keep in mind that if your application is organized in such a way that
 there is module which perform the real action on the world, and that this
-module is connected to the \MP{}, then most if not all the actions are
-done using the \MP{} (i.e. by sending a message to the module in charge
+module is connected to the \MPA{}, then most if not all the actions are
+done using the \MPA{} (i.e. by sending a message to the module in charge
 of performing the action (a simulator or an interface to the real system).
 
 Nevertheless, you may need actions for one the following reasons:
@@ -784,10 +784,10 @@ environment, you will probably get some data from this environment and
 you may send commands to it.
 
 In most case, these data and these commands will transit through the
-\MP{}.
+\MPA{}.
 
 Example are provided in the \file{demo} directory of connection between
-applications and \CPK{} through the \MP{}.
+applications and \CPK{} through the \MPA{}.
 
 However, you can also design your own communication interface, which will
 interact with the external application through evaluable predicate, functions
@@ -888,7 +888,7 @@ element of their gmexpression.
 \item When you declare a functional fact, do not forget the integer argument of
 the declaration.
 
-\item Before launching a \XPK{} or \CPK{}, make sure a \OPRSS{} and a \MP{}
+\item Before launching a \XPK{} or \CPK{}, make sure a \OPRSS{} and a \MPA{}
 are running.
 
 \end{itemize}
@@ -996,7 +996,7 @@ and received from the controlling \CPK{}.
 
 The six buttons below the text panes are used to (from left to right) quit the
 demo, reset the demo, clear the text panes, disconnect from the \CPK{}, connect
-to the \MP{}, and connect to \CPK{}.
+to the \MPA{}, and connect to \CPK{}.
 
 The clock panel displays the current simulation time (from the simulator when
 alone, or from \CPK{} when connected). It is also used to start or stop the
