@@ -39,6 +39,7 @@ ln -s $srcdir/contrib/data contrib/data
 mkdir doc
 cd doc
 lndir $srcdir/doc .
+cd ..
 mkdir data
 cd data
 lndir $srcdir/data .

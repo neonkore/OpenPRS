@@ -1,7 +1,7 @@
 ########################### -*- Mode: Makefile -*- #########################
 ## Makefile -- 
 ## 
-## Copyright (C) 1992-2001 Francois Felix Ingrand
+## Copyright (C) 1992-2003 Francois Felix Ingrand
 ## 
 ## Author          : Francois Felix Ingrand
 ## Created On      : Wed Apr  1 15:00:21 1992
@@ -13,7 +13,7 @@
 ## $Id$
 ## 
 ###############################################################################
-# Copyright (c) 1991-2001 Francois Felix Ingrand.
+# Copyright (c) 1991-2003 Francois Felix Ingrand.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -105,7 +105,7 @@ clean:
 
 
 install: oprs.pdf
-	$(srcdir)/../util/install.sh -c -m 644 $< ${DESTDIR}/doc/$@;\
+	$(srcdir)/../util/install.sh -c -m 644 $< ${DESTDIR}/doc/$<
 
 # Cut here for updating the Makefile.src file
 # (DO NOT TOUCH THE PREVIOUS LINE)
