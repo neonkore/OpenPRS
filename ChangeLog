@@ -1,3 +1,7 @@
+2005-01-28  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* ac_laas_mkdep.m4: Added to check that the mkdep is the LAAS one.
+
 2005-01-24  Francois Felix Ingrand  <felix@laas.fr>
 
 	* config.h.in: protect the LITTLE_ENDIAN define which can be

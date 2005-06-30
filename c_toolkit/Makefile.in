@@ -3,7 +3,7 @@
 # 
 # $Id$
 # 
-# Copyright (c) 1991-2004 Francois Felix Ingrand.
+# Copyright (c) 1991-2005 Francois Felix Ingrand.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -47,7 +47,7 @@ C_TOOLKIT_LIB_PUB_INC =  slistPack-pub.h shashPack-pub.h
 
 C_TOOLKIT_LIB_FINC = slistPack_f.h shashPack_f.h
 
-C_TOOLKIT_LIB = libList.a
+C_TOOLKIT_LIB = libOPList.a
 
 CPPFLAGS += -I. -I.. -I$(srcdir)/..
 

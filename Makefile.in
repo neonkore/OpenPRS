@@ -160,7 +160,7 @@ C_TOOLKIT_SRC = $(C_TOOLKIT_DIR)/mallocPack.c $(C_TOOLKIT_DIR)/shashPack.c \
 	$(C_TOOLKIT_DIR)/slistPackTest.c 
 
 
-C_TOOLKIT_LIB = $(C_TOOLKIT_DIR)/libList.a
+C_TOOLKIT_LIB = $(C_TOOLKIT_DIR)/libOPList.a
 
 OPRS_CAT_OBJ = oprs-cat.o
 
@@ -328,7 +328,7 @@ CPPFLAGS += $(MT_CPPFLAGS) $(LANG_FLAG) $(INCLUDE) $(X_INCLUDE) $(READLINE_INCLU
 
 LDFLAGS = $(OPRS_LDFLAGS) $(MT_LDFLAGS) $(ANSI) $(STATIC) $(DEBUG_FLAG) $(OPTIMIZE) $(PROFILE)
 
-LIST_LIB = -L$(C_TOOLKIT_DIR) -lList
+LIST_LIB = -L$(C_TOOLKIT_DIR) -lOPList
 
 # All the executables
 
@@ -681,6 +681,9 @@ size:
 install_contrib:
 	-(cd contrib/src ; $(MAKE) install)
 
+install_pc:  openprs.pc
+	$(INSTALL-IF-CHANGE) -c -m 644 openprs.pc $(LIBDIR)/pkgconfig/openprs.pc
+
 install: install_no_doc install_doc
 
 # install all except the doc
@@ -688,18 +691,22 @@ install_no_doc: install_code install_data \
 	install_include install_src install_util
 
 # install code
-install_just_code: all install_bin install_lib install_contrib
+install_just_code: all install_bin install_lib install_contrib install_pc
 
 install_code:  install_just_code install_ad install_site_make
 
 install_site_make:
 	@$(INSTALL-IF-CHANGE) -c -m 644 site.make ${EXEC-PREFIX}/site.make
 
-install_lib: $(EXT_MP_LIB) $(OPAQUE_LIB) $(C_TOOLKIT_LIB) install_relocatable
+install_lib:: $(EXT_MP_LIB) $(OPAQUE_LIB) install_relocatable
 	@-for i in $(EXT_MP_LIB) $(OPAQUE_LIB) $(C_TOOLKIT_LIB); do\
 		$(INSTALL-IF-CHANGE) -c -m 644 $$i ${LIBDIR}/$$i;\
 		$(RANLIB) ${LIBDIR}/$$i;\
 	done
+
+install_lib:: $(C_TOOLKIT_LIB) 
+	$(INSTALL-IF-CHANGE) -c -m 644 $(C_TOOLKIT_LIB) ${LIBDIR}/libOPList.a
+	$(RANLIB) ${LIBDIR}/libOPList.a
 
 install_relocatable: $(RELOCATABLE)
 	@-for i in $^; do\
@@ -991,5 +998,5 @@ site.make: site.make.in config.status
 Makefile: Makefile.in config.status
 	./config.status
 
-config.status: configure
+config.status: $(srcdir)/configure
 	./config.status --recheck

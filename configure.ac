@@ -2,10 +2,28 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.53)
-AC_INIT(Open PRS, 1.0b, felix@laas.fr, OpenPRS)
+
+AC_INIT(Open PRS, 1.0b1, felix@laas.fr, OpenPRS)
 AC_CONFIG_SRCDIR([oprs-main.c])
 AC_CONFIG_HEADERS([config-ac.h config.h])
 AC_CONFIG_AUX_DIR([util])
+
+PACKAGE=openprs
+OPENPRS_MAJOR=1
+OPENPRS_MINOR=0
+OPENPRS_REV=b1
+OPENPRS_VERSION=${OPENPRS_MAJOR}.${OPENPRS_MINOR}${OPENPRS_REV}
+
+AC_SUBST(PACKAGE)
+AC_SUBST(OPENPRS_MAJOR)
+AC_SUBST(OPENPRS_MINOR)
+AC_SUBST(OPENPRS_REV)
+AC_SUBST(OPENPRS_VERSION)
+
+AC_DEFINE_UNQUOTED(OPENPRS_VERSION, "$OPENPRS_VERSION", [The complete version of Openprs])
+AC_DEFINE_UNQUOTED(OPENPRS_MAJOR, "$OPENPRS_MAJOR", [The major revision of Openprs])
+AC_DEFINE_UNQUOTED(OPENPRS_MINOR, "$OPENPRS_MINOR", [The minor revision of Openprs])
+
 
 AC_LANG(C)
 
@@ -16,8 +34,11 @@ AC_PROG_RANLIB
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
 
-dnl check for mkdep
-AC_PATH_PROG(MKDEP, mkdep, no, $prefix/bin:$exec_prefix/bin:$PATH)
+dnl ------- check for mkdep (le LAAS one) -------------------
+ROBOT_PROG_MKDEP
+#AC_PATH_PROG(MKDEP, mkdep, no, $prefix/bin:$exec_prefix/bin:$PATH)
+
+dnl ------- check for bison (not yack) and flex --------------
 AC_PATH_PROG(BISON, bison, no, $prefix/bin:$exec_prefix/bin:$PATH)
 AC_PATH_PROG(FLEX, flex, no, $prefix/bin:$exec_prefix/bin:$PATH)
 
@@ -65,6 +86,7 @@ AC_CHECK_FUNCS([abort sigaction setitimer valloc clock_gettime dup2 gethostname 
 AC_CONFIG_FILES([
 		 Makefile
 		 site.make
+		 openprs.pc
                  c_toolkit/Makefile
                  contrib/Makefile
                  contrib/data/Makefile

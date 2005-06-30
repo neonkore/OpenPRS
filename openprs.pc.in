@@ -1,0 +1,10 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: openprs
+Description: Open PRS
+Version: @OPENPRS_MAJOR@.@OPENPRS_MINOR@
+Libs: -L${libdir} -lOPList
+Cflags: -I${includedir}
