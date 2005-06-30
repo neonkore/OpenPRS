@@ -56,10 +56,11 @@ READLINE_INCLUDE = @READLINE_INCLUDES@
 EXEC-PREFIX = @exec_prefix@
 BINDIR = @bindir@
 LIBDIR = @libdir@
-INCLUDEDIR = @includedir@
-DATADIR = @prefix@/data
-DOCDIR = @prefix@/doc
-DESTDIR = @prefix@
+INCLUDEDIR = @includedir@/openprs
+DATADIR = @prefix@/share/openprs/data
+EXEC-DATADIR=@exec_prefix@/share/openprs/data
+DOCDIR = @prefix@/share/openprs/doc
+DESTDIR = @prefix@/share/openprs
 
 
 PRPC_LANG = en
