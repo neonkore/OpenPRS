@@ -32,7 +32,7 @@ dnl --- Look for the laas mkdep executable ------------------------------
 dnl --- I grabbed it from robots.m4 in Genom
 
 
-AC_DEFUN(ROBOT_PROG_MKDEP,
+AC_DEFUN([ROBOT_PROG_MKDEP],
 [
    AC_PATH_PROG(MKDEP, mkdep, no, $exec_prefix/bin:$prefix/bin:$PATH)
    if test "$MKDEP" = "no"; then

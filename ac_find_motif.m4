@@ -16,7 +16,7 @@ dnl
 dnl Oleo CVS Id: motif.m4,v 1.9 1999/04/09 11:46:49 danny
 dnl LessTif CVS $Id$
 dnl
-AC_DEFUN(AC_FIND_MOTIF,
+AC_DEFUN([AC_FIND_MOTIF],
 [
 
 AC_REQUIRE([AC_PATH_XTRA])
@@ -224,7 +224,7 @@ dnl If the test succeeds it defines Have_Libxp within our
 dnl Makefiles. Perhaps one should immediately add those libs
 dnl to link commands which include libXm version2.1?!
 dnl
-AC_DEFUN(AC_FIND_LIBXP,
+AC_DEFUN([AC_FIND_LIBXP],
 [AC_REQUIRE([AC_PATH_X])
 AC_CACHE_CHECK(whether libXp is available, lt_cv_libxp,
 [lt_save_CFLAGS="$CFLAGS"

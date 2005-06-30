@@ -49,7 +49,7 @@ dnl /*=== End new stuff for acconfig.h ===*/
 dnl 
 
 
-AC_DEFUN(AC_CHECK_READLINE,[
+AC_DEFUN([AC_CHECK_READLINE],[
 	search_readline=true
 	has_curses=false
 
@@ -83,7 +83,7 @@ AC_DEFUN(AC_CHECK_READLINE,[
 dnl
 dnl Parameters: directory filename LIBS INCLUDES nicename
 dnl
-AC_DEFUN(AC_READLINE, [
+AC_DEFUN([AC_READLINE], [
     if $search_readline
     then
         if test -f $1/$2
@@ -99,7 +99,7 @@ AC_DEFUN(AC_READLINE, [
     fi
 ])
 
-AC_DEFUN(AC_SEARCH_READLINE, [
+AC_DEFUN([AC_SEARCH_READLINE], [
     AC_CHECKING("location of readline.h file")
 
     AC_READLINE(/sw/include/readline, readline.h,  -L/sw/lib -lreadline -lhistory, -I/sw/include, "readline on /sw/include/readline")
