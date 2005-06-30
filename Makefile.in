@@ -684,7 +684,7 @@ install_contrib:
 install_pc:  openprs.pc
 	$(INSTALL-IF-CHANGE) -c -m 644 openprs.pc $(LIBDIR)/pkgconfig/openprs.pc
 
-install: install_no_doc install_doc
+install: install_no_doc
 
 # install all except the doc
 install_no_doc: install_code install_data \
@@ -696,10 +696,10 @@ install_just_code: all install_bin install_lib install_contrib install_pc
 install_code:  install_just_code install_ad install_site_make
 
 install_site_make:
-	@$(INSTALL-IF-CHANGE) -c -m 644 site.make ${EXEC-PREFIX}/site.make
+	@$(INSTALL-IF-CHANGE) -c -m 644 site.make ${EXEC-DATADIR}/site.make
 
 install_lib:: $(EXT_MP_LIB) $(OPAQUE_LIB) install_relocatable
-	@-for i in $(EXT_MP_LIB) $(OPAQUE_LIB) $(C_TOOLKIT_LIB); do\
+	@-for i in $(EXT_MP_LIB) $(OPAQUE_LIB); do\
 		$(INSTALL-IF-CHANGE) -c -m 644 $$i ${LIBDIR}/$$i;\
 		$(RANLIB) ${LIBDIR}/$$i;\
 	done
