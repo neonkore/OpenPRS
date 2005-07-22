@@ -3,7 +3,7 @@
 #
 # $Id$
 # 
-# Copyright (c) 1991-2004 Francois Felix Ingrand.
+# Copyright (c) 1991-2005 Francois Felix Ingrand.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -77,31 +77,17 @@ $(PU_LIB): $(PU_LIB_OBJ:%=$(PU_LIB)(%))
 	$(RM) $*.o
 
 
-ifdef OPRS_INSTALLED_DIR
-install:
-	@echo "*******************************"
-	@echo "It looks like there is already an installed version of the lib."
-	@echo "*******************************"
-else
-ifndef VXWORKS
 install: all
 	@-for i in $(PU_LIB_PROTO); do\
-		$(INSTALL-IF-CHANGE) -c -m 644 $(srcdir)/$$i ${DESTDIR}/contrib/include/`basename $$i`;\
+		$(INSTALL-IF-CHANGE) -c -m 644 $(srcdir)/$$i ${INCLUDEDIR}/`basename $$i`;\
 	done
 	@-for i in $(PU_LIB_SRC) timer_create.c; do\
-		$(INSTALL-IF-CHANGE) -c -m 644 $(srcdir)/$$i ${DESTDIR}/contrib/src/$$i;\
+		$(INSTALL-IF-CHANGE) -c -m 644 $(srcdir)/$$i ${DESTDIR}/src-example/$$i;\
 	done
 	@-for i in $(PU_LIB); do\
-		$(INSTALL-IF-CHANGE) -c -m 644 $$i ${DESTDIR}/contrib/${TARGET}${TARGET-SUFFIX}/lib/$$i;\
-		$(RANLIB) ${DESTDIR}/contrib/${TARGET}${TARGET-SUFFIX}/lib/$$i;\
+		$(INSTALL-IF-CHANGE) -c -m 644 $$i ${LIBDIR}/$$i;\
+		$(RANLIB)  ${LIBDIR}/$$i;\
 	done
-else
-install: all
-	@-for i in $(PU_LIB); do\
-		$(INSTALL-IF-CHANGE) -c -m 644 $$i ${DESTDIR}/contrib/${TARGET}${TARGET-SUFFIX}/lib/$$i;\
-	done
-endif
-endif
 
 %_f.h:
 	$(CEXTRACT) $(INCLUDE) $(OTHER_INCLUDE) $(X_INCLUDE) $(CPPFLAGS) $< > $@

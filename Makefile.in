@@ -720,7 +720,7 @@ install_bin: $(PROG)
 
 install_src: ${EXTERNAL_SRC}
 	@-for i in $^; do\
-		$(INSTALL-IF-CHANGE) -c -m 644 $$i ${DESTDIR}/pub_src/`basename $$i`;\
+		$(INSTALL-IF-CHANGE) -c -m 644 $$i ${DESTDIR}/src-example/`basename $$i`;\
 	done
 
 install_include: ${EXTERNAL_INCLUDE}
