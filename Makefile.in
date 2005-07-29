@@ -736,14 +736,14 @@ install_util:
 ifeq ($(OPRS_LANG),fr)
 install_ad: install_ad_lang
 	for i in $(XDEFAULT); do \
-		rm -f ${DESTDIR}/app-defaults/$$i;\
-		$(LN_S) ${DESTDIR}/app-defaults/$$i-fr ${DESTDIR}/app-defaults/$$i;\
+		rm -f ${LIBDIR}/app-defaults/$$i;\
+		$(LN_S) ${LIBDIR}/app-defaults/$$i-fr ${LIBDIR}/app-defaults/$$i;\
 	done
 else
 install_ad: install_ad_lang
 	for i in $(XDEFAULT); do \
-		rm -f ${DESTDIR}/app-defaults/$$i;\
-		$(LN_S) ${DESTDIR}/app-defaults/$$i-en ${DESTDIR}/app-defaults/$$i;\
+		rm -f ${LIBDIR}/app-defaults/$$i;\
+		$(LN_S) ${LIBDIR}/app-defaults/$$i-en ${LIBDIR}/app-defaults/$$i;\
 	done
 endif
 
@@ -751,7 +751,7 @@ install_ad_lang: $(XDEFAULT_LANG)
 	for i in $^; do \
 		sed -e "s|\.directory:[ 	]*./data$$|.directory: .|" \
 			< $$i > $$i.tmp;\
-		$(INSTALL-IF-CHANGE) -m 644 $$i.tmp ${DESTDIR}/app-defaults/`basename $$i .ad`;\
+		$(INSTALL-IF-CHANGE) -m 644 $$i.tmp ${LIBDIR}/app-defaults/`basename $$i .ad`;\
 	done
 
 install_doc:

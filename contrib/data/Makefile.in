@@ -57,10 +57,10 @@ INSTALL-IF-CHANGE = $(OPRS_UTIL_DIR)/install-if-change.sh
 
 install: 
 	@-for i in $(CONTRIB_DATA); do\
-		$(INSTALL-IF-CHANGE) -c -m 644 $$i ${DESTDIR}/contrib/data/`basename $$i`;\
+		$(INSTALL-IF-CHANGE) -c -m 644 $$i ${DATADIR}/`basename $$i`;\
 	done
 	@-for i in $(CONTRIB_DATA_TEST); do\
-		$(INSTALL-IF-CHANGE) -c -m 644 test/$$i ${DESTDIR}/contrib/data/test/`basename $$i`;\
+		$(INSTALL-IF-CHANGE) -c -m 644 test/$$i ${DATADIR}/test/`basename $$i`;\
 	done
 
 .DEFAULT:
