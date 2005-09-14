@@ -50,10 +50,19 @@ AC_CHECK_LIB([m], [sin])
 AC_C_BIGENDIAN
 AC_C_INLINE
 
-AC_CHECK_FUNCS(gethostbyname, [], [
-  AC_CHECK_LIB(nsl, gethostbyname)
+AC_CHECK_FUNC([gethostbyname], [], [
+  AC_CHECK_LIB([nsl], [gethostbyname], [MP_EXTRA_LIBS="-lnsl"] , [
+    AC_CHECK_LIB([bsd], [gethostbyname], [MP_EXTRA_LIBS="-lbsd"])
+  ])
 ])
-AC_CHECK_LIB(socket, socket)
+
+AC_CHECK_FUNC([connect], [], [
+  AC_CHECK_LIB([socket], [connect], [MP_EXTRA_LIBS="$MP_EXTRA_LIBS -lsocket"])
+])
+
+[LIBS="$LIBS $MP_EXTRA_LIBS"]
+
+AC_SUBST(MP_EXTRA_LIBS)
 
 #check for Readline
 AC_CHECK_READLINE
@@ -84,9 +93,10 @@ AC_FUNC_STAT
 AC_CHECK_FUNCS([abort sigaction setitimer valloc clock_gettime dup2 gethostname getpagesize gettimeofday pow realpath select socket strcasecmp strchr strerror strncasecmp strrchr setpgid])
 
 AC_CONFIG_FILES([
-		 Makefile
-		 site.make
-		 openprs.pc
+                 Makefile
+                 site.make
+                 openprs.pc
+                 mp-openprs.pc
                  c_toolkit/Makefile
                  contrib/Makefile
                  contrib/data/Makefile
@@ -95,7 +105,7 @@ AC_CONFIG_FILES([
                  doc/Makefile
                  util/Makefile
                  stamp-h
-		])
+                ])
 AC_OUTPUT
 
 #                 demo/Makefile
