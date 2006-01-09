@@ -3,7 +3,7 @@
  *
  * $Id$
  *
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2005 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,9 +40,11 @@
 #include "op-structure.h"
 
 /* Some values and fraction of Pi. */
+#ifndef M_PI
 #define M_PI	3.14159265358979323846
 #define M_PI_2	1.57079632679489661923
 #define M_PI_4	0.78539816339744830962
+#endif
 
 #define MAX_NUMBER_LIGNES 64 /* I do not know... */
 
@@ -74,7 +76,7 @@
 
 #define NOT_EMPTY_STRING(s) (!(EMPTY_STRING(s)))
 
-typedef enum {XWD, XPM} DumpFormat;
+typedef enum {XWD} DumpFormat;
 
 /* Enumeration of the Drawing mode */
 typedef enum {

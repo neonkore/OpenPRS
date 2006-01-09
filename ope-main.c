@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*-
  * ope-main.c --
  *
- * Copyright (c) 1991-2004 Francois Felix Ingrand.
+ * Copyright (c) 1991-2005 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -618,7 +618,7 @@ int main(int argc, char **argv, char **envp)
 #endif
 
      icon_pixmap = XCreateBitmapFromData(XtDisplay(topLevel),
-				       RootWindowOfScreen(XtScreen(topLevel)),
+					 RootWindowOfScreen(XtScreen(topLevel)),
 					 ope_icon_bits,
 					 ope_icon_width, ope_icon_height);
 

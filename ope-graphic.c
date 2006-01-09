@@ -3,7 +3,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*-
  * ope-graphic.c --
  *
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2005 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -235,6 +235,8 @@ void redraw_all_in_pixmap(Widget w, Draw_Data *dd, unsigned int width, unsigned 
 	  }
 
 	  if (dd->op->op_title && dd->op->op_title->u.gtext->visible) draw_og(w, dd,  dd->op->op_title);
+
+/* 	  XFlush(XtDisplay(dd->canvas)); */
      }
 }
 

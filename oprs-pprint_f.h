@@ -3,7 +3,7 @@
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2005 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,6 +32,7 @@
  *
  */
 
+ListLines pretty_print_exprlist(int width, ExprList lexpr);
 ListLines pretty_print_int_array(int width, Int_array *ia);
 ListLines pretty_print_float_array(int width, Float_array *fa);
 ListLines pretty_print_integer(int width, int i);

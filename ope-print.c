@@ -3,7 +3,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * ope-print.c -- 
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2005 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -75,9 +75,7 @@ int print_op_printer(Draw_Data *dd)
      XmUpdateDisplay(topLevel);
 
      if (dd->op->graphic) {
-	  if (dump_op_sys(dd,file_name_for_print,
-			  XWD
-	       ) == -1) {
+	  if (dump_op_sys(dd, file_name_for_print, XWD) == -1) {
 	       fprintf(stderr, LG_STR("dump_op_pxm problem.\n",
 				      "Probleme de dump de OP.\n"));
 	  } else {
@@ -140,14 +138,14 @@ int dump_op_pxm(Draw_Data *dd, PString file)
      XmUpdateDisplay(topLevel);
      
 
-     if (dump_op_sys(dd,file,XPM) == -1)
+     if (dump_op_sys(dd,file,XWD) == -1)
 	  fprintf(stderr, LG_STR("dump_op_pxm problem.\n",
 				 "dump_op_pxm problem.\n"));
 
      TimeoutCursors(False, NULL);
 }
 
-void find_bounding_box(Draw_Data *dd, int *width,  int *height)
+void find_bounding_box(Draw_Data *dd, unsigned int *width, unsigned int *height)
 {
      if (dd->op) {
 	  OG *og, *og2;
@@ -188,23 +186,24 @@ void find_bounding_box(Draw_Data *dd, int *width,  int *height)
 int dump_op_sys(Draw_Data *dd, PString file, DumpFormat format)
 {
     Pixmap pm;
-    int width = 1;
-    int height = 1 ;
+    unsigned int width = 1;
+    unsigned int height = 1 ;
+    unsigned int depth;
     int x = dd->left;
     int y = dd->top;
 
     int res;
 
     find_bounding_box(dd, &width, &height);
-
+    
+    depth = DefaultDepthOfScreen(XtScreen(dd->canvas));
+     
     pm = XCreatePixmap(XtDisplay(dd->canvas),
-		       dd->window, width, height,
-		       DefaultDepthOfScreen(XtScreen(dd->canvas)));
+		       dd->window, width, height, depth);
 
     dd->window = pm;
     dd->left = 0;
     dd->top = 0;
-    /*    XClearWindow(XtDisplay(dd->canvas), dd->window); cannot do that in a pixmap... */
     redraw_all_in_pixmap(dd->canvas, dd, width, height);
     dd->window = XtWindow(dd->canvas);
     dd->left = x;
@@ -215,17 +214,6 @@ int dump_op_sys(Draw_Data *dd, PString file, DumpFormat format)
 
 	 XFreePixmap(XtDisplay(dd->canvas),pm);
 	 return res;
-	 
-    } else if  (format == XPM) {
-	 res = XWriteBitmapFile(XtDisplay(dd->canvas), file, pm, width, height, -1, -1);
-
-	 XFreePixmap(XtDisplay(dd->canvas),pm);
-
-	 if (res != BitmapSuccess) {
-	      return -1;
-	 } else {
-	      return 1;
-	 }
     } else {
 	 fprintf (stderr, LG_STR("dump_op_sys:  unknown format.\n",
 				 "dump_op_sys:  unknown format.\n"));

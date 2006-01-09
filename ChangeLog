@@ -1,3 +1,20 @@
+2006-01-09  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* ope-graphic.h: remove the bitmap format... not really usefull
+	anymore. Instrad, we now dump in xwd format which will retain all
+	the server stuff.
+
+	* ope-graphic.c (redraw_all_in_pixmap): Added a
+	XFlush... useless...
+
+2006-01-08  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* ope-icon.bit: XCreateBitmapFromData takes a char * not an
+	unsigned char * anymore...
+
+	* ope-graphic.h: Some systems seem to have M_PI and alike already
+	defined... 
+
 2005-01-28  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* ac_laas_mkdep.m4: Added to check that the mkdep is the LAAS one.
