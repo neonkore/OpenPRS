@@ -743,7 +743,7 @@ int main(int argc, char **argv, char **envp)
 
      update_active_idle((XtPointer)oprs,(XtIntervalId)NULL);
 
-     start_kernel_user_hook();
+     start_kernel_user_hook(name);
 
      run_initial_commands();
 

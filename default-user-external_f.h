@@ -49,6 +49,6 @@ PBoolean intention_list_sort_by_priority_time(Intention *i1, Intention *i2);
 Intention_List intention_scheduler_time_sharing(Intention_List l);
 Intention_List intention_scheduler_time_sharing_with_sort_predicate(Intention_List l);
 
-void start_kernel_user_hook();
+void start_kernel_user_hook(char *name);
 
 void end_kernel_user_hook();

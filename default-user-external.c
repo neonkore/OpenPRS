@@ -50,7 +50,7 @@ PBoolean my_intention_list_sort_example(Intention *i1, Intention *i2)
      return (intention_priority(i1) > intention_priority(i2));
 }
 
-void start_kernel_user_hook()
+void start_kernel_user_hook(char *name)
 {
      intention_scheduler = &intention_scheduler_time_sharing; 
      /* intention_scheduler = NULL; */

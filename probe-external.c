@@ -205,7 +205,7 @@ PBoolean intention_list_sort_by_priority_then_time(Intention *i1, Intention *i2)
 
 }
 
-void start_kernel_user_hook()
+void start_kernel_user_hook(char *name)
 {
      intention_scheduler = &intention_scheduler_time_sharing;
      /* The next statement is useless, as intention sheduler as priotity over intention sorting. */

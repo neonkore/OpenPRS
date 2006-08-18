@@ -112,7 +112,7 @@ int main(int argc, char **argv, char ** envp)
      FREE(server_hostn);
 #endif
 
-     start_kernel_user_hook();
+     start_kernel_user_hook(name);
 
      run_initial_commands();
 
