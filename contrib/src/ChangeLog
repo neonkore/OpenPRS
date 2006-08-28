@@ -1,3 +1,7 @@
+2006-08-28  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* All... added support for long long.
+
 2000-07-27  Francois Felix Ingrand  <felix@laas.fr>
 
 	* pu-parse-tl.c: Remove the warning when requesting less

@@ -3,7 +3,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * ope-parser.y -- yacc grammaire
  * 
- * Copyright (c) 1991-2004 Francois Felix Ingrand.
+ * Copyright (c) 1991-2005 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,6 +34,7 @@ static const char* const rcsid = "$Id$";
 
 #include "config.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/file.h>
 
 #include <X11/Intrinsic.h>
@@ -78,6 +79,7 @@ PBoolean out_edge;
 %union {
     double    		real;        /* real value */
     int    		integer;    /* integer value */
+    long long int	long_long;    /* integer value */
     void    		*pointer;    /* pointer value */
     char    		*string;    /* string buffer */
     int    		cmd;        /* command value */
@@ -105,6 +107,7 @@ PBoolean out_edge;
 
 %token <real> 		REAL_TK
 %token <integer> 	INTEGER_TK 
+%token <long_long> 	LONG_LONG_TK
 %token <pointer>	POINTER_TK
 %token <string> 	QSTRING_TK SYMBOL_TK LOGICAL_VAR_TK PROGRAM_VAR_TK COMMENT_TK 
 
@@ -185,7 +188,7 @@ command:
 		list_par_expr	 		{/* sprint_list_gtexpr_par(s_parsed, BUFSIZ, $3); */
 		                                 s_pretty_parsed = build_string_from_list_lines(pretty_print_exprlist(pretty_width, $3));}
         | ECHO_EFF   	 			{enable_variable_parsing(); yy_begin_0();}
-                effects		 		{if ($3) s_pretty_parsed = build_string_from_list_lines(pretty_print_list_expr(pretty_width, $3));
+                effects		 		{if ($3) s_pretty_parsed = build_string_from_list_lines(pretty_print_exprlist(pretty_width, $3));
 						else NEWSTR("",s_pretty_parsed); yy_begin_0();}
 	| ECHO_GMEXPR_NIL 			{NEWSTR("",s_pretty_parsed); yy_begin_0();}
         | ECHO_CTXT   	 			{NEWSTR("",s_pretty_parsed); yy_begin_0();}

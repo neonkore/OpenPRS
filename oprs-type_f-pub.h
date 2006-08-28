@@ -3,7 +3,7 @@
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2005 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -47,6 +47,7 @@ void free_doubleptr(double *i);
 
 
 Term *build_integer(int i);
+Term *build_long_long(long long int i);
 Term *build_float(double i);
 Term *build_l_list(L_List l);
 Term *build_c_list(Slist *l);

@@ -1,3 +1,37 @@
+2006-08-28  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* oprs-dump.c: New version number... to support long long...
+
+	* Too many... added initial support for long long... beware,
+	No arithmetic operation are allowed with them for
+	now... Basically, you can read/print them, get them and pass them
+	back to external function (which was the initial reason to add
+	them). I will soon add the basic arithmetic functions and
+	predicate... meanwhile check error message for UNSUPORTED types.
+
+	* lex-macro.l: Added long long parsing.
+
+	* ev-function.c (make_window_ef): Added a function definition...
+
+	* xoprs-call.c: Added stdlib.h
+	* oprs-rerror.c: Idem
+	* oprs-cat.c: Idem
+	* ope-parser.y: Idem
+
+	* xoprs-icon.bit: char * and not unsigned char *...
+
+	* oprs-client.c: accept_oprs_client, accept takes a socklen_t as
+	arg... not an int.
+	* mp.c (main): Idem...
+	
+	
+2006-02-23  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* ope-parser.y: Fixed the effects (printing without the
+	surrounding paranthesis)..
+
+	* config.h.in: Protect the BIG_ENDIAN against redefinition.
+
 2006-01-09  Francois Felix Ingrand  <felix@laas.fr>
 
 	* version.c: Patchlevel 2 for the xpm/xwd fix.

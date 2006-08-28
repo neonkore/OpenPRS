@@ -3,7 +3,7 @@
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2005 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -66,6 +66,7 @@ file_name: QSTRING_TK				{$$=canonicalize_file_name($1);}
 
 term:
 	INTEGER_TK 				{$$=build_integer($1);}
+	| LONG_LONG_TK  			{$$=build_long_long($1);}
 	| POINTER_TK  				{$$=build_pointer($1);}
 	| REAL_TK  				{$$=build_float($1);}
 	| QSTRING_TK				{$$=build_qstring($1);}

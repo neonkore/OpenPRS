@@ -65,7 +65,9 @@
 #endif
 
 #ifdef WORDS_BIGENDIAN
+#ifndef BIG_ENDIAN
 #define BIG_ENDIAN
+#endif
 #else
 #ifndef LITTLE_ENDIAN
 #define LITTLE_ENDIAN

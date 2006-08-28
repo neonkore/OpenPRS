@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * ev-predicate.c -- Handle evaluable predicates.
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2005 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -78,7 +78,7 @@ PBoolean numberp_ep(TermList tl)
 
      t = (Term *)sl_get_slist_head(tl);
 
-     if (t && (t->type == INTEGER || t->type == TT_FLOAT)) return TRUE;
+     if (t && (t->type == INTEGER || t->type == LONG_LONG || t->type == TT_FLOAT)) return TRUE;
      else return FALSE;
 }
 

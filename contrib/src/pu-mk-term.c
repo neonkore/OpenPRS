@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * pu-mk-term.c -- 
  * 
- * Copyright (C) 1993-2003 LAAS/CNRS.
+ * Copyright (C) 1993-2005 LAAS/CNRS.
  *
  *                         -- C N R S -- 
  *         Laboratoire d'Automatique et d'Analyse des Systemes 
@@ -50,6 +50,11 @@
 Term * PUMakeTermInteger(int val)
 {
      return(build_integer(val));
+}
+
+Term * PUMakeTermLongLong(long long int val)
+{
+     return(build_long_long(val));
 }
 
 Term* PUMakeTermFloat(double val)

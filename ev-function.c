@@ -94,6 +94,8 @@ static const char* const rcsid = "$Id$";
 #include "oprs-sprint_f.h"
 #include "type_f.h"
 
+void *make_xoprs_ut_window(void);
+
 Term *ef_sin (TermList terms)
 /* This is the standard sin */
 {
@@ -239,6 +241,11 @@ Term *ef_abs (TermList terms)
 	  if (t->u.intval < 0 ) res->u.intval = - t->u.intval;
 	  else res->u.intval = t->u.intval;
 	  break;
+     case LONG_LONG:
+	  res->type = LONG_LONG;
+	  if (t->u.llintval < 0 ) res->u.llintval = - t->u.llintval;
+	  else res->u.llintval = t->u.llintval;
+	  break;
      case TT_FLOAT:
 	  res->type = TT_FLOAT;
 	  if (*t->u.doubleptr < 0.0 ) res->u.doubleptr = make_doubleptr(- *t->u.doubleptr);
@@ -298,6 +305,7 @@ Term *ef_plus (TermList terms)
      Term *t, *res;
      Term_Type tres = INTEGER;
      int i = 0;
+     long long int lli = 0;
      double d = 0.0;
      
      res = MAKE_OBJECT(Term);
@@ -307,6 +315,10 @@ Term *ef_plus (TermList terms)
 	       case INTEGER:
 		    i += t->u.intval;
 		    break;
+	       case LONG_LONG:
+		    tres = LONG_LONG;
+		    lli += t->u.llintval;
+		    break;
 	       case TT_FLOAT:
 		    tres = TT_FLOAT;
 		    d = i + *t->u.doubleptr;
@@ -315,10 +327,29 @@ Term *ef_plus (TermList terms)
 		    report_fatal_external_error(oprs_strerror(PE_UNEXPECTED_TERM_TYPE)); 
 		    break;
 	       }
-	  else 
+	  else if (tres == LONG_LONG )
+	       switch (t->type) {
+	       case INTEGER:
+		    lli += t->u.intval;
+		    break;
+	       case LONG_LONG:
+		    lli += t->u.llintval;
+		    break;
+	       case TT_FLOAT:
+		    tres = TT_FLOAT;
+		    d = i + *t->u.doubleptr;
+		    break;
+	       default: 	 
+		    report_fatal_external_error(oprs_strerror(PE_UNEXPECTED_TERM_TYPE)); 
+		    break;
+	       }
+	  else
 	       switch (t->type) {
 	       case INTEGER:
 		    d += t->u.intval;
+		    break;
+	       case LONG_LONG:
+		    d += t->u.llintval;
 		    break;
 	       case TT_FLOAT:
 		    d += *t->u.doubleptr;
@@ -331,6 +362,9 @@ Term *ef_plus (TermList terms)
      if (tres == TT_FLOAT) {
 	  res->type = TT_FLOAT;
 	  res->u.doubleptr = make_doubleptr(d);
+     } else if (tres == LONG_LONG) {
+	  res->type = LONG_LONG;
+	  res->u.llintval = lli;
      } else {
 	  res->type = INTEGER;
 	  res->u.intval = i;
@@ -2589,6 +2623,60 @@ Term *int_to_float_ef(TermList terms)
      return res;
 }
 
+Term *int_to_llint_ef(TermList terms)
+{
+     Term *res, *t1;
+
+     res = MAKE_OBJECT(Term);
+
+     t1 = (Term *)sl_get_slist_pos(terms, 1);
+
+     if (t1->type != INTEGER) {
+	  report_fatal_external_error(oprs_strerror(PE_EXPECTED_INTEGER_TERM_TYPE));
+     }
+
+     res->type = LONG_LONG;
+     res->u.llintval = (long long int)t1->u.intval;
+
+     return res;
+}
+
+Term *float_to_llint_ef(TermList terms)
+{
+     Term *res, *t1;
+
+     res = MAKE_OBJECT(Term);
+
+     t1 = (Term *)sl_get_slist_pos(terms, 1);
+
+     if (t1->type != TT_FLOAT) {
+	  report_fatal_external_error(oprs_strerror(PE_EXPECTED_FLOAT_TERM_TYPE));
+     }
+
+     res->type = LONG_LONG;
+     res->u.llintval = (long long int)*t1->u.doubleptr;
+
+     return res;
+}
+
+Term *llint_to_float_ef(TermList terms)
+{
+     Term *res, *t1;
+
+     res = MAKE_OBJECT(Term);
+
+     t1 = (Term *)sl_get_slist_pos(terms, 1);
+
+     if (t1->type != LONG_LONG) {
+	  report_fatal_external_error(oprs_strerror(PE_EXPECTED_LONG_LONG_TERM_TYPE));
+     }
+
+     res->type = TT_FLOAT;
+     res->u.doubleptr = make_doubleptr((double)t1->u.llintval);
+
+     return res;
+}
+
 Term *evaluate_term_function(Eval_Funct *ef, char *ef_name, TermList tl)
 /* This is the main function to evaluate a composed term with an evaluable function */
 {
@@ -2797,6 +2885,11 @@ void declare_ev_funct(void)
 
      make_and_declare_eval_funct("INT-TO-FLOAT",int_to_float_ef, 1);
      make_and_declare_eval_funct("FLOAT-TO-INT",float_to_int_ef, 1);
+
+     make_and_declare_eval_funct("LLINT-TO-FLOAT",llint_to_float_ef, 1);
+     make_and_declare_eval_funct("FLOAT-TO-LLINT",float_to_llint_ef, 1);
+
+     make_and_declare_eval_funct("INT-TO-LLINT",int_to_llint_ef, 1);
 
      make_and_declare_eval_funct("STRING-CAT",string_cat_ef, 2);
 

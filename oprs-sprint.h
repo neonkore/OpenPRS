@@ -3,7 +3,7 @@
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2005 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,7 +42,7 @@ struct sprinter {
      unsigned int tsize;
 };
 
-/* Maximum printed representation for an int... */
+/* Maximum printed representation for an int... and a long long... no problem... */
 #define MAX_PRINTED_INT_SIZE 64
 /* Maximum printed representation for a poimter... */
 #define MAX_PRINTED_POINTER_SIZE 64

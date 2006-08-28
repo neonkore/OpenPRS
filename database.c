@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*-
  * database.c -- Database management functions.
  *
- * Copyright (c) 1991-2004 Francois Felix Ingrand.
+ * Copyright (c) 1991-2005 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -114,6 +114,8 @@ int hash_a_term(Term *t)
      switch (t->type) {
      case INTEGER:
 	  return t->u.intval;
+     case LONG_LONG:
+	  return (int)t->u.llintval;
      case INT_ARRAY:
 	  return (int)t->u.int_array;
      case FLOAT_ARRAY:
@@ -175,6 +177,9 @@ static PBoolean key_term_cmp(Term *t1, Term *t2)
 	  switch (t1->type) {
 	  case INTEGER:
 	       return ((t1->u.intval) == (t2->u.intval));
+	       break;
+	  case LONG_LONG:
+	       return ((t1->u.llintval) == (t2->u.llintval));
 	       break;
 	  case INT_ARRAY:
 	       return (equal_int_array(t1->u.int_array,t2->u.int_array));

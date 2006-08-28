@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * pu-parse-tl.c -- 
  * 
- * Copyright (C) 1993-2003 LAAS/CNRS.
+ * Copyright (C) 1993-2005 LAAS/CNRS.
  *
  *                         -- C N R S -- 
  *         Laboratoire d'Automatique et d'Analyse des Systemes 
@@ -49,6 +49,17 @@ static PBoolean PU_bind_integer(int *intPtr, Term *term)
 	  return TRUE;
      } else {
 	  fprintf(stderr,"PU_bind_integer: Bad parameter (expected an INTEGER).\n");
+	  return FALSE;
+     }
+}
+
+static PBoolean PU_bind_long_long(long long int *intPtr, Term *term)
+{
+     if (term->type == LONG_LONG) {
+	  *intPtr = term->u.llintval;
+	  return TRUE;
+     } else {
+	  fprintf(stderr,"PU_bind_long_long: Bad parameter (expected a LONG_LONG).\n");
 	  return FALSE;
      }
 }
@@ -125,8 +136,12 @@ static PBoolean PU_bind_float(double *doublePtr, Term *paramTerm)
 	  *doublePtr = *paramTerm->u.doubleptr;
 	  return TRUE;
      } else if (paramTerm->type == INTEGER) {
-	  fprintf(stderr,"PU_bind_string: Warning: Casting parameter from INTEGER to FLOAT.\n");
+	  fprintf(stderr,"PU_bind_float: Warning: Casting parameter from INTEGER to FLOAT.\n");
 	  *doublePtr = paramTerm->u.intval;
+	  return TRUE;
+     } else if (paramTerm->type == LONG_LONG) {
+	  fprintf(stderr,"PU_bind_float: Warning: Casting parameter from LONG_LONG to FLOAT.\n");
+	  *doublePtr = paramTerm->u.llintval;
 	  return TRUE;
      } else {
 	  fprintf(stderr,"PU_bind_float: Bad parameter (expected a FLOAT or an INTEGER).\n");
@@ -170,6 +185,10 @@ PBoolean PUGetOprsParameters(TermList paramList, int NbParametres, ...)
 	  case INTEGER:
 	       result &= PU_bind_integer(va_arg(listArg, int *),
 					 (Term *)sl_get_slist_pos(paramList, paramCour));
+	       break;
+	  case LONG_LONG:
+	       result &= PU_bind_long_long(va_arg(listArg, long long int *),
+					   (Term *)sl_get_slist_pos(paramList, paramCour));
 	       break;
 	  case STRING:
 	       result &= PU_bind_string(va_arg(listArg, char **),
@@ -248,6 +267,9 @@ PBoolean PUGetLispListElem(L_List lispList, int NbTerm, ...)
 	  case INTEGER:
 	       result &= PU_bind_integer(va_arg(listArg, int *),l_car(lispList));
 	       break;
+	  case LONG_LONG:
+	       result &= PU_bind_long_long(va_arg(listArg, long long int *),l_car(lispList));
+	       break;
 	  case STRING:
 	       result &= PU_bind_string(va_arg(listArg, char **),l_car(lispList));
 	       break;
@@ -299,6 +321,10 @@ int PUGetLispListCar(L_List *lispListPtr, Term_Type type, void *ptr)
 	  break;
      case INTEGER:
 	  if (! (PU_bind_integer((int *)ptr, paramTerm)))
+	       return -1;
+	  break;
+     case LONG_LONG:
+	  if (! (PU_bind_long_long((long long int *)ptr, paramTerm)))
 	       return -1;
 	  break;
      case STRING:
@@ -382,6 +408,10 @@ PBoolean PUGetOprsTermCompArgs(Expression *tc, int NbParametres, ...)
 		    result &= PU_bind_integer(va_arg(listArg, int *),
 					      (Term *)sl_get_slist_pos(paramList, paramCour - 1));
 		    break;
+	       case LONG_LONG:
+		    result &= PU_bind_long_long(va_arg(listArg, long long int *),
+					      (Term *)sl_get_slist_pos(paramList, paramCour - 1));
+		    break;
 	       case STRING:
 		    result &= PU_bind_string(va_arg(listArg, char **),
 					     (Term *)sl_get_slist_pos(paramList, paramCour - 1));
@@ -451,6 +481,10 @@ PBoolean PUGetOprsTermCompSpecArg(Expression *tc, int rank, Term_Type type, void
 	       if ( ! PU_bind_integer((int *)ptr, paramTerm))
 		    return FALSE;
 	       break;
+	  case LONG_LONG:
+	       if ( ! PU_bind_long_long((long long int *)ptr, paramTerm))
+		    return FALSE;
+	       break;
 	  case STRING:
 	       if ( ! PU_bind_string((char **)ptr, paramTerm))
 		    return FALSE;
@@ -506,6 +540,10 @@ PBoolean PUGetOprsParametersSpecArg(TermList paramList, int rank, Term_Type type
 	  break;
      case INTEGER:
 	  if ( ! PU_bind_integer((int *)ptr, paramTerm))
+	       return FALSE;
+	  break;
+     case LONG_LONG:
+	  if ( ! PU_bind_long_long((long long int *)ptr, paramTerm))
 	       return FALSE;
 	  break;
      case STRING:

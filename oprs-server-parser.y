@@ -4,7 +4,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * oprs-server-parser.y -- yacc grammaire
  * 
- * Copyright (c) 1991-2004 Francois Felix Ingrand.
+ * Copyright (c) 1991-2005 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -66,6 +66,7 @@ Oprs_Client *oprs_client = NULL;
 %union {
     double    	real;        /* real value */
     int    	integer;    /* integer value */
+    long long int    	long_long;    /* integer value */
     void    		*pointer;    /* pointer value */
     char    	*string;    /* string buffer */
     int    	cmd;        /* command value */
@@ -80,6 +81,7 @@ Oprs_Client *oprs_client = NULL;
 %token <real> 		REAL_TK
 %token <pointer> 	POINTER_TK
 %token <integer>	INTEGER_TK 
+%token <long_long>	LONG_LONG_TK 
 %token <string> 	QSTRING_TK SYMBOL_TK LOGICAL_VAR_TK PROGRAM_VAR_TK
 
 %token <cmd> 	QUIT HELP RESET_DOT_TK ADD_TK SEND BROADCAST
@@ -186,6 +188,7 @@ term_list:
 
 term:
 	INTEGER_TK 				{$$=build_integer($1);}
+	| LONG_LONG_TK  			{$$=build_long_long($1);}
 	| POINTER_TK  				{$$=build_pointer($1);}
 	| REAL_TK  				{$$=build_float($1);}
 	| QSTRING_TK				{$$=build_qstring($1);}

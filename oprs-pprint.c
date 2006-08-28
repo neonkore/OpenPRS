@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * oprs-pprint.c -- 
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2005 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -342,6 +342,20 @@ ListLines pretty_print_integer(int width, int i)
      tmp_line->width = NUM_CHAR_SPRINT(sprintf(tmp_str,"%d", i));
      tmp_line->str = (char *) MALLOC((tmp_line->width + 1) * sizeof(char));
      sprintf(tmp_line->str,"%d", i);
+     sl_add_to_head(lline, tmp_line);
+
+     return lline;
+}
+
+ListLines pretty_print_long_long(int width, long long int i)
+{
+     char tmp_str[LINSIZ];
+     Line *tmp_line = make_line();
+     ListLines lline = sl_make_slist();
+     
+     tmp_line->width = NUM_CHAR_SPRINT(sprintf(tmp_str,"%lldll", i));
+     tmp_line->str = (char *) MALLOC((tmp_line->width + 1) * sizeof(char));
+     sprintf(tmp_line->str,"%lldll", i);
      sl_add_to_head(lline, tmp_line);
 
      return lline;
@@ -1781,6 +1795,8 @@ ListLines pretty_print_term(int width, Term *term)
      switch (term->type) {
      case INTEGER: 	 
 	  return (pretty_print_integer(width, term->u.intval));
+     case LONG_LONG: 	 
+	  return (pretty_print_long_long(width, term->u.llintval));
      case FLOAT_ARRAY: 	 
 	  return (pretty_print_float_array(width, term->u.float_array));
      case INT_ARRAY: 	 

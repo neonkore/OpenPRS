@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * pu-genom.c -- 
  * 
- * Copyright (C) 1999-2003 LAAS/CNRS
+ * Copyright (C) 1999-2005 LAAS/CNRS
  * 
  * $Id$
  */
@@ -91,6 +91,8 @@ define_pu_encode_genom(double, double, double, FLOAT)
 /* pu_encode_genom_float */
 define_pu_encode_genom(float, float, double, FLOAT)
 /* pu_encode_genom_int */
+define_pu_encode_genom(long_long_int, long long int, long long int, LONG_LONG)
+
 define_pu_encode_genom(int, int, int, INTEGER)
 define_pu_encode_genom(unsigned_int, unsigned int, int, INTEGER)
 
@@ -160,6 +162,7 @@ Term *pu_decode_genom_ ## type_gen_name(char *name, type_gen *addr, int size) \
 }
 
 define_pu_decode_genom(int, int, PUMakeTermInteger, int, INTEGER)
+define_pu_decode_genom(long_long_int, long long int, PUMakeTermLongLong, long long int, LONG_LONG)
 define_pu_decode_genom(unsigned_int, unsigned int, PUMakeTermInteger, int, INTEGER)
 define_pu_decode_genom(unsigned_char, unsigned char, PUMakeTermInteger, int, INTEGER)
 

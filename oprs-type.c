@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*-
  * oprs-type.c -- Fonction de construction et de print pour les types...
  *
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2005 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -255,6 +255,17 @@ void *u_memory_mem(Term *t)
 int u_memory_size(Term *t)
 {
      return t->u.u_memory->size;
+}
+
+Term *build_long_long(long long int i)
+{
+
+     Term *t = MAKE_OBJECT(Term);
+
+     t->type = LONG_LONG;
+     t->u.llintval = i;
+
+     return t;
 }
 
 Term *build_integer(int i)
@@ -1057,6 +1068,8 @@ int compare_term(Term *t1, Term *t2)
 	  switch(t1->type) { /* same type...*/
 	  case INTEGER:
 	       return ((t1->u.intval) - (t2->u.intval));
+	  case LONG_LONG:
+	       return ((t1->u.llintval) - (t2->u.llintval));
 	  case TT_FLOAT:
 	       return ((*t1->u.doubleptr) - (*t2->u.doubleptr));
 	  case STRING:

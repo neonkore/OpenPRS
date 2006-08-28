@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * oprs-client.c -- 
  * 
- * Copyright (c) 1991-2004 Francois Felix Ingrand.
+ * Copyright (c) 1991-2005 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -234,7 +234,8 @@ Oprs_Client *accept_oprs_client()
  */
 {
 
-     int pid, ns, fromlen;
+     int pid, ns;
+     socklen_t fromlen;
      Oprs_Client *oprs_cl;
      int size_message;
      char *message;

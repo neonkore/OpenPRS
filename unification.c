@@ -3,7 +3,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*-
  * unification.c -- Unification pour OPRS
  *
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2005 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -362,9 +362,12 @@ PBoolean unify_term(Term *t1, Term *t2, FramePtr frame)
 	  } else
 	       return FALSE;
      } else {
-	  switch (t1->type) {
+	  switch (t1->type) {	/* Beware... some int and long long could be equal... I need to check that. FFI */
 	  case INTEGER:
 	       return ((t1->u.intval) == (t2->u.intval));
+	       break;
+	  case LONG_LONG:
+	       return ((t1->u.llintval) == (t2->u.llintval));
 	       break;
 	  case U_MEMORY:
 	  case U_POINTER:
@@ -458,6 +461,9 @@ PBoolean unify_term_from_db(Term *t1, Term *t2, FramePtr frame, PBoolean dup_var
 	  switch (t1->type) {	/* These may now result from a find_binding... */
 	  case INTEGER:
 	       return ((t1->u.intval) == (t2->u.intval));
+	       break;
+	  case LONG_LONG:
+	       return ((t1->u.llintval) == (t2->u.llintval));
 	       break;
 	  case TT_FLOAT:
 	       return ((*t1->u.doubleptr) == (*t2->u.doubleptr));
@@ -567,6 +573,9 @@ PBoolean equal_term(Term *t1, Term *t2)
 	  switch (t1->type) {
 	  case INTEGER:
 	       return ((t1->u.intval) == (t2->u.intval));
+	       break;
+	  case LONG_LONG:
+	       return ((t1->u.llintval) == (t2->u.llintval));
 	       break;
 	  case U_MEMORY:
 	  case U_POINTER:

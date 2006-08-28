@@ -36,6 +36,7 @@ ListLines pretty_print_exprlist(int width, ExprList lexpr);
 ListLines pretty_print_int_array(int width, Int_array *ia);
 ListLines pretty_print_float_array(int width, Float_array *fa);
 ListLines pretty_print_integer(int width, int i);
+ListLines pretty_print_long_long(int width, long long int i);
 ListLines pretty_print_user_pointer(int width, void *i);
 ListLines pretty_print_float(int width, double d);
 ListLines pretty_print_property(int width, Property *p);

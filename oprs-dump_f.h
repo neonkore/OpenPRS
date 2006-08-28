@@ -3,7 +3,7 @@
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2005 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -66,6 +66,8 @@ do {void *addr = load_ptr(); \
 void *load_list_reloc_elt(Dump_Type dt);
 void ntohd(u_char *buf, double *dbl);
 void htond(double *dbl, u_char *buf);
+void ntohll(u_char *buf, long long *ll);
+void htonll(long long *ll, u_char *buf);
 
 int dump_ptr(void *ptr);
 int dump_char(char c);

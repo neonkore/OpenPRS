@@ -7,6 +7,7 @@
 #ifdef __STDC__
 
 extern Term * PUMakeTermInteger ( int val );
+extern Term * PUMakeTermLongLong(long long int val);
 extern Term* PUMakeTermFloat ( double val );
 extern Term * PUMakeTermAtom ( char *atom );
 extern Term* PUMakeTermUPointer ( void *pointer );

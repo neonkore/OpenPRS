@@ -3,7 +3,7 @@
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2005 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,6 +46,8 @@
 		  return REAL_TK;}
 {pointer}       { sscanf(oprs_yytext+2,"%x", (unsigned int *)&oprs_yylval.pointer); /* the +2 is to get rid of the 0x... */
 		  return POINTER_TK;}
+{long_long}       { sscanf(oprs_yytext,"%lld", &oprs_yylval.long_long);
+		  return LONG_LONG_TK;}
 {integer}       { sscanf(oprs_yytext,"%d", &oprs_yylval.integer);
 		  return INTEGER_TK;}
 {comment}	;

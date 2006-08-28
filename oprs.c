@@ -3,7 +3,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * oprs.c -- The big boss
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2005 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -341,6 +341,9 @@ TermList make_external_term_list(int nb_arg, ...)
 	       break;
 	  case INTEGER:
 	       add_to_tail(param_list, build_integer(va_arg(list_arg, int)));
+	       break;
+	  case LONG_LONG:
+	       add_to_tail(param_list, build_long_long(va_arg(list_arg, long long int)));
 	       break;
 	  case STRING:
 	       add_to_tail(param_list, build_string(va_arg(list_arg, char *)));

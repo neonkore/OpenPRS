@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * oprs-load.c -- 
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2005 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -384,6 +384,54 @@ void ntohd(u_char *buf, double *dbl)
 #error BIG_ENDIAN or LITTLE_ENDIAN should be defined in config.h.
 #endif     
      return;
+}
+
+void htonll(long long *ll, u_char *buf)
+{
+#if defined(BIG_ENDIAN)
+     BCOPY(ll,buf, 8);
+#elif defined(LITTLE_ENDIAN)
+     u_char tmp;
+
+     BCOPY(ll,buf, 8);
+     SWAP(buf[0],buf[7],tmp);
+     SWAP(buf[1],buf[6],tmp);
+     SWAP(buf[2],buf[5],tmp);
+     SWAP(buf[3],buf[4],tmp);
+#else
+#error BIG_ENDIAN or LITTLE_ENDIAN should be defined in config.h.
+#endif     
+     return;
+}
+
+void ntohll(u_char *buf, long long *ll)
+{
+#if defined(BIG_ENDIAN)
+     BCOPY(buf,ll, 8);
+#elif defined(LITTLE_ENDIAN)
+     u_char tmp;
+
+     BCOPY(buf,ll, 8);
+     SWAP(buf[0],buf[7],tmp);
+     SWAP(buf[1],buf[6],tmp);
+     SWAP(buf[2],buf[5],tmp);
+     SWAP(buf[3],buf[4],tmp);
+
+     BCOPY(buf,dbl, 8);
+#else
+#error BIG_ENDIAN or LITTLE_ENDIAN should be defined in config.h.
+#endif     
+     return;
+}
+
+long long load_long_long(void)
+{
+     long long hi;
+     u_char buf[8];
+
+     load_read(buf, 8);
+     ntohll(buf, &hi);
+     return hi;
 }
 
 double load_float(void)
@@ -994,6 +1042,9 @@ void *load_term(void)
      switch (term->type) {
      case INTEGER: 	 
 	  term->u.intval = load_int();
+	  break;
+     case LONG_LONG: 	 
+	  term->u.llintval = load_long_long();
 	  break;
      case TT_FACT:
 	  LOAD_ADDR_AND_REF_LOC(DPT_FACT, term->u.fact);

@@ -383,8 +383,9 @@ int main(int argc, char **argv, char **envp)
 #endif
 {
      fd_set readfds;
-     fd_set writefds;
-     int nfound, ns, fromlen;
+     fd_set writefds; 
+     int nfound, ns;
+     socklen_t fromlen;
      PBoolean ignore;
 
      struct sockaddr_in from_addr;

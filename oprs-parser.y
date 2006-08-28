@@ -3,7 +3,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * oprs-parser.y -- yacc grammaire
  * 
- * Copyright (c) 1991-2004 Francois Felix Ingrand.
+ * Copyright (c) 1991-2005 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -110,6 +110,7 @@ long int read_check_sum;
 %union {
     double    		real;        /* real value */
     int    		integer;    /* integer value */
+    long long int	long_long;    /* long long integer value */
     void    		*pointer;    /* pointer value */
     char    		*string;    /* string buffer */
     int    		cmd;        /* command value */
@@ -135,6 +136,7 @@ long int read_check_sum;
 %token <real> 		REAL_TK
 %token <pointer>	POINTER_TK
 %token <integer> 	INTEGER_TK
+%token <long_long> 	LONG_LONG_TK
 %token <string> 	QSTRING_TK SYMBOL_TK COMMENT_TK LOGICAL_VAR_TK PROGRAM_VAR_TK
 
 %token <cmd>		HELP_TK ADD_TK CONCLUDE_TK CONSULT_TK DECLARE_TK DELETE_TK 

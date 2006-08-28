@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * oprs-free.c -- Most of the free functions
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2005 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -176,6 +176,7 @@ void free_term(Term *term)
 	  switch (term->type) {
 
 	  case INTEGER:
+	  case LONG_LONG:
 	  case U_POINTER:
 	  case TT_ATOM:
 	       break;
