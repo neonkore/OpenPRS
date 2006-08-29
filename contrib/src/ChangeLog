@@ -1,3 +1,8 @@
+2006-08-29  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* pu-genom.c: added unsigned_long_Long... even if they are handled
+	as long long by Oprs.
+
 2006-08-28  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* All... added support for long long.

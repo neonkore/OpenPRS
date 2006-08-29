@@ -163,6 +163,7 @@ Term *pu_decode_genom_ ## type_gen_name(char *name, type_gen *addr, int size) \
 
 define_pu_decode_genom(int, int, PUMakeTermInteger, int, INTEGER)
 define_pu_decode_genom(long_long_int, long long int, PUMakeTermLongLong, long long int, LONG_LONG)
+define_pu_decode_genom(unsigned_long_long_int, unsigned long long int, PUMakeTermLongLong, long long int, LONG_LONG)
 define_pu_decode_genom(unsigned_int, unsigned int, PUMakeTermInteger, int, INTEGER)
 define_pu_decode_genom(unsigned_char, unsigned char, PUMakeTermInteger, int, INTEGER)
 
