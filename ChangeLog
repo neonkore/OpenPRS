@@ -1,3 +1,11 @@
+2006-08-30  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* ev-function.c : LONG_LONG are now properly supported thru all
+	evaluable functions using INTEGER (+, - , * , / etc...)
+
+	* ev-predicate.c : LONG_LONG are now properly supported thru all
+	evaluable predicates using INTEGER... (ABS, <, >, <=, >=, NUMBERP
+
 2006-08-28  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* oprs-dump.c: New version number... to support long long...

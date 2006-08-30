@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * ev-predicate.c -- Handle evaluable predicates.
  * 
- * Copyright (c) 1991-2005 Francois Felix Ingrand.
+ * Copyright (c) 1991-2006 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -180,8 +180,27 @@ PBoolean ep_gt (TermList terms)
 	  case INTEGER:
 	       return ((int)t1->u.intval) > ((int)t2->u.intval);
 	       break;
+	  case LONG_LONG:
+	       return ((int)t1->u.intval) > ((int)t2->u.llintval);
+	       break;
 	  case TT_FLOAT:
 	       return ((int)t1->u.intval) > ((double)*t2->u.doubleptr);
+	       break;
+	  default:
+	       report_fatal_external_error(oprs_strerror(PE_UNEXPECTED_TERM_TYPE));
+	       break;
+	  }
+	  break;
+     case LONG_LONG:
+	  switch (t2->type) {
+	  case INTEGER:
+	       return ((int)t1->u.llintval) > ((int)t2->u.intval);
+	       break;
+	  case LONG_LONG:
+	       return ((int)t1->u.llintval) > ((int)t2->u.llintval);
+	       break;
+	  case TT_FLOAT:
+	       return ((int)t1->u.llintval) > ((double)*t2->u.doubleptr);
 	       break;
 	  default:
 	       report_fatal_external_error(oprs_strerror(PE_UNEXPECTED_TERM_TYPE));
@@ -192,6 +211,9 @@ PBoolean ep_gt (TermList terms)
 	  switch (t2->type) {
 	  case INTEGER:
 	       return ((double)*t1->u.doubleptr) > ((int)t2->u.intval);
+	       break;
+	  case LONG_LONG:
+	       return ((double)*t1->u.doubleptr) > ((int)t2->u.llintval);
 	       break;
 	  case TT_FLOAT:
 	       return ((double)*t1->u.doubleptr) > ((double)*t2->u.doubleptr);
@@ -221,8 +243,27 @@ PBoolean ep_gte (TermList terms)
 	  case INTEGER:
 	       return ((int)t1->u.intval) >= ((int)t2->u.intval);
 	       break;
+	  case LONG_LONG:
+	       return ((int)t1->u.intval) >= ((int)t2->u.llintval);
+	       break;
 	  case TT_FLOAT:
 	       return ((int)t1->u.intval) >= ((double)*t2->u.doubleptr);
+	       break;
+	  default:
+	       report_fatal_external_error(oprs_strerror(PE_UNEXPECTED_TERM_TYPE));
+	       break;
+	  }
+	  break;
+     case LONG_LONG:
+	  switch (t2->type) {
+	  case INTEGER:
+	       return ((int)t1->u.llintval) >= ((int)t2->u.intval);
+	       break;
+	  case LONG_LONG:
+	       return ((int)t1->u.llintval) >= ((int)t2->u.llintval);
+	       break;
+	  case TT_FLOAT:
+	       return ((int)t1->u.llintval) >= ((double)*t2->u.doubleptr);
 	       break;
 	  default:
 	       report_fatal_external_error(oprs_strerror(PE_UNEXPECTED_TERM_TYPE));
@@ -233,6 +274,9 @@ PBoolean ep_gte (TermList terms)
 	  switch (t2->type) {
 	  case INTEGER:
 	       return ((double)*t1->u.doubleptr) >= ((int)t2->u.intval);
+	       break;
+	  case LONG_LONG:
+	       return ((double)*t1->u.doubleptr) >= ((int)t2->u.llintval);
 	       break;
 	  case TT_FLOAT:
 	       return ((double)*t1->u.doubleptr) >= ((double)*t2->u.doubleptr);
@@ -262,8 +306,27 @@ PBoolean ep_lt (TermList terms)
 	  case INTEGER:
 	       return ((int)t1->u.intval) < ((int)t2->u.intval);
 	       break;
+	  case LONG_LONG:
+	       return ((int)t1->u.intval) < ((int)t2->u.llintval);
+	       break;
 	  case TT_FLOAT:
 	       return ((int)t1->u.intval) < ((double)*t2->u.doubleptr);
+	       break;
+	  default:
+	       report_fatal_external_error(oprs_strerror(PE_UNEXPECTED_TERM_TYPE));
+	       break;
+	  }
+	  break;
+     case LONG_LONG:
+	  switch (t2->type) {
+	  case INTEGER:
+	       return ((int)t1->u.llintval) < ((int)t2->u.intval);
+	       break;
+	  case LONG_LONG:
+	       return ((int)t1->u.llintval) < ((int)t2->u.llintval);
+	       break;
+	  case TT_FLOAT:
+	       return ((int)t1->u.llintval) < ((double)*t2->u.doubleptr);
 	       break;
 	  default:
 	       report_fatal_external_error(oprs_strerror(PE_UNEXPECTED_TERM_TYPE));
@@ -274,6 +337,9 @@ PBoolean ep_lt (TermList terms)
 	  switch (t2->type) {
 	  case INTEGER:
 	       return ((double)*t1->u.doubleptr) < ((int)t2->u.intval);
+	       break;
+	  case LONG_LONG:
+	       return ((double)*t1->u.doubleptr) < ((int)t2->u.llintval);
 	       break;
 	  case TT_FLOAT:
 	       return ((double)*t1->u.doubleptr) < ((double)*t2->u.doubleptr);
@@ -303,8 +369,27 @@ PBoolean ep_lte (TermList terms)
 	  case INTEGER:
 	       return ((int)t1->u.intval) <= ((int)t2->u.intval);
 	       break;
+	  case LONG_LONG:
+	       return ((int)t1->u.intval) <= ((int)t2->u.llintval);
+	       break;
 	  case TT_FLOAT:
 	       return ((int)t1->u.intval) <= ((double)*t2->u.doubleptr);
+	       break;
+	  default:
+	       report_fatal_external_error(oprs_strerror(PE_UNEXPECTED_TERM_TYPE));
+	       break;
+	  }
+	  break;
+     case LONG_LONG:
+	  switch (t2->type) {
+	  case INTEGER:
+	       return ((int)t1->u.llintval) <= ((int)t2->u.intval);
+	       break;
+	  case LONG_LONG:
+	       return ((int)t1->u.llintval) <= ((int)t2->u.llintval);
+	       break;
+	  case TT_FLOAT:
+	       return ((int)t1->u.llintval) <= ((double)*t2->u.doubleptr);
 	       break;
 	  default:
 	       report_fatal_external_error(oprs_strerror(PE_UNEXPECTED_TERM_TYPE));
@@ -315,6 +400,9 @@ PBoolean ep_lte (TermList terms)
 	  switch (t2->type) {
 	  case INTEGER:
 	       return ((double)*t1->u.doubleptr) <= ((int)t2->u.intval);
+	       break;
+	  case LONG_LONG:
+	       return ((double)*t1->u.doubleptr) <= ((int)t2->u.llintval);
 	       break;
 	  case TT_FLOAT:
 	       return ((double)*t1->u.doubleptr) <= ((double)*t2->u.doubleptr);

@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * ev-function.c -- Deal with evaluable functions in OPRS.
  * 
- * Copyright (c) 1991-2005 Francois Felix Ingrand.
+ * Copyright (c) 1991-2006 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -108,6 +108,9 @@ Term *ef_sin (TermList terms)
      case INTEGER:
 	  res->u.doubleptr = make_doubleptr(sin((double)t->u.intval));
 	  break;
+     case LONG_LONG:
+	  res->u.doubleptr = make_doubleptr(sin((double)t->u.llintval));
+	  break;
      case TT_FLOAT:
 	  res->u.doubleptr = make_doubleptr(sin(*t->u.doubleptr));
 	  break;
@@ -129,6 +132,9 @@ Term *ef_asin (TermList terms)
      switch (t->type) {
      case INTEGER:
 	  res->u.doubleptr = make_doubleptr(asin((double)t->u.intval));
+	  break;
+     case LONG_LONG:
+	  res->u.doubleptr = make_doubleptr(asin((double)t->u.llintval));
 	  break;
      case TT_FLOAT:
 	  res->u.doubleptr = make_doubleptr(asin(*t->u.doubleptr));
@@ -152,6 +158,9 @@ Term *ef_cos (TermList terms)
      case INTEGER:
 	  res->u.doubleptr = make_doubleptr(cos((double)t->u.intval));
 	  break;
+     case LONG_LONG:
+	  res->u.doubleptr = make_doubleptr(cos((double)t->u.llintval));
+	  break;
      case TT_FLOAT:
 	  res->u.doubleptr = make_doubleptr(cos(*t->u.doubleptr));
 	  break;
@@ -173,6 +182,9 @@ Term *ef_acos (TermList terms)
      switch (t->type) {
      case INTEGER:
 	  res->u.doubleptr = make_doubleptr(acos((double)t->u.intval));
+	  break;
+     case LONG_LONG:
+	  res->u.doubleptr = make_doubleptr(acos((double)t->u.llintval));
 	  break;
      case TT_FLOAT:
 	  res->u.doubleptr = make_doubleptr(acos(*t->u.doubleptr));
@@ -196,6 +208,9 @@ Term *ef_tan (TermList terms)
      case INTEGER:
 	  res->u.doubleptr = make_doubleptr(tan((double)t->u.intval));
 	  break;
+     case LONG_LONG:
+	  res->u.doubleptr = make_doubleptr(tan((double)t->u.llintval));
+	  break;
      case TT_FLOAT:
 	  res->u.doubleptr = make_doubleptr(tan(*t->u.doubleptr));
 	  break;
@@ -217,6 +232,9 @@ Term *ef_atan (TermList terms)
      switch (t->type) {
      case INTEGER:
 	  res->u.doubleptr = make_doubleptr(atan((double)t->u.intval));
+	  break;
+     case LONG_LONG:
+	  res->u.doubleptr = make_doubleptr(atan((double)t->u.llintval));
 	  break;
      case TT_FLOAT:
 	  res->u.doubleptr = make_doubleptr(atan(*t->u.doubleptr));
@@ -262,21 +280,43 @@ Term *ef_mod (TermList terms)
 /* This is the standard mod */
 {
      Term *t1, *t2, *res;
-     
-     res = MAKE_OBJECT(Term);
-     res->type = INTEGER;
 
-     t1 = (Term *)sl_get_slist_pos(terms,1);
-     if (t1->type != INTEGER) {
-	  report_fatal_external_error(oprs_strerror(PE_EXPECTED_INTEGER_TERM_TYPE));
+     t1 = (Term *)sl_get_slist_next(terms, NULL);
+     t2 = (Term *)sl_get_slist_next(terms, t1);
+
+     res = NULL;
+
+     switch (t1->type) {
+     case INTEGER:
+	  switch (t2->type) {
+	  case INTEGER:
+	       res = build_integer(((int)t1->u.intval) % ((int)t2->u.intval));
+	       break;
+	  case LONG_LONG:
+	       res = build_long_long(((int)t1->u.intval) % ((int)t2->u.llintval));
+	       break;
+	  default:
+	       report_fatal_external_error(oprs_strerror(PE_UNEXPECTED_TERM_TYPE));
+	       break;
+	  }
+	  break;
+     case LONG_LONG:
+	  switch (t2->type) {
+	  case INTEGER:
+	       res = build_long_long(((int)t1->u.llintval) % ((int)t2->u.intval));
+	       break;
+	  case LONG_LONG:
+	       res = build_long_long(((int)t1->u.llintval) % ((int)t2->u.llintval));
+	       break;
+	  default:
+	       report_fatal_external_error(oprs_strerror(PE_UNEXPECTED_TERM_TYPE));
+	       break;
+	  }
+	  break;
+     default:
+	  report_fatal_external_error(oprs_strerror(PE_UNEXPECTED_TERM_TYPE));
+	  break;
      }
-
-     t2 = (Term *)sl_get_slist_pos(terms,2);
-     if (t2->type != INTEGER) {
-	  report_fatal_external_error(oprs_strerror(PE_EXPECTED_INTEGER_TERM_TYPE));
-     }
-
-     res->u.intval = t1->u.intval % t2->u.intval;
 
      return res;
 }
@@ -302,13 +342,12 @@ Term *ef_rand (TermList terms)
 Term *ef_plus (TermList terms)
 /* This is the standard + */
 {
-     Term *t, *res;
+     Term *t, *res = NULL;
      Term_Type tres = INTEGER;
      int i = 0;
-     long long int lli = 0;
+     long long int lli = 0ll;
      double d = 0.0;
      
-     res = MAKE_OBJECT(Term);
      sl_loop_through_slist(terms,t, Term *){
 	  if (tres == INTEGER )
 	       switch (t->type) {
@@ -317,7 +356,7 @@ Term *ef_plus (TermList terms)
 		    break;
 	       case LONG_LONG:
 		    tres = LONG_LONG;
-		    lli += t->u.llintval;
+		    lli = i + t->u.llintval;
 		    break;
 	       case TT_FLOAT:
 		    tres = TT_FLOAT;
@@ -337,13 +376,13 @@ Term *ef_plus (TermList terms)
 		    break;
 	       case TT_FLOAT:
 		    tres = TT_FLOAT;
-		    d = i + *t->u.doubleptr;
+		    d = lli + *t->u.doubleptr;
 		    break;
 	       default: 	 
 		    report_fatal_external_error(oprs_strerror(PE_UNEXPECTED_TERM_TYPE)); 
 		    break;
 	       }
-	  else
+	  else if (tres == TT_FLOAT )
 	       switch (t->type) {
 	       case INTEGER:
 		    d += t->u.intval;
@@ -358,17 +397,18 @@ Term *ef_plus (TermList terms)
 		    report_fatal_external_error(oprs_strerror(PE_UNEXPECTED_TERM_TYPE)); 
 		    break;
 	       }
+	  else
+	       report_fatal_external_error(oprs_strerror(PE_UNEXPECTED_TERM_TYPE)); 
+
      }
      if (tres == TT_FLOAT) {
-	  res->type = TT_FLOAT;
-	  res->u.doubleptr = make_doubleptr(d);
+	  res = build_float(d);
      } else if (tres == LONG_LONG) {
-	  res->type = LONG_LONG;
-	  res->u.llintval = lli;
+	  res = build_long_long(lli);
      } else {
-	  res->type = INTEGER;
-	  res->u.intval = i;
+	  res = build_integer(i);
      }
+
      return res;
 }
 
@@ -378,6 +418,7 @@ Term *ef_moins (TermList terms)
      Term *t, *res;
      Term_Type tres = INTEGER;
      int i = 0;
+     long long lli = 0ll;
      double d = 0.0;
      PBoolean first = TRUE;
      
@@ -387,6 +428,10 @@ Term *ef_moins (TermList terms)
 	  switch (t->type) {
 	  case INTEGER:
 	       i = -(t->u.intval);
+	       break;
+	  case LONG_LONG:
+	       tres = LONG_LONG;
+	       lli = -(t->u.llintval);
 	       break;
 	  case TT_FLOAT:
 	       tres = TT_FLOAT;
@@ -404,6 +449,10 @@ Term *ef_moins (TermList terms)
 		    case INTEGER:
 			 i = t->u.intval;
 			 break;
+		    case LONG_LONG:
+			 tres = LONG_LONG;
+			 lli = t->u.llintval;
+			 break;
 		    case TT_FLOAT:
 			 tres = TT_FLOAT;
 			 d = *t->u.doubleptr;
@@ -416,6 +465,26 @@ Term *ef_moins (TermList terms)
 		    switch (t->type) {
 		    case INTEGER:
 			 i -= t->u.intval;
+			 break;
+		    case LONG_LONG:
+			 tres = LONG_LONG;
+			 lli = i - t->u.llintval;
+			 break;
+		    case TT_FLOAT:
+			 tres = TT_FLOAT;
+			 d = i - *t->u.doubleptr;
+			 break;
+		    default: 	 
+			 report_fatal_external_error(oprs_strerror(PE_UNEXPECTED_TERM_TYPE)); 
+			 break;
+		    }
+	       else if (tres == LONG_LONG )
+		    switch (t->type) {
+		    case INTEGER:
+			 lli -= t->u.intval;
+			 break;
+		    case LONG_LONG:
+			 lli -= t->u.llintval;
 			 break;
 		    case TT_FLOAT:
 			 tres = TT_FLOAT;
@@ -430,6 +499,9 @@ Term *ef_moins (TermList terms)
 		    case INTEGER:
 			 d -= t->u.intval;
 			 break;
+		    case LONG_LONG:
+			 d -= t->u.llintval;
+			 break;
 		    case TT_FLOAT:
 			 d -= *t->u.doubleptr;
 			 break;
@@ -442,6 +514,9 @@ Term *ef_moins (TermList terms)
      if (tres == TT_FLOAT) {
 	  res->type = TT_FLOAT;
 	  res->u.doubleptr = make_doubleptr(d);
+     } else if (tres == LONG_LONG) {
+	  res->type = LONG_LONG;
+	  res->u.llintval = lli;
      } else {
 	  res->type = INTEGER;
 	  res->u.intval = i;
@@ -452,17 +527,21 @@ Term *ef_moins (TermList terms)
 Term *ef_mult (TermList terms)
 /* Standard * */
 {
-     Term *t, *res;
+     Term *t, *res = NULL;
      Term_Type tres = INTEGER;
-     int i = 1;
+     int i = 1.0;
+     long long int lli = 1ll;
      double d = 1.0;
      
-     res = MAKE_OBJECT(Term);
      sl_loop_through_slist(terms,t, Term *){
 	  if (tres == INTEGER )
 	       switch (t->type) {
 	       case INTEGER:
 		    i *= t->u.intval;
+		    break;
+	       case LONG_LONG:
+		    tres = LONG_LONG;
+		    lli = i * t->u.llintval;
 		    break;
 	       case TT_FLOAT:
 		    tres = TT_FLOAT;
@@ -472,10 +551,29 @@ Term *ef_mult (TermList terms)
 		    report_fatal_external_error(oprs_strerror(PE_UNEXPECTED_TERM_TYPE)); 
 		    break;
 	       }
-	  else 
+	  else if (tres == LONG_LONG )
+	       switch (t->type) {
+	       case INTEGER:
+		    lli *= t->u.intval;
+		    break;
+	       case LONG_LONG:
+		    lli *= t->u.llintval;
+		    break;
+	       case TT_FLOAT:
+		    tres = TT_FLOAT;
+		    d = lli * *t->u.doubleptr;
+		    break;
+	       default: 	 
+		    report_fatal_external_error(oprs_strerror(PE_UNEXPECTED_TERM_TYPE)); 
+		    break;
+	       }
+	  else if (tres == TT_FLOAT )
 	       switch (t->type) {
 	       case INTEGER:
 		    d *= t->u.intval;
+		    break;
+	       case LONG_LONG:
+		    d *= t->u.llintval;
 		    break;
 	       case TT_FLOAT:
 		    d *= *t->u.doubleptr;
@@ -484,14 +582,18 @@ Term *ef_mult (TermList terms)
 		    report_fatal_external_error(oprs_strerror(PE_UNEXPECTED_TERM_TYPE)); 
 		    break;
 	       }
+	  else
+	       report_fatal_external_error(oprs_strerror(PE_UNEXPECTED_TERM_TYPE)); 
+
      }
      if (tres == TT_FLOAT) {
-	  res->type = TT_FLOAT;
-	  res->u.doubleptr = make_doubleptr(d);
+	  res = build_float(d);
+     } else if (tres == LONG_LONG) {
+	  res = build_long_long(lli);
      } else {
-	  res->type = INTEGER;
-	  res->u.intval = i;
+	  res = build_integer(i);
      }
+
      return res;
 }
 
@@ -501,8 +603,9 @@ Term *ef_div (TermList terms)
 {
      Term *t, *res;
      Term_Type tres = INTEGER;
-     int i = 0;
-     double d = 0.0;
+     int i = 1;
+     long long lli = 1ll;
+     double d = 1.0;
      PBoolean first = TRUE;
      
      res = MAKE_OBJECT(Term);
@@ -510,7 +613,12 @@ Term *ef_div (TermList terms)
 	  t = (Term *)sl_get_slist_head(terms);
 	  switch (t->type) {
 	  case INTEGER:
-	       i = 1 / (t->u.intval); /* kind of stupid.. */
+	       tres = TT_FLOAT;
+	       d = 1 / (t->u.intval);
+	       break;
+	  case LONG_LONG:
+	       tres = TT_FLOAT;
+	       d = 1 / (t->u.llintval);
 	       break;
 	  case TT_FLOAT:
 	       tres = TT_FLOAT;
@@ -528,6 +636,10 @@ Term *ef_div (TermList terms)
 		    case INTEGER:
 			 i = t->u.intval;
 			 break;
+		    case LONG_LONG:
+			 tres = LONG_LONG;
+			 lli = t->u.llintval;
+			 break;
 		    case TT_FLOAT:
 			 tres = TT_FLOAT;
 			 d = *t->u.doubleptr;
@@ -541,9 +653,29 @@ Term *ef_div (TermList terms)
 		    case INTEGER:
 			 i /= t->u.intval;
 			 break;
+		    case LONG_LONG:
+			 tres = LONG_LONG;
+			 lli = i / t->u.llintval;
+			 break;
 		    case TT_FLOAT:
 			 tres = TT_FLOAT;
 			 d = i / *t->u.doubleptr;
+			 break;
+		    default: 	 
+			 report_fatal_external_error(oprs_strerror(PE_UNEXPECTED_TERM_TYPE)); 
+			 break;
+		    }
+	       else if (tres == LONG_LONG )
+		    switch (t->type) {
+		    case INTEGER:
+			 lli /= t->u.intval;
+			 break;
+		    case LONG_LONG:
+			 lli /= t->u.llintval;
+			 break;
+		    case TT_FLOAT:
+			 tres = TT_FLOAT;
+			 d = i - *t->u.doubleptr;
 			 break;
 		    default: 	 
 			 report_fatal_external_error(oprs_strerror(PE_UNEXPECTED_TERM_TYPE)); 
@@ -554,6 +686,9 @@ Term *ef_div (TermList terms)
 		    case INTEGER:
 			 d /= t->u.intval;
 			 break;
+		    case LONG_LONG:
+			 d /= t->u.llintval;
+			 break;
 		    case TT_FLOAT:
 			 d /= *t->u.doubleptr;
 			 break;
@@ -562,10 +697,13 @@ Term *ef_div (TermList terms)
 			 break;
 		    }
 	  }
-}
+     }
      if (tres == TT_FLOAT) {
 	  res->type = TT_FLOAT;
 	  res->u.doubleptr = make_doubleptr(d);
+     } else if (tres == LONG_LONG) {
+	  res->type = LONG_LONG;
+	  res->u.llintval = lli;
      } else {
 	  res->type = INTEGER;
 	  res->u.intval = i;
@@ -2824,9 +2962,7 @@ Term *find_applicable_ops_for_goal_ef(TermList terms)
 Term *arctan(TermList terms)
 {
   double valt1, valt2;
-  Term *t1,*t2, *res;
-  
-  res = MAKE_OBJECT(Term);
+  Term *t1,*t2;
   
   t1 = (Term *)get_list_pos(terms, 1);
   t2 = (Term *)get_list_pos(terms, 2);
@@ -2835,30 +2971,33 @@ Term *arctan(TermList terms)
   case INTEGER:
        valt1 = t1->u.intval;
        break;
+  case LONG_LONG:
+       valt1 = t1->u.llintval;
+       break;
   case TT_FLOAT:
-    valt1 = *t1->u.doubleptr;
-    break;
+       valt1 = *t1->u.doubleptr;
+       break;
   default: 	 
-     report_fatal_external_error(oprs_strerror(PE_UNEXPECTED_TERM_TYPE)); 
-    return res;
+       report_fatal_external_error(oprs_strerror(PE_UNEXPECTED_TERM_TYPE)); 
+       return NULL;
   }
   
   switch (t2->type) {
   case INTEGER:
-    valt2 = t2->u.intval;
-    break;
+       valt2 = t2->u.intval;
+       break;
+  case LONG_LONG:
+       valt2 = t2->u.llintval;
+       break;
   case TT_FLOAT:
        valt2 = *t2->u.doubleptr;
        break;
   default: 	 
     report_fatal_external_error(oprs_strerror(PE_UNEXPECTED_TERM_TYPE)); 
-    return res;
+    return NULL;
   }
   
-  res->type = TT_FLOAT;
-  res->u.doubleptr = make_doubleptr(atan2(valt1, valt2));
-  
-  return res; 
+  return build_float(atan2(valt1, valt2)); 
 }
 
 
