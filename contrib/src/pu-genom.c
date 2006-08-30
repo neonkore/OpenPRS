@@ -92,6 +92,7 @@ define_pu_encode_genom(double, double, double, FLOAT)
 define_pu_encode_genom(float, float, double, FLOAT)
 /* pu_encode_genom_int */
 define_pu_encode_genom(long_long_int, long long int, long long int, LONG_LONG)
+define_pu_encode_genom(unsigned_long_long_int, unsigned long long int, long long int, LONG_LONG)
 
 define_pu_encode_genom(int, int, int, INTEGER)
 define_pu_encode_genom(unsigned_int, unsigned int, int, INTEGER)
