@@ -79,8 +79,8 @@ static const char* const rcsid = "$Id$";
 #define MP_EXIT_TIME_OUT 5*3600	/* number of seconds before exiting. */
 
 #define MP_OPRS_ARG_ERR_MESSAGE LG_STR(\
-"Usage: mp-oprs [-h] [-v] [-x] [-l log_file] [-j] message-passer-port-number\n",\
-"Utilisation: mp-oprs [-h] [-v] [-x] [-l fichier_log] [-j] numero-port-message-passer\n")
+"Usage: mp-oprs [-h] [-v] [-x] [-l log_file] [-t] [-j] message-passer-port-number\n",\
+"Utilisation: mp-oprs [-h] [-v] [-x] [-l fichier_log] [t] [-j] numero-port-message-passer\n")
 
 void free_buffered_message(Buff_Message *buff);
 void get_and_buffer_message(Mp_Oprs_Client *mpc_sender);
@@ -90,6 +90,7 @@ PBoolean mp_verbose = FALSE;
 PBoolean mp_exclude = FALSE;	/* Exclude older client... */
 
 static PBoolean mp_log = FALSE; 
+static PBoolean mp_log_with_timestamp = FALSE;
 static char *mp_log_filename = NULL;
 static FILE *mp_log_file;
 
@@ -333,7 +334,7 @@ void init_arg(int argc,char **argv)
      extern int optind;
      extern char *optarg;
 
-     while ((c = getopt(argc, argv, "l:j:xvh")) != EOF)
+     while ((c = getopt(argc, argv, "l:j:xvht")) != EOF)
 	  switch (c)
 	  {
 	  case 'l':
@@ -347,6 +348,9 @@ void init_arg(int argc,char **argv)
 	       break;
 	  case 'v':
 	       mp_verbose = TRUE;
+	       break;
+	  case 't':
+	       mp_log_with_timestamp = TRUE;
 	       break;
 	  case 'x':
 	       mp_exclude = TRUE;
@@ -441,11 +445,17 @@ int main(int argc, char **argv, char **envp)
 	       fprintf(stderr, "mp-oprs (%s:%d): register_oprs: fopen(%s, w): NULL.\n",
 		       mp_hostname, mp_port, mp_log_filename);
 	  else {
-	       time_t tt =  time(NULL);
 	       mp_log = TRUE;
 	       fprintf(stderr, LG_STR("mp-oprs (%s:%d): Logging output in file '%s'.\n",
 				      "mp-oprs (%s:%d): Logue les traces/sorties dans le fichier '%s'.\n"),
 		       mp_hostname, mp_port, mp_log_filename);
+	       struct timeval clock_value;
+	       gettimeofday(&clock_value, NULL);
+	       time_t tt = clock_value.tv_sec;
+	       if (mp_log_with_timestamp) {
+		    fprintf(mp_log_file, "%s", (tt != -1 ? ctime(&tt) : "Unknown\n"));
+		    fprintf(mp_log_file, "rough value: %d:%d\n", clock_value.tv_sec, clock_value.tv_usec);
+	       }
 	       fprintf(mp_log_file, LG_STR("mp-oprs (%s:%d): Start logging: %s",
 					   "mp-oprs (%s:%d): Debut de logue: %s"),
 		       mp_hostname, mp_port, (tt != -1 ? ctime(&tt) : "Unknown\n"));
@@ -732,6 +742,13 @@ void get_and_buffer_message(Mp_Oprs_Client *mpc_sender)
 	  }
 
 	  if (mp_log) {
+	       if (mp_log_with_timestamp) {
+	            struct timeval clock_value;
+		    gettimeofday(&clock_value, NULL);
+		    time_t tt = clock_value.tv_sec;
+		    fprintf(mp_log_file, "%s", (tt != -1 ? ctime(&tt) : "Unknown\n"));
+		    fprintf(mp_log_file, "rough value: %d:%d\n", clock_value.tv_sec, clock_value.tv_usec);
+	       }
 	       fprintf(mp_log_file, LG_STR("%s multicast to",
 					   "%s multicast à"),
 		       mpc_sender->name);
@@ -789,6 +806,13 @@ void get_and_buffer_message(Mp_Oprs_Client *mpc_sender)
 	       }
 
 	       if (mp_log) {
+		    if (mp_log_with_timestamp) {
+		         struct timeval clock_value;
+			 gettimeofday(&clock_value, NULL);
+			 time_t tt = clock_value.tv_sec;
+			 fprintf(mp_log_file, "%s", (tt != -1 ? ctime(&tt) : "Unknown\n"));
+			 fprintf(mp_log_file, "rough value: %d:%d\n", clock_value.tv_sec, clock_value.tv_usec);
+		    }
 		    fprintf(mp_log_file, LG_STR("%s to %s: %s.\n",
 						"%s à %s: %s.\n"),
 			    mpc_sender->name, mpc_recipient->name, message);
@@ -805,6 +829,13 @@ void get_and_buffer_message(Mp_Oprs_Client *mpc_sender)
 	       fflush(stdout);
 	  }
 	  if (mp_log) {
+	       if (mp_log_with_timestamp) {
+		    struct timeval clock_value;
+		    gettimeofday(&clock_value, NULL);
+		    time_t tt = clock_value.tv_sec;
+		    fprintf(mp_log_file, "%s", (tt != -1 ? ctime(&tt) : "Unknown\n"));
+		    fprintf(mp_log_file, "rough value: %d:%d\n", clock_value.tv_sec, clock_value.tv_usec);
+	       }
 	       fprintf(mp_log_file, LG_STR("%s broadcast: %s.\n",
 					   "%s diffuse: %s.\n"), mpc_sender->name, message);
 	       fflush(mp_log_file);
