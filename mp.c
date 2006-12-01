@@ -450,15 +450,19 @@ int main(int argc, char **argv, char **envp)
 				      "mp-oprs (%s:%d): Logue les traces/sorties dans le fichier '%s'.\n"),
 		       mp_hostname, mp_port, mp_log_filename);
 	       struct timeval clock_value;
-	       gettimeofday(&clock_value, NULL);
-	       time_t tt = clock_value.tv_sec;
-	       if (mp_log_with_timestamp) {
-		    fprintf(mp_log_file, "%s", (tt != -1 ? ctime(&tt) : "Unknown\n"));
-		    fprintf(mp_log_file, "rough value: %d:%d\n", clock_value.tv_sec, clock_value.tv_usec);
+	       if (gettimeofday(&clock_value, NULL) == 0) {
+		   time_t tt = clock_value.tv_sec;
+		   if (mp_log_with_timestamp) {
+		       fprintf(mp_log_file, "%s", ctime(&tt));
+		       fprintf(mp_log_file, "rough value: %d:%d\n", clock_value.tv_sec, clock_value.tv_usec);
+		   }
+		   fprintf(mp_log_file, LG_STR("mp-oprs (%s:%d): Start logging: %s",
+					       "mp-oprs (%s:%d): Debut de logue: %s"),
+			   mp_hostname, mp_port, ctime(&tt));
+	       } else {
+		   perror("mp-oprs: main: gettimeofday");
+		   socket_cleanup_and_exit(1);	       
 	       }
-	       fprintf(mp_log_file, LG_STR("mp-oprs (%s:%d): Start logging: %s",
-					   "mp-oprs (%s:%d): Debut de logue: %s"),
-		       mp_hostname, mp_port, (tt != -1 ? ctime(&tt) : "Unknown\n"));
 	  }
      }
 
@@ -744,9 +748,12 @@ void get_and_buffer_message(Mp_Oprs_Client *mpc_sender)
 	  if (mp_log) {
 	       if (mp_log_with_timestamp) {
 	            struct timeval clock_value;
-		    gettimeofday(&clock_value, NULL);
+		    if (gettimeofday(&clock_value, NULL) == -1) {
+		        perror("mp-oprs: get_and_buffer_message: gettimeofday");
+			socket_cleanup_and_exit(1);	       
+		    }
 		    time_t tt = clock_value.tv_sec;
-		    fprintf(mp_log_file, "%s", (tt != -1 ? ctime(&tt) : "Unknown\n"));
+		    fprintf(mp_log_file, "%s", ctime(&tt));
 		    fprintf(mp_log_file, "rough value: %d:%d\n", clock_value.tv_sec, clock_value.tv_usec);
 	       }
 	       fprintf(mp_log_file, LG_STR("%s multicast to",
@@ -808,9 +815,12 @@ void get_and_buffer_message(Mp_Oprs_Client *mpc_sender)
 	       if (mp_log) {
 		    if (mp_log_with_timestamp) {
 		         struct timeval clock_value;
-			 gettimeofday(&clock_value, NULL);
+			 if (gettimeofday(&clock_value, NULL) == -1) {
+			     perror("mp-oprs: get_and_buffer_message: gettimeofday");
+			     socket_cleanup_and_exit(1);	       
+			 }
 			 time_t tt = clock_value.tv_sec;
-			 fprintf(mp_log_file, "%s", (tt != -1 ? ctime(&tt) : "Unknown\n"));
+			 fprintf(mp_log_file, "%s", ctime(&tt));
 			 fprintf(mp_log_file, "rough value: %d:%d\n", clock_value.tv_sec, clock_value.tv_usec);
 		    }
 		    fprintf(mp_log_file, LG_STR("%s to %s: %s.\n",
@@ -831,9 +841,12 @@ void get_and_buffer_message(Mp_Oprs_Client *mpc_sender)
 	  if (mp_log) {
 	       if (mp_log_with_timestamp) {
 		    struct timeval clock_value;
-		    gettimeofday(&clock_value, NULL);
+		    if (gettimeofday(&clock_value, NULL) == -1) {
+		        perror("mp-oprs: get_and_buffer_message: gettimeofday");
+			socket_cleanup_and_exit(1);	       
+		    }
 		    time_t tt = clock_value.tv_sec;
-		    fprintf(mp_log_file, "%s", (tt != -1 ? ctime(&tt) : "Unknown\n"));
+		    fprintf(mp_log_file, "%s", ctime(&tt));
 		    fprintf(mp_log_file, "rough value: %d:%d\n", clock_value.tv_sec, clock_value.tv_usec);
 	       }
 	       fprintf(mp_log_file, LG_STR("%s broadcast: %s.\n",
