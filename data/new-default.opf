@@ -10,6 +10,22 @@
 (2 
 (
 )
+
+(defop |Print-Log-End|
+  :invocation (! (LOG-END $X))
+  :action (*=* $RES (LOG-END $X))
+  )
+
+(defop |Print-Log-Init|
+  :invocation (! (LOG-INIT $X $Y))
+  :action (*=* $RES (LOG-INIT $X $Y))
+  )
+
+(defop |Print-Log-Print|
+  :invocation (! (LOG-PRINTF $X $Y))
+  :action (*=* $RES (LOG-PRINTF $X $Y))
+  )
+
 (|Apply-Sort-Predicate-To-All| (
 (INVOCATION INVOCATION (! (APPLY-SORT-PREDICATE-TO-ALL)) 10 50 1 80 0 )
 (CALL CALLNODE  (APPLY-SORT-PREDICATE-TO-ALL) 10 100 1 80 0 )

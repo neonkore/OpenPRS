@@ -97,6 +97,176 @@ static const char* const rcsid = "$Id$";
 
 #include "pu-parse-tl_f.h"
 
+/*********Log function and variables*************/
+#define MAX_LOG_FILE 10
+FILE *f_log_a[MAX_LOG_FILE];
+int   f_log_init = 0;
+
+int init_log_array(){
+  int i;
+  
+  for(i=0 ; i<MAX_LOG_FILE ; i++)
+    f_log_a[i] = NULL;
+  
+  f_log_init = 1;
+}
+
+Term *action_log_init(TermList terms){
+
+  Term *t_file_name, *t_file_nb, *res;
+  PString s_file_name;
+  int file_nb;
+  
+  res       = MAKE_OBJECT(Term);
+  res->type = TT_ATOM;
+  res->u.id = nil_sym;
+
+  if(f_log_init==0)
+    init_log_array();
+  
+  t_file_name = (Term *)sl_get_slist_head(terms);
+  if (t_file_name->type != STRING)
+    report_fatal_external_error(oprs_strerror(PE_EXPECTED_EXPRESSION_TERM_TYPE));
+  s_file_name = t_file_name->u.string;
+
+  t_file_nb  = (Term *)sl_get_slist_next(terms,t_file_name); 
+  if (t_file_nb->type != INTEGER)
+    report_fatal_external_error(oprs_strerror(PE_EXPECTED_EXPRESSION_TERM_TYPE));
+  file_nb = t_file_nb->u.intval;
+  
+  f_log_a[file_nb] = fopen(s_file_name, "w");
+  
+  if (f_log_a[file_nb])
+    res->u.id = lisp_t_sym;
+  
+  return res;
+}
+
+Term *action_log_end (TermList terms){
+
+  Term *t_file_name, *t_file_nb, *res;
+  PString s_file_name;
+  int file_nb;
+  int ret_close;
+  
+  res       = MAKE_OBJECT(Term);
+  res->type = TT_ATOM;
+  res->u.id = nil_sym;
+
+  if(f_log_init==0)
+    init_log_array();
+  
+  t_file_nb  =  (Term *)sl_get_slist_head(terms);
+  if (t_file_nb->type != INTEGER)
+    report_fatal_external_error(oprs_strerror(PE_EXPECTED_EXPRESSION_TERM_TYPE));
+  file_nb = t_file_nb->u.intval;
+  
+  if (f_log_a[file_nb]!=NULL){
+    ret_close = fclose(f_log_a[file_nb]);
+    f_log_a[file_nb] = NULL;
+    if (ret_close)
+      res->u.id = nil_sym;
+    else
+      res->u.id = lisp_t_sym;
+  }
+  else
+    res->u.id = lisp_t_sym;
+  
+  return res;
+}
+
+Term *action_log_printf(TermList terms)
+/* Print a list term. */
+{
+  Term *t,*nb_term,*res;
+  int  file_nb;
+  PString fmt_str, fmt_str2;
+  Term *term;
+  Expression *tc;
+  PBoolean save_pb;
+  
+  if(f_log_init==0)
+    report_fatal_external_error(LG_STR("Log files Array not initialized.",
+				       "Les fichiers de Log (Vecteurs) n'ont pas etait initialisés."));
+  
+  res = MAKE_OBJECT(Term);
+  res->type = TT_ATOM;
+  res->u.id = nil_sym;
+  
+
+  t = (Term *)sl_get_slist_head(terms);
+  if (t->type != EXPRESSION)
+    report_fatal_external_error(oprs_strerror(PE_EXPECTED_EXPRESSION_TERM_TYPE));
+  
+  
+  nb_term = (Term *)sl_get_slist_next(terms,t); 
+  if (nb_term->type != INTEGER)
+    report_fatal_external_error(oprs_strerror(PE_EXPECTED_EXPRESSION_TERM_TYPE));
+  
+  file_nb = nb_term->u.intval;
+  if((file_nb >= MAX_LOG_FILE)||
+     (file_nb < 0))
+    report_fatal_external_error(LG_STR("Incorrect file number.",
+				       "Le numero de fichier est incorrect."));
+  if(f_log_a[file_nb] == NULL)
+    report_fatal_external_error(LG_STR("This log has not been initialized.",
+				       "Ce fichier n'a pas été initializé correctement."));
+
+  tc = t->u.expr;
+  if (strcmp(tc->pfr->name,"FORMAT") != 0)
+    report_fatal_external_error(LG_STR("Expecting a keyword FORMAT in action_printf.",
+				       "Attendait un mot clef FORMAT dans la fonction action_printf."));
+  
+  terms = (tc->terms);
+  
+  term = find_binding((Term *)sl_get_slist_next(terms, NULL));
+  if (term->type != STRING)
+    report_fatal_external_error(oprs_strerror(PE_EXPECTED_STRING_TERM_TYPE));
+  
+  fmt_str = term->u.string;
+  
+  
+  for (fmt_str2 = fmt_str; *fmt_str2 ; fmt_str2++) {
+    if (*fmt_str2 != '%') {
+      fputc (*fmt_str2 ,f_log_a[file_nb]);
+    } else {
+      switch (*++fmt_str2) {
+      case 'g':
+      case 'd':
+	       case 'f':
+      case 's':
+	if ((term = (Term *)sl_get_slist_next(terms, term)) == 0)
+	  report_fatal_external_error(LG_STR("Directive and no term left to print in action_printf.",
+					     "Des directives subsistent mais plus de termes à imprimer dans la fonction action_printf."));
+	save_pb = print_backslash;
+	print_backslash = FALSE;
+	fprint_term(f_log_a[file_nb],find_binding(term));
+	print_backslash = save_pb;
+	break;
+      case '%':
+	fputc ('%' ,f_log_a[file_nb]);
+	break;
+      default:
+	fprintf(stderr,LG_STR("Unknown directive %%%c in action_printf.\n",
+			      "Directive %%%c inconnue dans la fonction action_printf.\n"), *fmt_str2);
+	break;
+      }
+    }
+  }
+  
+  if ((term = (Term *)sl_get_slist_next(terms, term)) != 0)
+    report_recoverable_external_error(LG_STR("term(s) left to print in action_printf.",
+					     "Des term(s) restent à imprimer dans la fonction action_printf."));
+  
+  fflush(f_log_a[file_nb]);
+  
+  res->u.id = lisp_t_sym;
+  
+  return res;
+}
+
+
+
 Term *evaluate_term_action(Action *ac, char *ac_name, TermList tl)
 /* This is the main function to evaluate a composed term with an evaluable function */
 {
@@ -1461,6 +1631,10 @@ void declare_action(void)
 			     get_int_array_ef, 2);
      make_and_declare_action("GET-FLOAT-ARRAY",
 			     get_float_array_ef, 2);
+
+     make_and_declare_action("LOG-INIT"  ,action_log_init    , 2);
+     make_and_declare_action("LOG-END"   ,action_log_end     , 1);
+     make_and_declare_action("LOG-PRINTF",action_log_printf  , 2);
 
      make_and_declare_action("PRINTF-WINDOW",action_printf_window, 2);
 

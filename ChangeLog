@@ -1,3 +1,13 @@
+2007-06-22  Maxime Ransan  <mransan@laas.fr>
+
+	* action.c: add 3 functions to enable openprs to write in multiple
+	files. Those functions were originally meant to enable several lof
+	files for an openprs application. (functions are: action_log_init
+	, action_log_printf , action_log_end).
+
+	* new_default.opf: add the corresponding action OPs to interface
+	with the functions listed above.
+
 2006-08-30  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* ev-function.c : LONG_LONG are now properly supported thru all
