@@ -40,6 +40,11 @@ ROBOT_PROG_MKDEP
 
 dnl ------- check for bison (not yack) and flex --------------
 AC_PATH_PROG(BISON, bison, no, $prefix/bin:$exec_prefix/bin:$PATH)
+if test "x$BISON" = xno; then
+AC_PATH_PROG(BISON_OLD, bison-1.35, no, $prefix/bin:$exec_prefix/bin:$PATH)
+BISON=$BISON_OLD
+fi
+
 AC_PATH_PROG(FLEX, flex, no, $prefix/bin:$exec_prefix/bin:$PATH)
 
 # Checks for libraries.
