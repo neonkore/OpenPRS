@@ -6,7 +6,7 @@
  */
 
 /*
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2006 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -208,7 +208,7 @@ int open_file_for_yyparse(char * path)
 
 void yy_delete_buffer_no_arg(void)
 {
-	  yy_delete_buffer(YY_CURRENT_BUFFER);
+	  oprs_yy_delete_buffer(YY_CURRENT_BUFFER);
 }
 
 void close_file_for_yyparse(void)

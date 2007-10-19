@@ -1,0 +1,10 @@
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include/openprs
+
+Name: openprs
+Description: Open PRS
+Version: 1.0
+Libs: -L${libdir} -lOPList -lpu
+Cflags: -I${includedir}

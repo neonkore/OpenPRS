@@ -1,0 +1,10 @@
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include/openprs
+
+Name: mp-openprs
+Description: Message Passer of Open PRS
+Version: 1.0
+Libs: -L${libdir} -lMP 
+Cflags: -I${includedir}

@@ -3,7 +3,7 @@
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2004 Francois Felix Ingrand.
+ * Copyright (c) 1991-2006 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,25 +37,8 @@
  * the lines in the string or in the files.
  */
 
-#if 0
 #define YY_INPUT(buf,result,max_size) \
-	if ( yy_current_buffer->yy_is_interactive ) \
-		{ \
-		int c = '*', n; \
-		for ( n = 0; n < max_size && \
-			     (c = getc( yyin )) != EOF; ++n ) \
-			buf[n] = (char) c; \
-		if ( c == EOF && ferror( yyin ) ) \
-			YY_FATAL_ERROR( "input in flex scanner failed" ); \
-		result = n; \
-		} \
-	else if ( ((result = fread( buf, 1, max_size, yyin )) == 0) \
-		  && (parse_source == PS_FILE) && ferror( yyin ) ) \
-		YY_FATAL_ERROR( "input in flex scanner failed" );
-#endif
-
-#define YY_INPUT(buf,result,max_size) \
-	if ( yy_current_buffer->yy_is_interactive ) \
+	if ( YY_CURRENT_BUFFER->yy_is_interactive ) \
 		{ \
 		int c = '*', n; \
 		for ( n = 0; n < max_size && \

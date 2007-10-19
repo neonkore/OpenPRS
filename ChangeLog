@@ -1,3 +1,10 @@
+2007-10-17  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* lex-parser-def.l (YY_INPUT):
+	yy_current_buffer->yy_is_interactive is replaced with
+	YY_CURRENT_BUFFER->yy_is_interactive to please flex >2.5.4
+	removed #if 0 code...
+
 2007-06-22  Maxime Ransan  <mransan@laas.fr>
 
 	* action.c: add 3 functions to enable openprs to write in multiple
