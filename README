@@ -73,8 +73,8 @@ compile it:
   PDF). My experience is that it works fine with teTeX 2.0... but may fail
   with older version of TeX
 - a PDF reader if you want to read the documentation.
-- autoconf and autoheader (both >=2.53) (not required if you stick with the
-  distributed configure)
+- lex/yacc/bison tools (the name of lex could be different depending on your linux distri, for example, flex in Mandriva)
+
 
 
 SUPPORTED PLATFORMS
