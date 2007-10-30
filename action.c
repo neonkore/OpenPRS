@@ -97,6 +97,8 @@ static const char* const rcsid = "$Id$";
 
 #include "pu-parse-tl_f.h"
 
+
+
 /*********Log function and variables*************/
 #define MAX_LOG_FILE 10
 FILE *f_log_a[MAX_LOG_FILE];
@@ -264,8 +266,6 @@ Term *action_log_printf(TermList terms)
   
   return res;
 }
-
-
 
 Term *evaluate_term_action(Action *ac, char *ac_name, TermList tl)
 /* This is the main function to evaluate a composed term with an evaluable function */

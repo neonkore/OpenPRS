@@ -10,7 +10,6 @@
 (2 
 (
 )
-
 (defop |Print-Log-End|
   :invocation (! (LOG-END $X))
   :action (*=* $RES (LOG-END $X))
