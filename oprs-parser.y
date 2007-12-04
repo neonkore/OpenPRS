@@ -351,15 +351,15 @@ command:
 	| LIST_TK EVALUABLE_TK FUNCTION_TK 	{list_ef();}
 	| LIST_TK OP_PREDICATE_TK		{list_op_predicate();}
 	| LIST_TK EVALUABLE_TK PREDICATE_TK	{list_ep();}
-	| LIST_TK FUNCTION_TK       		{list_pred_func();}
+	| LIST_TK FUNCTION_TK       		{list_function();}
 	| LIST_TK PREDICATE_TK       		{list_predicate();}
 	| LIST_TK AC_TK       			{list_ac();}
-	| LIST_TK ALL_TK       			{list_pred_func();list_cwp(); 
+	| LIST_TK ALL_TK       			{list_predicate();list_cwp(); 
 						 list_ff(); 
 						 list_be(); 
 						 list_op_predicate(); 
 						 list_ep(); 
-						 list_pred_func(); list_ef(); 
+						 list_function(); list_ef(); 
 						 list_ac();}
 	| TRACE_TK GRAPHIC_TK OP_TK  		{yy_begin_0();} 
 		 op_name			{yy_begin_COMMAND();}
