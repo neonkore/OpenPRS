@@ -182,7 +182,7 @@ void print_tib(Thread_Intention_Block *tib)
 
 void fprint_intention(FILE *f,Intention *in)
 {
-     if (in->id != NULL)
+     if (in && in->id)
 	  fprintf(f,LG_STR("<Intention %#x (%s)>",
 			   "<Intention %#x (%s)>"), (unsigned int)in, in->id);
      else

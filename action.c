@@ -136,6 +136,7 @@ Term *action_log_init(TermList terms){
     report_fatal_external_error(oprs_strerror(PE_EXPECTED_EXPRESSION_TERM_TYPE));
   file_nb = t_file_nb->u.intval;
   
+  /* create the file, if exists, clean content */
   f_log_a[file_nb] = fopen(s_file_name, "w");
   
   if (f_log_a[file_nb])
@@ -1632,6 +1633,7 @@ void declare_action(void)
      make_and_declare_action("GET-FLOAT-ARRAY",
 			     get_float_array_ef, 2);
 
+	  /* some log operations */
      make_and_declare_action("LOG-INIT"  ,action_log_init    , 2);
      make_and_declare_action("LOG-END"   ,action_log_end     , 1);
      make_and_declare_action("LOG-PRINTF",action_log_printf  , 2);
