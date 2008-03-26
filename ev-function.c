@@ -3182,4 +3182,6 @@ void declare_ev_funct(void)
      make_and_declare_eval_funct("FIND-APPLICABLE-OPS-FOR-GOAL", find_applicable_ops_for_goal_ef, 1);
 
      declare_user_eval_funct();
+     declare_shary_user_eval_funct();
+
 }

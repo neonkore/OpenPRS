@@ -1608,6 +1608,8 @@ Term *intend_aop_for_goal_ac(TermList terms)
      return res;
 }
 
+
+
 void declare_action(void)
 {
      make_and_declare_action("GET-CURRENT-INTENTION",

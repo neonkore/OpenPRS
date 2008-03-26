@@ -44,7 +44,7 @@ VPATH=		.:@srcdir@
 #
 
 # All the C sources
-C_SRC = action.c activate.c database.c ev-function.c ev-predicate.c \
+C_SRC = action.c activate.c database.c ev-function.c shary-user-ev-function.c ev-predicate.c \
 	fact-goal.c help.c int-graph.c intend.c intention.c op-compiler.c op-dump-load.c \
 	op-instance.c op-structure.c op-x-opaque.c ope-bboard.c ope-edit.c \
 	ope-external.c ope-filesel.c ope-graphic.c ope-op-opf.c ope-main.c ope-menu.c \
@@ -65,7 +65,7 @@ C_SRC = action.c activate.c database.c ev-function.c ev-predicate.c \
 
 # All the .h include files
 INC = action.h activate.h config.h constant-pub.h constant.h database.h \
-	ev-function.h ev-predicate.h fact-goal.h int-graph.h \
+	ev-function.h shary-user-ev-function.h ev-predicate.h fact-goal.h int-graph.h \
 	intend.h intention.h op-compiler.h op-instance.h op-structure.h \
 	ope-global.h ope-graphic.h lisp-list.h macro-pub.h macro.h mp.h \
 	mp-pub.h mp-register.h opaque-ext.h opaque-pub.h opaque.h oprs-sprint-pub.h \
@@ -268,7 +268,7 @@ TEXT_KERNEL_LIB = libTKernel.a
 
 GRAPHIC_KERNEL_LIB = libGKernel.a
 
-BOTH_KERNEL_LIB_OBJ = action.o activate.o ev-function.o intend.o intention.o \
+BOTH_KERNEL_LIB_OBJ = action.o activate.o ev-function.o shary-user-ev-function.o intend.o intention.o \
 	int-graph.o op-instance.o oprs-init.o soak.o oprs-parser.tab.o \
 	oprs-parser.lex.o top-lev.o
 
