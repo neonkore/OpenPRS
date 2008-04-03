@@ -1,3 +1,7 @@
+2008-04-03  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* ev-function.c (find_intention_id_ef): now return NIL if nothing found.
+
 2007-12-04  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* oprs-parser.y: list_functions, not list_pred_func.

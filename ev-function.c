@@ -2306,11 +2306,12 @@ Term *find_intention_id_ef(TermList tl)
      if (t1->type != TT_ATOM)
 	  report_fatal_external_error(oprs_strerror(PE_EXPECTED_ATOM_TERM_TYPE));
      
-     t_res->type = TT_INTENTION;
-     t_res->u.in = NULL;
+     t_res->type = TT_ATOM;
+     t_res->u.in = nil_sym;
      
      sl_loop_through_slist(il, in, Intention *) {
 	  if (in->id == t1->u.id) {
+	       t_res->type = TT_INTENTION;
 	       t_res->u.in = dup_intention(in);
 	       break;
 	  }
