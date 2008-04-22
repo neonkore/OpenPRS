@@ -106,11 +106,11 @@ Term *compute_human_theta_toward_robot_eval_func(TermList terms)
   }
   
   double robot_x = *robotx->u.doubleptr;
-  double robot_y = *roboty->u.doubleptr;
+  double robot_y = -*roboty->u.doubleptr;
   double human_x = *humanx->u.doubleptr;
-  double human_y = *humany->u.doubleptr;
+  double human_y = -*humany->u.doubleptr;
 
-  double human_th = compute_theta(robot_x,robot_y,human_x,human_y);
+  double human_th = -compute_theta(robot_x,robot_y,human_x,human_y);
 
   res=build_float(human_th);
   
