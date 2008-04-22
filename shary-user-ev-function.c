@@ -87,9 +87,77 @@ Term *distance_eval_func(TermList terms)
   return res;
 }
 
+Term *compute_human_theta_toward_robot_eval_func(TermList terms)
+{
+
+  Term *pos1x, *pos1y, *pos2x, *pos2y, *res;  
+  
+  robotx = (Term *)sl_get_slist_pos(terms, 1);
+  roboty = (Term *)sl_get_slist_pos(terms, 2);
+  humanx = (Term *)sl_get_slist_pos(terms, 3);
+  humany = (Term *)sl_get_slist_pos(terms, 4);
+  
+  if ((pos1x->type != TT_FLOAT) || (pos1y->type != TT_FLOAT) || (pos2x->type != TT_FLOAT) || (pos2y->type != TT_FLOAT))  {
+	 fprintf(stderr,"Expecting a  position \n");
+	 return res;
+  }
+  
+  double robot_x = *robotx->u.doubleptr;
+  double robot_y = *roboty->u.doubleptr;
+  double human_x = *humanx->u.doubleptr;
+  double human_y = *humany->u.doubleptr;
+
+  float human_th=(float)compute_theta(robot_x,robot_y,human_x,human_y);
+
+  res=build_float(human_th);
+  
+  return res;
+}
+
+double compute_theta(double robot_x, double robot_y, double human_x, double human_y) {
+
+  ;;
+  double  coefDir = (robot_y-human_y)/(robot_x-human_x);
+
+  double  angle = atan(coefDir);
+
+  double result;
+
+  if ((human_x == robot_x) && (human_y != robot_y)) {
+	 if (human_y > robot_y) {
+		result=-1.57;
+	 } else {
+		result=1.57;
+	 }
+  } else if ((human_y == robot_y) && (human_x != robot_x)) {
+	 if (human_x > robot_x) {
+		result=3.14;
+	 } else {
+		result=0.0;
+	 }	 
+  } else if ((human_x == robot_x) && (human_y == robot_y)) {
+	 result=0.0;
+  } if ((human_x > robot_x) && (human_y > robot_y)) {
+	 result=-3.14+angle;
+  } else if ((human_x < robot_x) && (human_y > robot_y)) {
+	 result=angle;
+  } else if ((human_x > robot_x) && (human_y < robot_y)) {
+	 result=3.14+angle;
+  } else if ((human_x < robot_x) && (human_y < robot_y)) {
+	 result=angle;
+  } 
+
+  result=-result;
+
+  return result;
+}
+
 void declare_shary_user_eval_funct()
 {
      make_and_declare_eval_funct("DISTANCE",distance_eval_func, 4);
+
+     make_and_declare_eval_funct("HUMAN-THETA-TOWARD-ROBOT",compute_human_theta_toward_robot_eval_func, 4);
+
 
      return;
 }
