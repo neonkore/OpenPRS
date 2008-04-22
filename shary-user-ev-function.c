@@ -87,18 +87,21 @@ Term *distance_eval_func(TermList terms)
   return res;
 }
 
+double compute_theta(double robot_x, double robot_y, double human_x, double human_y);
+
 Term *compute_human_theta_toward_robot_eval_func(TermList terms)
 {
 
-  Term *pos1x, *pos1y, *pos2x, *pos2y, *res;  
+  Term *robotx, *roboty, *humanx, *humany, *res;  
   
   robotx = (Term *)sl_get_slist_pos(terms, 1);
   roboty = (Term *)sl_get_slist_pos(terms, 2);
   humanx = (Term *)sl_get_slist_pos(terms, 3);
   humany = (Term *)sl_get_slist_pos(terms, 4);
   
-  if ((pos1x->type != TT_FLOAT) || (pos1y->type != TT_FLOAT) || (pos2x->type != TT_FLOAT) || (pos2y->type != TT_FLOAT))  {
+  if ((robotx->type != TT_FLOAT) || (roboty->type != TT_FLOAT) || (humanx->type != TT_FLOAT) || (humany->type != TT_FLOAT))  {
 	 fprintf(stderr,"Expecting a  position \n");
+	 res=build_float(0.0);
 	 return res;
   }
   
@@ -107,21 +110,20 @@ Term *compute_human_theta_toward_robot_eval_func(TermList terms)
   double human_x = *humanx->u.doubleptr;
   double human_y = *humany->u.doubleptr;
 
-  float human_th=(float)compute_theta(robot_x,robot_y,human_x,human_y);
+  double human_th = compute_theta(robot_x,robot_y,human_x,human_y);
 
   res=build_float(human_th);
   
   return res;
 }
 
-double compute_theta(double robot_x, double robot_y, double human_x, double human_y) {
-
-  ;;
-  double  coefDir = (robot_y-human_y)/(robot_x-human_x);
-
-  double  angle = atan(coefDir);
+double compute_theta(double robot_x, double robot_y, double human_x, double human_y) 
+{
 
   double result;
+  ;;
+  double  coefDir = (robot_y-human_y)/(robot_x-human_x);
+  double  angle = atan(coefDir);
 
   if ((human_x == robot_x) && (human_y != robot_y)) {
 	 if (human_y > robot_y) {
