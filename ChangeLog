@@ -1,3 +1,9 @@
+2009-03-30  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* ope-graphic.c (draw_node): Replaced XmStringDrawImage with
+	XmStringDraw and it seems to work... this is rather puzzling... I
+	will try to figure out why another time...
+
 2008-04-03  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* ev-function.c (find_intention_id_ef): now return NIL if nothing found.

@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * shashPack.c -- 
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2005 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,7 +45,7 @@ static const char* const rcsid = "$Id$";
 #include "macro-pub.h"
 #include "constant-pub.h"
 
-Shash *_sh_make_hashtable(int size, SL_PFI	hashfunc, SL_PFI matchfunc)
+Shash *_sh_make_hashtable(int size, SL_PFI hashfunc, SL_PFC matchfunc)
 {
      int i;
      Shash *res;
@@ -107,7 +107,7 @@ void *sh_get_from_hashtable(Shash *table, void *ident)
      index = (* table -> hashfunc)(ident);
 
      if ((list = table->lists[index])) {
-	  sl_loop_through_slist(list, ptr, void *)
+	  sl_loop_through_slist(list, ptr, void *) 
 	       if ((* table->matchfunc)(ident, ptr)) {
 		    sl_deprotect_loop(list);	  
 		    return ptr;

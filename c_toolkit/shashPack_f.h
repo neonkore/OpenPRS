@@ -3,7 +3,7 @@
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2005 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,10 +39,10 @@
  */
 
 #define	sh_make_hashtable(size, hashfunc, matchfunc)	\
-	_sh_make_hashtable(size, (SL_PFI) (hashfunc), (SL_PFI) (matchfunc))
+	_sh_make_hashtable(size, hashfunc, matchfunc)
 
 #define sh_for_all_hashtable(table, node, func)		\
-	_sh_for_all_hashtable(table, node, (SL_PFI) (func))
+	_sh_for_all_hashtable(table, node, func)
 
 #define sh_for_all_2hashtable(table, node, node2, func)	\
 	_sh_for_all_2hashtable(table, node, node2, (SL_PFI) (func))
@@ -54,7 +54,7 @@
 
 #define sh_size_of_hashtable(table)	((table)->number)
 
-Shash *_sh_make_hashtable(int size, SL_PFI hashfunc, SL_PFI matchfunc);
+Shash *_sh_make_hashtable(int size, SL_PFI hashfunc, SL_PFC matchfunc);
 
 void sh_free_hashtable(Shash *hash);
 void sh_flush_hashtable(Shash *hash);

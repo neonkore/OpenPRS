@@ -806,7 +806,7 @@ void draw_node(Widget w, Draw_Data *dd, int x, int y, int wi, int h, Gnode *n, P
 		    xs + 1, ys + 1,
 		    n->swidth + 2, n->sheight + 2);
      
-     XmStringDrawImage(dpy, win, dd->fontlist, n->xmstring, 
+     XmStringDraw(dpy, win, dd->fontlist, n->xmstring, 
 		  (sel ? dd->sgc : dd->gc),
 		  xs + 4, ys + 3, n->swidth - 2,
 		  XmALIGNMENT_BEGINNING,
@@ -842,7 +842,7 @@ void draw_text(Widget w, Draw_Data *dd, int x, int y, int width, Gtext *et,PBool
      Window win = dd->window;
 
      sl_loop_through_slist(et->lgt_string, gt_str, Gtext_String *) { 
-	  XmStringDrawImage(dpy, win, dd->fontlist, gt_str->xmstring, 
+	  XmStringDraw(dpy, win, dd->fontlist, gt_str->xmstring, 
 		       (sel ? dd->sgc : dd->gc),
 		       x - dd->left + gt_str->off_x,
 		       y - dd->top + gt_str->off_y,
@@ -870,7 +870,7 @@ void draw_edge_text(Widget w, Draw_Data *dd, int x, int y, int width, Gedge_text
      Window win = dd->window;
 
      sl_loop_through_slist(et->lgt_log_string, gt_str, Gtext_String *) { 
-	  XmStringDrawImage(dpy, win, dd->fontlist, gt_str->xmstring, 
+	  XmStringDraw(dpy, win, dd->fontlist, gt_str->xmstring, 
 			    (selected ? dd->sgc : dd->gc),
 			    x - dd->left + gt_str->off_x,
 			    y - dd->top + gt_str->off_y,

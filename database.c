@@ -242,7 +242,7 @@ PBoolean key_cmp(Key *k1, Key *k2) /* OPTIMIZE if possible */
 PBoolean db_match_func(Key *key, Key_Elt *elt)
 /* db_match_func - That's the database hash table matching function. */
 {
-     return (key_cmp(key, elt->key));
+     return key_cmp(key, elt->key);
 }
 
 

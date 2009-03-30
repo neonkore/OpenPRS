@@ -3,7 +3,7 @@
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2005 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -47,9 +47,9 @@ void *sl_get_slist_tail(Slist *slist); /* Return only. */
 void *sl_get_slist_next(Slist *slist, void *node); 
 void *sl_get_slist_pos(Slist *slist, int pos); 
 
-void *_sl_search_slist(Slist *slist, void *node, SL_PFI func);
+void *_sl_search_slist(Slist *slist, void *node, SL_PFC func);
 
-Slist *_sl_sort_slist_func(Slist *slist, SL_PFI func);
+Slist *_sl_sort_slist_func(Slist *slist, SL_PFC func);
 Slist *_sl_copy_slist_func(Slist *slist, SL_PFPV func);
 Slist *_sl_copy_slist_func1(Slist *slist, void *node, SL_PFPV func);
 Slist *_sl_copy_slist_func2(Slist *slist, void *node, void *node2, SL_PFPV func);
@@ -59,7 +59,7 @@ void compile_slist(Slist *slist);
 Slist_Type sl_slist_type(Slist *slist);
 
 /* These define are just here to cast the func... */
-#define sl_search_slist(slist,node,func) _sl_search_slist(slist,node,(SL_PFI)(func))
+#define sl_search_slist(slist,node,func) _sl_search_slist(slist,node,func)
 
 #define sl_loop_through_dy_slist(slist,nnode,_type) \
 for(slist->current = slist->first; \
@@ -140,15 +140,15 @@ for(slist->current.st = slist->first.st , (slist->type==SLT_DOUBLE?slist->dynami
 
 #endif
 
-#define sl_delete_slist_func(slist,node,func) _sl_delete_slist_func(slist,node,(SL_PFI)(func))
-#define sl_sort_slist_func(slist,func) _sl_sort_slist_func(slist,(SL_PFI)(func))
+#define sl_delete_slist_func(slist,node,func) _sl_delete_slist_func(slist,node,func)
+#define sl_sort_slist_func(slist,func) _sl_sort_slist_func(slist,func)
 #define sl_copy_slist_func(slist,func) _sl_copy_slist_func(slist,(SL_PFPV)(func))
 #define sl_copy_slist_func1(slist,node1,func) _sl_copy_slist_func1(slist,node1,(SL_PFPV)(func))
 #define sl_copy_slist_func2(slist,node1,node2,func) _sl_copy_slist_func2(slist,node1,node2,(SL_PFPV)(func))
 Slist *sl_copy_slist(Slist *_slist);
 void *sl_replace_slist_node(Slist *_slist, void *_oldnode, void *_newnode);
 void *sl_replace_slist_func(Slist *_slist, SL_PFPV _func);
-void *_sl_delete_slist_func(Slist *_slist, void *_node,SL_PFI _func);
+void *_sl_delete_slist_func(Slist *_slist, void *_node,SL_PFC _func);
 void *sl_delete_slist_node(Slist *_slist, void *_node);
 void *sl_add_to_head(Slist *_slist, void *_snode);
 void **sl_add_to_tail_ret_ref(Slist *slist, void *node);
@@ -158,7 +158,7 @@ void *sl_get_from_head(Slist *_slist);
 void *sl_get_from_tail(Slist *_slist);
 void *sl_insert_slist_pos(Slist *_slist, void *_snode, int _pos);
 Slist *sl_concat_slist(Slist *_slist1, Slist *_slist2);
-Slist *_sl_sort_slist_func(Slist *_slist, SL_PFI _func);
+Slist *_sl_sort_slist_func(Slist *_slist, SL_PFC _func);
 Slist *sl_list_difference(Slist *l1, Slist *l2);
 
 void compile_dynamic_slist(void);

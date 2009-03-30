@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * ev-function.c -- Deal with evaluable functions in OPRS.
  * 
- * Copyright (c) 1991-2006 Francois Felix Ingrand.
+ * Copyright (c) 1991-2005 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -2307,7 +2307,7 @@ Term *find_intention_id_ef(TermList tl)
 	  report_fatal_external_error(oprs_strerror(PE_EXPECTED_ATOM_TERM_TYPE));
      
      t_res->type = TT_ATOM;
-     t_res->u.in = nil_sym;
+     t_res->u.id = nil_sym;
      
      sl_loop_through_slist(il, in, Intention *) {
 	  if (in->id == t1->u.id) {

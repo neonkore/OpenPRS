@@ -1,3 +1,12 @@
+2009-03-30  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* shashPack_f.h: Well.. not that simple... it should return 1 as
+	an int.
+
+
+	* shashPack.h: May be a problem of SL_PFI vs. SL_PFC
+	Indeed, the matching function return a char... not an int.
+
 2003-09-22  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* README: creation...

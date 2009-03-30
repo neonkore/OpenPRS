@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * op-structure.c -- Functions used for and with op-structure.
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2005 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -331,12 +331,12 @@ Node *make_cp(PString name, PBoolean graphic)
 }
 
 #ifndef NO_GRAPHIX
-int equal_node_name (Symbol name, Node *n) 
+PBoolean equal_node_name (Symbol name, Node *n) 
 {
      return (name == n->name);
 }
 #else
-int equal_node_name_name_list (Symbol name, Node_Name *n) 
+PBoolean equal_node_name_name_list (Symbol name, Node_Name *n) 
 {
      return (name == n->name);
 }

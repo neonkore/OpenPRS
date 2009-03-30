@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * slistPack.c -- 
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2005 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -610,7 +610,7 @@ void *sl_delete_slist_node(Slist *slist, void *node)
 	  return NULL;
 }
 
-void *_sl_delete_slist_func(Slist *slist, void *node, SL_PFI func)
+void *_sl_delete_slist_func(Slist *slist, void *node, SL_PFC func)
 {
 /* _sl_delete_dy_slist_func  and  sl_delete_dy_slist_node are almost the same... so if you find
  * a bug here, most likely, the same is in the other.
@@ -964,7 +964,7 @@ Slist *sl_list_difference(Slist *l1, Slist *l2)
      return res;
 }
 
-void *_sl_search_slist(Slist *slist, void *node, SL_PFI func)
+void *_sl_search_slist(Slist *slist, void *node, SL_PFC func)
 {
      Snode *snode;
      void **nnode;
@@ -997,7 +997,7 @@ void *_sl_search_slist(Slist *slist, void *node, SL_PFI func)
 
 /* This version should be more efficient... as it swap the node in place. */
 
-Slist *_sl_sort_slist_func(Slist *slist, SL_PFI	func)
+Slist *_sl_sort_slist_func(Slist *slist, SL_PFC	func)
 {
      Snode *ptr1;
      Snode *ptr2;

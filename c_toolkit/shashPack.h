@@ -3,7 +3,7 @@
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2005 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,7 +43,7 @@ struct simple_hash{
      int size;		/* number of sub-lists */
      int number;		/* current count of elements */
      SL_PFI hashfunc;	/* convert name to hash-index */
-     SL_PFI matchfunc;	/* match name to hashed node */
+     SL_PFC matchfunc;	/* match name to hashed node */
      Slist **lists;
 };
 
