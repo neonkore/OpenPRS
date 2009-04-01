@@ -5,7 +5,7 @@
 
 .DEFAULT:
 
-VERSION = 1.0b2
+VERSION = 1.0b3
 
 OPENPRS-FTP-DIR = dist-dir
 
@@ -15,7 +15,9 @@ DOC-PDF = $(OPENPRS-FTP-DIR)/openprs-$(VERSION)-doc.pdf
 
 OPENPRS-REST = $(OPENPRS-FTP-DIR)/openprs-$(VERSION)-rest.tgz
 
-OPENPRS-SRC = $(OPENPRS-FTP-DIR)/openprs-$(VERSION)-src.tgz
+OPENPRS-DIR = openprs-$(VERSION)
+
+OPENPRS-SRC = $(OPENPRS-FTP-DIR)/openprs-$(VERSION).tar.gz
 
 README = $(OPENPRS-FTP-DIR)/README
 LICENSE = $(OPENPRS-FTP-DIR)/LICENSE
@@ -30,19 +32,24 @@ BINARIES = $(OPENPRS-FTP-DIR)/openprs-$(VERSION)-sparc-solaris.tgz \
 all: $(DOC-PDF) $(OPENPRS-REST) $(OPENPRS-SRC) $(README) $(INSTALL) \
 	$(LICENSE) $(CHANGELOG) $(BINARIES)
 
+tarball: $(OPENPRS-SRC)
+
+dist-rbpkg: $(OPENPRS-SRC)
+	scp $(OPENPRS-SRC) softs.laas.fr:/ftp/pub/openrobots/openprs/
+
 dist: all
 	scp $(DOC-PDF) $(OPENPRS-REST) $(OPENPRS-SRC) $(README) \
 		$(INSTALL) $(LICENSE) $(CHANGELOG) $(BINARIES) \
-		rust:/var/ftp/pub/openrobots/openprs/
+		 softs.laas.fr:/ftp/pub/openrobots/openprs/
 
 $(DOC-PDF): doc/oprs.pdf
 	cp $^ $@
 
 $(OPENPRS-REST): app-defaults/* contrib/include/* contrib/src/* data/* include/* pub_src/* util/*
-	gnutar zcf $@ app-defaults contrib/include contrib/src data include pub_src util
+	tar zcf $@ app-defaults contrib/include contrib/src data include pub_src util
 
-$(OPENPRS-SRC): src/* src/*/*
-	gnutar zcf $@ src
+$(OPENPRS-SRC): $(OPENPRS-DIR)/* $(OPENPRS-DIR)/*/* $(OPENPRS-DIR)/*/*/*
+	tar zcf $@ $(OPENPRS-DIR)
 
 $(README): src/README
 	cp $^ $@
@@ -57,4 +64,4 @@ $(INSTALL): src/dist/INSTALL
 	cp $^ $@
 
 $(OPENPRS-FTP-DIR)/openprs-$(VERSION)-%.tgz: %/bin %/lib %/site.make contrib/%/lib
-	gnutar zchf $@ $^
+	tar zchf $@ $^
