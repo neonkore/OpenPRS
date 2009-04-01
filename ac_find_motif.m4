@@ -181,8 +181,8 @@ if test "$with_motif" != "no"; then
                 link_motif="-lXm $XPLIB"
                 MOTIF_LIBS="-lXm $XPLIB"
         else
-                link_motif="-L$motif_libraries -lXm $XPLIB"
-                MOTIF_LIBS="-L$motif_libraries -lXm $XPLIB"
+                link_motif="-Wl,-rpath,$motif_libraries -L$motif_libraries -lXm $XPLIB"
+                MOTIF_LIBS="-Wl,-rpath,$motif_libraries -L$motif_libraries -lXm $XPLIB"
         fi
         if test "$motif_includes" != ""; then
                 include_motif="-I$motif_includes"
