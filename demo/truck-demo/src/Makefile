@@ -3,7 +3,7 @@
 # 
 # $Id$
 #
-# Copyright (c) 1991-2003 Francois Felix Ingrand.
+# Copyright (c) 1991-2009 Francois Felix Ingrand.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
 #OPRS_INSTALLED_DIR = /opt/oprs/oprs-1.5
 
 #include $(OPRS_INSTALLED_DIR)/$(TARGET)/site.make
-include ../../../path.make
+#include ../../../path.make
 include ../../../site.make
 
 #
