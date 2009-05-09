@@ -1,8 +1,24 @@
+2009-05-09  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* oprs-type.c (debackslashify): Fixed a bug where I would report a
+	"fake newline" in a string, which would greatly confuse the
+	flex/bison parser about where errors are located.
+
+2009-05-08  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* yacc-exp.y: Try to be more explicit about where we have a badly
+	formed expression.
+
+
 2009-03-30  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* ope-graphic.c (draw_node): Replaced XmStringDrawImage with
 	XmStringDraw and it seems to work... this is rather puzzling... I
 	will try to figure out why another time...
+
+2008-07-01  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* Passage a git... not quite yet...
 
 2008-04-03  Francois Felix Ingrand  <felix@ingrand.net>
 

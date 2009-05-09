@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*-
  * oprs-type.c -- Fonction de construction et de print pour les types...
  *
- * Copyright (c) 1991-2005 Francois Felix Ingrand.
+ * Copyright (c) 1991-2009 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -998,7 +998,7 @@ PString make_string(char *string)
 }
 
 int debackslashify(char *string)
-{				/* return the number of new lines... */
+{				/* return the number of real new lines... */
      int i, j = 0; 
      int res = 0;
      char c;
@@ -1012,7 +1012,6 @@ int debackslashify(char *string)
 		    break;
 	       case 'n':
 		    c = '\n';
-		    res++;
 		    break;
 	       case 't':
 		    c = '\t';

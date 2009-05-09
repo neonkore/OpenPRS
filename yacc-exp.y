@@ -3,7 +3,7 @@
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2005 Francois Felix Ingrand.
+ * Copyright (c) 1991-2009 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -47,7 +47,9 @@ list_expr:
 	;
 
 expr:
-	OPENP_TK pred_func term_list CLOSEP_TK 	{$$=build_expr_pfr_terms($2,$3);}
+        OPENP_TK pred_func term_list CLOSEP_TK 	{$$=build_expr_pfr_terms($2,$3); 
+	                                         if (! $$) {warning(LG_STR("badly formed expression",
+									   "expression mal formée")); YYABORT;}}
 	|  OPENP_TK pred_func error CLOSEP_TK		{warning(LG_STR("badly formed expression",
 								"expression mal formée")); YYABORT;}
 	;

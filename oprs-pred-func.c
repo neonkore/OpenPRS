@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * oprs-pred.c -- 
  * 
- * Copyright (c) 1991-2005 Francois Felix Ingrand.
+ * Copyright (c) 1991-2009 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -200,6 +200,7 @@ Pred_Func_Rec *find_or_create_pred_func(Symbol pred_func_name)
 #ifdef VXWORKS
      take_or_create_sem(&pred_func_hash_sem);
 #endif     
+/*      fprintf(stderr,"pfr: %s\n", pred_func_name);  */
 
      if ((pred_func_rec = (Pred_Func_Rec *)sh_get_from_hashtable(pred_func_hash,pred_func_name)) == NULL) {
 	  if ((compiler_option[CHECK_PFR]) && check_pfr) 
