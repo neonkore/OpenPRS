@@ -3,7 +3,7 @@
 #
 # $Id$
 #
-# Copyright (c) 1991-2005 Francois Felix Ingrand.
+# Copyright (c) 1991-2009 Francois Felix Ingrand.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -636,8 +636,8 @@ truck-demo:
 	(cd demo/truck-demo/src ; $(MAKE))
 	(cd demo/truck-demo/oprs ; $(MAKE))
 
-cena-demo:
-	(cd demo/cena/src ; $(MAKE))
+#cena-demo:
+#	(cd demo/cena/src ; $(MAKE))
 
 local-clean:
 	/bin/rm -f core a.out gmon.out *.o $(OLD_FILES)
@@ -648,7 +648,6 @@ clean: local-clean
 	-(cd util ; $(MAKE) clean)
 	-(cd demo/truck-demo/oprs ; $(MAKE) clean)
 	-(cd demo/truck-demo/src ; $(MAKE) clean)
-	-(cd demo/cena/src ; $(MAKE) clean)
 	-(cd contrib/src ; $(MAKE) clean)
 	-(cd $(C_TOOLKIT_DIR) ; $(MAKE) clean)
 
@@ -664,7 +663,6 @@ very-clean: local-clean
 #	-(cd xinfo ; $(MAKE) very-clean)
 	-(cd demo/truck-demo/oprs ; $(MAKE) very-clean)
 	-(cd demo/truck-demo/src ; $(MAKE) very-clean)
-	-(cd demo/cena/src ; $(MAKE) very-clean)
 	-(cd contrib/src ; $(MAKE) very-clean)
 	-(cd $(C_TOOLKIT_DIR) ; $(MAKE) very-clean)
 
