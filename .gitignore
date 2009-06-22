@@ -1,0 +1,17 @@
+config-ac.h
+config.h
+config.log
+config.status
+kill-mp
+mp-oprs
+opc
+ope
+oprs
+oprs-cat
+oprs-server
+site.make
+stamp-h
+user-external.c
+user-external.h
+user-external_f.h
+xoprs
