@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*-
  * ope-main.c --
  *
- * Copyright (c) 1991-2005 Francois Felix Ingrand.
+ * Copyright (c) 1991-2009 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -344,7 +344,7 @@ void reset_dd(Draw_Data *dd)
 }
 
 struct _resrcs {
-     XmFontList fontList;		  /* font to use for bitmap labels */
+     XmRenderTable renderTable;		  /* font to s */
      int work_width, work_height;	  /* default bitmap size */
      String gxPrintCmd;
      String txtPrintCmd;
@@ -454,8 +454,8 @@ static XtResource resources[] = {
      XtOffsetOf(struct _resrcs, txtPrintCmd), XtRString, (String)DEFAULT_PRINT_COMMAND},
      {"gxPrintCommand", "GxPrintCommand", XtRString, sizeof(String),
      XtOffsetOf(struct _resrcs, gxPrintCmd), XtRString, (String)DEFAULT_PRINT_COMMAND},
-     {XmNfontList, XmCFontList, XmRFontList, sizeof(XmFontList),
-     XtOffsetOf(struct _resrcs, fontList), XmRImmediate, NULL},
+     {XmNrenderTable, XmCRenderTable, XmRRenderTable, sizeof(XmRenderTable),
+     XtOffsetOf(struct _resrcs, renderTable), XmRImmediate, NULL},
      {"printWidgetTree", "PrintWidgetTree", XtRBoolean, sizeof(Boolean),
      XtOffsetOf(struct _resrcs, printWidgetTree), XmRImmediate, (XtPointer)FALSE},
      {"printEnglishOperator", "PrintEnglishOperator", XtRBoolean, sizeof(Boolean),
@@ -724,8 +724,9 @@ int main(int argc, char **argv, char **envp)
      dd.og_align = NULL;
      dd.og_aligning = NULL;
      dd.font = XLoadQueryFont(XtDisplay(topLevel), WORK_FONT);
+     dd.rendertable =  Resrcs.renderTable;
 /*     dd.fontlist = XmFontListCreate(dd.font,"opeCanvas_Charset"); */
-     dd.fontlist = Resrcs.fontList;
+/*      dd.fontlist = Resrcs.fontList; */
      dd.expose_region = NULL;
      dd.just_compiling = FALSE;
 

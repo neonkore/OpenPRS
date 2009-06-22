@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * xoprs-main.c -- Top level file for the X/Motif interface for one OPRS.
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2009 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -244,7 +244,7 @@ XtAppContext app_context;
 Pixel globalBack, globalFore;
 
 struct _resrcs {
-     XmFontList fontList;		  /* font to use for bitmap labels */
+     XmRenderTable renderTable;		  /* font to use for bitmap labels */
      int work_width, work_height;	  /* default bitmap size */
      Boolean  printWidgetTree;
      Boolean  printEnglishOperator;
@@ -338,8 +338,8 @@ static XtResource resources[] = {
      {"edgeWidth", "EdgeWidth", XmRInt, sizeof(int), 
       XtOffsetOf(struct _resrcs, edge_width), XmRImmediate, (char *)EDGE_WIDTH},
 
-     {XmNfontList, XmCFontList, XmRFontList, sizeof(XmFontList),
-     XtOffsetOf(struct _resrcs, fontList), XmRImmediate, NULL},
+     {XmNrenderTable, XmCRenderTable, XmRRenderTable, sizeof(XmRenderTable),
+     XtOffsetOf(struct _resrcs, renderTable), XmRImmediate, NULL},
      {"printWidgetTree", "PrintWidgetTree", XtRBoolean, sizeof(Boolean),
      XtOffsetOf(struct _resrcs, printWidgetTree), XmRImmediate, (XtPointer)FALSE},
      {"printEnglishOperator", "PrintEnglishOperator", XtRBoolean, sizeof(Boolean),
@@ -639,7 +639,7 @@ int main(int argc, char **argv, char **envp)
      idd.ig = NULL;
      idd.expose_region = NULL;
      idd.font = XLoadQueryFont(XtDisplay(topLevel), WORK_FONT);
-     idd.fontlist = Resrcs.fontList;
+     idd.rendertable = Resrcs.renderTable;
      idd.reposition_all = TRUE;
 
      XtAddCallback(idd.canvas, XmNexposeCallback, (XtCallbackProc)idd_handle_exposures, &idd);
@@ -682,7 +682,7 @@ int main(int argc, char **argv, char **envp)
      dd.top = 0;
      dd.left = 0;
      dd.font = XLoadQueryFont(XtDisplay(topLevel), WORK_FONT);
-     dd.fontlist = Resrcs.fontList;
+     dd.rendertable = Resrcs.renderTable;
      dd.expose_region = NULL;
      dd.just_compiling = FALSE;
      dd.op = NULL;

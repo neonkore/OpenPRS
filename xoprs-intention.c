@@ -3,7 +3,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * xoprs-intention.c -- 
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2009 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -773,14 +773,14 @@ IOG *update_ginode_text(Int_Draw_Data *idd, IOG *iog)
 
      if ((total_size = strlen(inv_string) + nb_printed) < BUFSIZ) {
 	  strcat(text, inv_string);
-	  ginode->lgt_string = ope_string_to_lgt_string(idd->fontlist, text, "edge_cs", TT_TEXT_NONE,
+	  ginode->lgt_string = ope_string_to_lgt_string(idd->rendertable, text, "edge_cs", TT_TEXT_NONE,
 					       &iog->width, &iog->height);
 	  FREE(inv_string);
      } else {
 	  char *ns = (char *) MALLOC((total_size +1) * sizeof(char));
 
 	  sprintf(ns, "%s%s",text,inv_string);
-	  ginode->lgt_string = ope_string_to_lgt_string(idd->fontlist, ns, "edge_cs", TT_TEXT_NONE,
+	  ginode->lgt_string = ope_string_to_lgt_string(idd->rendertable, ns, "edge_cs", TT_TEXT_NONE,
 					       &iog->width, &iog->height);
 	  FREE(inv_string);
 	  FREE(ns);
@@ -941,7 +941,7 @@ void draw_ginode(Int_Draw_Data *idd, IOG *iog)
 		    wi, h);
 
      sl_loop_through_slist(iog->u.ginode->lgt_string, gt_str, Gtext_String *) { 
-	  XmStringDraw(dpy, win, idd->fontlist, gt_str->xmstring, idd->gc,
+	  XmStringDraw(dpy, win, idd->rendertable, gt_str->xmstring, idd->gc,
 			    x + gt_str->off_x +2,
 			    y + gt_str->off_y +2,
 			    wi - 2,

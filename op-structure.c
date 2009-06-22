@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * op-structure.c -- Functions used for and with op-structure.
  * 
- * Copyright (c) 1991-2005 Francois Felix Ingrand.
+ * Copyright (c) 1991-2009 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -795,7 +795,7 @@ OG *make_og_node(Draw_Data *dd, Op_Structure *op, Node *node, int x, int y)
      gnode->xmstring = XmStringCreate(stripped_name, "node_cs");
      FREE(stripped_name);
 
-     XmStringExtent(dd->fontlist,gnode->xmstring,&gnode->swidth, &gnode->sheight);
+     XmStringExtent(dd->rendertable,gnode->xmstring,&gnode->swidth, &gnode->sheight);
      gnode->swidth += 2;
      gnode->sheight += 2;
      og->width = gnode->swidth + 5;

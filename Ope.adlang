@@ -1,4 +1,4 @@
-! Copyright (c) 1991-2005 Francois Felix Ingrand.
+! Copyright (c) 1991-2009 Francois Felix Ingrand.
 ! All rights reserved.
 !
 ! Redistribution and use in source and binary forms, with or without
@@ -35,18 +35,31 @@
 ! Text titles are printed using the text_title_cs character set (INVOCATION:, CONTEXT:, etc)
 ! Texts are printed using the text_cs character set (the invocation part itself).
 !
-Ope.language:lang.fr:	fr
-Ope.language:lang.en:	en
-Ope.fontList: variable=variable_cs,\
-fixed=default_cs,\
--adobe-helvetica-bold-r-normal-*-24-*-*-*-*-*-iso8859-*=title_cs,\
-variable=text_title_cs,\
-fixed=text_cs,\
--adobe-helvetica-bold-r-normal-*-*-100-*-*-*-*-iso8859-*=node_cs,\
-fixed=edge_cs
+*.language:lang.fr:	fr
+*.language:lang.en:	en
+*.renderTable: variable_cs, default_cs, title_cs, text_title_cs, text_cs, node_cs, edge_cs, variable_cs, fixed_cs
+*.renderTable.variable_cs.fontName: variable
+*.renderTable.default_cs.fontName: fixed
+*.renderTable.title_cs.fontName: variable
+*.renderTable.text_title_cs.fontName: variable
+*.renderTable.text_cs.fontName: fixed
+*.renderTable.node_cs.fontName: variable
+*.renderTable.edge_cs.fontName: fixed
+*.renderTable.variable_cs.fontName: variable
+*.renderTable.fixed_cs.fontName: fixed
+*.renderTable.fontName: fixed
+*.renderTable.fontType: FONT_IS_FONT
+
+!Ope.fontList: variable=variable_cs,\
+!fixed=default_cs,\
+!variable=title_cs,\
+!variable=text_title_cs,\
+!fixed=text_cs,\
+!variable=node_cs,\
+!fixed=edge_cs
 !6x12=edge_cs
-Ope.defaultFontList: variable=variable_cs,\
-fixed=fixed_cs
+!Ope.defaultFontList: variable=variable_cs,\
+!fixed=fixed_cs
 !
 ! Default value for the size of the drawing area 
 !
