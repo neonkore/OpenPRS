@@ -3,7 +3,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*-
  * ope-graphic.c --
  *
- * Copyright (c) 1991-2009 Francois Felix Ingrand.
+ * Copyright (c) 1991-2005 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -806,19 +806,7 @@ void draw_node(Widget w, Draw_Data *dd, int x, int y, int wi, int h, Gnode *n, P
 		    xs + 1, ys + 1,
 		    n->swidth + 2, n->sheight + 2);
      
-#ifdef MARCHE_MAL
-     XDrawImageString(dpy, win, 
-		  (sel ? dd->sgc : dd->gc),
-		  xs + 4, ys + 3,  "FOO", 3);
-
-     XmbDrawImageString(dpy, win, NULL,
-		  (sel ? dd->sgc : dd->gc),
-		  xs + 4, ys + 3,  "FOO", 3);
-#endif
-
-
-
-     XmStringDrawImage(dpy, win, dd->rendertable, n->xmstring,
+     XmStringDraw(dpy, win, dd->fontlist, n->xmstring, 
 		  (sel ? dd->sgc : dd->gc),
 		  xs + 4, ys + 3, n->swidth - 2,
 		  XmALIGNMENT_BEGINNING,
@@ -854,7 +842,7 @@ void draw_text(Widget w, Draw_Data *dd, int x, int y, int width, Gtext *et,PBool
      Window win = dd->window;
 
      sl_loop_through_slist(et->lgt_string, gt_str, Gtext_String *) { 
-	  XmStringDrawImage(dpy, win, dd->rendertable, gt_str->xmstring, 
+	  XmStringDraw(dpy, win, dd->fontlist, gt_str->xmstring, 
 		       (sel ? dd->sgc : dd->gc),
 		       x - dd->left + gt_str->off_x,
 		       y - dd->top + gt_str->off_y,
@@ -882,7 +870,7 @@ void draw_edge_text(Widget w, Draw_Data *dd, int x, int y, int width, Gedge_text
      Window win = dd->window;
 
      sl_loop_through_slist(et->lgt_log_string, gt_str, Gtext_String *) { 
-	  XmStringDrawImage(dpy, win, dd->rendertable, gt_str->xmstring, 
+	  XmStringDraw(dpy, win, dd->fontlist, gt_str->xmstring, 
 			    (selected ? dd->sgc : dd->gc),
 			    x - dd->left + gt_str->off_x,
 			    y - dd->top + gt_str->off_y,

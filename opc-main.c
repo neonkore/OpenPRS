@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * opc-main.c -- 
  * 
- * Copyright (c) 1991-2009 Francois Felix Ingrand.
+ * Copyright (c) 1991-2003 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -88,7 +88,7 @@ Oprs *current_oprs;
 XtAppContext app_context;
 
 struct _resrcs {
-     XmRenderTable renderTable;
+     XmFontList fontList;		  /* font to use for bitmap labels */
      int work_width, work_height;	  /* default bitmap size */
      Boolean  printEnglishOperator;
      char *language;
@@ -186,8 +186,9 @@ static XtResource resources[] = {
       XtOffsetOf(struct _resrcs, bd_width), XmRImmediate, (char *)BD_WIDTH},
      {"edgeWidth", "EdgeWidth", XmRInt, sizeof(int), 
       XtOffsetOf(struct _resrcs, edge_width), XmRImmediate, (char *)EDGE_WIDTH},
-     {XmNrenderTable, XmCRenderTable, XmRRenderTable, sizeof(XmRenderTable),
-     XtOffsetOf(struct _resrcs, renderTable), XmRImmediate, NULL},
+
+     {XmNfontList, XmCFontList, XmRFontList, sizeof(XmFontList),
+     XtOffsetOf(struct _resrcs, fontList), XmRImmediate, NULL},
      {"printEnglishOperator", "PrintEnglishOperator", XtRBoolean, sizeof(Boolean),
      XtOffsetOf(struct _resrcs, printEnglishOperator), XmRImmediate, (XtPointer)FALSE},
 };
@@ -407,7 +408,7 @@ int main(int argc, char **argv, char **envp)
 	  bd_y = Resrcs.bd_y;
 	  bd_width = Resrcs.bd_width;
 	  edge_width = Resrcs.edge_width;
-	  dd.rendertable = Resrcs.renderTable;
+	  dd.fontlist = Resrcs.fontList;
 	  dd.just_compiling = TRUE;
 
 

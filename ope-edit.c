@@ -3,7 +3,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*-
  * ope-edit.c --
  *
- * Copyright (c) 1991-2009 Francois Felix Ingrand.
+ * Copyright (c) 1991-2003 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -212,7 +212,7 @@ void resize_node(Draw_Data *dd, OG *og)
      gnode->xmstring = XmStringCreate(stripped_name, "node_cs");
      FREE(stripped_name);
 
-     XmStringExtent(dd->rendertable, gnode->xmstring, &gnode->swidth, &gnode->sheight);
+     XmStringExtent(dd->fontlist, gnode->xmstring, &gnode->swidth, &gnode->sheight);
      gnode->swidth += 2;
      gnode->sheight += 2;
      og->width = gnode->swidth + 5;
@@ -294,7 +294,7 @@ OG *create_text(Widget w, int x, int y, Draw_Data *dd, Text_Type tt, PString tes
  */
      /* XmStringExtent(dd->fontlist,text->xmstring,); */
 
-     text->lgt_string = ope_string_to_lgt_string(dd->rendertable, t2, "text_cs", tt, &og->width, &og->height);
+     text->lgt_string = ope_string_to_lgt_string(dd->fontlist, t2, "text_cs", tt, &og->width, &og->height);
      rect.x = og->x = x;
      rect.y = og->y = y;
 
@@ -326,7 +326,7 @@ void edit_og(Widget w, Draw_Data *dd, OG *og, char *string)
  *						     &og->width, &og->height);
  */
 	  free_lgt_string(og->u.gedge_text->lgt_log_string);
-	  og->u.gedge_text->lgt_log_string = ope_string_to_lgt_string(dd->rendertable, string, "edge_cs", TT_TEXT_NONE,
+	  og->u.gedge_text->lgt_log_string = ope_string_to_lgt_string(dd->fontlist, string, "edge_cs", TT_TEXT_NONE,
 								  &og->width, &og->height);
 
 	  resize_edge_text(dd, og);
@@ -337,7 +337,7 @@ void edit_og(Widget w, Draw_Data *dd, OG *og, char *string)
 	  FREE(og->u.gtext->string);
 	  og->u.gtext->string = string;
 	  free_lgt_string(og->u.gtext->lgt_string);
-	  og->u.gtext->lgt_string = ope_string_to_lgt_string(dd->rendertable, string, "text_cs", og->u.gtext->text_type,
+	  og->u.gtext->lgt_string = ope_string_to_lgt_string(dd->fontlist, string, "text_cs", og->u.gtext->text_type,
 						     &og->width, &og->height);
 	  resize_text(dd, og);
 	  if (og->u.gtext->text_type == TT_BODY) {
@@ -408,7 +408,7 @@ void create_edge(Widget w, Draw_Data *dd, OG *og_selected, OG *og, char *t1, int
 	  gedge_text->log_string = t1;
 	  gedge_text->text_width = width;
 	  gedge_text->fill_lines = fill_lines;
-	  gedge_text->lgt_log_string = ope_string_to_lgt_string(dd->rendertable, t1, "edge_cs", TT_TEXT_NONE,
+	  gedge_text->lgt_log_string = ope_string_to_lgt_string(dd->fontlist, t1, "edge_cs", TT_TEXT_NONE,
 				 &og_edge_text->width, &og_edge_text->height);
 	  gedge_text->edge = og_edge;
 

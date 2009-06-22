@@ -3,7 +3,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*-
  * ope-external.c --
  *
- * Copyright (c) 1991-2009 Francois Felix Ingrand.
+ * Copyright (c) 1991-2003 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -116,7 +116,7 @@ XmString xs_str_array_to_xmstr_cs(char *string_array[], int n, char *cs)
      return (xmstr);
 }
 
-XmString ope_string_to_xmstring(XmRenderTable rt, char *string, char *cs, Text_Type tt, Dimension * w, Dimension * h)
+XmString ope_string_to_xmstring(XmFontList fl, char *string, char *cs, Text_Type tt, Dimension * w, Dimension * h)
 {
      char **s;
      char *search, *string_array, *tmp, *title;
@@ -167,7 +167,7 @@ XmString ope_string_to_xmstring(XmRenderTable rt, char *string, char *cs, Text_T
 	  res = XmStringConcat(x1 , x2 = XmStringSeparatorCreate());
 	  XmStringFree(x1);
 	  XmStringFree(x2);
-	  XmStringExtent(rt, res, w, h);
+	  XmStringExtent(fl, res, w, h);
      }
 
      NEWSTR(string, string_array);
@@ -189,7 +189,7 @@ XmString ope_string_to_xmstring(XmRenderTable rt, char *string, char *cs, Text_T
      }
 
      res2 = xs_str_array_to_xmstr_cs(s, i, cs);
-     XmStringExtent(rt, res2, &w2, &h2);
+     XmStringExtent(fl, res2, &w2, &h2);
      FREE(tmp);
      FREE(s);
 
@@ -221,7 +221,7 @@ Gtext_String *create_gt_str(char *s, char *cs, Dimension h, Dimension w )
      return gt_str;
 }
  
-List_Gtext_String xs_str_array_to_lgt_str_cs(char *string_array[], int n, XmRenderTable rt, char *cs,
+List_Gtext_String xs_str_array_to_lgt_str_cs(char *string_array[], int n, XmFontList fl, char *cs,
 					     Dimension *tw, Dimension *th)
 {
      List_Gtext_String lgt_str = sl_make_slist();
@@ -237,8 +237,8 @@ List_Gtext_String xs_str_array_to_lgt_str_cs(char *string_array[], int n, XmRend
      /* size of indent for this charset */
      
      xmstr = XmStringCreate(" ", cs);
-     height = XmStringHeight(rt, xmstr);
-     width = XmStringWidth(rt, xmstr);
+     height = XmStringHeight(fl, xmstr);
+     width = XmStringWidth(fl, xmstr);
      XmStringFree(xmstr);
 	
      /*
@@ -254,14 +254,14 @@ List_Gtext_String xs_str_array_to_lgt_str_cs(char *string_array[], int n, XmRend
 	  sl_add_to_tail(lgt_str, gt_str);
 	  h += height;
 
-	  *tw = MAX(*tw, (XmStringWidth(rt, gt_str->xmstring) +  (Dimension)gt_str->off_x));
+	  *tw = MAX(*tw, (XmStringWidth(fl, gt_str->xmstring) +  (Dimension)gt_str->off_x));
      }
      *th = h;
 
      return (lgt_str);
 }
 
-List_Gtext_String ope_string_to_lgt_string(XmRenderTable rt, char *string, char *cs, 
+List_Gtext_String ope_string_to_lgt_string(XmFontList fl, char *string, char *cs, 
 					  Text_Type tt, Dimension * w, Dimension * h)
 {
      char **s;
@@ -311,7 +311,7 @@ List_Gtext_String ope_string_to_lgt_string(XmRenderTable rt, char *string, char 
 	       break;
 	  }
 	  xms_title = XmStringCreate(title, "text_title_cs");
- 	  XmStringExtent(rt, xms_title, w, h);
+ 	  XmStringExtent(fl, xms_title, w, h);
 
 	  gt_str_title =  MAKE_OBJECT(Gtext_String);
 	  gt_str_title->xmstring = xms_title;
@@ -337,7 +337,7 @@ List_Gtext_String ope_string_to_lgt_string(XmRenderTable rt, char *string, char 
 	  s[i++] = string_array = search + 1;
      }
 
-     res = xs_str_array_to_lgt_str_cs(s, i, rt, cs, w, h);
+     res = xs_str_array_to_lgt_str_cs(s, i, fl, cs, w, h);
 
      FREE(tmp);
      FREE(s);
@@ -388,7 +388,7 @@ OG *make_op_title(Draw_Data *dd, char *name)
      text->visible = TRUE;
      text->text_type = TT_TEXT_NONE;
      text->list_og_inst = NULL;
-     text->lgt_string = ope_string_to_lgt_string(dd->rendertable, text->string, "title_cs", 
+     text->lgt_string = ope_string_to_lgt_string(dd->fontlist, text->string, "title_cs", 
 						 TT_TEXT_NONE, &og->width, &og->height);
      rect.x = og->x = OP_TITLE_X;
      rect.y = og->y = OP_TITLE_Y;
@@ -721,7 +721,7 @@ void build_edge_graphic(Edge *edge, Expression *expr)
      gedge_text->text_width = width;
      gedge_text->fill_lines = fill_lines;
      gedge_text->edge = og_edge;
-     gedge_text->lgt_log_string = ope_string_to_lgt_string(global_draw_data->rendertable,text_string,"edge_cs",TT_TEXT_NONE,
+     gedge_text->lgt_log_string = ope_string_to_lgt_string(global_draw_data->fontlist,text_string,"edge_cs",TT_TEXT_NONE,
 						       &og_edge_text->width,&og_edge_text->height);
      position_edge(og_edge);
 
@@ -813,7 +813,7 @@ OG *make_og_text_field(Draw_Data *dd, Op_Structure *op, Field_Type ft, Text_Type
      text->text_type = tt;
      text->list_og_inst = NULL;
 
-     text->lgt_string = ope_string_to_lgt_string(dd->rendertable,text_string,"text_cs",tt,
+     text->lgt_string = ope_string_to_lgt_string(dd->fontlist,text_string,"text_cs",tt,
 						 &og->width,&og->height);
 
      rect.x = og->x =  MAX(0,x);
@@ -839,7 +839,7 @@ OG *make_og_text_field(Draw_Data *dd, Op_Structure *op, Field_Type ft, Text_Type
 
 void update_list_og_inst(Draw_Data *dd, Op_Structure *op, OG *og_body)
 {
-     XmRenderTable rt = dd->rendertable;
+     XmFontList fl = dd->fontlist;
      char *cs = "text_cs";
      Dimension height, width;
      XRectangle rect; 
@@ -861,8 +861,8 @@ void update_list_og_inst(Draw_Data *dd, Op_Structure *op, OG *og_body)
 
      /* size of indent for this charset */
      xmstr = XmStringCreate(" ", cs);
-     height = XmStringHeight(rt, xmstr);
-     width = XmStringWidth(rt, xmstr);
+     height = XmStringHeight(fl, xmstr);
+     width = XmStringWidth(fl, xmstr);
      XmStringFree(xmstr);
 	  
      sl_loop_through_slist(op->list_og_inst, og, OG *) {
@@ -1000,7 +1000,7 @@ OG *make_og_edge(Draw_Data *dd, Op_Structure *op,  Edge *edge, Node *in, Node *o
      gedge_text->text_width = width;
      gedge_text->fill_lines = pp_fill;
      gedge_text->edge = og_edge;
-     gedge_text->lgt_log_string = ope_string_to_lgt_string(dd->rendertable,text_string,"edge_cs",TT_TEXT_NONE,
+     gedge_text->lgt_log_string = ope_string_to_lgt_string(dd->fontlist,text_string,"edge_cs",TT_TEXT_NONE,
 						       &og_edge_text->width,&og_edge_text->height);
      position_edge(og_edge);
 
@@ -1031,7 +1031,7 @@ OG *make_cp_graphic(PString name, Node *node)
      gnode->xmstring = XmStringCreate(stripped_name, "node_cs"); /*  XmSTRING_DEFAULT_CHARSET */
      FREE(stripped_name);
 
-     XmStringExtent(global_draw_data->rendertable,gnode->xmstring,&gnode->swidth, &gnode->sheight);
+     XmStringExtent(global_draw_data->fontlist,gnode->xmstring,&gnode->swidth, &gnode->sheight);
      gnode->swidth += 2;
      gnode->sheight += 2;
      og->width = gnode->swidth + 5;

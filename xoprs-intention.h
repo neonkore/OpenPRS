@@ -3,7 +3,7 @@
  * 
  * $Id$
  *
- * Copyright (c) 1991-2009 Francois Felix Ingrand.
+ * Copyright (c) 1991-2003 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -89,7 +89,7 @@ struct int_draw_data {
      int           top;		/* top */
      int           left;	/* left */
      XFontStruct  	*font;	/* The font struct       */
-     XmRenderTable rendertable;
+     XmFontList    fontlist;
      Squeue *copy_area_index_queue;
      PBoolean reposition_all;
 };

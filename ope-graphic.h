@@ -3,7 +3,7 @@
  *
  * $Id$
  *
- * Copyright (c) 1991-2009 Francois Felix Ingrand.
+ * Copyright (c) 1991-2005 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -185,8 +185,8 @@ struct draw_data {
      Dimension work_width;
      int top;				  /* top */
      int left;				  /* left */
-     XFontStruct *font;			  
-     XmRenderTable rendertable;
+     XFontStruct *font;			  /* The font struct       */
+     XmFontList fontlist;
      Draw_Mode mode, old_mode;
      OG *edited_og;
      OG *node_selected;
