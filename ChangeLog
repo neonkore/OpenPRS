@@ -1,3 +1,10 @@
+2009-08-18  Felix Ingrand  <felix@laas.fr>
+
+	* Fixed the long standing problem with lesstif enable to properly
+	do an XmStringDrawImage. In fact, I did not fix lesstif (too
+	complex) I used another way to do the visual trace. All this code
+	should be moved to a newer graphic environment.
+
 2009-05-09  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* oprs-type.c (debackslashify): Fixed a bug where I would report a

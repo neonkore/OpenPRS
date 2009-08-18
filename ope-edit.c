@@ -1073,6 +1073,168 @@ void check_sensitive_item(Widget w, Draw_Data *dd, XEvent *event)
 
 void canvas_mouse_motion(Widget w, Draw_Data *dd, XEvent *event)
 {
+     XRectangle rect;
+     OG *og = dd->og_moving;
+     Edge *edge;
+     int x = event->xbutton.x + dd->left;
+     int y = event->xbutton.y + dd->top;
+     /* int button = event->xbutton.button; */
+
+     x = MAX(10,x);
+     y = MAX(10,y);
+
+     x = MIN((int)dd->work_width - 10,x);
+     y = MIN((int)dd->work_height - 10,y);
+
+     switch (dd->mode) {
+     case MOVING_OG:
+	  erase_og(w, dd, og);
+	  switch (og->type) {
+	  case DT_IF_NODE:
+	       erase_og(w,dd,else_og_from_if_og(og));
+	       sl_loop_through_slist(else_og_from_if_og(og)->u.gnode->node->out, edge, Edge *) {
+		    erase_og(w, dd, edge->og);
+		    erase_og(w, dd, edge->og->u.gedge->text);
+	       }
+	       sl_loop_through_slist(else_og_from_if_og(og)->u.gnode->node->in, edge, Edge *) {
+		    if (edge->og) {
+			 erase_og(w, dd, edge->og);
+			 erase_og(w, dd, edge->og->u.gedge->text);
+		    }
+	       }
+	       erase_og(w,dd,then_og_from_if_og(og));
+	       sl_loop_through_slist(then_og_from_if_og(og)->u.gnode->node->out, edge, Edge *) {
+		    erase_og(w, dd, edge->og);
+		    erase_og(w, dd, edge->og->u.gedge->text);
+	       }
+	       sl_loop_through_slist(then_og_from_if_og(og)->u.gnode->node->in, edge, Edge *) {
+		    if (edge->og) {
+			 erase_og(w, dd, edge->og);
+			 erase_og(w, dd, edge->og->u.gedge->text);
+		    }
+	       }
+	       sl_loop_through_slist(og->u.gnode->node->in, edge, Edge *) {
+		    erase_og(w, dd, edge->og);
+		    erase_og(w, dd, edge->og->u.gedge->text);
+	       }
+	       break;
+	  case DT_NODE:
+	       sl_loop_through_slist(og->u.gnode->node->in, edge, Edge *) {
+		    erase_og(w, dd, edge->og);
+		    erase_og(w, dd, edge->og->u.gedge->text);
+	       }
+	       sl_loop_through_slist(og->u.gnode->node->out, edge, Edge *) {
+		    erase_og(w, dd, edge->og);
+		    erase_og(w, dd, edge->og->u.gedge->text);
+	       }
+	       break;
+	  case DT_EDGE_TEXT:
+	       og->u.gedge_text->edge->u.gedge->edge->in->og->selected = FALSE;
+	       draw_og(w, dd, og->u.gedge_text->edge->u.gedge->edge->in->og);
+	       og->u.gedge_text->edge->u.gedge->edge->out->og->selected = FALSE;
+	       draw_og(w, dd, og->u.gedge_text->edge->u.gedge->edge->out->og);
+	       reposition_edge_text(og, x - dd->dx, y - dd->dy);
+	       break;
+	  case DT_KNOT:
+	       erase_og(w, dd, og->u.gknot->edge->u.gedge->text);
+	       og->u.gknot->x = x - dd->dx + (KNOT_SIZE / 2);
+	       og->u.gknot->y = y - dd->dy + (KNOT_SIZE / 2);
+	       break;
+	  default: 	 
+	       break;
+	  }
+	  rect.x = og->x = x - dd->dx;
+	  rect.y = og->y = y - dd->dy;
+	  rect.width = og->width;
+	  rect.height = og->height;
+	  XDestroyRegion(og->region);
+	  og->region = XCreateRegion();
+	  XUnionRectWithRegion(&rect, og->region, og->region);
+	  switch (og->type) {
+	  case DT_IF_NODE:
+	       position_then_else(og,  og->x,  og->y);
+	       sl_loop_through_slist(then_og_from_if_og(og)->u.gnode->node->out, edge, Edge *) {
+		    position_edge(edge->og);
+		    draw_og(w, dd, edge->og);
+		    draw_og(w, dd, edge->og->u.gedge->text);
+	       }
+	       sl_loop_through_slist(else_og_from_if_og(og)->u.gnode->node->out, edge, Edge *) {
+		    position_edge(edge->og);
+		    draw_og(w, dd, edge->og);
+		    draw_og(w, dd, edge->og->u.gedge->text);
+	       }
+	       sl_loop_through_slist(then_og_from_if_og(og)->u.gnode->node->in, edge, Edge *) {
+		    if (edge->og) {
+			 position_edge(edge->og);
+			 draw_og(w, dd, edge->og);
+			 draw_og(w, dd, edge->og->u.gedge->text);
+		    }
+	       }
+	       sl_loop_through_slist(else_og_from_if_og(og)->u.gnode->node->in, edge, Edge *) {
+		    if (edge->og) {
+			 position_edge(edge->og);
+			 draw_og(w, dd, edge->og);
+			 draw_og(w, dd, edge->og->u.gedge->text);
+		    }
+	       }
+	       draw_og(w,dd,else_og_from_if_og(og));
+	       draw_og(w,dd,then_og_from_if_og(og));
+	       sl_loop_through_slist(og->u.gnode->node->in, edge, Edge *) {
+		    position_edge(edge->og);
+		    draw_og(w, dd, edge->og);
+		    draw_og(w, dd, edge->og->u.gedge->text);
+	       }
+	       draw_og(w, dd, og);
+	       break;
+	  case DT_NODE:
+	       sl_loop_through_slist(og->u.gnode->node->in, edge, Edge *) {
+		    position_edge(edge->og);
+		    draw_og(w, dd, edge->og);
+		    draw_og(w, dd, edge->og->u.gedge->text);
+	       }
+	       sl_loop_through_slist(og->u.gnode->node->out, edge, Edge *) {
+		    position_edge(edge->og);
+		    draw_og(w, dd, edge->og);
+		    draw_og(w, dd, edge->og->u.gedge->text);
+	       }
+	       draw_og(w, dd, og);
+	       break;
+	  case DT_KNOT:
+	       position_edge(og->u.gknot->edge);
+	       draw_og(w, dd, og->u.gknot->edge);
+	       draw_og(w, dd, og->u.gknot->edge->u.gedge->text);
+	       break;
+	  default:
+	       draw_og(w, dd, og);
+	       break;
+	  }
+	  break;
+     case MOVING_CANVAS:
+     {
+	  int xx = event->xbutton.x;
+	  int yy = event->xbutton.y;
+	  int dx = xx - dd->start_x;
+	  int dy = yy - dd->start_y;
+
+	  if (((dd->left == 0) && dx > 0)|| ((dd->left == dd->work_width - dd->canvas_width) && dx < 0))
+	       dx = 0;
+	  else 
+	       dd->start_x = xx;
+
+	  if (((dd->top == 0) && dy > 0)|| ((dd->top == dd->work_height - dd->canvas_height) && dy < 0))
+	       dy = 0;
+	  else 
+	       dd->start_y = yy;
+
+/* 	  set_draw_mode(dd, MOVE_OG); */
+	  set_canvas_view_rel(dd, dx, dy);
+	  break;
+     }
+     default:
+	  break;
+     }
+
+#ifdef FELIX
      Window root,child;
      int rx,ry,wx,wy;
      unsigned int mask;
@@ -1201,6 +1363,8 @@ void canvas_mouse_motion(Widget w, Draw_Data *dd, XEvent *event)
 	  /* code for sensitive item */
 	  check_sensitive_item(w, dd,event);
      }
+#endif
+
 }
 
 void mouse_release_move(Widget w, Draw_Data *dd, XEvent *event)
@@ -1222,7 +1386,7 @@ void mouse_release_move(Widget w, Draw_Data *dd, XEvent *event)
      case MOVING_OG:
 	  report_opfile_modification();
 	  set_draw_mode(dd, MOVE_OG);
-	  draw_moving_clip_box(w, dd, og);
+/* 	  draw_moving_clip_box(w, dd, og); */
 	  og->selected = FALSE;
 	  erase_og(w, dd, og);
 	  switch (og->type) {
@@ -1266,9 +1430,9 @@ void mouse_release_move(Widget w, Draw_Data *dd, XEvent *event)
 	       break;
 	  case DT_EDGE_TEXT:
 	       og->u.gedge_text->edge->u.gedge->edge->in->og->selected = FALSE;
-	       draw_og(w, dd, og->u.gedge_text->edge->u.gedge->edge->in->og);
+	       erase_og(w, dd, og->u.gedge_text->edge->u.gedge->edge->in->og);
 	       og->u.gedge_text->edge->u.gedge->edge->out->og->selected = FALSE;
-	       draw_og(w, dd, og->u.gedge_text->edge->u.gedge->edge->out->og);
+	       erase_og(w, dd, og->u.gedge_text->edge->u.gedge->edge->out->og);
 	       reposition_edge_text(og, x - dd->dx, y - dd->dy);
 	       break;
 	  case DT_KNOT:
@@ -1635,7 +1799,7 @@ void mouse_press_move(Widget w, Draw_Data *dd, XEvent *event)
 		    dd->dy = y - dd->og_moving->y;
 		    dd->og_moving->selected = TRUE;
 		    draw_og(w, dd, dd->og_moving);
-		    draw_moving_clip_box(w, dd, dd->og_moving);
+/* 		    draw_moving_clip_box(w, dd, dd->og_moving); */
 		    if (og->type == DT_EDGE_TEXT) {
 			 og->u.gedge_text->edge->u.gedge->edge->in->og->selected = TRUE;
 			 draw_og(w, dd, og->u.gedge_text->edge->u.gedge->edge->in->og);

@@ -754,6 +754,21 @@ void erase_og(Widget w, Draw_Data *dd, OG *og)
 
 void draw_og(Widget w, Draw_Data *dd, OG *og)
 {
+     Display *dpy = XtDisplay(w);
+     Window win = dd->window;
+
+     int xs, ys;
+
+     xs = og->x - dd->left;
+     ys = og->y - dd->top;
+
+/*      XFillRectangle(dpy, win, dd->sgc, */
+/* 		    xs, ys, og->width, og->height); */
+
+     if (og->selected && og->type != DT_KNOT)
+       XDrawRectangle(dpy, win, dd->gc,
+		      xs, ys, og->width-1, og->height-1);
+
      switch (og->type) {
      case DT_IF_NODE:
      case DT_THEN_NODE:
@@ -799,15 +814,12 @@ void draw_node(Widget w, Draw_Data *dd, int x, int y, int wi, int h, Gnode *n, P
      xs = x - dd->left;
      ys = y - dd->top;
 
-     XFillRectangle(dpy, win, dd->sgc,
-		    xs, ys, wi, h);
-
      XDrawRectangle(dpy, win,  dd->gc ,
 		    xs + 1, ys + 1,
 		    n->swidth + 2, n->sheight + 2);
      
      XmStringDraw(dpy, win, dd->fontlist, n->xmstring, 
-		  (sel ? dd->sgc : dd->gc),
+		  dd->gc,
 		  xs + 4, ys + 3, n->swidth - 2,
 		  XmALIGNMENT_BEGINNING,
 		  XmSTRING_DIRECTION_L_TO_R,
@@ -843,7 +855,7 @@ void draw_text(Widget w, Draw_Data *dd, int x, int y, int width, Gtext *et,PBool
 
      sl_loop_through_slist(et->lgt_string, gt_str, Gtext_String *) { 
 	  XmStringDraw(dpy, win, dd->fontlist, gt_str->xmstring, 
-		       (sel ? dd->sgc : dd->gc),
+		       dd->gc,
 		       x - dd->left + gt_str->off_x,
 		       y - dd->top + gt_str->off_y,
 		       width,
@@ -856,7 +868,15 @@ void draw_text(Widget w, Draw_Data *dd, int x, int y, int width, Gtext *et,PBool
 	 && (et->list_og_inst != NULL)) {
 	  sl_loop_through_slist(et->list_og_inst, og_inst, OG *) {
 	       if (og_inst->selected) {
-		    draw_og(w, dd, og_inst);
+		    Display *dpy = XtDisplay(w);
+		    Window win = dd->window;
+		    
+		    int xs, ys;
+		    
+		    xs = og_inst->x - dd->left;
+		    ys = og_inst->y - dd->top;
+		    XDrawRectangle(dpy, win, dd->gc,
+				   xs, ys, og_inst->width-1, og_inst->height-1);
 	       }
 	  }
      }
@@ -869,9 +889,9 @@ void draw_edge_text(Widget w, Draw_Data *dd, int x, int y, int width, Gedge_text
      Display *dpy = XtDisplay(w);
      Window win = dd->window;
 
-     sl_loop_through_slist(et->lgt_log_string, gt_str, Gtext_String *) { 
+    sl_loop_through_slist(et->lgt_log_string, gt_str, Gtext_String *) { 
 	  XmStringDraw(dpy, win, dd->fontlist, gt_str->xmstring, 
-			    (selected ? dd->sgc : dd->gc),
+			    dd->gc,
 			    x - dd->left + gt_str->off_x,
 			    y - dd->top + gt_str->off_y,
 			    width,
@@ -881,32 +901,10 @@ void draw_edge_text(Widget w, Draw_Data *dd, int x, int y, int width, Gedge_text
      } 
 }
 
-void draw_list_og_inst(Draw_Data *dd, List_OG list_og_inst)
-{
-
-     OG *og;
-
-     sl_loop_through_slist(list_og_inst, og, OG *) {
-	  if (og->selected) {
-	       draw_og(dd->canvas, dd, og);
-	  }	 
-     }
-}
 
 void draw_inst(Widget w, Draw_Data *dd, int x, int y, int wi, int h, PBoolean sel)
 {
-     Display *dpy = XtDisplay(w);
-     Window win = dd->window;
-
-     int xs, ys;
-
-     xs = x - dd->left;
-     ys = y - dd->top;
-
-     XFillRectangle(dpy, win, dd->xorgc,
-		    xs + 1, ys + 1,
-		    wi -1 , h - 1);
-
+     return;
 }
 
 void draw_clip_box(Widget w, Draw_Data *dd, OG *og)
@@ -915,6 +913,17 @@ void draw_clip_box(Widget w, Draw_Data *dd, OG *og)
      Window win = dd->window;
 
      XDrawRectangle(dpy, win, dd->xorgc,
+		    og->x - dd->left,
+		    og->y - dd->top,
+		    og->width - 1, og->height - 1);
+}
+
+void draw_sel_box(Widget w, Draw_Data *dd, OG *og)
+{
+     Display *dpy = XtDisplay(w);
+     Window win = dd->window;
+
+     XDrawRectangle(dpy, win, dd->gc,
 		    og->x - dd->left,
 		    og->y - dd->top,
 		    og->width - 1, og->height - 1);
@@ -941,7 +950,7 @@ void erase_inst(Widget w, Draw_Data *dd, OG *og)
 
      XClearArea(dpy, win,
 		og->x - dd->left, og->y - dd->top,
-		og->width + 1, og->height + 1, FALSE);
+		og->width + 1, og->height + 1, TRUE);
 
 }
 
@@ -1114,7 +1123,6 @@ void display_op_edge_internal(Op_Structure * op, Edge *edge, PBoolean selected)
      Region region;
      OG *og = NULL;
      Draw_Data *dd = global_draw_data;
-     PBoolean body_edge = FALSE;
 
      if (edge->og) {
 	  switch (edge->og->type) {
@@ -1123,8 +1131,8 @@ void display_op_edge_internal(Op_Structure * op, Edge *edge, PBoolean selected)
 	       og->selected = selected;
 	       break;
 	  case DT_INST:
-	       body_edge = TRUE;
 	       og = edge->og;
+	       og->selected = selected;
 	       break;
 	  default:
 	       break;
@@ -1132,8 +1140,6 @@ void display_op_edge_internal(Op_Structure * op, Edge *edge, PBoolean selected)
      }
 
      if (dd->op != op) {
-	  if (body_edge) /* The whole OP will be drawn: Just uodate the og */
-	       og->selected = selected;
 	       
 	  current_op = op;
 	  dd->op = op;
@@ -1169,21 +1175,10 @@ void display_op_edge_internal(Op_Structure * op, Edge *edge, PBoolean selected)
 			       og->y + og->height / 2 - dd->canvas_height / 2);
 	  }
 	  XDestroyRegion(region);
-
-	  if (body_edge) {
-	       /* The OG is traced with XOR: trace it if the selection change */
-	       if (og->selected != selected) {
-		    og->selected = TRUE;
-		    draw_og(dd->canvas, dd, og);
-	       }
-	       og->selected = selected;
-	  } else
-	       draw_og(dd->canvas, dd, og);
+	  if (! selected) erase_og(dd->canvas, dd, og);
+	  draw_og(dd->canvas, dd, og);
      }
 
-/*
-     if (og) draw_og(dd->canvas, dd, og);
-     */
      XFlush(XtDisplay(dd->canvas));
 }
 
