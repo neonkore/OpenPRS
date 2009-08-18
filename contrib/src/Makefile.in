@@ -3,7 +3,7 @@
 #
 # $Id$
 # 
-# Copyright (c) 1991-2005 Francois Felix Ingrand.
+# Copyright (c) 1991-2009 Francois Felix Ingrand.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,7 @@ include ../../site.make
 
 srctop = @top_srcdir@
 
-CEXTRACT	= /usr/local/Divers/bin/$(HOSTTYPE)/cextract
+#CEXTRACT	= /usr/local/Divers/bin/$(HOSTTYPE)/cextract
 
 srcdir = $(srctop)/contrib/src
 
@@ -89,14 +89,14 @@ install: all
 		$(RANLIB)  ${LIBDIR}/$$i;\
 	done
 
-%_f.h:
-	$(CEXTRACT) $(INCLUDE) $(OTHER_INCLUDE) $(X_INCLUDE) $(CPPFLAGS) $< > $@
+# %_f.h:
+# 	$(CEXTRACT) $(INCLUDE) $(OTHER_INCLUDE) $(X_INCLUDE) $(CPPFLAGS) $< > $@
 
 clean:
 	/bin/rm -f core a.out gmon.out *.o make.depend.tmp make.depend.bak
 
 very-clean: clean
-	/bin/rm -f $(PU_LIB) $(PU_LIB_PROTO) make.depend
+	/bin/rm -f $(PU_LIB) make.depend
 
 #
 # If the make.depend does not exist, just touch it.
@@ -109,4 +109,3 @@ make.depend depend: $(PU_LIB_SRC)
 #
 
 include make.depend
-

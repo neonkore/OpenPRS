@@ -1,7 +1,7 @@
 ########################### -*- Mode: Makefile -*- #########################
 # Makefile -- For the OPRS system
 #
-# $Id$
+# $Id: Makefile.in,v 1.11 2008/03/26 09:43:21 hcao Exp $
 #
 # Copyright (c) 1991-2009 Francois Felix Ingrand.
 # All rights reserved.
@@ -629,21 +629,18 @@ endif
 #	(cd xinfo ; $(MAKE) Info.o)
 
 
-demo: truck-demo cena-demo
+demo: truck-demo
 
 # This is to make the demos.
 truck-demo:
 	(cd demo/truck-demo/src ; $(MAKE))
 	(cd demo/truck-demo/oprs ; $(MAKE))
 
-#cena-demo:
-#	(cd demo/cena/src ; $(MAKE))
 
 local-clean:
 	/bin/rm -f core a.out gmon.out *.o $(OLD_FILES)
 
 clean: local-clean
-#	-(cd xinfo ; $(MAKE) clean)
 	-(cd doc ; $(MAKE) clean)
 	-(cd util ; $(MAKE) clean)
 	-(cd demo/truck-demo/oprs ; $(MAKE) clean)
@@ -660,7 +657,6 @@ very-clean: local-clean
 	vxoprs vxoprs-relocatable vx-mp-oprs vx-kill-mp
 	-(cd doc ; $(MAKE) very-clean)
 	-(cd util ; $(MAKE) very-clean)
-#	-(cd xinfo ; $(MAKE) very-clean)
 	-(cd demo/truck-demo/oprs ; $(MAKE) very-clean)
 	-(cd demo/truck-demo/src ; $(MAKE) very-clean)
 	-(cd contrib/src ; $(MAKE) very-clean)
