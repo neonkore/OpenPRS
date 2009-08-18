@@ -5,7 +5,7 @@
 
 .DEFAULT:
 
-VERSION = 1.0b3
+VERSION = 1.0b5
 
 OPENPRS-FTP-DIR = dist-dir
 
