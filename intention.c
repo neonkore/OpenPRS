@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * intention.c -- Functions and utilities to manipulate intentions.
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2010 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -165,14 +165,14 @@ Op_Instance *intention_bottom_op_instance(Intention *in)
 
 void fprint_tib(FILE *f,Thread_Intention_Block *tib)
 {
-     fprintf(f,LG_STR("<Thread %#x>",
-		      "<Thread %#x>"), (unsigned int)tib);
+     fprintf(f,LG_STR("<Thread %p>",
+		      "<Thread %p>"), tib);
 }
 
 void sprint_tib(Sprinter *sp, Thread_Intention_Block *tib)
 {
-     SPRINT(sp, 14 + MAX_PRINTED_POINTER_SIZE,sprintf(f,LG_STR("<Thread %#x>",
-							       "<Thread %#x>"), (unsigned int)tib));
+     SPRINT(sp, 14 + MAX_PRINTED_POINTER_SIZE,sprintf(f,LG_STR("<Thread %p>",
+							       "<Thread %p>"), tib));
 }
 
 void print_tib(Thread_Intention_Block *tib)
@@ -183,11 +183,11 @@ void print_tib(Thread_Intention_Block *tib)
 void fprint_intention(FILE *f,Intention *in)
 {
      if (in && in->id)
-	  fprintf(f,LG_STR("<Intention %#x (%s)>",
-			   "<Intention %#x (%s)>"), (unsigned int)in, in->id);
+	  fprintf(f,LG_STR("<Intention %p (%s)>",
+			   "<Intention %p (%s)>"), in, in->id);
      else
-	  fprintf(f,LG_STR("<Intention %#x>",
-			   "<Intention %#x>"), (unsigned int)in);
+	  fprintf(f,LG_STR("<Intention %p>",
+			   "<Intention %p>"), in);
 }
 
 void print_intention(Intention *in)
@@ -199,12 +199,12 @@ void sprint_intention(Sprinter *sp, Intention *in)
 {
      if (in->id == NULL) {
 	  SPRINT(sp,13 + MAX_PRINTED_POINTER_SIZE,
-				    sprintf(f,LG_STR("<Intention %#x>",
-						     "<Intention %#x>"),(unsigned int)in));
+				    sprintf(f,LG_STR("<Intention %p>",
+						     "<Intention %p>"),in));
      } else {
 	  SPRINT(sp,15  + strlen (in->id) + MAX_PRINTED_POINTER_SIZE,
-				    sprintf(f,LG_STR("<Intention %#x (%s)>",
-						     "<Intention %#x (%s)>"),(unsigned int)in, in->id));
+				    sprintf(f,LG_STR("<Intention %p (%s)>",
+						     "<Intention %p (%s)>"),in, in->id));
      } 
 }
 
@@ -476,9 +476,9 @@ void sprint_show_tib(Sprinter *sp, Thread_Intention_Block *tib, int indent)
 	  break;
      case TIBS_JOINING:
 	  SPRINT(sp,64 + 32 + strlen(tib->curr_op_inst->op->name),
-		 sprintf(f,LG_STR("JOINING on node %#x in OP %s.",
-				  "EN ATTENTE d'etre rejoint sur le noeud %#x in OP %s."),
-			 (unsigned int)tib->current_node,
+		 sprintf(f,LG_STR("JOINING on node %p in OP %s.",
+				  "EN ATTENTE d'etre rejoint sur le noeud %p in OP %s."),
+			 tib->current_node,
 			 tib->curr_op_inst->op->name));
 	  break;
      case TIBS_ACTION_WAIT:

@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * conditions.c -- Conditions management.
  * 
- * Copyright (c) 1991-2005 Francois Felix Ingrand.
+ * Copyright (c) 1991-2009 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -340,8 +340,8 @@ void check_condition_list(Condition_List cl)
 void sprint_show_relevant_condition(Sprinter *sp, Relevant_Condition *rc)
 {
      SPRINT(sp,26 + MAX_PRINTED_POINTER_SIZE,
-	    sprintf(f,LG_STR("<Condition %#x> is of type: ",
-			     "<Condition %#x> est du type: "), (unsigned int)rc));
+	    sprintf(f,LG_STR("<Condition %p> is of type: ",
+			     "<Condition %p> est du type: "), rc));
 	  
      switch (rc->type) {
      case INTENTION_ACTIVATION:

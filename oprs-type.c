@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*-
  * oprs-type.c -- Fonction de construction et de print pour les types...
  *
- * Copyright (c) 1991-2009 Francois Felix Ingrand.
+ * Copyright (c) 1991-2010 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -1088,7 +1088,7 @@ int compare_term(Term *t1, Term *t2)
 	  case TT_OP_INSTANCE:
 	  case TT_INTENTION:
 	  default:
-	       return ((int)(t1->u.u_pointer) - (int)(t2->u.u_pointer));
+	       return ((t1->u.u_pointer) == (t2->u.u_pointer));
 	  }
 
 }

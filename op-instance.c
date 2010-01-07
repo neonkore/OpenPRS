@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * op-instance.c -- Function dealing with op-instance.
  * 
- * Copyright (c) 1991-2005 Francois Felix Ingrand.
+ * Copyright (c) 1991-2010 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -78,14 +78,14 @@ Op_Instance *dup_op_instance(Op_Instance *opi)
 
 void fprint_op_instance(FILE *f,Op_Instance *opi)
 {
-      fprintf(f,LG_STR("<Op_instance %#x>",
-		       "<Op_instance %#x>"), (unsigned int)opi);
+      fprintf(f,LG_STR("<Op_instance %p>",
+		       "<Op_instance %p>"), opi);
 }
 
 void sprint_op_instance(Sprinter *sp, Op_Instance *opi)
 {
-     SPRINT(sp, 14 + MAX_PRINTED_POINTER_SIZE,sprintf(f,LG_STR("<Op_instance %#x>",
-							       "<Op_instance %#x>"), (unsigned int)opi));
+     SPRINT(sp, 14 + MAX_PRINTED_POINTER_SIZE,sprintf(f,LG_STR("<Op_instance %p>",
+							       "<Op_instance %p>"), opi));
 }
 
 void free_op_instance_not_goal(Op_Instance *opi)

@@ -1,3 +1,7 @@
+2009-11-16  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* mallocPack.c (is_small): should now deal with pointer, not int.
+
 2009-03-30  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* shashPack_f.h: Well.. not that simple... it should return 1 as

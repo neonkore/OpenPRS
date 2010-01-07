@@ -1,3 +1,33 @@
+2010-01-07  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* mp-register.c (external_register_to_the_mp_host_prot):
+	host_entry was reset by the start_mp_oprs, so I call it before
+	each connect attempt (overkilling, but better safe than sorry).
+
+	Now oprs-server (or any prs client) can properly start the
+	message-passer and then successfully connect to it.
+
+	* unification.c (matching_lenv_between_frames): Try to minimize
+	void* and int mixup.
+
+	* macro.h: bcopy and bzero should now take (void *).
+
+2009-12-14  Francois Felix Ingrand  <felix@ingrand.net>
+
+
+	* oprs-load.c (load_ptr): Now ptr can be 64 bits. Hence we dump
+	and load unsgined long long (even on 32 bits machine to make the dump
+	portable)... But we will get a warning upon reloading those 64
+	bits address on a 32 bits machine.
+
+2009-12-07  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* Various changes to make OpenPRS to compile on snow leopard which
+	is now 64 bits by default. Hopefully, theses changes will not
+	affect the 32 bits machines...
+
+	* mp.c: time_t is a long.
+
 2009-08-18  Felix Ingrand  <felix@laas.fr>
 
 	* Fixed the long standing problem with lesstif enable to properly

@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * op-structure.c -- Functions used for and with op-structure.
  * 
- * Copyright (c) 1991-2005 Francois Felix Ingrand.
+ * Copyright (c) 1991-2009 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -201,8 +201,8 @@ void init_make_op(PString name, PBoolean graphic)
 
 void print_edge(Edge *e)
 {
-     printf(LG_STR("Edge %#x",
-		   "Arc %#x"), (unsigned int)e);
+     printf(LG_STR("Edge %p",
+		   "Arc %p"), e);
      print_expr(e->expr);
 }
 
@@ -221,8 +221,8 @@ void print_edge_list(LogicList el)
 
 void print_node(Node *n)
 {
-     printf(LG_STR("Node %#x",
-		   "Noeud %#x"), (unsigned int)n);
+     printf(LG_STR("Node %p",
+		   "Noeud %p"), n);
      if (n) print_edge_list(n->out);
 }
 

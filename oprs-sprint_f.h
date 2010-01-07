@@ -3,7 +3,7 @@
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2009 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -62,8 +62,8 @@ void sprint_backslash_string(Sprinter *sp, PString string);
 #define SPRINTER_REMAINING_SIZE(sp) ((sp)->tsize - (sp)->size)
 #define SPRINTER_TSIZE(sp) ((sp)->tsize)
 
-#define SPRINT(_sp,eval,_sprintf) \
-do {char *f; int _real_size;\
+#define SPRINT(_sp,_eval,_sprintf) \
+     do {char *f; int _real_size;unsigned int eval = _eval;		\
     if (SPRINTER_REMAINING_SIZE(_sp) < (unsigned)(eval+1))\
 	enlarge_sprinter(_sp,eval+1);\
     f = SPRINTER_CUR_POS(_sp);\

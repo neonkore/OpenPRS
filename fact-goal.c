@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * fact-goal.c -- 
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2010 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -100,8 +100,8 @@ void free_fact(Fact *fact)
 
 void sprint_fact(Sprinter *sp, Fact *fact)
 {
-     SPRINT(sp,8 + MAX_PRINTED_POINTER_SIZE,sprintf(f,LG_STR("<Fact %#x>",
-							     "<Fait %#x>"), (unsigned int)fact));
+     SPRINT(sp,8 + MAX_PRINTED_POINTER_SIZE,sprintf(f,LG_STR("<Fact %p>",
+							     "<Fait %p>"), fact));
 }
 
 void fprint_fact(FILE *fact,Fact* fa)
@@ -244,8 +244,8 @@ void free_goal(Goal *goal)
 
 void sprint_goal(Sprinter *sp, Goal *g)
 { 
-     SPRINT(sp,8 + MAX_PRINTED_POINTER_SIZE,sprintf(f,LG_STR("<Goal %#x>",
-							     "<But %#x>"), (unsigned int)g));
+     SPRINT(sp,8 + MAX_PRINTED_POINTER_SIZE,sprintf(f,LG_STR("<Goal %p>",
+							     "<But %p>"), g));
 }
  
 void fprint_goal(FILE *f,Goal* goal)

@@ -3,7 +3,7 @@
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2005 Francois Felix Ingrand.
+ * Copyright (c) 1991-2010 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,10 +43,10 @@ struct sprinter {
 };
 
 /* Maximum printed representation for an int... and a long long... no problem... */
-#define MAX_PRINTED_INT_SIZE 64
+#define MAX_PRINTED_INT_SIZE 512
 /* Maximum printed representation for a poimter... */
-#define MAX_PRINTED_POINTER_SIZE 64
+#define MAX_PRINTED_POINTER_SIZE 512
 /* Maximum printed representation for a double... */
-#define MAX_PRINTED_DOUBLE_SIZE 320
+#define MAX_PRINTED_DOUBLE_SIZE 1024
 
 #endif /* INCLUDE_oprs_sprint */

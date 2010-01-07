@@ -3,7 +3,7 @@
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2004 Francois Felix Ingrand.
+ * Copyright (c) 1991-2010 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -72,13 +72,13 @@ int _rand;
 #ifndef HAS_BZERO
 #define BZERO(a,b)	memset(a,0,b)
 #else
-#define BZERO(a,b)	bzero((char *)(a),b)
+#define BZERO(a,b)	bzero((void *)(a),b)
 #endif
 
 #ifndef HAS_BCOPY
 #define BCOPY(a,b,c)	memcpy(b,a,c)
 #else
-#define BCOPY(a,b,c)	bcopy((char *)(a),(char *)(b),c)
+#define BCOPY(a,b,c)	bcopy((void *)(a),(void *)(b),c)
 #endif
 
 #ifndef HAS_INDEX

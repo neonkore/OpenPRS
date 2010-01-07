@@ -3,7 +3,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * xoprs-intention.c -- 
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2010 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -461,9 +461,9 @@ void idd_canvas_mouse_press(Widget w, Int_Draw_Data *idd, XEvent *event)
 		    Intention *in = iog->u.ginode->intention;
 		    
 		    SPRINT(sp, strlen (in->top_op->op->name) + MAX_PRINTED_POINTER_SIZE + 32,
-					      sprintf(f,LG_STR("Trace for <Intention %#x> %s",
-							       "Trace for <Intention %#x> %s"),(unsigned int)in,
-						      in->top_op->op->name));
+					      sprintf(f,LG_STR("Trace for <Intention %p> %s",
+							       "Trace for <Intention %p> %s"), 
+						      in, in->top_op->op->name));
 		    xp_create_trace_intention_dialog(w, in, SPRINTER_STRING(sp));
 		    free_sprinter(sp);
 		    return;

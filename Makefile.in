@@ -908,7 +908,7 @@ include make.depend
 tags: TAGS
 
 TAGS: $(SRCS) $(YACC_SRC) $(LEX_SRC) $(C_TOOLKIT_SRC) \
-	$(RESOURCES_FILES) Makefile.dev  Makefile.src
+	$(RESOURCES_FILES)
 	etags $^
 
 #

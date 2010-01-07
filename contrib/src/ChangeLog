@@ -1,3 +1,8 @@
+2009-12-07  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* pu-genom.c (pu_encode_genom_string): strlen returns a size_t
+	which is an unsigned long...
+
 2006-08-29  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* pu-genom.c: added unsigned_long_Long... even if they are handled

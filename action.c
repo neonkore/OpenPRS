@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * action.c -- 
  * 
- * Copyright (c) 1991-2006 Francois Felix Ingrand.
+ * Copyright (c) 1991-2010 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -535,7 +535,7 @@ Term *action_printf(TermList terms)
 
 
      t = (Term *)sl_get_slist_head(terms);
-     if (t->type != EXPRESSION)
+     if (t->type != EXPRESSION) 
 	  report_fatal_external_error(oprs_strerror(PE_EXPECTED_EXPRESSION_TERM_TYPE));
 
      tc = t->u.expr;

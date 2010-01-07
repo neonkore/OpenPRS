@@ -1,8 +1,8 @@
 static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
- * oprs-dum-pub.c -- 
+ * oprs-dump.c -- 
  * 
- * Copyright (c) 1991-2005 Francois Felix Ingrand.
+ * Copyright (c) 1991-2010 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -86,7 +86,7 @@ static const char* const rcsid = "$Id$";
 #include "oprs-dump_f.h"
 #include "oprs-pred-func_f.h"
 
-int dump_format_version = 4;
+int dump_format_version = 5;	/* I use 5 for 64 bits machine... assuming pointers are now 64 bits. */
 
 int dump_file;
 
@@ -100,7 +100,7 @@ void dump_symbol(Symbol string);
 
 int dump_table_hash_func(void *addr)
 {
-     return ((unsigned)addr>>3) & dump_table_mod; /* All memory alloc are 8 bytes aligned. Thus, divided by 8. */
+     return ((unsigned int)(addr)>>3) & dump_table_mod; 
 }
 
 PBoolean dump_table_match_func(void *ad1, Object_Dump *od)
@@ -244,8 +244,11 @@ int dump_long_long(long long i)
 
 int dump_ptr(void *ptr)
 {
-     void *ptrn = (void *)htonl((u_long) ptr);
-     return dump_write(&ptrn, sizeof(void *));
+     u_char buf[8];
+
+     htonll((long long) ptr,buf);
+
+     return dump_write(buf, 8);
 }
 
 int dump_float(double f)
