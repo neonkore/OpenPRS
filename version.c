@@ -45,7 +45,7 @@ char *date = COMPIL_DATE;
 char *major_version = "1";
 char *status = "Beta";
 char *minor_version = "0";
-char *patchlevel = "5";
+char *patchlevel = "6";
 
 void print_version()
 {
