@@ -1,5 +1,9 @@
 2010-01-16  Francois Felix Ingrand  <felix@ingrand.net>
 
+	* xhelp.c: Missing Form.h.
+
+	* ope-edit.c: Missing ToggleB.h.
+
 	* ope-op-opf.c: Xm/SelectioB.h was not included... as a
 	consequence some functions returning pointers (64 bits on SL)
 	ended up returning "32bits" pointer. Stupid of me... I thought

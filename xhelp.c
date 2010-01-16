@@ -5,7 +5,7 @@ static const char* const rcsid = "$Id";
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2004 Francois Felix Ingrand.
+ * Copyright (c) 1991-2010 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -54,7 +54,7 @@ static const char* const rcsid = "$Id";
  */
 #include <X11/Intrinsic.h>
 #include <Xm/Xm.h>
-/* #include <Xm/Form.h> */
+#include <Xm/Form.h>
 
 #include "macro.h"
 #include "opaque.h"

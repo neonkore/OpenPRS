@@ -44,6 +44,7 @@ static const char* const rcsid = "$Id$";
 
 #include <Xm/ScrollBar.h>
 #include <Xm/DrawingA.h>
+#include <Xm/ToggleB.h>
 
 /* #include <X11/X10.h> */
 
