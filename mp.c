@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*-
  * mp-oprs.c -- Message passer.
  *
- * Copyright (c) 1991-2009 Francois Felix Ingrand.
+ * Copyright (c) 1991-2010 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -390,7 +390,6 @@ int main(int argc, char **argv, char **envp)
      fd_set writefds; 
      int nfound, ns;
      socklen_t fromlen;
-     PBoolean ignore;
 
      struct sockaddr_in from_addr;
 

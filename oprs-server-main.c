@@ -493,7 +493,6 @@ int main(int argc, char **argv, char **envp)
 {
      Oprs_Client *oprs_cl;
      Slist *oprslist2;
-     PBoolean ignore;
 #if defined(HAS_READLINE)
      char hist_filename[FILENAME_MAX];
      char *home;

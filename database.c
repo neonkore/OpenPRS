@@ -352,13 +352,14 @@ Key_List make_key_elt(Symbol p, int a, int i, Term *t, PBoolean var_allowed, Lis
 	  fprintf(stderr, ".\n");
 	  longjmp(key_computation_jmp,-1);
      } else {		/* It is a variable, and we allow them with a variable semantic. */
-	  if (dup_var_list && *dup_var_list)  /* We are looking for duplicates, and not found one yet. */
+	  if (dup_var_list && *dup_var_list) {  /* We are looking for duplicates, and not found one yet. */
 	       if (sl_in_slist(*dup_var_list,t->u.var)){ /* we found one */
 		    FREE_SLIST(*dup_var_list);
 		    *dup_var_list = NULL; /* Stop looking for them. one is enough */
 	       } else {
 		    sl_add_to_head(*dup_var_list,t->u.var);
 	       }
+	  }
      }
      return kl;
 }

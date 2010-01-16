@@ -100,11 +100,12 @@ static const char* const rcsid = "$Id$";
 
 
 /*********Log function and variables*************/
+/* Who wrote this? I did not (Felix) */
 #define MAX_LOG_FILE 10
 FILE *f_log_a[MAX_LOG_FILE];
 int   f_log_init = 0;
 
-int init_log_array(){
+void init_log_array(){
   int i;
   
   for(i=0 ; i<MAX_LOG_FILE ; i++)

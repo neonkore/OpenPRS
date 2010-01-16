@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * ev-function.c -- Deal with evaluable functions in OPRS.
  * 
- * Copyright (c) 1991-2005 Francois Felix Ingrand.
+ * Copyright (c) 1991-2010 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -2529,7 +2529,7 @@ Term *uclock_t_ef(TermList terms)
 
 Term *sclock_t_ef(TermList terms)
 {
-     static called = FALSE;
+     static PBoolean called = FALSE;
      Term *res;
 
      if (! called) {
@@ -2547,7 +2547,7 @@ Term *sclock_t_ef(TermList terms)
 
 Term *usclock_t_ef(TermList terms)
 {
-     static called = FALSE;
+     static PBoolean called = FALSE;
      Term *res;
 
      if (! called) {
@@ -3183,6 +3183,6 @@ void declare_ev_funct(void)
      make_and_declare_eval_funct("FIND-APPLICABLE-OPS-FOR-GOAL", find_applicable_ops_for_goal_ef, 1);
 
      declare_user_eval_funct();
-     declare_shary_user_eval_funct();
+     declare_shary_user_eval_funct(); /* why is this here???? (FFI) */
 
 }

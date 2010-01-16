@@ -1,5 +1,9 @@
 2010-01-16  Francois Felix Ingrand  <felix@ingrand.net>
 
+	* Missing Xm include files... here and there...
+
+	* shary-user-ev-function.c: why do we have this shary code IN OpenPRS?
+
 	* xhelp.c: Missing Form.h.
 
 	* ope-edit.c: Missing ToggleB.h.
