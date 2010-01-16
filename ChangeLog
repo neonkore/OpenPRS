@@ -1,3 +1,12 @@
+2010-01-16  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* ope-op-opf.c: Xm/SelectioB.h was not included... as a
+	consequence some functions returning pointers (64 bits on SL)
+	ended up returning "32bits" pointer. Stupid of me... I thought
+	Motif was including all .h independently of which widget you were
+	using. Because of this "false" assumption, the same problem may be
+	present in other places... but at least, I (and you) know.
+
 2010-01-07  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* mp-register.c (external_register_to_the_mp_host_prot):
