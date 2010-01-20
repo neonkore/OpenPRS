@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -*- Mode: Latex -*- %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% oprs-kernel.tex -- 
-%% Copyright (c) 1991-2006 Francois Felix Ingrand.
+%% Copyright (c) 1991-2010 Francois Felix Ingrand.
 %% All rights reserved.
 %%
 %% Redistribution and use in source and binary forms, with or without
@@ -1558,8 +1558,8 @@ Example of variables: \code{\$g45, \$x, \$32a, @foo, @BoO}.
 \cpindex{Variable List as a Term}
 
 A term can be a \dfn{variable list}. Its C type in the Term structure is then
-\code{LENV}. Variable lists are used for different purpose like when using
-\code{n-all} functions (\pxref{Universal Quantification of Variables}), or in
+\code{LENV}. Variable lists are used for different functions
+(\pxref{Universal Quantification of Variables}), or in 
 multi variable special actions (\pxref{Multi Variable Special Action}).
 
 Example of variable list: \code{(\$g45 \$x \$32a @foo @BoO)}.
@@ -4145,19 +4145,21 @@ this subject.
 \end{typeefa}
 
 \begin{typeefa}{Evaluable Function}{LISP\_LIST of LISP\_LIST}{n-all}{(LENV GEXPRESSION)}
-is the n-all function. It is defined for 2 terms, a \code{LENV} (a list of
+is the n-all function. It is defined for 2 terms, a \code{LISP\_LIST} (a
+lisp list of
 \code{VARIABLE}s) and a GEXPRESSION. It returns a \code{LISP\_LIST} of
 \code{LISP\_LIST} (in the same order as they are defined in LENV) containing all
 the possible bindings of \code{LENV} for which the GEXPRESSION is true in the
-database. N-ALL is used in OPs such as in \code{(! (... (n-all (\$x \$y) (foo \$y
+database. N-ALL is used in OPs such as in \code{(! (... (n-all (. \$x \$y .) (foo \$y
 \$x)) ...  ))}, which returns the \code{LISP\_LIST} of \code{LISP\_LIST}
 containing the bindings of the \code{LENV} (example: if we have \code{(foo 1
-2)} and \code{(foo 3 4)} in the database, returns \code{(.(.  1 2 .) (. 3 4
+2)} and \code{(foo 3 4)} in the database, returns \code{(.(.  2 1 .) (. 4 3
 .).))} which satisfies \code{(foo \$y \$x)}. \xref{Universal Quantification of Variables} for more information on this subject.
 \end{typeefa}
 
 \begin{typeefa}{Evaluable Function}{LISP\_LIST of LISP\_LIST}{n-all-list}{(LENV GEXPRESSION)}
-is the n-all-list function. It is defined for 2 terms, a \code{LENV} (a list of
+is the n-all-list function. It is defined for 2 terms, a \code{LISP\_LIST}
+(a lisp list of
 \code{VARIABLE}) and a GEXPRESSION. It returns a \code{LISP\_LIST} of
 \code{LISP\_LIST} (in the same order as they are defined in \code{LENV}) each
 containing the bindings of the variable in \code{LENV} for which the

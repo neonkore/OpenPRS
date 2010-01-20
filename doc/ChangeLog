@@ -1,3 +1,9 @@
+2010-01-20  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* oprs-kernel.tex (subsection{Miscellaneous Evaluable Functions}):
+	Fixed the documentation on N-ALL and N-ALL-LIST which both take
+	LISP-LIST now and not C-LIST.
+
 2004-06-08  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* oprs-macros.tex: \MP seems to be used by other macros??? which
