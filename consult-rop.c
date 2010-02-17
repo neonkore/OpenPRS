@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * relevant_op.c -- Gestion de la table des procedures "relevants"
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2010 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -82,11 +82,11 @@ Op_Expr_List consult_fact_relevant_op(Expression *expr, Relevant_Op *rk, PBoolea
 
      if ((debug_trace[RELEVANT_OP]) ||trace_forced)  {
 	  Op_Expr * km;
-	  printf(LG_STR("Relevant OP for the fact: ",
+	  printf(LG_STR("The relevant OPs for the fact: ",
 			"Les OPs relevant pour le fait: "));
 	  print_expr(expr);
-	  printf(LG_STR("are:\n",
-			"sont:\n"));
+	  printf(LG_STR(" are:\n",
+			" sont:\n"));
 	  if (sl_slist_empty(kml)) printf("NULL\n");
 	  sl_loop_through_slist(kml, km, Op_Expr *) {
 	       printf("%s ",km->op->name);
@@ -110,11 +110,11 @@ Op_Expr_List consult_goal_relevant_op(Expression *expr, Relevant_Op *rk, PBoolea
 
      if  ((debug_trace[RELEVANT_OP]) || trace_forced) {
 	  Op_Expr * km;
-	  printf(LG_STR("Relevant OP for the goal: ",
+	  printf(LG_STR("The relevant OPs for the goal: ",
 			"Les OPs relevant pour le but: "));
 	  print_expr(expr);
-	  printf(LG_STR("are:\n",
-			"sont:\n"));
+	  printf(LG_STR(" are:\n",
+			" sont:\n"));
 	  if (sl_slist_empty(kml)) printf("NULL\n");
 	  sl_loop_through_slist(kml, km, Op_Expr *) {
 	       printf("%s ",km->op->name);

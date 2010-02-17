@@ -1654,8 +1654,8 @@ ExprFrameList consult_expr(Expression *expr, Frame *frame, Database *db, PBoolea
 	  printf(LG_STR("The consultation_expr of: ",
 			"La consultation_expr de: "));
 	  print_expr(expr);
-	  printf(LG_STR("gives:\n",
-			"donne:\n"));
+	  printf(LG_STR(" gives:\n",
+			" donne:\n"));
 	  if (sl_slist_empty(efl))
 	       printf("NULL\n");
 	  sl_loop_through_slist(efl, exprf, ExprFrame *) {
@@ -1861,8 +1861,8 @@ ExprFrameList consult(Expression *expr, Frame *frame, Database *db, PBoolean fac
 	  printf(LG_STR("The consultation of the expr: ",
 			"La consultation de la expr: "));
 	  print_expr(expr);
-	  printf(LG_STR("gives:\n",
-			"donne:\n"));
+	  printf(LG_STR(" gives:\n",
+			" donne:\n"));
 	  if (sl_slist_empty(gefl))
 	       printf("NULL\n");
 	  else 

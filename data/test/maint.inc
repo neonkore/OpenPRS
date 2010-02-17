@@ -13,3 +13,6 @@ trace graphic op |Simple Tests| on
 trace graphic op |Tests| on
 trace step op |Simple Tests| on
 trace step op |Tests| on
+;trace graphic opf "maint.opf" on
+;trace step opf "maint.opf" on
+;trace text opf "maint.opf" on

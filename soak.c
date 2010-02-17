@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * soak.c -- will find all the applicable ops (determine the famous soak "Set Of Applicable OPs")...
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2010 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -469,7 +469,7 @@ Op_Instance_List find_aop_from_rop_for_maint_goal(Oprs *oprs, Op_Structure *op,
 
 	       sl_loop_through_slist(fl, inv_part_frame, Frame *) {
 		    reinstall_frame(inv_part_frame);
-		    gefl = consult(maint_cond, inv_part_frame, oprs->database, FALSE);
+		    gefl = consult(EXPR_EXPR1(maint_cond), inv_part_frame, oprs->database, FALSE);
 		    /* We do not need the gexpr, just the frame. */
 		    
 		    desinstall_frame(inv_part_frame,frame);

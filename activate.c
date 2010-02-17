@@ -1644,7 +1644,7 @@ void restore_suspended_tib(Thread_Intention_Block *tib)
 
      continue_tib(susp_tib);
      susp_tib->current_goal->echoue = NOT_FAILED;
-     susp_tib->maintain_condition = make_and_install_condition(MAINTAIN_ACTIVATION, NULL, susp_tib, susp_tib->maintain, TIB_FRAME(susp_tib));
+     susp_tib->maintain_condition = make_and_install_condition(MAINTAIN_ACTIVATION, NULL, susp_tib, EXPR_EXPR1(susp_tib->maintain), TIB_FRAME(susp_tib));
 
      /* delete this one */
      remove_from_active_tib(tib);

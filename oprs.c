@@ -581,8 +581,10 @@ void add_goal(Goal *goal, Oprs *oprs)
 	       PBoolean one_achieve = FALSE;
 	       PBoolean one_maint = FALSE;
 	       Expression *expr;
+	       Term *term;
 
-	       sl_loop_through_slist(EXPR_TERMS(goal->statement), expr, Expression *) {
+	       sl_loop_through_slist(EXPR_TERMS(goal->statement), term, Term *) {
+		    expr = TERM_EXPR(term);
 		    dope = expr_db_type(expr);
 		    tope = expr_temporal_type(expr);
 		    if (dope) {
@@ -646,7 +648,8 @@ void add_goal(Goal *goal, Oprs *oprs)
 			 TIME_STOP(&goal->reception,T_GOAL_REC_SOAK);
 			 TIME_STAMP(&goal->soak);	/* for statistics */
 #endif /* OPRS_PROFILING */
-			 sl_loop_through_slist(EXPR_TERMS(goal->statement), expr, Expression *) {
+			 sl_loop_through_slist(EXPR_TERMS(goal->statement), term, Term *) {
+			      expr = TERM_EXPR(term);
 			      dope = expr_db_type(expr);
 			      switch (dope) {
 			      case DB_CONC: {

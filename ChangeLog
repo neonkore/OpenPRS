@@ -1,3 +1,19 @@
+2010-02-17  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* user-ev-function.c (declare_user_eval_funct): DO NOT CALL an
+	evaluation function TOTO... some test OPs (such as the one in
+	maint.opf) use a TOTO predicate, and it is then called as a function.
+
+	* activate.c (restore_suspended_tib) soak.c (find_aop_from_rop_for_maint_goal): still the same
+	bug... progressing slowly.
+
+	* database.c  and  consult-rop.c (consult_goal_relevant_op): Fixes some mispelling
+	and bad printing.
+
+	* oprs.c: add_goal. Fix a long standing bug with complex goals
+	containing preserve and maintaint... (sorry Dave it took so long
+	to fix it).
+
 2010-01-16  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* Missing Xm include files... here and there...
