@@ -256,15 +256,6 @@ Term *action_log_printf(TermList terms)
 	fprint_term(f_log_a[file_nb],find_binding(term));
 	print_backslash = save_pb;
 	break;
-      case 't':
-	if ((term = (Term *)sl_get_slist_next(terms, term)) == 0)
-	  report_fatal_external_error(LG_STR("Directive and no term left to print in action_printf.",
-					     "Des directives subsistent mais plus de termes à imprimer dans la fonction action_printf."));
-	save_pb = print_backslash;
-	print_backslash = TRUE;
-	fprint_term(f_log_a[file_nb],find_binding(term));
-	print_backslash = save_pb;
-	break;
       case '%':
 	fputc ('%' ,f_log_a[file_nb]);
 	break;
