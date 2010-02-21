@@ -1479,7 +1479,7 @@ them, we indicate in parenthesis the C type as defined in
 
 A term can be an \dfn{integer}.  Its C type is then \code{INTEGER}. In the \CPK{},
 integers become C \code{int}. A direct consequence is that they are not
-bignums (a la Lisp_. Therefore, there are maximum values for these numbers. Check the C
+bignums (a la Lisp). Therefore, there are maximum values for these numbers. Check the C
 compiler and your machine architecture for specific maximum and minimum
 values.
 
@@ -1492,7 +1492,7 @@ Example of numbers which are probably not recognized as integers:
 \cpindex{Long long integer as a Term}
 
 A term can be a \dfn{long long integer}, i.e. a 64 bits integer.  Its C type
-is then \code{LONG_LONG}. In the \CPK{}, long long integers become C
+is then \code{LONG\_LONG}. In the \CPK{}, long long integers become C
 \code{long long int}. You can perform computation on integer larger than the
 ``regular'' int. Yet , there is a maximum value (probably 2**(63) - 1). Check the C compiler
 and your machine architecture for specific maximum and minimum values.
@@ -2006,7 +2006,7 @@ fields. There is no real reason for them to exist under this form, and they are
 provided, as is, more for upward compatibility with SRI Lisp \OPRS{} than for
 real syntactic reasons. The parser has been modified to allow directly
 gexpressions and gtexpressions. The parser does nore recognizes the old
-\code{*FACT} and \code{*GOAL} markers (\pxref{Principal Differences with SRI OPRS}).
+\code{*FACT} and \code{*GOAL} markers (\pxref{Principal Differences with SRI PRS}).
 
 \noindent
 \code{gmexpression := mexpression | lmexpression} \*
@@ -3339,7 +3339,7 @@ possible, we will specify the number of arguments and the type of the
 To help the reader understand the descriptions for the evaluable predicates
 in the following section, consider the \code{>} (greater than) evaluable predicate:
 
-\begin{typeep}{Evaluable Predicate} {PBoolean} {>} {(LONG_LONG or INTEGER or FLOAT)}
+\begin{typeep}{Evaluable Predicate} {PBoolean} {>} {(LONG\_LONG or INTEGER or FLOAT)}
 is the greater than function. It is defined for two terms (subsequent
 terms in the list are ignored). It can compare any numbers (\code{INTEGER} or
 \code{FLOAT}).
@@ -3502,7 +3502,7 @@ Return \code{TRUE} in all other cases.
 
 \begin{typeep}{Evaluable Predicate}{PBoolean}{NUMBERP}{(Any Term)}
 It is defined for one term (subsequent terms in the list are ignored). It
-returns \code{TRUE} if the term is a \code{FLOAT}, an \code{INTEGER} or a \code{LONG_LONG}, and 
+returns \code{TRUE} if the term is a \code{FLOAT}, an \code{INTEGER} or a \code{LONG\_LONG}, and 
 returns \code{FALSE} otherwise.
 \end{typeep}
 
@@ -3639,21 +3639,21 @@ To help the reader understand the descriptions for the evaluable functions
 in the following section, consider the \code{+} (plus) evaluable function:
 
 \begin{typeefa}{Evaluable Function}{INTEGER or FLOAT or
-    LONG_LONG}{+}{({INTEGER or LONG_LONG or FLOAT}+)} is the plus function.
+    LONG\_LONG}{+}{({INTEGER or LONG\_LONG or FLOAT}+)} is the plus function.
   It is defined for n terms. It adds any numbers to the first argument
-  (\code{INTEGER} or \code{LONG_LONG} or \code{FLOAT}), and returns a term
+  (\code{INTEGER} or \code{LONG\_LONG} or \code{FLOAT}), and returns a term
   containing the result casted according to the passed arguments (if all
   \code{INTEGER}s then \code{INTEGER}, if all \code{INTEGER} or
-  \code{LONG_LONG} then \code{LONG_LONG}, \code{FLOAT} otherwise).
+  \code{LONG\_LONG} then \code{LONG\_LONG}, \code{FLOAT} otherwise).
 \end{typeefa}
 
-The \code{INTEGER or LONG_LONG or FLOAT} before the function name \code{+}
+The \code{INTEGER or LONG\_LONG or FLOAT} before the function name \code{+}
 is the type of the object contained in the \code{Term *} object that is
-returned by this \code{+} function.  The \code{(INTEGER or LONG_LONG or
+returned by this \code{+} function.  The \code{(INTEGER or LONG\_LONG or
   FLOAT)+} after the function name specifies the type of the object
 contained in the TermList which is the argument to the \code{plus} function.
 In this case, it means at least one argument (this is represented with the
-trailing +), and all the arguments must be \code{FLOAT}, \code{LONG_LONG} or
+trailing +), and all the arguments must be \code{FLOAT}, \code{LONG\_LONG} or
 \code{INTEGER} \code{Term *}.  \xref{liblist.a library}, for examples of how
 to access different types of objects contained in TermList, as well as
 \nxref{How to Define your Own Evaluable Functions}, for examples of how to
@@ -3671,7 +3671,7 @@ type, or to the type of objects they manipulate/return.
 
 These evaluable functions deal with numbers and perform the common arithmetic
 operation. All functions taking \code{INTEGER} or \code{FLOAT} also now
-takes \code{LONG_LONG}... and behave as expected with respect to casting.
+takes \code{LONG\_LONG}... and behave as expected with respect to casting.
 
 \begin{typeefa}{Evaluable Function}{INTEGER or FLOAT}{+}{({INTEGER or FLOAT}+)}
 is the plus function. It is defined for n terms. It adds any numbers to the
@@ -4581,7 +4581,11 @@ i.e. a list containing the word \code{FORMAT}, then a string, and finally a
 number of variables or terms.  The \samp{\%d} in the string will be replaced at
 print time with the value of the corresponding terms or variables. The
 following directives are supported: \samp{\%g}, \samp{\%d}, \samp{\%f} and
-\samp{\%s}. It does not print a cariage return at the end of the string.
+\samp{\%s}. 
+It does not print a carriage return at the end of the string.
+NEW DJM: The directive \samp{\%t} is like 
+\samp{\%s} except that it will preserve the double-quotes around strings...this is useful
+for writing out PRS terms that can be read back in again.  Hence 't' for term.
 \end{typeefa}
 
 \subsubsection{Input Actions}
@@ -5707,8 +5711,8 @@ slice the execution of actions.
 
 See \code{action\_first\_call} and \code{action\_number} (\pxref{Intention Manipulation Functions}).
 
-
 %%% Local Variables: 
 %%% mode: latex
 %%% TeX-master: "oprs"
+%%% TeX-PDF-mode: t
 %%% End: 

@@ -3,7 +3,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * oprs-parser.y -- yacc grammaire
  * 
- * Copyright (c) 1991-2005 Francois Felix Ingrand.
+ * Copyright (c) 1991-2010 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -509,9 +509,9 @@ command:
 	| TAKE_STDIN_TK				{take_the_stdin();}
 	| COMPLETION_TK				{send_completion_to_server(current_oprs->relevant_op);}
 	| RESET_TK KERNEL_TK			{reset_oprs_kernel(current_oprs);}
-	| CONCLUDE_TK  				{yy_begin_0(); check_pfr = FALSE; check_pfr = FALSE;} 
+	| CONCLUDE_TK  				{yy_begin_0(); check_pfr = FALSE;} 
 		 expr				{parser_conclude($3,current_oprs->database); free_expr($3);
-		 				 check_pfr = TRUE; check_pfr = TRUE;}
+		 				 check_pfr = TRUE;}
 	| CONCLUDE_TK error RESET_DOT_TK	{warning(LG_STR("Parsing error, expecting an expr after conclude",
 								"Erreur de parsing, attendait une expr après la commande conclude"));}
 	| DELETE_TK  				{yy_begin_0(); enable_variable_parsing();}
@@ -520,9 +520,9 @@ command:
 	| DELETE_TK error RESET_DOT_TK		{warning(LG_STR("Parsing error, expecting an expr after delete",
 								"Erreur de parsing, attendait une expr après la commande delete"));}
 	| CONSULT_TK  				{yy_begin_0(); enable_variable_parsing();
-						 check_pfr = FALSE; check_pfr = FALSE;}
+						 check_pfr = FALSE;}
 		expr				{parser_consult($3,current_oprs->database);
-						 check_pfr = TRUE; check_pfr = TRUE;
+						 check_pfr = TRUE;
 					         disable_variable_parsing(); free_expr($3);}
 	| CONSULT_TK error RESET_DOT_TK		{warning(LG_STR("Parsing error, expecting an expr after consult",
 								"Erreur de parsing, attendait une expr après la commande consult"));}
@@ -660,9 +660,9 @@ add_frame:
 	ADD_TK 					{enable_variable_parsing(); yy_begin_0();}
 	;
 
-echo_tout:					{check_pfr = FALSE; check_pfr = FALSE;}
+echo_tout:					{check_pfr = FALSE;}
         expr					{print_expr($2); free_expr($2); printf("\n");
-						 check_pfr = TRUE; check_pfr = TRUE;}
+						 check_pfr = TRUE;}
 	;
 
 /*DB section*/

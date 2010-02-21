@@ -1,3 +1,11 @@
+2010-02-21  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* oprs-kernel.tex: Jeff Rye (jrye@sift.info) Typos and added the
+	doc for the new format 	directive.
+
+	* mp.tex: some "package" had been changed in "pacopage" by a
+	"stupid" global query replace ka->op...
+
 2010-01-22  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* oprs-kernel.tex (subsection{Miscellaneous Evaluable Functions}):

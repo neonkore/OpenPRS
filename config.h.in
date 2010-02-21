@@ -74,6 +74,12 @@
 #endif
 #endif
 
+
+/* Has the fork function call. */
+#ifdef HAVE_FORK
+#define HAS_FORK
+#endif
+
 #define INLINE inline
 
 
@@ -202,9 +208,6 @@
 
 /* Use WinSock (Win95) */
 #undef WINSOCK
-
-/* Can fork a new process. */
-#undef HAS_FORK
 
 /* Has times function. */
 #undef HAS_TIMES

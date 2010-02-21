@@ -1,3 +1,11 @@
+2010-02-21  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* action.c: Jeff Rye (jrye@sift.info) added a new format directive.
+
+2010-02-18  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* oprs-parser.y: redundant code...
+
 2010-02-17  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* user-ev-function.c (declare_user_eval_funct): DO NOT CALL an

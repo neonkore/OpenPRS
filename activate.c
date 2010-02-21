@@ -526,7 +526,7 @@ PBoolean conclude_effects(ExprList effs, List_Envar lenv, Oprs *oprs)
 	  }
 	  default:
 	       fprintf(stderr,LG_STR("ERROR: conclude_effects: Unknown operator in effects part.\n",
-				     "ERREUR: conclude_effects: Opérateur  inconnu dans la partie effets.\n")); 
+				     "ERREUR: conclude_effects: Opérateur inconnu dans la partie effets.\n")); 
 	       break;
 	  }
 	  free_expr(expr2);
