@@ -995,3 +995,15 @@ Makefile: Makefile.in config.status
 
 config.status: $(srcdir)/configure
 	./config.status --recheck
+
+dist_name = @PACKAGE_TARNAME@-@PACKAGE_VERSION@
+.PHONY: dist-robotpkg git-tag
+
+git-tag:
+	git tag -m "release @PACKAGE_VERSION@"  $(dist_name)
+
+dist-robotpkg:
+	(cd $(top_srcdir); \
+	git archive --format=tar --prefix=$(dist_name)/ $(dist_name) | \
+	gzip -c - ) > $(dist_name).tar.gz
+	scp $(dist_name).tar.gz softs.laas.fr:/ftp/pub/openrobots/openprs/
