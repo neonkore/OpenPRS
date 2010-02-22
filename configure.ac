@@ -3,7 +3,7 @@
 
 AC_PREREQ(2.53)
 
-AC_INIT(Open PRS, 1.0b5, felix@laas.fr, openprs)
+AC_INIT(Open PRS, 1.0b6, felix@laas.fr, openprs)
 AC_CONFIG_SRCDIR([oprs-main.c])
 AC_CONFIG_HEADERS([config-ac.h config.h])
 AC_CONFIG_AUX_DIR([util])
