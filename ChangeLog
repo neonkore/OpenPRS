@@ -1,3 +1,12 @@
+2010-02-22  Francois Felix Ingrand  <felix@ingrand.net>
+
+	*  git clone http://softs.laas.fr/git/robots/openprs.git
+	should give access to the git repository in anonymous mode. One
+	cannot commit, but still, one can send me patches to be considered
+	for inclusion in the official release.
+	I also added the openprs mail list as a recipient of the the git
+	messages. 
+
 2010-02-21  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* action.c: Jeff Rye (jrye@sift.info) added a new format directive.
