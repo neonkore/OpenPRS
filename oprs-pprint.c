@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * oprs-pprint.c -- 
  * 
- * Copyright (c) 1991-2005 Francois Felix Ingrand.
+ * Copyright (c) 1991-2010 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -367,9 +367,9 @@ ListLines pretty_print_user_pointer(int width, void *i)
      Line *tmp_line = make_line();
      ListLines lline = sl_make_slist();
      
-     tmp_line->width = NUM_CHAR_SPRINT(sprintf(tmp_str,"%#x", (unsigned int)i));
+     tmp_line->width = NUM_CHAR_SPRINT(sprintf(tmp_str,"%p", i));
      tmp_line->str = (char *) MALLOC((tmp_line->width + 1) * sizeof(char));
-     sprintf(tmp_line->str,"%#x", (unsigned int)i);
+     sprintf(tmp_line->str,"%p", i);
      sl_add_to_head(lline, tmp_line);
 
      return lline;
@@ -381,12 +381,12 @@ ListLines pretty_print_user_memory(int width, U_Memory *i)
      Line *tmp_line = make_line();
      ListLines lline = sl_make_slist();
      
-     tmp_line->width = NUM_CHAR_SPRINT(sprintf(tmp_str,"<%#x %d>",
-							  (unsigned int)i->mem,
+     tmp_line->width = NUM_CHAR_SPRINT(sprintf(tmp_str,"<%p %d>",
+							  i->mem,
 							  i->size));
      tmp_line->str = (char *) MALLOC((tmp_line->width + 1) * sizeof(char));
-     sprintf(tmp_line->str, "<%#x %d>",
-	     (unsigned int)i->mem,
+     sprintf(tmp_line->str, "<%p %d>",
+	     i->mem,
 	     i->size);
      sl_add_to_head(lline, tmp_line);
 
@@ -2042,8 +2042,8 @@ ListLines pretty_print_fact(int width, Fact *fact)
      char tmp_str[32]; /* 18 should be enough */
      ListLines lline = sl_make_slist();
 
-     sprintf(tmp_str,LG_STR("<Fact %#x>",
-			    "<Fait %#x>"), (unsigned int)fact);
+     sprintf(tmp_str,LG_STR("<Fact %p>",
+			    "<Fait %p>"), fact);
      
      sl_add_to_head(lline, create_line(tmp_str));
      return lline;
@@ -2054,8 +2054,8 @@ ListLines pretty_print_goal(int width, Goal *goal)
      char tmp_str[32]; /* 18 should be enough */
      ListLines lline = sl_make_slist();
 
-     sprintf(tmp_str,LG_STR("<Goal %#x>",
-			    "<But %#x>"),(unsigned int)goal);
+     sprintf(tmp_str,LG_STR("<Goal %p>",
+			    "<But %p>"),goal);
      
      sl_add_to_head(lline, create_line(tmp_str));
      return lline;
@@ -2068,12 +2068,12 @@ ListLines pretty_print_intention(int width, Intention *in)
      Line *first_line, *tmp_line;
 
      if (in->id == NULL) {
-	  sprintf(tmp_str,LG_STR("<Intention %#x>",
-				 "<Intention %#x>"), (unsigned int)in);
+	  sprintf(tmp_str,LG_STR("<Intention %p>",
+				 "<Intention %p>"), in);
 	  first_line = create_line(tmp_str);
      } else {
-	  sprintf(tmp_str,LG_STR("<Intention %#x",
-				 "<Intention %#x"), (unsigned int)in);
+	  sprintf(tmp_str,LG_STR("<Intention %p",
+				 "<Intention %p"), in);
 	  first_line = create_line(tmp_str);
 
 	  tmp_line = make_line();
@@ -2091,8 +2091,8 @@ ListLines pretty_print_op_instance(int width,  Op_Instance *opi)
      char tmp_str[32]; /* 25 should be enough */
      ListLines lline = sl_make_slist();
 
-     sprintf(tmp_str,LG_STR("<Op_instance %#x>",
-			    "<Op_instance %#x>"), (unsigned int)opi);
+     sprintf(tmp_str,LG_STR("<Op_instance %p>",
+			    "<Op_instance %p>"), opi);
      
      sl_add_to_head(lline, create_line(tmp_str));
      return lline;

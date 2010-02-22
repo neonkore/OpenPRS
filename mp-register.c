@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*-
  * mp-register.c --
  *
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2010 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -107,18 +107,6 @@ int external_register_to_the_mp_host_prot(const char *name, const char *host_nam
 
      NEWSTR_STD(name, mp_name);
 
-#ifdef VXWORKS
-     if ((host_addr =  hostGetByName(host_name)) == NULL) {
-	  perror("register_to_the_mp: gethostbyname");
-	  return(-1);
-     }
-#else
-     if ((host_entry = gethostbyname(host_name)) == NULL) {
-	  perror("register_to_the_mp: gethostbyname");
-	  return(-1);
-     }
-#endif     
-
      do {
 	  if (trial++) {	/* We will get here after the first attempt to connect. */
 	       if (CLOSE_SOCK(mp_socket) < 0) /* Close the failed socket */
@@ -141,6 +129,20 @@ int external_register_to_the_mp_host_prot(const char *name, const char *host_nam
 	       return(-1);
 	  }
 
+	  /* You have to call gethostbyname... each time, as the start_mp_oprs may reset it somehow... */
+#ifdef VXWORKS
+	  if ((host_addr =  hostGetByName(host_name)) == NULL) {
+	       perror("register_to_the_mp: gethostbyname");
+	       return(-1);
+	  }
+#else
+	  if ((host_entry = gethostbyname(host_name)) == NULL) {
+	       perror("register_to_the_mp: gethostbyname");
+	       return(-1);
+	  }
+#endif     
+	  
+	  
 #ifdef VXWORKS
 	  BZERO((char *)&socket_addr, sizeof(socket_addr));
 	  BCOPY((char *)&host_addr, (char *)&socket_addr.sin_addr,

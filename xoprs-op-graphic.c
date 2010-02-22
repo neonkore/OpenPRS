@@ -42,11 +42,8 @@ static const char* const rcsid = "$Id$";
 
 #include <X11/Intrinsic.h>
 #include <Xm/Xm.h>
-
 #include <Xm/ScrollBar.h>
 #include <Xm/DrawingA.h>
-
-/* #include <X11/X10.h> */
 
 #include "macro.h"
 

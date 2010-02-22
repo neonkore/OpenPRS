@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*-
  * oprs-main.c --
  *
- * Copyright (c) 1991-2004 Francois Felix Ingrand.
+ * Copyright (c) 1991-2010 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -493,7 +493,6 @@ int main(int argc, char **argv, char **envp)
 {
      Oprs_Client *oprs_cl;
      Slist *oprslist2;
-     PBoolean ignore;
 #if defined(HAS_READLINE)
      char hist_filename[FILENAME_MAX];
      char *home;

@@ -1,7 +1,7 @@
 static const char* const rcsid = "$Id$";
 
 /*
- * Copyright (c) 1991-2004 Francois Felix Ingrand.
+ * Copyright (c) 1991-2009 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -500,7 +500,10 @@ static void malloc_error(char *str, char *func, char *ap)
 #define BLOCK_BITS (BLOCK_SIZE_ALIGNED - 1) /* low bits below 1k */
 #endif
 
-#define is_small(ptr) ((((int) ptr) & BLOCK_BITS) != 0)
+
+/* We can cast to int, because we areonly interested in the lower bits. */
+
+#define is_small(ptr) (((long)(ptr) & (long)BLOCK_BITS) != 0)
 
 
 #define MAX_REFCOUNT ((unsigned short) ~0) /* beyond this, the block is un-freeable */
@@ -881,7 +884,7 @@ OPRS_NODE _MALLOC(size_t nbytes)
 #endif
 		    if ((size -= ptr->size) <  (signed)ptr->size)
 			 break;
-		    p = NEXT(p) = (memory) (((int) p) + ptr->size);
+		    p = NEXT(p) = (memory) (((void *) p) + ptr->size);
 	       }
 
 	       NEXT(p) = ptr->next_node; /* should be null */
@@ -909,7 +912,7 @@ OPRS_NODE _MALLOC(size_t nbytes)
 #elif defined(USE_MULTI_THREAD)
 	  oprs_pthread_mutex_unlock(&malloc_mtx);
 #endif
-	  return (OPRS_NODE) (((int) p) + HEADSIZE());
+	  return (OPRS_NODE) (((void *) p) + HEADSIZE());
      }
 }
 
@@ -935,7 +938,7 @@ void* _DUP_ALLOC(OPRS_NODE ap)	/* pointer to the user's block */
 	  if (HEAD(mp).refcount < MAX_REFCOUNT) /* so we don't overflow char */
 	       ++HEAD(mp).refcount; /* bump the reference count */
 	  else
-	       fprintf(stderr, "Warning: dup 0x%x duplicated more than %d times.\n", (unsigned int)ap, MAX_REFCOUNT);
+	       fprintf(stderr, "Warning: dup %p duplicated more than %d times.\n", ap, MAX_REFCOUNT);
      } else {
 	
 	  /* long_node are referenced by a list to make sure we do not swap
@@ -956,7 +959,7 @@ void* _DUP_ALLOC(OPRS_NODE ap)	/* pointer to the user's block */
 	  if (lp->head.refcount < MAX_REFCOUNT) /* so we don't overflow char */
 	       ++lp->head.refcount; /* bump the reference count */
 	  else
-	       fprintf(stderr, "Warning: dup 0x%x duplicated more than %d times.\n", (unsigned int)ap, MAX_REFCOUNT);
+	       fprintf(stderr, "Warning: dup %p duplicated more than %d times.\n", ap, MAX_REFCOUNT);
      }
      return ap;
 }
@@ -1144,7 +1147,7 @@ unsigned alloc_size(register OPRS_NODE ap)
 
      if (ap == NULL) return 0;
 
-     size_of_node(temp, (char *)ap);
+     size_of_node(temp, (void *)ap);
 
      return temp;
 }
@@ -1160,7 +1163,7 @@ OPRS_NODE _REALLOC(OPRS_NODE ap, size_t nbytes)
       * reallocing to 0 should keep the storage around */
      if (nbytes == 0) return ap;
 
-     size_of_node(size, (char *)ap); /* how big is it? */
+     size_of_node(size, (void *)ap); /* how big is it? */
 
      if ((res = _MALLOC(nbytes)) != NULL)
 	  BCOPY(ap, res, (nbytes > size) ? size : nbytes);
@@ -1178,7 +1181,7 @@ OPRS_NODE copy_alloc(register OPRS_NODE ap)
 
      if (ap == NULL) return NULL;
 
-     size_of_node(onb, (char *)ap);
+     size_of_node(onb, (void *)ap);
 
      if ((res = malloc1(onb)) == NULL) return(NULL);
 

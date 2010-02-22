@@ -6380,13 +6380,11 @@ int
 main ()
 {
 
-int main() {
 Display *display=NULL;
 short   major_version, minor_version;
 Status rc;
 rc=XpQueryVersion(display, &major_version, &minor_version);
 exit(0);
-}
 
   ;
   return 0;

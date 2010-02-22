@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * action.c -- 
  * 
- * Copyright (c) 1991-2006 Francois Felix Ingrand.
+ * Copyright (c) 1991-2010 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -100,11 +100,12 @@ static const char* const rcsid = "$Id$";
 
 
 /*********Log function and variables*************/
+/* Who wrote this? I did not (Felix) */
 #define MAX_LOG_FILE 10
 FILE *f_log_a[MAX_LOG_FILE];
 int   f_log_init = 0;
 
-int init_log_array(){
+void init_log_array(){
   int i;
   
   for(i=0 ; i<MAX_LOG_FILE ; i++)
@@ -236,13 +237,22 @@ Term *action_log_printf(TermList terms)
       switch (*++fmt_str2) {
       case 'g':
       case 'd':
-	       case 'f':
+      case 'f':
       case 's':
 	if ((term = (Term *)sl_get_slist_next(terms, term)) == 0)
 	  report_fatal_external_error(LG_STR("Directive and no term left to print in action_printf.",
 					     "Des directives subsistent mais plus de termes à imprimer dans la fonction action_printf."));
 	save_pb = print_backslash;
 	print_backslash = FALSE;
+	fprint_term(f_log_a[file_nb],find_binding(term));
+	print_backslash = save_pb;
+	break;
+      case 't':
+	if ((term = (Term *)sl_get_slist_next(terms, term)) == 0)
+	  report_fatal_external_error(LG_STR("Directive and no term left to print in action_printf.",
+					     "Des directives subsistent mais plus de termes à imprimer dans la fonction action_printf."));
+	save_pb = print_backslash;
+	print_backslash = TRUE;
 	fprint_term(f_log_a[file_nb],find_binding(term));
 	print_backslash = save_pb;
 	break;
@@ -535,7 +545,7 @@ Term *action_printf(TermList terms)
 
 
      t = (Term *)sl_get_slist_head(terms);
-     if (t->type != EXPRESSION)
+     if (t->type != EXPRESSION) 
 	  report_fatal_external_error(oprs_strerror(PE_EXPECTED_EXPRESSION_TERM_TYPE));
 
      tc = t->u.expr;

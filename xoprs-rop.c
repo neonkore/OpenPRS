@@ -42,8 +42,9 @@ static const char* const rcsid = "$Id$";
 
 #include <X11/Intrinsic.h>
 #include <Xm/Xm.h>
-
+#include <Xm/Text.h>
 #include <Xm/SelectioB.h>
+#include <Xm/List.h>
 
 #include "macro.h"
 #include "oprs-type.h"

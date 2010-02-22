@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * oprs-load.c -- 
  * 
- * Copyright (c) 1991-2005 Francois Felix Ingrand.
+ * Copyright (c) 1991-2010 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -144,7 +144,7 @@ static int reloc_table_size = DUMP_LOAD_TABLE_SIZE, reloc_table_mod = DUMP_LOAD_
 
 int reloc_table_hash_func(void *addr)
 {
-     return ((unsigned)addr>>3) & reloc_table_mod;
+     return ((unsigned int)addr>>3) & reloc_table_mod;
 }
 
 PBoolean reloc_table_match_func(void *ad1, Object_Reloc *or)
@@ -340,10 +340,12 @@ long load_long(void)
 
 void *load_ptr(void)
 {
-     void *ptr;
+     unsigned long long hi;
+     u_char buf[8];
 
-     load_read(&ptr, sizeof(void *));
-     return (void *)ntohl((u_long)ptr);
+     load_read(buf, 8);
+     ntohll(buf, &hi);
+     return (void *)hi;		/* This is goind to cause a warning on a 32 bits machine... */
 }
 
 #define SWAP(x,y,tmp) tmp=y;y=x;x=tmp
@@ -531,8 +533,8 @@ void flush_load_session()
 	  sl_loop_through_slist(not_loaded, or, Object_Reloc *) {
 	       void **addr_ref;
 	   
-	       fprintf(stderr,"type: %s, old_addr: %#x, # referencers: %d.\n",
-		       dump_type_name[or->type], (unsigned int)or->old_addr,
+	       fprintf(stderr,"type: %s, old_addr: %p, # referencers: %d.\n",
+		       dump_type_name[or->type], or->old_addr,
 		       sl_slist_length(or->u.addr_ref_list));
 	       sl_loop_through_slist(or->u.addr_ref_list, addr_ref, void *) {
 		    *addr_ref = NULL;

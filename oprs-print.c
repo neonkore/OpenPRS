@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * oprs-print.c -- Fonction de construction et de print pour les types...
  * 
- * Copyright (c) 1991-2005 Francois Felix Ingrand.
+ * Copyright (c) 1991-2010 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -362,10 +362,10 @@ void fprint_term(FILE *f,Term *term)
 	       fprint_intention(f, term->u.in);
 	       break;
 	  case U_POINTER: 	 
-	       fprintf(f,"%#x",(unsigned int)term->u.u_pointer);
+	       fprintf(f, "%p", term->u.u_pointer);
 	       break;
 	  case U_MEMORY: 	 
-	       fprintf(f,"<%#x %d>",(unsigned int)term->u.u_memory->mem,
+	       fprintf(f,"<%p %d>", term->u.u_memory->mem,
 		       term->u.u_memory->size);
 	       break;
 	  case TT_FLOAT: 	 

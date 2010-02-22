@@ -1,3 +1,83 @@
+2010-02-22  Francois Felix Ingrand  <felix@ingrand.net>
+
+	*  git clone http://softs.laas.fr/git/robots/openprs.git
+	should give access to the git repository in anonymous mode. One
+	cannot commit, but still, one can send me patches to be considered
+	for inclusion in the official release.
+	I also added the openprs mail list as a recipient of the the git
+	messages. 
+
+2010-02-21  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* action.c: Jeff Rye (jrye@sift.info) added a new format directive.
+
+2010-02-18  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* oprs-parser.y: redundant code...
+
+2010-02-17  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* user-ev-function.c (declare_user_eval_funct): DO NOT CALL an
+	evaluation function TOTO... some test OPs (such as the one in
+	maint.opf) use a TOTO predicate, and it is then called as a function.
+
+	* activate.c (restore_suspended_tib) soak.c (find_aop_from_rop_for_maint_goal): still the same
+	bug... progressing slowly.
+
+	* database.c  and  consult-rop.c (consult_goal_relevant_op): Fixes some mispelling
+	and bad printing.
+
+	* oprs.c: add_goal. Fix a long standing bug with complex goals
+	containing preserve and maintaint... (sorry Dave it took so long
+	to fix it).
+
+2010-01-16  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* Missing Xm include files... here and there...
+
+	* shary-user-ev-function.c: why do we have this shary code IN OpenPRS?
+
+	* xhelp.c: Missing Form.h.
+
+	* ope-edit.c: Missing ToggleB.h.
+
+	* ope-op-opf.c: Xm/SelectioB.h was not included... as a
+	consequence some functions returning pointers (64 bits on SL)
+	ended up returning "32bits" pointer. Stupid of me... I thought
+	Motif was including all .h independently of which widget you were
+	using. Because of this "false" assumption, the same problem may be
+	present in other places... but at least, I (and you) know.
+
+2010-01-07  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* mp-register.c (external_register_to_the_mp_host_prot):
+	host_entry was reset by the start_mp_oprs, so I call it before
+	each connect attempt (overkilling, but better safe than sorry).
+
+	Now oprs-server (or any prs client) can properly start the
+	message-passer and then successfully connect to it.
+
+	* unification.c (matching_lenv_between_frames): Try to minimize
+	void* and int mixup.
+
+	* macro.h: bcopy and bzero should now take (void *).
+
+2009-12-14  Francois Felix Ingrand  <felix@ingrand.net>
+
+
+	* oprs-load.c (load_ptr): Now ptr can be 64 bits. Hence we dump
+	and load unsgined long long (even on 32 bits machine to make the dump
+	portable)... But we will get a warning upon reloading those 64
+	bits address on a 32 bits machine.
+
+2009-12-07  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* Various changes to make OpenPRS to compile on snow leopard which
+	is now 64 bits by default. Hopefully, theses changes will not
+	affect the 32 bits machines...
+
+	* mp.c: time_t is a long.
+
 2009-08-18  Felix Ingrand  <felix@laas.fr>
 
 	* Fixed the long standing problem with lesstif enable to properly

@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * user-trace.c -- 
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2010 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -129,11 +129,8 @@ void user_trace_suc_fail(Op_Instance *op_ins, Goal* goal, Fact *fact, PBoolean s
      /* Will trace when a op_ins lead to a succes or a failure.
 	the goal OR a fact (one will be NULL) which lead to this op_instance is
 	also passed. */
-     printf("User Trace: OP Instance %#x, Goal %#x, Fact %#x : %s.\n",
-	     (unsigned int) op_ins,
-	     (unsigned int) goal,
-	     (unsigned int) fact,
-	     (success? "Succeed":"Failed"));
+     printf("User Trace: OP Instance %p, Goal %p, Fact %p : %s.\n",
+	     op_ins, goal, fact, (success? "Succeed":"Failed"));
 
      return;
 }
@@ -143,9 +140,8 @@ void user_trace_intend(Thread_Intention_Block *tib,Op_Instance *op_inst)
      /* Will be called when intending a new op_instance. 
 	If tib == NULL intending in a new intention, otherwise it points to the
 	tib in which it will be intended. */
-     printf("User Trace: Intending op_inst %#x in tib %#x.\n",
-	     (unsigned int) op_inst,
-	     (unsigned int) tib);
+     printf("User Trace: Intending op_inst %p in tib %p.\n",
+	     op_inst, tib);
 
      return;
 }
@@ -155,21 +151,16 @@ void user_trace_op(Thread_Intention_Block *tib,Op_Instance *op_inst, Goal *goal,
      /* 0 for action op, 1 posting a goal/edge, 2 unposting a goal/edge. */
      switch (what) {
      case 0:
-	  printf("User Trace: Action OP in tib %#x, op_inst %#x.\n",
-		 (unsigned int) tib,
-		 (unsigned int) op_inst);
+	  printf("User Trace: Action OP in tib %p, op_inst %p.\n",
+		 tib,op_inst);
 	  break;
      case 1:
-	  printf("User Trace: Posting goal %#x in tib %#x, op_inst %#x.\n",
-		 (unsigned int) goal,
-		 (unsigned int) tib,
-		 (unsigned int) op_inst);
+	  printf("User Trace: Posting goal %p in tib %p, op_inst %p.\n",
+		 goal, tib, op_inst);
 	  break;
      case 2:
-	  printf("User Trace: Unposting goal  %#x in OP in tib %#x, op_inst %#x.\n",
-		 (unsigned int) goal,
-		 (unsigned int) tib,
-		 (unsigned int) op_inst);
+	  printf("User Trace: Unposting goal  %p in OP in tib %p, op_inst %p.\n",
+		 goal, tib, op_inst);
 	  break;
      }
      return;

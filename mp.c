@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*-
  * mp-oprs.c -- Message passer.
  *
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2010 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -390,7 +390,6 @@ int main(int argc, char **argv, char **envp)
      fd_set writefds; 
      int nfound, ns;
      socklen_t fromlen;
-     PBoolean ignore;
 
      struct sockaddr_in from_addr;
 
@@ -454,7 +453,7 @@ int main(int argc, char **argv, char **envp)
 		   time_t tt = clock_value.tv_sec;
 		   if (mp_log_with_timestamp) {
 		       fprintf(mp_log_file, "%s", ctime(&tt));
-		       fprintf(mp_log_file, "rough value: %d:%d\n", clock_value.tv_sec, clock_value.tv_usec);
+		       fprintf(mp_log_file, "rough value: %ld:%d\n", clock_value.tv_sec, clock_value.tv_usec);
 		   }
 		   fprintf(mp_log_file, LG_STR("mp-oprs (%s:%d): Start logging: %s",
 					       "mp-oprs (%s:%d): Debut de logue: %s"),
@@ -754,7 +753,7 @@ void get_and_buffer_message(Mp_Oprs_Client *mpc_sender)
 		    }
 		    time_t tt = clock_value.tv_sec;
 		    fprintf(mp_log_file, "%s", ctime(&tt));
-		    fprintf(mp_log_file, "rough value: %d:%d\n", clock_value.tv_sec, clock_value.tv_usec);
+		    fprintf(mp_log_file, "rough value: %ld:%d\n", clock_value.tv_sec, clock_value.tv_usec);
 	       }
 	       fprintf(mp_log_file, LG_STR("%s multicast to",
 					   "%s multicast à"),
@@ -821,7 +820,7 @@ void get_and_buffer_message(Mp_Oprs_Client *mpc_sender)
 			 }
 			 time_t tt = clock_value.tv_sec;
 			 fprintf(mp_log_file, "%s", ctime(&tt));
-			 fprintf(mp_log_file, "rough value: %d:%d\n", clock_value.tv_sec, clock_value.tv_usec);
+			 fprintf(mp_log_file, "rough value: %ld:%d\n", clock_value.tv_sec, clock_value.tv_usec);
 		    }
 		    fprintf(mp_log_file, LG_STR("%s to %s: %s.\n",
 						"%s à %s: %s.\n"),
@@ -847,7 +846,7 @@ void get_and_buffer_message(Mp_Oprs_Client *mpc_sender)
 		    }
 		    time_t tt = clock_value.tv_sec;
 		    fprintf(mp_log_file, "%s", ctime(&tt));
-		    fprintf(mp_log_file, "rough value: %d:%d\n", clock_value.tv_sec, clock_value.tv_usec);
+		    fprintf(mp_log_file, "rough value: %ld:%d\n", clock_value.tv_sec, clock_value.tv_usec);
 	       }
 	       fprintf(mp_log_file, LG_STR("%s broadcast: %s.\n",
 					   "%s diffuse: %s.\n"), mpc_sender->name, message);

@@ -1,0 +1,3 @@
+This directrory contains various bits of code which can be useful to others (e.g. to connect to the message passer from various langage).
+
+The goal is not to compile nor to run them directly, but more to give some hints as how to program a similar thing.

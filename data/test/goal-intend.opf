@@ -64,7 +64,7 @@
     :invocation (TEST-GOAL-INTEND)
     :context ()
     :body ((! (= $GOAL (MAKE-GOAL-FROM-EXPR (! (FOO @X)))))
-           (! (= @OPI (FIND-APPLICAbLE-OPS-FOR-GOAL $GOAL)))
+           (! (= @OPI (FIND-APPLICABLE-OPS-FOR-GOAL $GOAL)))
            (WHILE (? (~ (NULL @OPI)))
               (IF (! (INTEND-AND-EXECUTE-AOP-FOR-GOAL (CAR @OPI) $GOAL))
                  (! (PRINT "OK"))

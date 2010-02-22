@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * version.c -- 
  * 
- * Copyright (c) 1991-2005 Francois Felix Ingrand.
+ * Copyright (c) 1991-2009 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,7 +45,7 @@ char *date = COMPIL_DATE;
 char *major_version = "1";
 char *status = "Beta";
 char *minor_version = "0";
-char *patchlevel = "5";
+char *patchlevel = "6";
 
 void print_version()
 {

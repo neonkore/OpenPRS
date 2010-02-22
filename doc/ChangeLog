@@ -1,3 +1,23 @@
+2010-02-21  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* oprs-kernel.tex: Jeff Rye (jrye@sift.info) Typos and added the
+	doc for the new format 	directive.
+
+	* mp.tex: some "package" had been changed in "pacopage" by a
+	"stupid" global query replace ka->op...
+
+2010-01-22  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* oprs-kernel.tex (subsection{Miscellaneous Evaluable Functions}):
+	Document term-string-cat which has been around for quite a
+	while... but was not documented.
+
+2010-01-20  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* oprs-kernel.tex (subsection{Miscellaneous Evaluable Functions}):
+	Fixed the documentation on N-ALL and N-ALL-LIST which both take
+	LISP-LIST now and not C-LIST.
+
 2004-06-08  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* oprs-macros.tex: \MP seems to be used by other macros??? which

@@ -3,7 +3,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*-
  * unification.c -- Unification pour OPRS
  *
- * Copyright (c) 1991-2005 Francois Felix Ingrand.
+ * Copyright (c) 1991-2010 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -719,7 +719,8 @@ PBoolean matching_lenv_between_frames(List_Envar le1, Frame *fr1,List_Envar le2,
 	  TermList tl1 , tl2;
 	  Term *t1, *t2;
 	  Slist *unbound1, *unbound2;
-	  int pos1 = 0, pos2 = 0;
+	  void *pos1 = 0;
+	  void *pos2 = 0;
 	  PBoolean match = TRUE;
 
 	  /* find binding for first frame */
@@ -731,11 +732,11 @@ PBoolean matching_lenv_between_frames(List_Envar le1, Frame *fr1,List_Envar le2,
 	       if (ev->value != (Term *) NULL) {
 		    t1 = find_binding(ev->value);
 		    if (t1->type == VARIABLE) /* The variable is bound to an unbound variable */
-			 sl_add_to_tail(unbound1, (void *)pos1);
+			 sl_add_to_tail(unbound1, pos1);
 		    else
 			 sl_add_to_tail(tl1, t1);
 	       } else
-		    sl_add_to_tail(unbound1, (void *)pos1);
+		    sl_add_to_tail(unbound1, pos1);
 	  }
 	  desinstall_frame(fr1, prev_inst_frame);
 
@@ -748,23 +749,23 @@ PBoolean matching_lenv_between_frames(List_Envar le1, Frame *fr1,List_Envar le2,
 	       if (ev->value != (Term *) NULL) {
 		    t2 = find_binding(ev->value);
 		    if (t2->type == VARIABLE) /* The variable is bound to an unbound variable */
-			 sl_add_to_tail(unbound2, (void *)pos2);
+			 sl_add_to_tail(unbound2, pos2);
 		    else
 			 sl_add_to_tail(tl2, t2);
 	       } else
-		    sl_add_to_tail(unbound2, (void *)pos2);
+		    sl_add_to_tail(unbound2, pos2);
 	  }
 	  desinstall_frame(fr2, prev_inst_frame);
 
-	  pos1 = (int) sl_get_from_head(unbound1);
-	  pos2 = (int) sl_get_from_head(unbound2);
+	  pos1 =  sl_get_from_head(unbound1);
+	  pos2 =  sl_get_from_head(unbound2);
 	  while ((pos1 != 0) || (pos2 != 0)) {
 	       if (pos1 !=  pos2) {
 		    match = FALSE;
 		    break;
 	       }
-	       pos1 = (int) sl_get_from_head(unbound1);
-	       pos2 = (int) sl_get_from_head(unbound2);
+	       pos1 =  sl_get_from_head(unbound1);
+	       pos2 =  sl_get_from_head(unbound2);
 	  }
 	  FREE_SLIST(unbound1);
 	  FREE_SLIST(unbound2);

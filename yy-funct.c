@@ -6,7 +6,7 @@
  */
 
 /*
- * Copyright (c) 1991-2006 Francois Felix Ingrand.
+ * Copyright (c) 1991-2010 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -115,6 +115,10 @@ int oprs_yywrap()
 	  stop_parsing_from_socket = TRUE;
 	  return 1;		/* Done with parsing... */
 	  break;
+     default:
+	  fprintf(stderr,"oprs_ywrap: unknown parse source.\n");
+	  return -1;
+
      }
 }
 

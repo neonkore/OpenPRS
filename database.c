@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*-
  * database.c -- Database management functions.
  *
- * Copyright (c) 1991-2005 Francois Felix Ingrand.
+ * Copyright (c) 1991-2010 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -352,13 +352,14 @@ Key_List make_key_elt(Symbol p, int a, int i, Term *t, PBoolean var_allowed, Lis
 	  fprintf(stderr, ".\n");
 	  longjmp(key_computation_jmp,-1);
      } else {		/* It is a variable, and we allow them with a variable semantic. */
-	  if (dup_var_list && *dup_var_list)  /* We are looking for duplicates, and not found one yet. */
+	  if (dup_var_list && *dup_var_list) {  /* We are looking for duplicates, and not found one yet. */
 	       if (sl_in_slist(*dup_var_list,t->u.var)){ /* we found one */
 		    FREE_SLIST(*dup_var_list);
 		    *dup_var_list = NULL; /* Stop looking for them. one is enough */
 	       } else {
 		    sl_add_to_head(*dup_var_list,t->u.var);
 	       }
+	  }
      }
      return kl;
 }
@@ -1653,8 +1654,8 @@ ExprFrameList consult_expr(Expression *expr, Frame *frame, Database *db, PBoolea
 	  printf(LG_STR("The consultation_expr of: ",
 			"La consultation_expr de: "));
 	  print_expr(expr);
-	  printf(LG_STR("gives:\n",
-			"donne:\n"));
+	  printf(LG_STR(" gives:\n",
+			" donne:\n"));
 	  if (sl_slist_empty(efl))
 	       printf("NULL\n");
 	  sl_loop_through_slist(efl, exprf, ExprFrame *) {
@@ -1860,8 +1861,8 @@ ExprFrameList consult(Expression *expr, Frame *frame, Database *db, PBoolean fac
 	  printf(LG_STR("The consultation of the expr: ",
 			"La consultation de la expr: "));
 	  print_expr(expr);
-	  printf(LG_STR("gives:\n",
-			"donne:\n"));
+	  printf(LG_STR(" gives:\n",
+			" donne:\n"));
 	  if (sl_slist_empty(gefl))
 	       printf("NULL\n");
 	  else 

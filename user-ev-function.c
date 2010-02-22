@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * user-ev-function.c -- contains user defined evaluable functions.
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2010 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -230,7 +230,7 @@ Term *example3_l_list_eval_func(TermList terms)
 void declare_user_eval_funct()
 {
      make_and_declare_eval_funct("TEST_UMEM",test_u_mem_eval_func, 0);
-     make_and_declare_eval_funct("TOTO",toto_eval_func, 1);
+     make_and_declare_eval_funct("DO-NOT-CALL-ME-TOTO",toto_eval_func, 1);
      make_and_declare_eval_funct("EX-LIST-1",example1_l_list_eval_func, 2);
      make_and_declare_eval_funct("EX-LIST-2",example2_l_list_eval_func, 2);
      make_and_declare_eval_funct("EX-LIST-3",example3_l_list_eval_func, 0);

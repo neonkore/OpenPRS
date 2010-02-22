@@ -3,7 +3,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * oprs-sprint.c -- 
  * 
- * Copyright (c) 1991-2005 Francois Felix Ingrand.
+ * Copyright (c) 1991-2010 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -398,10 +398,10 @@ void sprint_term(Sprinter *sp,Term *term)
 	  int i;
 	  switch (term->type) {
 	  case INTEGER: 	 
-	       SPRINT(sp,MAX_PRINTED_INT_SIZE,sprintf(f,"%d",term->u.intval));
+	       SPRINT(sp,MAX_PRINTED_INT_SIZE, sprintf(f,"%d",term->u.intval));
 	       break;
 	  case LONG_LONG: 	 
-	       SPRINT(sp,MAX_PRINTED_INT_SIZE,sprintf(f,"%lldll",term->u.llintval));
+	       SPRINT(sp,MAX_PRINTED_INT_SIZE, sprintf(f,"%lldll",term->u.llintval));
 	       break;
 	  case TT_FACT:
 	       sprint_fact(sp, term->u.fact);
@@ -416,11 +416,11 @@ void sprint_term(Sprinter *sp,Term *term)
 	       sprint_intention(sp, term->u.in);
 	       break;
 	  case U_POINTER: 	 
-	       SPRINT(sp,MAX_PRINTED_POINTER_SIZE,sprintf(f,"%#x",(unsigned int)term->u.u_pointer));
+	       SPRINT(sp,MAX_PRINTED_POINTER_SIZE,sprintf(f,"%p",term->u.u_pointer));
 	       break;
 	  case U_MEMORY: 	 
-	       SPRINT(sp,MAX_PRINTED_POINTER_SIZE,sprintf(f,"<%#x %d>",
-							  (unsigned int)term->u.u_memory->mem,
+	       SPRINT(sp,MAX_PRINTED_POINTER_SIZE,sprintf(f,"<%p %d>",
+							  term->u.u_memory->mem,
 							  term->u.u_memory->size));
 	       break;
 	  case TT_FLOAT: 	 

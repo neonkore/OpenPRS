@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * activate.c -- Executes the intentions in the intention graph.
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2010 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -526,7 +526,7 @@ PBoolean conclude_effects(ExprList effs, List_Envar lenv, Oprs *oprs)
 	  }
 	  default:
 	       fprintf(stderr,LG_STR("ERROR: conclude_effects: Unknown operator in effects part.\n",
-				     "ERREUR: conclude_effects: Opérateur  inconnu dans la partie effets.\n")); 
+				     "ERREUR: conclude_effects: Opérateur inconnu dans la partie effets.\n")); 
 	       break;
 	  }
 	  free_expr(expr2);
@@ -802,9 +802,9 @@ void report_posting_goal_ctxt_error(Expression *expr, List_Envar lenv, Thread_In
 
      if (tib->current_node)
 	  SPRINT(sp,48 + 32 + strlen(tib->curr_op_inst->op->name),
-		 sprintf(f,LG_STR("\n\toutgoing from the node %#x in OP %s",
-				  "\n\tce but provient du noeud %#x du OP %s"),
-			 (unsigned int)tib->current_node, tib->curr_op_inst->op->name));
+		 sprintf(f,LG_STR("\n\toutgoing from the node %p in OP %s",
+				  "\n\tce but provient du noeud %p du OP %s"),
+			 tib->current_node, tib->curr_op_inst->op->name));
 
      SPRINT(sp,16,sprintf(f,LG_STR("\n\tin the tib: ",
 				   "\n\tdans le tib: ")));
@@ -933,7 +933,7 @@ void untrace_op_edge(Op_Instance *op_ins,Thread_Intention_Block *tib)
 	  SPRINT(sp,16,sprintf(f,LG_STR("Unpost: ",
 					"Déposte: ")));
 	  sprint_expr(sp,goal->statement);
-	  SPRINT(sp,8 + strlen(op_ins->op->name),
+	  SPRINT(sp,16 + strlen(op_ins->op->name),
 				    sprintf(f,LG_STR(" from %s.\n",
 						     " de %s.\n"), op_ins->op->name));
 	  
@@ -981,9 +981,9 @@ PBoolean make_new_threads_and_post_goals(Thread_Intention_Block *tib, Op_Instanc
 						 " de ")));
 		    sprint_intention(sp,tib->intention);
 		    SPRINT(sp,40 + 32 + strlen(tib->curr_op_inst->op->name),
-			   sprintf(f,LG_STR(" is proceeding at node %#x from OP %s.\n",
-					    " poursuit au noeud %#x du OP %s.\n"),
-				   (unsigned int)tib->current_node,
+			   sprintf(f,LG_STR(" is proceeding at node %p from OP %s.\n",
+					    " poursuit au noeud %p du OP %s.\n"),
+				   tib->current_node,
 				   tib->curr_op_inst->op->name));
 		       
 #ifndef NO_GRAPHIX
@@ -1014,9 +1014,9 @@ PBoolean make_new_threads_and_post_goals(Thread_Intention_Block *tib, Op_Instanc
 						 " de ")));
 		    sprint_intention(sp,tib->intention);
 		    SPRINT(sp,40 + 32 + strlen(tib->curr_op_inst->op->name),
-			   sprintf(f,LG_STR(" is created at node %#x from OP %s.\n",
-					    " est créé au noeud %#x du OP %s.\n"),
-				   (unsigned int)tib->current_node,
+			   sprintf(f,LG_STR(" is created at node %p from OP %s.\n",
+					    " est créé au noeud %p du OP %s.\n"),
+				   tib->current_node,
 				   tib->curr_op_inst->op->name));
 		  
 #ifndef NO_GRAPHIX
@@ -1086,10 +1086,10 @@ Thread_Execution_Result analyze_node_and_execute_intention_body(Thread_Intention
 					       " de ")));
 		  sprint_intention(sp,tib->intention);
 		  SPRINT(sp,40 + 32 + strlen(tib->curr_op_inst->op->name),
-			 sprintf(f,LG_STR(" is joining at node %#x in OP %s.\n",
-					  " rejoint en attente au noeud %#x du OP %s.\n"),
-				 (unsigned int)tib->current_node,
-						    tib->curr_op_inst->op->name));
+			 sprintf(f,LG_STR(" is joining at node %p in OP %s.\n",
+					  " rejoint en attente au noeud %p du OP %s.\n"),
+				 tib->current_node,
+				 tib->curr_op_inst->op->name));
 		  
 #ifndef NO_GRAPHIX
 		  if (tib->intention->trace_dialog) 
@@ -1124,10 +1124,10 @@ Thread_Execution_Result analyze_node_and_execute_intention_body(Thread_Intention
 						 " de ")));
 		    sprint_intention(sp,tib->intention);
 		    SPRINT(sp,64 + 32 + strlen(tib->curr_op_inst->op->name),
-			   sprintf(f,LG_STR(" is the last thread joining at node %#x in OP %s.\n",
-					    " est le dernier thread a rejoindre au noeud %#x du OP %s.\n"),
-				   (unsigned int)tib->current_node,
-						      tib->curr_op_inst->op->name));
+			   sprintf(f,LG_STR(" is the last thread joining at node %p in OP %s.\n",
+					    " est le dernier thread a rejoindre au noeud %p du OP %s.\n"),
+				   tib->current_node,
+				   tib->curr_op_inst->op->name));
 		  
 #ifndef NO_GRAPHIX
 		    if (tib->intention->trace_dialog) 
@@ -1644,7 +1644,7 @@ void restore_suspended_tib(Thread_Intention_Block *tib)
 
      continue_tib(susp_tib);
      susp_tib->current_goal->echoue = NOT_FAILED;
-     susp_tib->maintain_condition = make_and_install_condition(MAINTAIN_ACTIVATION, NULL, susp_tib, susp_tib->maintain, TIB_FRAME(susp_tib));
+     susp_tib->maintain_condition = make_and_install_condition(MAINTAIN_ACTIVATION, NULL, susp_tib, EXPR_EXPR1(susp_tib->maintain), TIB_FRAME(susp_tib));
 
      /* delete this one */
      remove_from_active_tib(tib);
