@@ -46,6 +46,9 @@ top_srcdir=	@top_srcdir@
 
 srcdir=	@srcdir@
 
+PDFLATEX?=	pdflatex
+BIBTEX?=	bibtex
+
 .PHONY:	all index
 
 VPATH = .:$(srcdir)
@@ -78,16 +81,16 @@ all: oprs.pdf
 oprs.dvi: oprs.tex oprs-macros.tex oprs.bib $(OP_TEX) $(OP_TEXT) $(FIGURES) appendices.tex
 	latex $<
 	$(MAKE) index
-	bibtex oprs
+	$(BIBTEX) oprs
 	latex $<
 	latex $<
 
 oprs.pdf: oprs.tex oprs-macros.tex oprs.bib $(OP_TEX) $(OP_TEXT) $(FIGURES) appendices.tex
-	pdflatex $<
+	$(PDFLATEX) $<
 	$(MAKE) index
-	bibtex oprs
-	pdflatex $<
-	pdflatex $<
+	$(BIBTEX) oprs
+	$(PDFLATEX) $<
+	$(PDFLATEX) $<
 
 index: $(INDEX)
 
