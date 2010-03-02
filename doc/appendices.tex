@@ -2555,9 +2555,27 @@ These OPS can be found in the file \file{fib-par.opf}.
 \node{How to Install the OPRS Development Environment}
 \cpindex{How to Install the \COPRSDE{}}
 
-This section is completely out of date and need to be updated since I moved
-the code in Open Source...
+\textbf{This appendix is completely out of date and need to be updated since I moved
+the code in open source.}
 
+The easiest way to install \COPRSDE{} is to either to use git:
+
+\noindent
+\code{git clone http://softs.laas.fr/git/robots/openprs.git\\
+cd openprs\\
+./configure\\
+make}
+
+or to use robotpkg \url{http://homepages.laas.fr/mallet/robotpkg}. If you
+use robotpkg and have it installed already, just do:
+
+\noindent\code{cd architecture/openprs}\\
+\code{make update}
+
+\vspace{5mm}
+
+The rest of this appendix is left for ``information'' it is mostly out of
+date and useless.
 
 The installation procedure is different (although very similar), according to
 the license you have. One general comment is that most Makefile are written for

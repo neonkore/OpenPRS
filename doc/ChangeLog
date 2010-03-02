@@ -1,3 +1,12 @@
+2010-03-01  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* appendices.tex (chapter{How to Install the \COPRSDE{}}): Update
+	the how to install OpenPRS section... 
+
+	* copyright.tex: Bump the copyright year...
+
+	* oprs-macros.tex: Bump the release version number to 1.0.6 Beta.
+
 2010-02-21  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* oprs-kernel.tex: Jeff Rye (jrye@sift.info) Typos and added the

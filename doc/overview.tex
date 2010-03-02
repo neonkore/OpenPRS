@@ -115,7 +115,7 @@ written as \code{(! C)}; the test for a condition  is written as \code{(? C)};
 to wait until the condition is true is written as \code{(\^{} C)}; to passively
 maintain \code{C} is written as \code{(\# C)}; to actively maintain \code{C} is
 written as \code{(\% C)}; to assert the condition \code{C} is written as
-\code{(=> C)}; and to retract the condition \code{C} is written as \code{(~>
+\code{(=> C)}; and to retract the condition \code{C} is written as \code{(\~{}>
 C)}. For example, the goal to close valve \code{v1} could be represented as
 \code{(! (position v1 cl))}, and to test for it being closed as \code{(?
 (position v1 cl))}.
