@@ -42,32 +42,22 @@ static const char* const rcsid = "$Id$";
 
 char *host = HOST;
 char *date = COMPIL_DATE;
-char *major_version = "1";
-char *status = "Beta";
-char *minor_version = "0";
-char *patchlevel = "7";
+char *package_version = PACKAGE_VERSION;
 
 void print_version()
 {
      printf(LG_STR("\n\
 \t%s\n\
 \n\
-\tVersion     : %s.%s\n\
+\tVersion     : %s\n\
 \tCompiled on : %s\n\
 \tDate        : %s\n\
-\tPatch Level : %s\n\
-\tStatus      : %s\n\
 ",
 		   "\n\
 \t%s\n\
 \n\
-\tVersion     : %s.%s\n\
+\tVersion     : %s\n\
 \tCompilé sur : %s\n\
 \tDate        : %s\n\
-\tNiveau Patch: %s\n\
-\tEtat        : %s\n\
-"), COPYRIGHT_STRING, major_version, minor_version, host, date, patchlevel, status);
+"), COPYRIGHT_STRING, package_version, host, date);
 }
-
-
-

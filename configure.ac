@@ -3,14 +3,10 @@
 
 AC_PREREQ(2.53)
 
-AC_INIT(Open PRS, 1.0b6, felix@laas.fr, openprs)
+AC_INIT([Open PRS],[1.0b7],[felix@laas.fr],[openprs])
 AC_CONFIG_SRCDIR([oprs-main.c])
-AC_CONFIG_HEADERS([config-ac.h config.h])
+AC_CONFIG_HEADERS([config-ac.h])
 AC_CONFIG_AUX_DIR([util])
-
-AC_DEFINE_UNQUOTED(OPENPRS_VERSION, "$OPENPRS_VERSION", [The complete version of Openprs])
-AC_DEFINE_UNQUOTED(OPENPRS_MAJOR, "$OPENPRS_MAJOR", [The major revision of Openprs])
-AC_DEFINE_UNQUOTED(OPENPRS_MINOR, "$OPENPRS_MINOR", [The minor revision of Openprs])
 
 
 AC_LANG(C)
@@ -96,8 +92,10 @@ AC_CONFIG_FILES([
                  contrib/src/Makefile
                  data/Makefile
                  doc/Makefile
+                 doc/oprs-macros.tex
                  util/Makefile
                  stamp-h
+		 config.h
                 ])
 AC_OUTPUT
 

@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*-
  * ope-main.c --
  *
- * Copyright (c) 1991-2005 Francois Felix Ingrand.
+ * Copyright (c) 1991-2010 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -622,8 +622,8 @@ int main(int argc, char **argv, char **envp)
 					 ope_icon_bits,
 					 ope_icon_width, ope_icon_height);
 
-     sprintf(title, LG_STR("OP Editor %s.%s.%s %s",
-			   "OP Editor %s.%s.%s %s"), major_version, minor_version, patchlevel, status);
+     sprintf(title, LG_STR("OP Editor %s",
+			   "OP Editor %s"), package_version);
 
      XtVaSetValues(topLevel,
 		   XmNiconPixmap, icon_pixmap,
@@ -774,20 +774,18 @@ int main(int argc, char **argv, char **envp)
      update_empty_sensitivity(False);
      update_file_sensitivity(False);
 
-     sprintf(title, LG_STR("Welcome to the OP Editor %s.%s.%s %s %s",
-			   "Bienvenue dans le OP Editor %s.%s.%s %s %s"), major_version, minor_version, patchlevel, status, COPYRIGHT_STRING);
+     sprintf(title, LG_STR("Welcome to the OP Editor %s %s",
+			   "Bienvenue dans le OP Editor %s %s"), package_version, COPYRIGHT_STRING);
      UpdateMessageWindow(title);
 
      sprintf(welcome_message, "\n\
-This is OP Editor Version (%s.%s.%s %s).\n\
+This is OP Editor Version (%s).\n\
 \n\
 %s\n\
 \n\
-Version     : %s.%s\n\
-Patch Level : %s\n\
+Version     : %s\n\
 Compiled on : %s\n\
 Date        : %s\n\
-Status      : %s\n\
 \n\
  All rights reserved.\n\
 \n\
@@ -815,7 +813,7 @@ Status      : %s\n\
  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE\n\
  POSSIBILITY OF SUCH DAMAGE.\n\
 ",
-	     major_version, minor_version, patchlevel, status, COPYRIGHT_STRING, major_version, minor_version, patchlevel, host, date, status);
+	     package_version, COPYRIGHT_STRING, package_version, host, date);
 
      dd.op = make_op();		/* Just for the drawing of this string */
 

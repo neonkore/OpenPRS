@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * xoprs-main.c -- Top level file for the X/Motif interface for one OPRS.
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2010 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -481,7 +481,7 @@ int main(int argc, char **argv, char **envp)
 					 xp_icon_bits,
 					 xp_icon_width, xp_icon_height );
 
-     sprintf(title,"XOprs %s.%s.%s %s --- %s",  major_version, minor_version, patchlevel, status, name);
+     sprintf(title,"XOprs %s --- %s",  package_version, name);
 
      XtVaSetValues(topLevel, 
 		   XmNiconPixmap, icon_pixmap,
@@ -725,15 +725,16 @@ int main(int argc, char **argv, char **envp)
 
      idd_create_gc(&idd);
 
-     sprintf(welcome, LG_STR("\n\t\tThis is X-OPRS (%s.%s.%s %s).\n\t%s\n\n",
-			     "\n\t\tThis is X-OPRS (%s.%s.%s %s).\n\t%s\n\n"),
-	     major_version, minor_version, patchlevel, status, COPYRIGHT_STRING);
+     sprintf(welcome, LG_STR("\n\t\tThis is X-OPRS (%s).\n\t%s\n\n",
+			     "\n\t\tThis is X-OPRS (%s).\n\t%s\n\n"),
+	     package_version, COPYRIGHT_STRING);
 
      AppendTextWindow(textWindow,welcome,FALSE);
      AppendTextWindow(textWindow, "X-OPRS comes with ABSOLUTELY NO WARRANTY.\n\n",FALSE);
 
-     sprintf(title, LG_STR("Welcome to X-OPRS %s.%s.%s %s %s",
-			   "Welcome to X-OPRS %s.%s.%s %s %s"), major_version, minor_version, patchlevel, status, COPYRIGHT_STRING);
+     sprintf(title, LG_STR("Welcome to X-OPRS %s %s",
+			   "Welcome to X-OPRS %s %s"), 
+	     package_version, COPYRIGHT_STRING);
      UpdateMessageWindow(title);
 
      call_oprs_cat(log_file,textWindow);
@@ -747,7 +748,7 @@ int main(int argc, char **argv, char **envp)
 
      run_initial_commands();
 
-     sprintf(title, "X-OPRS %s.%s.%s %s", major_version, minor_version, patchlevel, status);
+     sprintf(title, "X-OPRS %s", package_version);
      UpdateMessageWindow(title);
 
      XtAppMainLoop(app_context);

@@ -629,7 +629,7 @@ void user_trace_send_message(PString message, unsigned int nb_recs, PString *rec
 void print_server_intro(void)
 {
      printf(LG_STR("\n\
-\t\tOPRS Server (%s.%s.%s %s EN).\n\
+\t\tOPRS Server (%s EN).\n\
 \n\
 \t%s\n\
 \n\
@@ -641,7 +641,7 @@ type \"show version\" for version information.\n\
 a dot at the begining of the line followed by a carriage return resets the command parser.\n\
 ",
 		   "\n\
-\t\tOPRS Server (%s.%s.%s %s FR).\n\
+\t\tOPRS Server (%s FR).\n\
 \n\
 \t%s\n\
 \n\
@@ -651,7 +651,7 @@ tapez \"show copyright\" pour des informations de droits et de garantie.\n\
 tapez \"show version\" pour des informations de version.\n\
 \n\
 Un point tapé en debut de ligne suivi d'un retour chariot reinitialise le parser de commande.\n\
-"), major_version, minor_version, patchlevel, status, COPYRIGHT_STRING);
+"), package_version, COPYRIGHT_STRING);
 }
 
 

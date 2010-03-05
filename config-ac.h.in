@@ -165,15 +165,6 @@
    slash. */
 #undef LSTAT_FOLLOWS_SLASHED_SYMLINK
 
-/* The major revision of Openprs */
-#undef OPENPRS_MAJOR
-
-/* The minor revision of Openprs */
-#undef OPENPRS_MINOR
-
-/* The complete version of Openprs */
-#undef OPENPRS_VERSION
-
 /* Define to the address where bug reports for this package should be sent. */
 #undef PACKAGE_BUGREPORT
 

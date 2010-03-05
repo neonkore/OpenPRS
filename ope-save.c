@@ -3,7 +3,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*-
  * ope-save.c --
  *
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2010 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -361,12 +361,12 @@ void write_opfile_header(FILE * fpo, char *name)
 ;;; %c%c%c%c\n\
 ;;; Date: %s\
 ;;; Host: %s\n\
-;;; OP Editor Version: %s.%s.%s %s\n\
+;;; OP Editor Version: %s\n\
 ;;; Compiled on %s (%s)\n\
 ;;; OP File Format: %d\n\
 ;;;\n",
 	     name, '$', 'I', 'd', '$', (tp ? ctime(&tp) : "Unknown\n"), host_name,
-	     major_version, minor_version, patchlevel, status, host, date, OP_FILE_FORMAT);
+	     package_version, host, date, OP_FILE_FORMAT);
 }
 
 int write_opfile(char *file_name, OPFile *opfile)

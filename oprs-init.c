@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * oprs-init.c -- 
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2010 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -1372,33 +1372,29 @@ The following commands are currently available:\n\
 void print_intro()
 {
      printf(LG_STR("\n\
-\t\tOPRS (%s.%s.%s %s EN).\n\
+\t\tOPRS (%s EN).\n\
 \n\
 \t%s\n\
 \n\
-Version     : %s.%s\n\
-Patch Level : %s\n\
+Version     : %s\n\
 Compiled on : %s\n\
 Date        : %s\n\
-Status      : %s\n\
 \n\
  ALL RIGHTS RESERVED\n\
 \n\
 OPRS comes with ABSOLUTELY NO WARRANTY.\n\
 ",
 		   "\n\
-\t\tOPRS (%s.%s.%s %s FR).\n\
+\t\tOPRS (%s FR).\n\
 \n\
 \t%s\n\
 \n\
-Version     : %s.%s\n\
-Patch Level : %s\n\
+Version     : %s\n\
 Compiled on : %s\n\
 Date        : %s\n\
-Status      : %s\n\
 \n\
  ALL RIGHTS RESERVED\n\
 \n\
 OPRS est fourni sans garantie aucune.\n\
-"), major_version, minor_version, patchlevel, status, COPYRIGHT_STRING, major_version, minor_version, patchlevel, host, date, status);
+"), package_version, COPYRIGHT_STRING, package_version, host, date);
 }
