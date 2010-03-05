@@ -1,3 +1,9 @@
+2010-03-05  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* Clean up the version stuff... Now version is defined in the
+	configure.ac only and then it propagates in version.c and the
+	documentation with the proper PACKAGE_VERSION macro.
+
 2010-03-02  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* version.c: Bumping patch level to 1.0.7 Beta to avoid confusion.
