@@ -2312,8 +2312,8 @@ switch fail, this procedure for opening or closing the valve will also fail.
 \node{New Graph OP Construction}
 \cpindex{New Graph OP Construction}
 
-Since release 1.1 of the \COPRSDE{}, there are some new graph construction
-allowed: the ``IF-THEN-ELSE'' node; to express conditional branching, and the
+There are some new graph construction
+allowed in \coprsde{}: the ``IF-THEN-ELSE'' node; to express conditional branching, and the
 ``split'' and ``join'' node; to express parallel execution. These two new
 constructions are presented in the next sections.
 
@@ -2450,7 +2450,7 @@ Example of special action: \code{(*=* \$y (read))}, \code{(*=* \$status
 
 \figuregif[scale=0.5]{multi-special-action-op}{A Multi Variable Special Action OP}{multi-special-act-op}
 
-New in version 1.1, one can bind a list of terms/variables to a list of
+One can bind a list of terms/variables to a list of
 terms returned by an action (see Figure \ref{multi-special-act-op}).
 
 The newly allowed form for special action is thus: \*
@@ -2471,8 +2471,8 @@ Example of a form which is not a multi variable special action (it must be a
 list of variables, not terms):\*
 \code{(*=* (T NIL T) (confirm-three-responses \$y \$z \$w))}.
 
-One can find an example of an action returning a list of terms in the
-file: \file{user-action.c}.
+%One can find an example of an action returning a list of terms in the
+%file: \file{user-action.c}.
 
 \subsection{Text OPs}
 \node{Text OPs}
@@ -4973,7 +4973,7 @@ however, that there are no a priori predefined path... The system will
 try them in a random order. Note also that upon success, untested path
 are not kept as possible backtrack point; \CPK{} does not backtrack.
 
-Since version 1.1, there are split and join nodes (\pxref{Split and Join Node}).  From the graph traversal point of view, these new nodes introduce
+There are split and join nodes (\pxref{Split and Join Node}).  From the graph traversal point of view, these new nodes introduce
 parallel execution. A split mode indicates that all the outgoing branches have
 to be traversed/executed in their own thread, and a join node indicates that as
 many execution threads as there are ingoing branches must reach this node
@@ -5026,7 +5026,7 @@ with other \COPRS{} modules or external modules.
 \node{Parallel Execution of OPs in OPRS}
 \cpindex{Parallel Execution of OPs in \COPRS{}}
 
-New in version 1.1, one can write OPs with parallel execution in various
+One can write OPs with parallel execution in various
 branches of the OPs. This new feature has a number of consequences on the way
 OPs can be executed, and on the performance of the system.
 

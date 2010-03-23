@@ -1,3 +1,8 @@
+2010-03-23  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* oprs-kernel.tex (subsubsection{Multi Variable Special Action}):
+	Change the doc to reflect the changes wrt to C-PRS 1.1 and OpenPRS.
+
 2010-03-01  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* appendices.tex (chapter{How to Install the \COPRSDE{}}): Update
