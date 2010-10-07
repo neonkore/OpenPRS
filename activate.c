@@ -1184,7 +1184,7 @@ Thread_Execution_Result execute_intention_body(Thread_Intention_Block *tib)
 		   current_oprs);	/* Post one. */
 	  trace_op_edge(op_ins,tib);
 	  if (tib->current_goal->succes) 
-	       return execute_intention_body(tib);
+	       return execute_intention_body(tib); /* this recursive call seems to be superfluous and add problems with list of assert. */
 	  else
 	       return TER_EXECUTING;    
      } else if (tib->current_goal->echoue != NOT_FAILED) { 

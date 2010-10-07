@@ -208,7 +208,7 @@ PBoolean parse_one_or_more(void) /* return TRUE if the stop_checking_the_stdin a
 
      if (quit ||  (feof(stdin) != 0)) {
 	  wrap_up();
-	  socket_cleanup_and_exit(1);
+	  socket_cleanup_and_exit(0); /* This is a regular and nominal exit,  */
      }     
      
      while (((parse_source == PS_SOCKET) &&
@@ -217,7 +217,7 @@ PBoolean parse_one_or_more(void) /* return TRUE if the stop_checking_the_stdin a
 	    i_have_the_stdin || (parser_index > 0)) {
 	  if (quit || (feof(stdin) && (parser_index == 0))) {
 	       wrap_up();
-	       socket_cleanup_and_exit(1);
+	       socket_cleanup_and_exit(0); /* This is a regular and nominal exit,  */
 	  }     
 	  print_oprs_prompt();
 	  oprs_yyparse_caller();
