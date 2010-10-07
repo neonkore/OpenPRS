@@ -2732,13 +2732,19 @@ Term *float_to_int_ef(TermList terms)
 
      res = MAKE_OBJECT(Term);
 
-	  t1 = (Term *)sl_get_slist_pos(terms, 1);
+     res->type = INTEGER;
+
+     t1 = (Term *)sl_get_slist_pos(terms, 1);
+
+     if (t1->type -= INTEGER) {	/* to make life easier... */
+	  res->u.intval = t1->u.intval;
+	  return res;
+     }
 
      if (t1->type != TT_FLOAT) {
 	  report_fatal_external_error(oprs_strerror(PE_EXPECTED_FLOAT_TERM_TYPE));
      }
 
-     res->type = INTEGER;
      res->u.intval = (int)*t1->u.doubleptr;
 
      return res;
@@ -2750,13 +2756,23 @@ Term *int_to_float_ef(TermList terms)
 
      res = MAKE_OBJECT(Term);
 
+     res->type = TT_FLOAT;
+
      t1 = (Term *)sl_get_slist_pos(terms, 1);
+
+     if (t1->type == TT_FLOAT) {
+	  res->u.doubleptr = make_doubleptr(*t1->u.doubleptr);
+	  return res;
+     }
+     if (t1->type == LONG_LONG) {
+	  res->u.doubleptr = make_doubleptr((double)t1->u.llintval);
+	  return res;
+     }
 
      if (t1->type != INTEGER) {
 	  report_fatal_external_error(oprs_strerror(PE_EXPECTED_INTEGER_TERM_TYPE));
      }
 
-     res->type = TT_FLOAT;
      res->u.doubleptr = make_doubleptr((double)t1->u.intval);
 
      return res;

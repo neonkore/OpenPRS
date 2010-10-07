@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * ev-predicate.c -- Handle evaluable predicates.
  * 
- * Copyright (c) 1991-2006 Francois Felix Ingrand.
+ * Copyright (c) 1991-2010 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -79,6 +79,39 @@ PBoolean numberp_ep(TermList tl)
      t = (Term *)sl_get_slist_head(tl);
 
      if (t && (t->type == INTEGER || t->type == LONG_LONG || t->type == TT_FLOAT)) return TRUE;
+     else return FALSE;
+}
+
+PBoolean long_longp_ep(TermList tl)
+/* True if the object is a long long. */
+{
+     Term *t;
+
+     t = (Term *)sl_get_slist_head(tl);
+
+     if (t && (t->type == INTEGER || t->type == LONG_LONG || t->type == TT_FLOAT)) return TRUE;
+     else return FALSE;
+}
+
+PBoolean integerp_ep(TermList tl)
+/* True if the object is an integer. */
+{
+     Term *t;
+
+     t = (Term *)sl_get_slist_head(tl);
+
+     if (t && (t->type == INTEGER)) return TRUE;
+     else return FALSE;
+}
+
+PBoolean floatp_ep(TermList tl)
+/* True if the object is a float. */
+{
+     Term *t;
+
+     t = (Term *)sl_get_slist_head(tl);
+
+     if (t && (t->type == TT_FLOAT)) return TRUE;
      else return FALSE;
 }
 
@@ -644,6 +677,9 @@ void declare_eval_pred(void)
      make_and_declare_eval_pred("ELAPSED-MTIME",elapsed_mtime_ep, 2, TRUE);
 
      make_and_declare_eval_pred("NUMBERP",numberp_ep, 1, TRUE);
+     make_and_declare_eval_pred("INTEGERP",integerp_ep, 1, TRUE);
+     make_and_declare_eval_pred("FLOATP",floatp_ep, 1, TRUE);
+     make_and_declare_eval_pred("LONG_LONGP",long_longp_ep, 1, TRUE);
      make_and_declare_eval_pred("CONSP",consp_ep, 1, TRUE);
      make_and_declare_eval_pred("STRINGP",stringp_ep, 1, TRUE);
      make_and_declare_eval_pred("ATOMP",atomp_ep, 1, TRUE);
