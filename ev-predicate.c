@@ -679,7 +679,7 @@ void declare_eval_pred(void)
      make_and_declare_eval_pred("NUMBERP",numberp_ep, 1, TRUE);
      make_and_declare_eval_pred("INTEGERP",integerp_ep, 1, TRUE);
      make_and_declare_eval_pred("FLOATP",floatp_ep, 1, TRUE);
-     make_and_declare_eval_pred("LONG_LONGP",long_longp_ep, 1, TRUE);
+     make_and_declare_eval_pred("LONG-LONGP",long_longp_ep, 1, TRUE);
      make_and_declare_eval_pred("CONSP",consp_ep, 1, TRUE);
      make_and_declare_eval_pred("STRINGP",stringp_ep, 1, TRUE);
      make_and_declare_eval_pred("ATOMP",atomp_ep, 1, TRUE);

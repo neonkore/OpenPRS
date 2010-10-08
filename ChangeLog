@@ -1,12 +1,18 @@
+2010-10-08  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* ev-predicate.c (declare_eval_pred): Use LONG-LONGP instead of
+		  LONG_LONGP (to remain consistent with predicate/function name.
+
 2010-10-07  Francois Felix Ingrand  <felix@ingrand.net>
 
-	* ev-predicate.c (declare_eval_pred): added INTEGERP, FLOATP and LONG_LONGP as evaluable predicates.
+	* ev-predicate.c (declare_eval_pred): added INTEGERP, FLOATP and
+		  LONG_LONGP as evaluable predicates.
 
 	* ev-function.c (float_to_int_ef): Allowed to pass an int...
 	(int_to_float_ef): allowed to pass a float and a long long
 
-	* oprs-init.c (parse_one_or_more): The PRS kernel should return 0 when everything is
-		  OK. Thanks to Eric Engstrom at SIFT for pointing this.
+	* oprs-init.c (parse_one_or_more): The PRS kernel should return 0 when
+		  everything is OK. Thanks to Eric Engstrom at SIFT for pointing this.
 
 2010-03-05  Francois Felix Ingrand  <felix@ingrand.net>
 
