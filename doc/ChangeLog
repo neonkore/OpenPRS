@@ -1,3 +1,8 @@
+2010-10-08  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* oprs-kernel.tex: Updated the doc for the changes in INT-TO-FLOAT,
+		  FLOAT-TO-INT, FLOATP, INTEGERP and LONG_LONGP.
+
 2010-03-23  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* oprs-kernel.tex (subsubsection{Multi Variable Special Action}):

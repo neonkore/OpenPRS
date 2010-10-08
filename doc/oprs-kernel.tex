@@ -2313,7 +2313,7 @@ switch fail, this procedure for opening or closing the valve will also fail.
 \cpindex{New Graph OP Construction}
 
 There are some new graph construction
-allowed in \coprsde{}: the ``IF-THEN-ELSE'' node; to express conditional branching, and the
+allowed in \COPRSDE{}: the ``IF-THEN-ELSE'' node; to express conditional branching, and the
 ``split'' and ``join'' node; to express parallel execution. These two new
 constructions are presented in the next sections.
 
@@ -3506,6 +3506,24 @@ returns \code{TRUE} if the term is a \code{FLOAT}, an \code{INTEGER} or a \code{
 returns \code{FALSE} otherwise.
 \end{typeep}
 
+\begin{typeep}{Evaluable Predicate}{PBoolean}{INTEGERP}{(Any Term)}
+It is defined for one term (subsequent terms in the list are ignored). It
+returns \code{TRUE} if the term is an \code{INTEGER}, and 
+returns \code{FALSE} otherwise.
+\end{typeep}
+
+\begin{typeep}{Evaluable Predicate}{PBoolean}{FLOATP}{(Any Term)}
+It is defined for one term (subsequent terms in the list are ignored). It
+returns \code{TRUE} if the term is a \code{FLOAT}  and 
+returns \code{FALSE} otherwise.
+\end{typeep}
+
+\begin{typeep}{Evaluable Predicate}{PBoolean}{LONG\_LONGP}{(Any Term)}
+It is defined for one term (subsequent terms in the list are ignored). It
+returns \code{TRUE} if the term is a \code{LONG\_LONG}, and 
+returns \code{FALSE} otherwise.
+\end{typeep}
+
 \begin{typeep}{Evaluable Predicate}{PBoolean}{STRINGP}{(Any Term)}
 It is defined for one term (subsequent terms in the list are ignored). It
 returns \code{TRUE} if the term is a \code{STRING}, and 
@@ -3717,12 +3735,12 @@ is the modulo function. It is defined for two \code{INTEGER} terms. It returns a
 \end{typeefa}
 
 \begin{typeefa}{Evaluable Function}{INTEGER}{float-to-int}{({FLOAT})}
-is defined for 1 term. It returns the \code{FLOAT} passed as argument casted in
+is defined for 1 term. It returns the \code{FLOAT} or \code{INTEGER } passed as argument casted in
 an \code{INTEGER}. 
 \end{typeefa}
 
 \begin{typeefa}{Evaluable Function}{FLOAT}{int-to-float}{({INTEGER})}
-is defined for 1 term. It returns the \code{INTEGER} passed as argument casted
+is defined for 1 term. It returns the \code{INTEGER} ,\code{LONG\_LONG}  or \code{FLOAT} passed as argument casted
 in a \code{FLOAT}.
 \end{typeefa}
 
