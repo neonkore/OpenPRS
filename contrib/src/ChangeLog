@@ -1,3 +1,8 @@
+2011-01-18  Felix Ingrand  <felix@cturtle>
+
+	* pu-mk-term_f.h and pu-parse-tl_f.h: Added extern "C" around those 
+	definitions so we can use this code in C++.
+
 2009-12-07  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* pu-genom.c (pu_encode_genom_string): strlen returns a size_t

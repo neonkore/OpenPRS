@@ -3,8 +3,13 @@
  *   Manual editing not recommended.
 
  */
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifndef __CEXTRACT__
 #ifdef __STDC__
+/* Prototypes */
 
 extern PBoolean PUGetOprsParameters ( TermList paramList, int NbParametres, ... );
 extern PBoolean PUGetLispListElem ( L_List lispList, int NbTerm, ... );
@@ -24,3 +29,6 @@ extern PBoolean PUGetOprsParametersSpecArg (/* TermList paramList, int rank, Ter
 
 #endif /* __STDC__ */
 #endif /* __CEXTRACT__ */
+#ifdef __cplusplus
+}
+#endif

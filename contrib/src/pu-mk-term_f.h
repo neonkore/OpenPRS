@@ -3,6 +3,11 @@
  *   Manual editing not recommended.
 
  */
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifndef __CEXTRACT__
 #ifdef __STDC__
 
@@ -39,3 +44,7 @@ extern Term * PUMakeTermCList (/* int NbTerm, ... */);
 
 #endif /* __STDC__ */
 #endif /* __CEXTRACT__ */
+
+#ifdef __cplusplus
+}
+#endif
