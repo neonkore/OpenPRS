@@ -4,6 +4,11 @@
  *
  *   Created: Wed Aug 30 10:10:08 2006
  */
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifndef __CEXTRACT__
 #if __STDC__
 
@@ -75,3 +80,7 @@ extern Term *pu_decode_genom_string (/* char *name, char *addr, int size, int ma
 
 #endif /* __STDC__ */
 #endif /* __CEXTRACT__ */
+
+#ifdef __cplusplus
+}
+#endif
