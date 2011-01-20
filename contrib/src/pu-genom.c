@@ -123,7 +123,7 @@ PBoolean pu_encode_genom_string(char *name, Expression *tc, char *val_addr, int 
 	       if ((strlen(val)<max_size)) {
 		    memcpy(val_addr+(j-1)*max_size,val, strlen(val)+1);
 	       } else {
-		    fprintf(stderr,"pu_encode_genom_string: string to long: %lu > %u\n",
+		    fprintf(stderr,"pu_encode_genom_string: string to long: %u > %u\n",
 			    strlen(val), (unsigned int)max_size);
 		    *(val_addr +(j-1)*max_size) = '\0';
 		    return FALSE;
