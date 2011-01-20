@@ -38,14 +38,21 @@
 #include "oprs-type.h"
 #include "oprs-profiling.h"
 
+typedef PBoolean (*PFBPFTL)(Frame *, TermList);
+
 struct eval_pred {
-     signed char arity;
-     PFB predicat;
-     PBoolean eval_var;
+  signed char arity;
+  union {
+    PFBPTL predicat;
+    PFBPFTL predicat_noevv;
+  } u;
+  PBoolean eval_var;
 #ifdef OPRS_PROFILING
-     PDate time_active;
-     unsigned int nb_call;
+  PDate time_active;
+  unsigned int nb_call;
 #endif
 };
+
+
 
 #endif /* INCLUDE_evaluable_predicate */

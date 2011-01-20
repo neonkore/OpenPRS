@@ -610,7 +610,7 @@ PBoolean evaluate_expression_predicate(Eval_Pred *ep, char *ep_name, TermList tl
 	  GET_PROFILE_TIMER(&tp);
 #endif
 
-     res =  (PBoolean)(* (ep->predicat))(tl);
+     res =  (PBoolean)(* (ep->u.predicat))(tl);
 
 #ifdef OPRS_PROFILING     
      if (profiling_option[PROFILING] && profiling_option[PROF_EP]) {
@@ -640,7 +640,7 @@ PBoolean evaluate_expression_predicate_frame(Frame *fr, Eval_Pred *ep, char *ep_
 	  GET_PROFILE_TIMER(&tp);
 #endif
 
-     res =  (PBoolean)(* (ep->predicat))(fr, tl);
+     res =  (PBoolean)(* (ep->u.predicat_noevv))(fr, tl);
 
 #ifdef OPRS_PROFILING     
      if (profiling_option[PROFILING] && profiling_option[PROF_EP]) {

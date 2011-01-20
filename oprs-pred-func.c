@@ -614,7 +614,7 @@ void make_and_declare_action(char *name,  PFPT funct,  int ar)
 }
 
 
-void make_and_declare_eval_pred_internal(Symbol name,  PFB pred, int ar, PBoolean cwp, PBoolean eval_var)
+void make_and_declare_eval_pred_internal(Symbol name, PFBPTL pred, PFBPFTL pred_noevv, int ar, PBoolean cwp, PBoolean eval_var)
 {
      char *name_tmp2;
      Pred_Func_Rec *pfr;
@@ -639,20 +639,23 @@ void make_and_declare_eval_pred_internal(Symbol name,  PFB pred, int ar, PBoolea
      }
 
      ep->arity = ar;
-     ep->predicat = pred;
+     if (eval_var) 
+       ep->u.predicat = pred;
+     else
+       ep->u.predicat_noevv = pred_noevv;       
      ep->eval_var = eval_var;
 
      if (cwp) pr->cwp = TRUE;
 }
 
-void make_and_declare_eval_pred(Symbol name,  PFB pred, int ar, PBoolean cwp)
+void make_and_declare_eval_pred(Symbol name,  PFBPTL pred, int ar, PBoolean cwp)
 {
-     make_and_declare_eval_pred_internal(name, pred, ar, cwp, TRUE);
+  make_and_declare_eval_pred_internal(name, pred, NULL, ar, cwp, TRUE);
 
 }
 
-void make_and_declare_eval_pred_no_eval_var(Symbol name,  PFB pred, int ar, PBoolean cwp)
+void make_and_declare_eval_pred_no_eval_var(Symbol name,  PFBPFTL pred, int ar, PBoolean cwp)
 {
-     make_and_declare_eval_pred_internal(name, pred, ar, cwp, FALSE);
+  make_and_declare_eval_pred_internal(name, NULL, pred, ar, cwp, FALSE);
 }
 

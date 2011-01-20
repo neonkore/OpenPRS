@@ -95,7 +95,9 @@ typedef struct eval_funct Eval_Funct;
 typedef struct eval_funct Action;
 
 /*  pointer to a function returning a PBoolean */
-typedef PBoolean (*PFB)();
+typedef PBoolean (*PFB)(); 
+/*  pointer to a function returning a PBoolean, taking  TermList*/
+typedef PBoolean (*PFBPTL)(TermList);
 
 typedef struct oprs Oprs;
 typedef struct thread_intention_block Thread_Intention_Block;

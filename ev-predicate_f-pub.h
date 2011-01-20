@@ -36,7 +36,7 @@
 extern "C"  {
 #endif
 
-void make_and_declare_eval_pred(Symbol name,  PFB pred, int ar, PBoolean cwp);
+void make_and_declare_eval_pred(Symbol name,  PFBPTL pred, int ar, PBoolean cwp);
 void declare_user_eval_pred(void);
 
 #ifdef __cplusplus
