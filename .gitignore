@@ -15,3 +15,40 @@ user-external.c
 user-external.h
 user-external_f.h
 xoprs
+*.ad.tmp
+c++-oprs-relocatable
+c++-xoprs-relocatable
+oprs-relocatable
+xoprs-relocatable
+doc/oprs-macros.tex
+# git-ls-files --others --exclude-from=.git/info/exclude
+# Lines that start with '#' are comments.
+# For a project mostly in C, the following would be a good set of
+# exclude patterns (uncomment them if you want to use them):
+*.[oa]
+*.ll
+*.yy
+*.aux
+*.bbl
+*.??dx
+*.??nd
+*.ilg
+*.log
+*.lof
+*.lot
+*.blg
+*.toc
+Makefile
+make.depend
+\.#*
+*.lex.[ch]
+*.tab.[ch]
+*.ad
+*.ad.h
+*.pc
+*~
+\#*#
+TAGS
+*.rej
+*.orig
+.depend
