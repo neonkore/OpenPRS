@@ -1,3 +1,7 @@
+2011-02-07  Felix Ingrand  <felix@cturtle>
+
+	* site.make.in and Makefile.in : do some clean up in the FLAGS mess...
+
 2010-10-08  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* ev-predicate.c (declare_eval_pred): Use LONG-LONGP instead of

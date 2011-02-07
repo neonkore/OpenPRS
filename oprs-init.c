@@ -848,7 +848,6 @@ Oprs *oprs_init_main(char *name, PBoolean use_x_window, char *mp_hostn, int mp_p
 
      oprs_prompt = name;
      previous_soak = NULL;
-
 #ifdef HAS_TIMER
      install_condition_timer_handler_set_arm();
 #endif

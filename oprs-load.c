@@ -388,14 +388,14 @@ void ntohd(u_char *buf, double *dbl)
      return;
 }
 
-void htonll(long long *ll, u_char *buf)
+void htonll(long long ll, u_char *buf)
 {
 #if defined(BIG_ENDIAN)
-     BCOPY(ll,buf, 8);
+     BCOPY(&ll,buf, 8);
 #elif defined(LITTLE_ENDIAN)
      u_char tmp;
 
-     BCOPY(ll,buf, 8);
+     BCOPY(&ll,buf, 8);
      SWAP(buf[0],buf[7],tmp);
      SWAP(buf[1],buf[6],tmp);
      SWAP(buf[2],buf[5],tmp);

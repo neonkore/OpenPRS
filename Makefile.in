@@ -326,7 +326,7 @@ endif
 
 CPPFLAGS += $(MT_CPPFLAGS) $(LANG_FLAG) $(INCLUDE) $(X_INCLUDE) $(READLINE_INCLUDE)
 
-LDFLAGS = $(OPRS_LDFLAGS) $(MT_LDFLAGS) $(ANSI) $(STATIC) $(DEBUG_FLAG) $(OPTIMIZE) $(PROFILE)
+LDFLAGS += $(MT_LDFLAGS)
 
 LIST_LIB = -L$(C_TOOLKIT_DIR) -lOPList
 
@@ -357,42 +357,33 @@ oprs: $(USER_OBJ) $(OPRS_OBJ) $(C_TOOLKIT_LIB) $(CONTRIB_LIB) $(MP_LIB) $(BASIC_
 		$(TEXT_OPE_OPRS_LIB) $(TEXT_OPRS_LIB) $(KERNEL_LIB) $(TEXT_KERNEL_LIB) \
 		user-trace-off.o
 	$(MAKE) version
-	$(PURIFY) $(CC) $(LDFLAGS) -o oprs version.o user-trace-off.o $(OPRS_OBJ) $(USER_OBJ) \
+	$(CC) $(LDFLAGS) -o oprs version.o user-trace-off.o $(OPRS_OBJ) $(USER_OBJ) \
 		$(TEXT_KERNEL_LIB) $(KERNEL_LIB) $(BASIC_LIB) $(TEXT_OPRS_LIB) $(OPRS_LIB) $(MP_LIB) \
 		$(TEXT_OPE_OPRS_LIB) $(LIST_LIB) $(CONTRIB_LIB) $(SYS_LIB) $(EXTRA_LIB)
-
-poprs: lib contrib_lib $(USER_OBJ) $(OPRS_OBJ) $(C_TOOLKIT_LIB) $(CONTRIB_LIB) $(MP_LIB) $(BASIC_LIB) $(OPRS_LIB) \
-		$(TEXT_OPE_OPRS_LIB) $(TEXT_OPRS_LIB) $(KERNEL_LIB) $(TEXT_KERNEL_LIB) \
-		user-trace-off.o
-	$(MAKE) version
-	purify -chain-length="12" $(CC) $(LDFLAGS) -o $@ version.o user-trace-off.o \
-b		$(OPRS_OBJ) $(USER_OBJ) $(TEXT_KERNEL_LIB) $(KERNEL_LIB) $(BASIC_LIB) \
-		$(TEXT_OPRS_LIB) $(OPRS_LIB) $(MP_LIB) $(TEXT_OPE_OPRS_LIB) \
-		$(C_TOOLKIT_LIB) $(CONTRIB_LIB) $(SYS_LIB) $(EXTRA_LIB)
 
 opc: $(OPC_OBJ) $(MP_LIB) $(BASIC_LIB) $(OPRS_LIB) $(C_TOOLKIT_LIB) \
 		$(GRAPHIC_OPE_OPRS_LIB) $(GRAPHIC_OPRS_LIB) $(OPG_LIB)
 	$(MAKE) version
-	$(PURIFY) $(CC) $(LDFLAGS) -o opc version.o $(OPC_OBJ) $(BASIC_LIB) $(MP_LIB) \
+	$(CC) $(LDFLAGS) -o opc version.o $(OPC_OBJ) $(BASIC_LIB) $(MP_LIB) \
 		$(GRAPHIC_OPRS_LIB) $(OPRS_LIB) $(GRAPHIC_OPE_OPRS_LIB) \
 		$(OPG_LIB) $(LIST_LIB) $(X_LIB) $(SYS_LIB) $(EXTRA_LIB)
 
 oprs-server: $(SERVER_OBJ) $(C_TOOLKIT_LIB) $(MP_LIB) $(BASIC_LIB) $(OPRS_LIB) $(TEXT_OPRS_LIB) \
 			${OPAQUE_LIB}
 	$(MAKE) version
-	$(PURIFY) $(CC) $(LDFLAGS) -o oprs-server version.o $(SERVER_OBJ) $(BASIC_LIB) \
+	$(CC) $(LDFLAGS) -o oprs-server version.o $(SERVER_OBJ) $(BASIC_LIB) \
 		$(TEXT_OPRS_LIB) $(OPRS_LIB) $(MP_LIB) ${OPAQUE_LIB} $(LIST_LIB) $(SYS_LIB) $(MT_LIB) $(EXTRA_LIB)
 
 mp-oprs: $(MP_OBJ) $(C_TOOLKIT_LIB) $(MP_LIB) $(BASIC_LIB)
 	$(MAKE) version
-	$(PURIFY) $(CC) $(LDFLAGS) -o mp-oprs version.o $(MP_OBJ) $(BASIC_LIB) $(MP_LIB) \
+	$(CC) $(LDFLAGS) -o mp-oprs version.o $(MP_OBJ) $(BASIC_LIB) $(MP_LIB) \
 		$(LIST_LIB) $(SYS_LIB) $(EXTRA_LIB)
 
 xoprs: $(X_OBJ) $(USER_OBJ) $(C_TOOLKIT_LIB) $(CONTRIB_LIB) $(MP_LIB) $(BASIC_LIB) $(OPRS_LIB) \
 		$(GRAPHIC_OPE_OPRS_LIB) $(GRAPHIC_OPRS_LIB) $(KERNEL_LIB) $(GRAPHIC_KERNEL_LIB) \
 		$(XOPRS_LIB) $(OPG_LIB) user-trace-off.o
 	$(MAKE) version
-	$(PURIFY) $(CC) $(LDFLAGS) -o xoprs version.o user-trace-off.o $(X_OBJ) $(USER_OBJ) \
+	$(CC) $(LDFLAGS) -o xoprs version.o user-trace-off.o $(X_OBJ) $(USER_OBJ) \
 		$(GRAPHIC_KERNEL_LIB) $(KERNEL_LIB) $(BASIC_LIB) $(GRAPHIC_OPRS_LIB) $(OPRS_LIB) \
 		$(MP_LIB) $(GRAPHIC_OPE_OPRS_LIB) $(XOPRS_LIB) $(OPG_LIB) $(X_LIB) \
 		$(LIST_LIB) $(CONTRIB_LIB) $(SYS_LIB) $(EXTRA_LIB)
@@ -400,13 +391,13 @@ xoprs: $(X_OBJ) $(USER_OBJ) $(C_TOOLKIT_LIB) $(CONTRIB_LIB) $(MP_LIB) $(BASIC_LI
 ope: $(OP_EDITOR_OBJ) $(C_TOOLKIT_LIB) $(MP_LIB) $(BASIC_LIB) $(OPRS_LIB) \
 		$(GRAPHIC_OPE_OPRS_LIB) $(GRAPHIC_OPRS_LIB) $(OPG_LIB)
 	$(MAKE) version
-	$(PURIFY) $(CC) $(LDFLAGS) -o ope version.o $(OP_EDITOR_OBJ) $(BASIC_LIB) $(GRAPHIC_OPRS_LIB) $(OPRS_LIB) $(GRAPHIC_OPE_OPRS_LIB) $(MP_LIB) $(OPG_LIB) $(X_LIB) $(LIST_LIB) $(SYS_LIB) $(EXTRA_LIB)
+	$(CC) $(LDFLAGS) -o ope version.o $(OP_EDITOR_OBJ) $(BASIC_LIB) $(GRAPHIC_OPRS_LIB) $(OPRS_LIB) $(GRAPHIC_OPE_OPRS_LIB) $(MP_LIB) $(OPG_LIB) $(X_LIB) $(LIST_LIB) $(SYS_LIB) $(EXTRA_LIB)
 
 oprs-cat: $(OPRS_CAT_OBJ) $(C_TOOLKIT_LIB)
-	$(PURIFY) $(CC) $(LDFLAGS) -o oprs-cat $(OPRS_CAT_OBJ) $(LIST_LIB)
+	$(CC) $(LDFLAGS) -o oprs-cat $(OPRS_CAT_OBJ) $(LIST_LIB)
 
 kill-mp: $(KILL_MP_OBJ) $(C_TOOLKIT_LIB) $(BASIC_LIB) $(MP_LIB)
-	$(PURIFY) $(CC) $(LDFLAGS) -o kill-mp $(KILL_MP_OBJ) $(BASIC_LIB) $(MP_LIB) $(LIST_LIB) $(EXTRA_LIB)
+	$(CC) $(LDFLAGS) -o kill-mp $(KILL_MP_OBJ) $(BASIC_LIB) $(MP_LIB) $(LIST_LIB) $(EXTRA_LIB)
 
 test-malloc: test-malloc.o $(C_TOOLKIT_LIB)
 	$(CC) $(LDFLAGS) -o test-malloc test-malloc.o $(LIST_LIB)
@@ -567,14 +558,6 @@ $(EXT_MP_LIB)(%.o): %.c
 oprs-parser.yy ope-parser.yy opc-parser.yy: yacc-file.y yacc-graph-op.y
 oprs-parser.yy ope-parser.yy opc-parser.yy: yacc-exp.y yacc-text-op.y
 
-# VxWorks handle stdin and stdout in a way which does not please lex...
-# initializer element for `yyin' is not constant
-# initializer element for `yyout' is not constant
-# So we need to remove the static initialization and initialize them in the oprs_main.
-#
-# the "(NULL)" is here for the Iris4d Lex which put this as a file name which then confuse mkdep...
-#
-
 %.ll: %.l util/lex-includer
 	rm -f $*.ll
 	util/lex-includer -p$(VPATH) < $< > $*.ll
@@ -624,10 +607,6 @@ else
 	rm -f $@
 	$(LN_S) $< $@
 endif
-
-#xinfo/Info.o: xinfo/Info.c xinfo/Info.h xinfo/InfoP.h
-#	(cd xinfo ; $(MAKE) Info.o)
-
 
 demo: truck-demo
 
@@ -787,14 +766,6 @@ user-external_f.h:  default-user-external_f.h
 # If the make.depend does not exist, just touch it.
 #
 
-#make.depend:
-#	@echo "*******************************"
-#	@echo "*********** WARNING ***********"
-#	@echo "*******************************"
-#	@echo "make.depend does not exist."
-#	@echo "I will create make.depend for you."
-#	touch make.depend
-
 ifndef VXWORKS
 
 depend make.depend:: oprs-parser.lex.c oprs-server-parser.lex.c ope-parser.lex.c opc-parser.lex.c \
@@ -910,67 +881,6 @@ tags: TAGS
 TAGS: $(SRCS) $(YACC_SRC) $(LEX_SRC) $(C_TOOLKIT_SRC) \
 	$(RESOURCES_FILES)
 	etags $^
-
-#
-# Version stuff
-#
-
-distribute: Makefile.src doc/Makefile.src
-	@(minv=`grep minor_version version.c | sed -e 's/.* = "\([0-9]*\)";/\1/'` ; \
-	  majv=`grep major_version version.c | sed -e 's/.* = "\([0-9]*\)";/\1/'` ; \
-	  patchv=`grep patchlevel version.c | sed -e 's/.* = "\([0-9]*\)";/\1/'` ; \
-	  stat=`grep status version.c | sed -e 's/.* = "\(.*\)";/\1/'` ; \
-	  echo "Update the HISTORY and the NEWS files for the version OPRS_$$majv-$$minv-$$patchv-$$stat oprs" ; \
-	  emacs HISTORY NEWS; \
-	  echo "Now commiting the files with: cvs ci -m \"Checking in distribution OPRS $$majv.$$minv.$$patchv $$stat\"" ; \
-	  cvs ci -m "Checking in distribution OPRS $$majv.$$minv.$$patchv.$$stat" ; \
-	  echo "Now taging this version with: cvs tag OPRS_$$majv-$$minv-$$patchv-$$stat" ; \
-	  cvs tag OPRS_$$majv-$$minv-$$patchv-$$stat)
-
-tag:
-	@(minv=`grep minor_version version.c | sed -e 's/.* = "\([0-9]*\)";/\1/'` ; \
-	  majv=`grep major_version version.c | sed -e 's/.* = "\([0-9]*\)";/\1/'` ; \
-	  patchv=`grep patchlevel version.c | sed -e 's/.* = "\([0-9]*\)";/\1/'` ; \
-	  stat=`grep status version.c | sed -e 's/.* = "\(.*\)";/\1/'` ; \
-	  echo "Now taging this version with: cvs tag OPRS_$$majv-$$minv-$$patchv-$$stat" ; \
-	  cvs tag OPRS_$$majv-$$minv-$$patchv-$$stat)
-
-major: distribute major-version
-
-minor: distribute minor-version
-
-patch: distribute patch-version
-
-doc-version:
-	(minv=`grep minor_version version.c | sed -e 's/.* = "\([0-9]*\)";/\1/'` ; \
-	  majv=`grep major_version version.c | sed -e 's/.* = "\([0-9]*\)";/\1/'` ; \
-	  patchv=`grep patchlevel version.c | sed -e 's/.* = "\([0-9]*\)";/\1/'` ; \
-	  stat=`grep status version.c | sed -e 's/.* = "\(.*\)";/\1/'` ; \
-	  $(srcdir)/util/update-doc-version "$$majv.$$minv.$$patchv $$stat")
-
-minor-%: %.c
-	$(srcdir)/util/make-version minor_version $<
-	$(MAKE) doc-version
-
-major-%: %.c
-	$(srcdir)/util/make-version major_version $<
-	$(MAKE) doc-version
-
-patch-%: %.c
-	$(srcdir)/util/make-version patchlevel $<
-	$(MAKE) doc-version
-
-#
-# to touch files with a particular symbol, so subsequent make recompile
-# them properly (assuming the make depend has bee`n made).
-#
-
-touch_symbol:
-	@echo "Which symbol do you want to look at?"
-	@(read symbol; \
-	echo "Touching files containing the string $$symbol"; \
-	find  . -name \*.[chy] -exec grep -s $$symbol {} \; -print -exec touch {} \; )
-
 
 $(srcdir)/configure: configure.ac aclocal.m4
 	cd $(srcdir) && autoreconf
