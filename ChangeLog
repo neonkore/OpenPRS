@@ -1,3 +1,9 @@
+2011-02-17  Felix Ingrand  <felix@cturtle>
+
+	* Modified the ope (OP Editor) so it does not start a graphical display when
+	generating .tex doc files. As a result, the installation should
+	not require a running X11 server anymore.
+
 2011-02-07  Felix Ingrand  <felix@cturtle>
 
 	* site.make.in and Makefile.in : do some clean up in the FLAGS mess...
