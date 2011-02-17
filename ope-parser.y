@@ -238,10 +238,10 @@ op_graph:					{char message[BUFSIZ];
 						 yy_begin_OPF_VERSION();
 						 sprintf(message,"Loading  OP file: %s. Please Wait.",
 							 current_graph_file_name);
-						 TimeoutCursors(True, message);}
+						 if (! no_window) TimeoutCursors(True, message);}
 	new_op_graph 				{yy_begin_0();
 						 add_op_file_name(current_graph_file_name, relevant_op);
-						 TimeoutCursors(False, NULL);}
+						 if (! no_window) TimeoutCursors(False, NULL);}
 	| error RESET_DOT_TK				{warning("Parsing error, expecting a OP graph");}
 	;
 
@@ -267,7 +267,7 @@ symbol_list:
 
 nop_list: 	
         /* empty */
-	| nop_list ntop    			{process_xt_events();}
+| nop_list ntop    			{if (!no_window) process_xt_events();}
 	;
 
 ntop: nop
@@ -275,7 +275,7 @@ ntop: nop
 ;
 
 nop: 	
-	OPENP_TK op_name 				{init_make_op($2,TRUE);} /* Will initialize current_op. */
+	OPENP_TK op_name 				{init_make_op($2, ! no_window);} /* Will initialize current_op. */
 	OPENP_TK nlist_fields CLOSEP_TK
 	OPENP_TK nlist_nodes CLOSEP_TK
 	OPENP_TK nlist_edges CLOSEP_TK CLOSEP_TK			 {finish_loading_op(current_op, global_draw_data);
@@ -454,7 +454,7 @@ list_knots: /* empty */ 			{$$ = sl_make_slist();}
 
 top_list: 	
 	/* empty */
-	| top_list top				{process_xt_events();}
+| top_list top				{if (!no_window) process_xt_events();}
 	| error RESET_DOT_TK				{warning(LG_STR("Parsing error, expecting a Text OP list",
 								"Erreur de parsing, attendait une liste de OP Textuel"));}
 	;
@@ -463,7 +463,7 @@ top: OPENP_TK DEFOP_TK op_name 			{init_make_top($3,
 #ifdef NO_GRAPHIX
 							      FALSE
 #else
-							      TRUE
+							      ! no_window
 #endif
 							      );
 					         current_op->graphic = FALSE;} /* Will initialize current_op. */
@@ -477,7 +477,7 @@ top: OPENP_TK DEFOP_TK op_name 			{init_make_top($3,
 								    );
 						 sl_add_to_tail(current_opfile->list_op,current_op);
 						 add_op_to_relevant_op_internal(current_op,relevant_op);
-						 process_xt_events();
+						 if (!no_window) process_xt_events();
 						 if (!be_quiet) printf("%s\n",$3);
 						 disable_variable_parsing();}
 ;

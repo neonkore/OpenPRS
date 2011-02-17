@@ -54,6 +54,7 @@ void sprint_term(Sprinter *sp, Term *term);
 void sprint_unknown_lisp_object(Sprinter *sp, L_List l);
 void sprint_l_list(Sprinter *sp, L_List l);
 void sprint_backslash_string(Sprinter *sp, PString string);
+void sprint_action_field(Sprinter *sp,Action_Field *ac);
 
 
 #define SPRINTER_STRING(sp) ((sp)->str)

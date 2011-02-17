@@ -334,13 +334,14 @@ void select_opfile(OPFile *opf)
 	  unselect_current_op(global_draw_data, TRUE);
 
      current_opfile = opf;
-     
-     symbolListDialogUpdate(symbolListDialog);
+     if (! no_window) {
+       symbolListDialogUpdate(symbolListDialog);
 
-     XClearWindow(XtDisplay(global_draw_data->canvas), global_draw_data->window);
+       XClearWindow(XtDisplay(global_draw_data->canvas), global_draw_data->window);
 
-     UpdateTitleWindow();
-     update_file_sensitivity(True);
+       UpdateTitleWindow();
+       update_file_sensitivity(True);
+     }
 }
 
 PBoolean sort_opf(OPFile *opf1, OPFile *opf2)
@@ -381,7 +382,9 @@ void make_opfile(PString ext_name, Opf_Type type)
 /*	  sl_delete_slist_node(list_opfiles, opf_tmp); */
      sl_add_to_tail(list_opfiles, opf);
      select_opfile(opf);
-     update_empty_sensitivity(False);
+     if (! no_window) {
+       update_empty_sensitivity(False);
+     }
 }
 
 OPFile *make_buffer_opfile()

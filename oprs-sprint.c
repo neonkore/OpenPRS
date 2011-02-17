@@ -321,6 +321,23 @@ void sprint_expr_frame(Sprinter *sp,ExprFrame *ef)
      
 }
 
+void sprint_action_field(Sprinter *sp,Action_Field *ac) 
+{ 
+  if (ac) {
+    if (ac->special) {
+      SPRINT(sp,strlen (spec_act_sym)+3,sprintf(f,"( %s ", spec_act_sym));
+      if (ac->multi)
+	sprint_lenv(sp,ac->u.list_envar);
+      else
+	sprint_envar(sp,ac->u.envar);
+    }
+    sprint_expr(sp,ac->function);
+    if (ac->special) {
+      SPRINT(sp,1,sprintf(f,")"));
+    }
+  }
+}
+
 void sprint_tl(Sprinter *sp,TermList tl)
 {
      Term *t;

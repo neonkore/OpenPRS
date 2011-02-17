@@ -79,21 +79,9 @@ static const char* const rcsid = "$Id$";
 
 #include "ope-icon.bit"
 
-#ifdef REGISTER_OP_EDITOR
-
-#define OPE_ARG_ERR_MESSAGE LG_STR("Usage: ope\
-\t[-m message-passer-hostname] [-j message-passer-port-number]\n\
-\t[-l upper|lower|none ]\n\
-\t[-D files-directory] [-F opfile] [opfile]*\n",
-"Usage: ope\
-\t[-m message-passer-hostname] [-j message-passer-port-number]\n\
-\t[-l upper|lower|none ]\n\
-\t[-D files-directory] [-F opfile] [opfile]*\n")
-#else
 #define OPE_ARG_ERR_MESSAGE LG_STR("Usage: ope [-l upper|lower|none ] [-F opfile]\n\
 \t[-D files-directory] [opfile]*\n","Usage: ope [-l upper|lower|none ] [-F opfile]\n\
 \t[-D files-directory] [opfile]*\n")
-#endif
 
 void UpdateTitleWindow();
 void UpdateMessageWindow(char *string);
@@ -119,14 +107,10 @@ char *file_name_for_print;
 OPFile *buffer_opfile;
 
 PBoolean flushing_xt_events;
+PBoolean no_window = FALSE;
 
 char *mp_hostname;
 int mp_port;
-
-#ifndef GNUWIN32
-struct hostent  *gethostbyname();
-#endif
-
 
 Slist *ope_init_arg(int argc,char **argv)
 {
@@ -138,35 +122,18 @@ Slist *ope_init_arg(int argc,char **argv)
      char s[LINSIZ];
      int c, getoptflg = 0;
      int Dir_flg = 0;
-     int mpname_flg = 0, mpnumber_flg = 0, lci_flg = 0, lang_flg =0;
+     int lci_flg = 0, lang_flg =0;
 
-     struct hostent *check_hostname;
      extern int optind;
      extern char *optarg;
-     int maxlength = MAX_HOST_NAME * sizeof(char);
 
      selected_dir = NULL; 		/* To avoid GCC warning... */
 
      while ((c = getopt(argc, argv, 
-#ifdef REGISTER_OP_EDITOR     
-			"m:j:D:F:t:c:l:L:h"
-#else
 			"D:F:t:c:l:L:h"
-#endif
 			)) != EOF)
 	  switch (c)
 	  {
-#ifdef REGISTER_OP_EDITOR     
-	  case 'm':
-	       mpname_flg++;
-	       mp_hostname = optarg;
-	       break;
-	  case 'j':
-	       mpnumber_flg++;
-	       if (!sscanf (optarg,"%d",&mp_port ))
-		    getoptflg++;
-	       break;
-#endif
 	  case 'D':
 	       Dir_flg++; 
 	       selected_dir = optarg;
@@ -186,6 +153,7 @@ Slist *ope_init_arg(int argc,char **argv)
 	       break;
 	  case 't':
 	       optind--;	/* Back up one file name. */
+	       no_window = TRUE;
 	       for (; optind < argc; optind++) { /* The others files */
 		    char * tex_file;
 
@@ -244,36 +212,132 @@ Slist *ope_init_arg(int argc,char **argv)
      if (lang_flg) {
 	  select_language(lang_str, FALSE);
      }
-#ifndef GNUWIN32     
-     if (mpname_flg){
-	  if ((check_hostname = gethostbyname (mp_hostname)) == NULL){
-	       fprintf(stderr, LG_STR("Invalid mp host name \n",
-				      "Invalid mp host name \n"));
-	       exit (1);
+     if ( lci_flg ) {
+	  if (! check_and_set_id_case_option(id_case_option)) {
+	       fprintf(stderr, LG_STR("Invalid case option, check the arguments .\n",
+				      "Invalid case option, check the arguments .\n"));
 	  }
-     } else if (! (mp_hostname = getenv("OPRS_MP_HOST"))) {
-	  mp_hostname = (char *)MALLOC (maxlength);
-	  if (gethostname(mp_hostname, MAX_HOST_NAME) != 0) {
-	       fprintf(stderr, LG_STR("Error in gethostname \n",
-				      "Error in gethostname \n"));
-	       exit(1);
+     } else if ((id_case_option = getenv("OPRS_ID_CASE")) != NULL) {
+	  if (! check_and_set_id_case_option(id_case_option)) {
+	       fprintf(stderr, LG_STR("Invalid case option, check the OPRS_ID_CASE environment variable.\n",
+				      "Invalid case option, check the OPRS_ID_CASE environment variable.\n"));
 	  }
-     } else {
-	  if ((check_hostname = gethostbyname (mp_hostname)) == NULL){
-	       fprintf(stderr, LG_STR("Invalid mp host name, check the OPRS_MP_HOST environment variable.\n",
-				      "Invalid mp host name, check the OPRS_MP_HOST environment variable.\n"));
-	       mp_hostname = (char *)MALLOC (maxlength);
-	       if (gethostname(mp_hostname, MAX_HOST_NAME) != 0) {
-		    fprintf(stderr, LG_STR("Error in gethostname \n",
-					   "Error in gethostname \n"));
-		    exit(1);
-	       }
-	  }
+     } 
+
+     for (; optind < argc; optind++) { /* The others files */
+	  selected_file = argv[optind];
+	  if (Dir_flg)
+	       sprintf(s, "compile_ops \"%s/%s.opf\"", selected_dir, selected_file);
+	  else
+	       sprintf(s, "compile_ops \"%s\"", selected_file);
+	  NEWSTR(s, command);
+	  sl_add_to_tail(list_of_commands, command);   /* the command line */
+
+	  sprintf(s, "op-file: %s\n",selected_file);   /* the error message */
+	  NEWSTR(s, command);
+	  sl_add_to_tail(list_of_commands, command);
      }
-     if (!mpnumber_flg && !get_int_from_env("OPRS_MP_PORT", &mp_port))
-	  mp_port = MP_PORT;
-     
-#endif
+     return(list_of_commands);
+
+}
+
+Slist *ope_init_nw_arg(int argc,char **argv)
+{
+     Slist *list_of_commands = sl_make_slist();
+     char *command;
+
+     char *id_case_option = NULL, *lang_str = NULL;
+     char *selected_file, *selected_dir;
+     char s[LINSIZ];
+     int c, getoptflg = 0;
+     int Dir_flg = 0;
+     int lci_flg = 0, lang_flg =0;
+
+     extern int optind;
+     extern char *optarg;
+
+     selected_dir = NULL; 		/* To avoid GCC warning... */
+
+     while ((c = getopt(argc, argv, 
+			"D:F:t:c:l:L:h"
+			)) != EOF)
+	  switch (c)
+	  {
+	  case 'D':
+	       Dir_flg++; 
+	       selected_dir = optarg;
+	       break;
+	  case 'F':
+	       selected_file = optarg;
+	       no_window = TRUE;
+	       if (Dir_flg)
+		    sprintf(s, "compile_ops \"%s/%s.opf\"", selected_dir, selected_file);
+	       else
+		    sprintf(s, "compile_ops \"%s\"", selected_file); 
+	       NEWSTR(s, command);
+	       sl_add_to_tail(list_of_commands, command);   /* the command line */
+
+	       sprintf(s, "op-file: %s\n",selected_file);   /* the error message */
+	       NEWSTR(s, command);
+	       sl_add_to_tail(list_of_commands, command);
+	       break;
+	  case 't':
+	       optind--;	/* Back up one file name. */
+	       no_window = TRUE;
+	       for (; optind < argc; optind++) { /* The others files */
+		    char * tex_file;
+
+		    selected_file = argv[optind];
+		    optind++;
+		    tex_file= argv[optind];
+		    sprintf(s, "convert_text_ops \"%s\" \"%s\"", selected_file, tex_file);
+		    NEWSTR(s, command);
+		    sl_add_to_tail(list_of_commands, command);   /* the command line */
+
+		    sprintf(s, "convert-text-file: %s in %s\n",selected_file, tex_file);   /* the error message */
+		    NEWSTR(s, command);
+		    sl_add_to_tail(list_of_commands, command);
+	       }
+	       NEWSTR("exit", command);
+	       sl_add_to_tail(list_of_commands, command);   /* the command line */
+	       NEWSTR("error in exit", command);
+	       sl_add_to_tail(list_of_commands, command);
+	       break;
+	  case 'c':
+	       optind--;	/* Back up one file name. */
+	       no_window = TRUE;
+	       for (; optind < argc; optind++) { /* The others files */
+
+		    selected_file = argv[optind];
+		    sprintf(s, "convert_ops \"%s\" \"%s.bak\"", selected_file, selected_file);
+		    NEWSTR(s, command);
+		    sl_add_to_tail(list_of_commands, command);   /* the command line */
+
+		    sprintf(s, "convert-file: %s\n",selected_file);   /* the error message */
+		    NEWSTR(s, command);
+		    sl_add_to_tail(list_of_commands, command);
+	       }
+	       NEWSTR("exit", command);
+	       sl_add_to_tail(list_of_commands, command);   /* the command line */
+	       NEWSTR("error in exit", command);
+	       sl_add_to_tail(list_of_commands, command);
+	       break;
+	  case 'l':
+	       lci_flg++;
+	       id_case_option = optarg;
+	       break;
+	  case 'L':
+	       lang_flg++;
+	       lang_str = optarg;
+	       break;
+	  case 'h':
+	  default:
+	       getoptflg++;
+	  }
+
+     if (lang_flg) {
+	  select_language(lang_str, FALSE);
+     }
      if ( lci_flg ) {
 	  if (! check_and_set_id_case_option(id_case_option)) {
 	       fprintf(stderr, LG_STR("Invalid case option, check the arguments .\n",
@@ -467,10 +531,6 @@ Draw_Data *global_draw_data;
 
 /* this is to allow our parsing of these options. */
 static XrmOptionDescRec options[] = {
-#ifdef REGISTER_OP_EDITOR     
-   {"-m",	"",	XrmoptionSkipArg,	NULL},
-   {"-j",	"",	XrmoptionSkipArg,	NULL},
-#endif
    {"-D",	"",	XrmoptionSkipArg,	NULL},
    {"-F",	"",	XrmoptionSkipArg,	NULL},
    {"-S",	"",	XrmoptionSkipArg,	NULL},
@@ -530,6 +590,45 @@ int main(int argc, char **argv, char **envp)
      int pid=getpid();
  
      disable_slist_compaction();
+
+     list_of_commands = ope_init_nw_arg(argc, argv);
+     init_hash_size_id(0);
+     make_id_hash();		/* Make the symbol hash table */
+     init_id_hash();
+
+     init_hash_size_pred_func(0);
+     make_pred_func_hash();		/* Make the predicat hash table */
+
+     make_global_var_list();
+
+     relevant_op = (Relevant_Op *)make_relevant_op();
+     list_opfiles = sl_make_slist();
+     list_last_selected_ops = sl_make_slist();
+
+     ope_parser = TRUE;
+     parse_source = PS_STRING;
+
+     if (no_window) {
+       strcpy (error_message,  "The following files have not been loaded:\n");
+
+       command = (char *) sl_get_from_head(list_of_commands);
+       while (command != NULL) {
+	 res = yyparse_one_command_string(command); 
+	 error = (char *) sl_get_from_head(list_of_commands);
+
+	 if (!res){
+	   strcat(error_message, error);
+	   errors++;
+	 } else
+	   loadedfiles++;
+	
+	 FREE (command);
+	 FREE (error);
+	 command = (char *) sl_get_from_head(list_of_commands);
+       }
+       FREE_SLIST(list_of_commands);
+       exit(0);
+     }
 
 /*      fprintf(stderr, "Locale set from env to %s.\n",setlocale(LC_CTYPE,"")); */
 
@@ -594,28 +693,9 @@ int main(int argc, char **argv, char **envp)
 /*      oprs_yyout = stdout; */
 /* #endif */
      
-     init_hash_size_id(0);
-     make_id_hash();		/* Make the symbol hash table */
-     init_id_hash();
-
-     init_hash_size_pred_func(0);
-     make_pred_func_hash();		/* Make the predicat hash table */
-
-     make_global_var_list();
-
-     relevant_op = (Relevant_Op *)make_relevant_op();
-     list_opfiles = sl_make_slist();
-     list_last_selected_ops = sl_make_slist();
-
-     ope_parser = TRUE;
-     parse_source = PS_STRING;
      global_draw_data = &dd;
 
      list_of_commands = ope_init_arg(argc, argv);
-
-#ifdef REGISTER_OP_EDITOR     
-     register_to_the_mp(OP_EDITOR_MP_NAME, MESSAGES_PT);
-#endif
 
      icon_pixmap = XCreateBitmapFromData(XtDisplay(topLevel),
 					 RootWindowOfScreen(XtScreen(topLevel)),

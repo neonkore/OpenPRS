@@ -124,5 +124,6 @@ extern ListLastSelectedOP list_last_selected_ops;
 extern ListOP list_rops;
 
 extern Relevant_Op *relevant_op;
+extern PBoolean no_window;
 
 #endif
