@@ -1,3 +1,17 @@
+2011-01-21  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* ev-predicate.c, ev-predicate.h, ev-predicate_f-pub.h, opaque-pub.h,
+		  oprs-pred-func.c Clean up the evaluable predicate types to
+		  make them more  acceptable to C++ code. (for PR2/ROS)
+
+2011-01-20  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* mp.c (get_and_buffer_message): adjust some type casting for printing.
+
+2010-11-23  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* configure.ac: Bump version number to 1.08 Beta.
+
 2010-10-08  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* ev-predicate.c (declare_eval_pred): Use LONG-LONGP instead of

@@ -453,7 +453,7 @@ int main(int argc, char **argv, char **envp)
 		   time_t tt = clock_value.tv_sec;
 		   if (mp_log_with_timestamp) {
 		       fprintf(mp_log_file, "%s", ctime(&tt));
-		       fprintf(mp_log_file, "rough value: %ld:%ld\n", clock_value.tv_sec, clock_value.tv_usec);
+		       fprintf(mp_log_file, "rough value: %ld:%ld\n", clock_value.tv_sec, (long int)clock_value.tv_usec);
 		   }
 		   fprintf(mp_log_file, LG_STR("mp-oprs (%s:%d): Start logging: %s",
 					       "mp-oprs (%s:%d): Debut de logue: %s"),
@@ -753,7 +753,7 @@ void get_and_buffer_message(Mp_Oprs_Client *mpc_sender)
 		    }
 		    time_t tt = clock_value.tv_sec;
 		    fprintf(mp_log_file, "%s", ctime(&tt));
-		    fprintf(mp_log_file, "rough value: %ld:%ld\n", clock_value.tv_sec, clock_value.tv_usec);
+		    fprintf(mp_log_file, "rough value: %ld:%ld\n", clock_value.tv_sec, (long int)clock_value.tv_usec);
 	       }
 	       fprintf(mp_log_file, LG_STR("%s multicast to",
 					   "%s multicast à"),
@@ -820,7 +820,7 @@ void get_and_buffer_message(Mp_Oprs_Client *mpc_sender)
 			 }
 			 time_t tt = clock_value.tv_sec;
 			 fprintf(mp_log_file, "%s", ctime(&tt));
-			 fprintf(mp_log_file, "rough value: %ld:%ld\n", clock_value.tv_sec, clock_value.tv_usec);
+			 fprintf(mp_log_file, "rough value: %ld:%ld\n", clock_value.tv_sec, (long int)clock_value.tv_usec);
 		    }
 		    fprintf(mp_log_file, LG_STR("%s to %s: %s.\n",
 						"%s à %s: %s.\n"),
@@ -846,7 +846,7 @@ void get_and_buffer_message(Mp_Oprs_Client *mpc_sender)
 		    }
 		    time_t tt = clock_value.tv_sec;
 		    fprintf(mp_log_file, "%s", ctime(&tt));
-		    fprintf(mp_log_file, "rough value: %ld:%ld\n", clock_value.tv_sec, clock_value.tv_usec);
+		    fprintf(mp_log_file, "rough value: %ld:%ld\n", clock_value.tv_sec, (long int)clock_value.tv_usec);
 	       }
 	       fprintf(mp_log_file, LG_STR("%s broadcast: %s.\n",
 					   "%s diffuse: %s.\n"), mpc_sender->name, message);
