@@ -51,6 +51,8 @@ static const char* const rcsid = "$Id$";
 #include "oprs-type.h"
 #include "op-structure.h"
 #include "op-default.h"
+#include "oprs-sprint.h"
+#include "oprs-sprint_f.h"
 
 #ifndef NO_GRAPHIX
 #include "ope-graphic.h"
@@ -1071,6 +1073,127 @@ void fprint_instruction(FILE *f,Instruction *inst)
      default: 	 
 	  fprintf(stderr,LG_STR("Unknown instruction type in fprint_instruction.\n",
 				"Unknown instruction type in fprint_instruction.\n")); 
+	  break;
+     }
+}
+
+/* text op sprint functions */
+void sprint_instruction(Sprinter *sp, Instruction *inst);
+
+void sprint_list_instruction(Sprinter *sp, List_Instruction insts)
+{
+     if (insts) {
+	  Instruction *inst;
+
+	  sl_loop_through_slist(insts, inst, Instruction *) {
+	       sprint_instruction(sp,inst);
+	       SPRINT(sp,1,sprintf(f,"\n"));
+	  }
+     }
+}
+
+void sprint_body(Sprinter *sp,Body *body) 
+{ 
+  if (! body) {
+    SPRINT(sp,12,sprintf(f,"(Body *)NULL"));
+  } else {
+    SPRINT(sp,1,sprintf(f,"("));
+    sprint_list_instruction(sp,body->insts);
+    SPRINT(sp,1,sprintf(f,")"));
+  }
+}
+
+void sprint_simple_instruction(Sprinter *sp, Simple_Instruction *simple)
+{
+     sprint_expr(sp, simple->expr);
+}
+
+void sprint_part_if_instruction(Sprinter *sp, If_Instruction *if_inst)
+{
+     sprint_expr(sp, if_inst->condition);
+     sprint_list_instruction(sp,if_inst->then_insts);
+     if (if_inst->elseif) {
+       SPRINT(sp,7,sprintf(f,(lower_case_id ? "elseif " : "ELSEIF ")));
+	       sprint_part_if_instruction(sp,if_inst->u.elseif_inst->u.if_inst);
+     } else
+	  if (if_inst->u.else_insts) {
+	    SPRINT(sp,5,sprintf(f,(lower_case_id ? "else " : "ELSE ")));
+	       sprint_list_instruction(sp,if_inst->u.else_insts);
+	  }
+}
+
+void sprint_if_instruction(Sprinter *sp, If_Instruction *if_inst)
+{
+  SPRINT(sp,4,sprintf(f,(lower_case_id ? "(if " : "(IF ")));
+     sprint_part_if_instruction(sp, if_inst);
+     SPRINT(sp,2,sprintf(f,") "));
+
+}
+
+void sprint_while_instruction(Sprinter *sp,While_Instruction *while_inst)
+{
+  SPRINT(sp,7,sprintf(f,(lower_case_id ? "(while " : "(WHILE ")));
+     sprint_expr(sp, while_inst->condition);
+     sprint_list_instruction(sp,while_inst->insts);
+     SPRINT(sp,2,sprintf(f,") "));
+}
+
+void sprint_do_instruction(Sprinter *sp,Do_Instruction *do_inst)
+{
+  SPRINT(sp,4,sprintf(f,(lower_case_id ? "(do " : "(DO ")));
+     sprint_list_instruction(sp,do_inst->insts);
+     SPRINT(sp,6,sprintf(f,(lower_case_id ? "while " : "WHILE ")));
+     sprint_expr(sp, do_inst->condition);
+     SPRINT(sp,2,sprintf(f,") "));
+}
+
+void sprint_par_instruction(Sprinter *sp,Par_Instruction *par_inst)
+{
+     if (par_inst->bodys) {
+	  Body *body;
+	  SPRINT(sp,4,sprintf(f,"(// "));
+
+	  sl_loop_through_slist(par_inst->bodys, body, Body *) {
+	       sprint_body(sp, body);
+	  }
+
+	  SPRINT(sp,2,sprintf(f,") "));
+     }
+}
+
+void sprint_instruction(Sprinter *sp,Instruction *inst)
+{
+     switch(inst->type) {
+     case IT_SIMPLE:
+	  sprint_simple_instruction(sp,inst->u.simple_inst);
+	  break;
+     case IT_COMMENT:
+       SPRINT(sp,strlen(inst->u.comment),sprintf(f,"%s",inst->u.comment));
+	  break;
+     case IT_LABEL:
+       SPRINT(sp,6 + strlen(inst->u.label_inst),sprintf(f,(lower_case_id ? "label %s" : "LABEL %s"),inst->u.label_inst));
+	  break;
+     case IT_GOTO:
+       SPRINT(sp,5 + strlen(inst->u.goto_inst),sprintf(f,(lower_case_id ? "goto %s" : "GOTO %s"),inst->u.goto_inst));
+	  break;
+     case IT_BREAK:
+       SPRINT(sp,5,sprintf(f,(lower_case_id ? "break" : "BREAK")));
+	  break;
+     case IT_IF:
+	  sprint_if_instruction(sp,inst->u.if_inst);
+	  break;
+     case IT_WHILE:
+	  sprint_while_instruction(sp,inst->u.while_inst);
+	  break;
+     case IT_DO:
+	  sprint_do_instruction(sp,inst->u.do_inst);
+	  break;
+     case IT_PAR:
+	  sprint_par_instruction(sp,inst->u.par_inst);
+	  break;
+     default: 	 
+	  fprintf(stderr,LG_STR("Unknown instruction type in sprint_instruction.\n",
+				"Unknown instruction type in sprint_instruction.\n")); 
 	  break;
      }
 }

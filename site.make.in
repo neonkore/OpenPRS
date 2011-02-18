@@ -29,12 +29,6 @@ INSTALL-IF-CHANGE = @abs_top_srcdir@/util/install-if-change.sh
 
 LD = ld				#Strange... autoconf does not care
 RANLIB = @RANLIB@
-PURIFY =
-OPTIMIZE = -O
-DEBUG_FLAG = -g
-STATIC =
-ANSI = 
-WARNINGS = -Wall
 
 MEMLIB_DEB = -DDO_CHECK=0
 
@@ -62,7 +56,6 @@ EXEC-DATADIR=@exec_prefix@/share/openprs/data
 DOCDIR = @prefix@/share/openprs/doc
 DESTDIR = @prefix@/share/openprs
 
-
 PRPC_LANG = en
 
 USE_MULTI_THREAD = 1
@@ -71,4 +64,3 @@ ifdef USE_MULTI_THREAD
 MT_LDFLAGS =
 MT_CPPFLAGS =
 endif
-

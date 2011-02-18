@@ -39,8 +39,6 @@ include ../../site.make
 
 srctop = @top_srcdir@
 
-#CEXTRACT	= /usr/local/Divers/bin/$(HOSTTYPE)/cextract
-
 srcdir = $(srctop)/contrib/src
 
 VPATH = $(srcdir)
@@ -54,9 +52,7 @@ PU_LIB_PROTO = $(PU_LIB_OBJ:%.o=%_f.h)
 
 INCLUDE =  -I. -I$(OPRS_INCL_DIR) -I../.. -I$(OPRS_INCL_DIR)/c_toolkit
 
-#CFLAGS = $(MT_CFLAGS) $(ANSI) $(DEBUG_FLAG) $(OPTIMIZE) $(WARNINGS) $(PROFILE) $(CFLAGS_HOST)
-
-CPPFLAGS = $(MT_CPPFLAGS) $(MACHINE) $(LANG_FLAG) $(INCLUDE)
+CPPFLAGS += $(MT_CPPFLAGS) $(INCLUDE)
 
 PU_LIB = libpu.a
 
@@ -88,10 +84,6 @@ install: all
 		$(INSTALL-IF-CHANGE) -c -m 644 $$i ${LIBDIR}/$$i;\
 		$(RANLIB)  ${LIBDIR}/$$i;\
 	done
-
-# %_f.h:
-# 	$(CEXTRACT) $(INCLUDE) $(OTHER_INCLUDE) $(X_INCLUDE) $(CPPFLAGS) $< > $@
-
 clean:
 	/bin/rm -f core a.out gmon.out *.o make.depend.tmp make.depend.bak
 

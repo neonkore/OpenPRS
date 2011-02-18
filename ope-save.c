@@ -42,6 +42,8 @@ static const char* const rcsid = "$Id$";
 #include "oprs-type.h"
 #include "oprs-print.h"
 #include "oprs-print_f.h"
+#include "oprs-sprint.h"
+#include "oprs-sprint_f.h"
 #include "ope-edit_f.h"
 #include "ope-save_f.h"
 #include "ope-op-opf_f.h"
@@ -468,60 +470,79 @@ void copy_op (Op_Structure *op, char *new_name)
 
 void write_op_tex(FILE * fpo, Op_Structure * op)
 {
-     fprintf(fpo, "\\item\n\\textbf{%s}\n\n", op->name);
+  Sprinter *sp = make_sprinter(0);
 
-     if (op->graphic)
-	  fprintf(fpo, LG_STR("A graphic ",
-			      "A graphic "));
-     else
-	  fprintf(fpo, LG_STR("A text ",
-			      "A text "));
+  fprintf(fpo, "\\item\n\\textbf{%s}\n\n", op->name);
 
-     if (op->gaction) {
-	       fprintf(fpo, LG_STR("action OP.\n\n",
-				   "action OP.\n\n"));
-	  } else {
-	       fprintf(fpo, LG_STR("OP.\n\n",
-				   "OP.\n\n"));
-	  }
-     fprintf(fpo, "\\begin{description}\n\n");
-     if (op->ginvocation) {
-	  fprintf(fpo, "\\item[Invocation:]\n\n\\begin{verbatim}\n%s\n\\end{verbatim}\n\n", op->ginvocation->u.gtext->string);
-     }
+  if (op->graphic)
+    fprintf(fpo, LG_STR("A graphic ",
+			"A graphic "));
+  else
+    fprintf(fpo, LG_STR("A text ",
+			"A text "));
 
-     if ((op->gcall) && NOT_EMPTY_STRING(op->gcall->u.gtext->string)) {
-	  fprintf(fpo, "\\item[Call:]\n\n\\begin{verbatim}\n%s\n\\end{verbatim}\n\n", op->gcall->u.gtext->string);
-     }
+  if (op->action) {
+    fprintf(fpo, LG_STR("action OP.\n\n",
+			"action OP.\n\n"));
+  } else {
+    fprintf(fpo, LG_STR("OP.\n\n",
+			"OP.\n\n"));
+  }
+  fprintf(fpo, "\\begin{description}\n\n");
+  if (op->invocation) {
+    reset_sprinter(sp);
+    sprint_expr(sp,op->invocation);
+    fprintf(fpo, "\\item[Invocation:]\n\n\\begin{verbatim}\n%s\n\\end{verbatim}\n\n", SPRINTER_STRING(sp));
+       
+  }
 
-     if ((op->gcontext) && NOT_EMPTY_STRING(op->gcontext->u.gtext->string)) {
-	  fprintf(fpo, "\\item[Context:]\n\n\\begin{verbatim}\n%s\n\\end{verbatim}\n\n", op->gcontext->u.gtext->string);
-     }
+  if (op->call) { 		/*  && NOT_EMPTY_STRING(op->gcall->u.gtext->string)) */
+    reset_sprinter(sp);
+    sprint_expr(sp,op->call);
+    fprintf(fpo, "\\item[Call:]\n\n\\begin{verbatim}\n%s\n\\end{verbatim}\n\n",  SPRINTER_STRING(sp));
+  }
 
-     if ((op->gsetting) && NOT_EMPTY_STRING(op->gsetting->u.gtext->string)) {
-	  fprintf(fpo, "\\item[Setting:]\n\n\\begin{verbatim}\n%s\n\\end{verbatim}\n\n", op->gsetting->u.gtext->string);
-     }
+  if (op->context) { /* && NOT_EMPTY_STRING(op->gcontext->u.gtext->string)) */
+    reset_sprinter(sp);
+    sprint_exprlist(sp,op->context);
+    fprintf(fpo, "\\item[Context:]\n\n\\begin{verbatim}\n%s\n\\end{verbatim}\n\n", SPRINTER_STRING(sp));
+  }
 
-     if ((op->effects) && NOT_EMPTY_STRING(op->geffects->u.gtext->string)) {
-	  fprintf(fpo, "\\item[Effects:]\n\n\\begin{verbatim}\n%s\n\\end{verbatim}\n\n", op->geffects->u.gtext->string);
-     }
+  if (op->setting){ /*  && NOT_EMPTY_STRING(op->gsetting->u.gtext->string)) */
+    reset_sprinter(sp);
+    sprint_expr(sp,op->setting);
+    fprintf(fpo, "\\item[Setting:]\n\n\\begin{verbatim}\n%s\n\\end{verbatim}\n\n",  SPRINTER_STRING(sp));
+  }
 
-     if (op->gaction) {
-	  fprintf(fpo, "\\item[Action:]\n\n\\begin{verbatim}\n%s\n\\end{verbatim}\n\n", op->gaction->u.gtext->string);
-     }
+  if (op->effects) { /*  && NOT_EMPTY_STRING(op->geffects->u.gtext->string)) */
+    reset_sprinter(sp);
+    sprint_exprlist(sp,op->effects);
+    fprintf(fpo, "\\item[Effects:]\n\n\\begin{verbatim}\n%s\n\\end{verbatim}\n\n",  SPRINTER_STRING(sp));
+  }
 
-     if (op->gbody) {
-	  fprintf(fpo, "\\item[Body:]\n\n\\begin{verbatim}\n%s\n\\end{verbatim}\n\n", op->gbody->u.gtext->string);
-     }
+  if (op->action) {
+    reset_sprinter(sp);
+    sprint_action_field(sp,op->action);
+    fprintf(fpo, "\\item[Action:]\n\n\\begin{verbatim}\n%s\n\\end{verbatim}\n\n", SPRINTER_STRING(sp));
+  }
 
-     if (!sl_slist_empty(op->properties)) {
-	  fprintf(fpo, "\\item[Properties:]\n\n\\begin{verbatim}\n%s\n\\end{verbatim}\n\n", op->gproperties->u.gtext->string);
-     }
+  if (op->body) {
+    reset_sprinter(sp);
+    sprint_body(sp,op->body);
+    fprintf(fpo, "\\item[Body:]\n\n\\begin{verbatim}\n%s\n\\end{verbatim}\n\n",  SPRINTER_STRING(sp));
+  }
 
-     if ((op->gdocumentation) && NOT_EMPTY_STRING(op->gdocumentation->u.gtext->string)) {
-	  fprintf(fpo, "\\item[Documentation:]\n\n\\begin{verbatim}\n%s\n\\end{verbatim}\n\n", op->gdocumentation->u.gtext->string);
-     }
+  if (!sl_slist_empty(op->properties)) {
+    reset_sprinter(sp);
+    sprint_list_property(sp,op->properties);
+    fprintf(fpo, "\\item[Properties:]\n\n\\begin{verbatim}\n%s\n\\end{verbatim}\n\n",SPRINTER_STRING(sp));
+  }
 
-     fprintf(fpo, "\\end{description}\n\n");
+  if (op->documentation) {
+    fprintf(fpo, "\\item[Documentation:]\n\n\\begin{verbatim}\n%s\n\\end{verbatim}\n\n", op->documentation);
+  }
+
+  fprintf(fpo, "\\end{description}\n\n");
 }
 
 int write_opfile_tex(char *file_name, OPFile *opfile)

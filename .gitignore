@@ -1,3 +1,22 @@
+data/new-default.opf.bak
+doc/bar.tex
+doc/example-cons.tex
+doc/fact-meta-if-par.tex
+doc/fact-meta.tex
+doc/fact-text.txt-opf
+doc/fib-par.tex
+doc/fib-text.txt-opf
+doc/fib.tex
+doc/meta-intended-goal.tex
+doc/new-default.tex
+doc/new-meta-ops.tex
+doc/oprs.out
+doc/oprs.pdf
+doc/semaphore.tex
+doc/truck-demo-plus.tex
+doc/truck-demo.tex
+doc/wait.tex
+foo.tex
 config-ac.h
 config.h
 config.log
@@ -15,7 +34,6 @@ user-external.c
 user-external.h
 user-external_f.h
 xoprs
-*.ad.tmp
 c++-oprs-relocatable
 c++-xoprs-relocatable
 oprs-relocatable
@@ -25,6 +43,7 @@ doc/oprs-macros.tex
 # Lines that start with '#' are comments.
 # For a project mostly in C, the following would be a good set of
 # exclude patterns (uncomment them if you want to use them):
+*.ad.tmp
 *.[oa]
 *.ll
 *.yy
