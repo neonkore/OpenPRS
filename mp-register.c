@@ -253,7 +253,7 @@ void _write_string_to_socket(int socket, const char *message)
 {
      int i, total_size, h_size_mess;
      char *buf, *tmp;
-     u_long n_size_mess;                  /* for network */
+     uint32_t n_size_mess;                  /* for network */
 
      h_size_mess = strlen(message);
      n_size_mess = htonl(h_size_mess);     
@@ -305,7 +305,7 @@ PString read_string_from_socket(int socket, int *size)
 {
      PString res;
      int i;
-     u_long n_size_mess;                  /* for network */
+     uint32_t n_size_mess;                  /* for network */
 
      if ((i = read_size(socket, (char *)&n_size_mess, sizeof(n_size_mess))) == -1) {
 	  perror("read_string_from_socket: read_size");
@@ -340,7 +340,7 @@ void write_int_to_socket(int socket ,int h_int)
 {
      int i, size;
      char *buf;
-     u_long n_int;                  /* for network */
+     uint32_t n_int;                  /* for network */
 
      n_int = htonl(h_int);     
 
@@ -361,7 +361,7 @@ int read_int_from_socket(int socket)
 {
      int res;
      int i, size;
-     u_long n_int;                  /* for network */
+     uint32_t n_int;                  /* for network */
 
      size = sizeof(n_int);
      if ((i = read_size(socket, (char *)&n_int, size)) == -1) {
