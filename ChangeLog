@@ -2,7 +2,9 @@
 
 	* mp-register.c (read_int_from_socket): fix a 32/64 bits problem when the message passer and the client are running on 64 vs. 32 bits.
 
-2011-02-17  Felix Ingrand  <felix@cturtle>
+	* configure.ac: push the version to 1.09beta
+
+ 2011-02-17  Felix Ingrand  <felix@cturtle>
 
 	* Modified the ope (OP Editor) so it does not start a graphical display when
 	generating .tex doc files. As a result, the installation should
