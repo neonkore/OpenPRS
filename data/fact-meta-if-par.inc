@@ -1,3 +1,5 @@
+set oprs_data_path "data:${HOME}/openrobots/share/openprs/data"
+
 declare cwp PROPERTY-P
 trace load op off
 include "data/new-default.sym"

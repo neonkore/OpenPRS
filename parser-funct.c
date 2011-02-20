@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * parser-funct.c -- 
  * 
- * Copyright (c) 1991-2004 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -540,3 +540,38 @@ char *read_file_name_newer_dopf_p(char *filename)
      return NULL;
 }
 
+PString replace_env_string(PString s)
+{
+     /* The string is mine, I can play with it. */
+     static Sprinter *sp = NULL;
+     char *index;
+
+     /* fprintf(stderr, "\"%s\" transformed in",s); */
+
+     if (!sp) sp = make_sprinter(0);
+     else reset_sprinter(sp);
+
+     while (index = strchr(s,'$')) {
+	  char *findex;
+
+ 	  if (index[1] == '{' && (findex = strchr(index+1,'}'))) {
+	       char *env;
+
+	       index[0] = findex[0]='\0'; /* replace the $ with a null, and terminate the envar */
+	       SPRINT(sp,strlen(s),sprintf(f,"%s",s));
+	       env = getenv(index+2); /* this is the envar */
+	       if (env) SPRINT(sp,strlen(env),sprintf(f,"%s",env));
+	       s = findex +1;
+	  } else {		/* we only found a $ */
+	       index[0]='\0';
+	       SPRINT(sp,strlen(s)+1,sprintf(f,"%s$",s));
+	       s = index+1;			/* print and skip the $ */
+	  }
+     }
+     SPRINT(sp,strlen(s),sprintf(f,"%s",s));
+     NEWSTR(SPRINTER_STRING(sp),index);
+     
+     /* fprintf(stderr, " \"%s\".\n",index); */
+     
+     return index;
+}

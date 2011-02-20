@@ -110,7 +110,7 @@ void *realloc1(void *ptr, size_t size);
 				   BCOPY(from, to, len+1);\
 				   } while (0)
 
-/* Macro to allocate and create a string equal to from (which is double quoted...) pointer by to (without the quote). */
+/* Macro to allocate and create a string equal to from (which is double quoted...) pointed by to (without the quote). */
 #define NEWQSTR(from, to) do {int len = strlen(from) - 2;\
 				   to = (char *)MALLOC(len+1);\
 				   BCOPY(from + 1, to, len);\

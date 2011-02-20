@@ -3,7 +3,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * oprs-parser.y -- yacc grammaire
  * 
- * Copyright (c) 1991-2010 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -540,7 +540,9 @@ command:
 								    "Le OPRS_DATA_PATH est: \"%s\"\n"), oprs_data_path);
 						 else printf(LG_STR("OPRS_DATA_PATH is not set.\n",
 								    "OPRS_DATA_PATH n'a pas de valeur.\n"));}
-	| SET_TK OPRS_DATA_PATH_TK QSTRING_TK	{oprs_data_path = $3;}
+        | SET_TK OPRS_DATA_PATH_TK QSTRING_TK	{oprs_data_path = replace_env_string($3); FREE($3);
+                                                 if (!be_quiet) printf(LG_STR("Setting OPRS_DATA_PATH to: \"%s\".\n",
+									      "Affectation d'OPRS_DATA_PATH a: \"%s\".\n"), oprs_data_path);}
 
 	| SET_TK META_TK debug_flag		{meta_option[META_LEVEL]=$3; report_meta_option_array();}
 	| SET_TK SOAK_TK debug_flag		{meta_option[SOAK_MF]=$3; report_meta_option_array();}

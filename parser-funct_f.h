@@ -3,7 +3,7 @@
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -49,6 +49,7 @@ void provide_include_file(char *filename);
 void pmstats(void);
 char *read_file_name_newer_dopf_p(char *filename);
 char *compilable_opf(char *filename);
+PString replace_env_string(PString s);
 
 PBoolean check_exist_access(char *selected_file);
 PBoolean check_read_access(char *selected_file);
