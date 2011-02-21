@@ -1,3 +1,8 @@
+2011-02-21  Francois Felix Ingrand  <felix@cturtle>
+
+	* oprs-kernel.tex: updated the doc wrt use of env variable in the
+	set oprs_data_path command.
+
 2010-10-08  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* oprs-kernel.tex: Updated the doc for the changes in INT-TO-FLOAT,

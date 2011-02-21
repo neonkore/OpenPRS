@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -*- Mode: Latex -*- %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% oprs-kernel.tex -- 
-%% Copyright (c) 1991-2010 Francois Felix Ingrand.
+%% Copyright (c) 1991-2011 Francois Felix Ingrand.
 %% All rights reserved.
 %%
 %% Redistribution and use in source and binary forms, with or without
@@ -645,7 +645,8 @@ means of commands in include files. Remember that files are searched in the
 \pgindex{set oprs\_data\_path (oprs)}
 \item \code{set oprs\_data\_path \var{string}}. Set the OPRS\_DATA\_PATH to the given
 value. This command has priority over the OPRS\_DATA\_PATH given as environment
-variable or as argument to the \code{oprs} command.
+variable or as argument to the \code{oprs} command. Note that you can use environment variable (e.g. \$\{HOME\}, etc),  in the string. Example: \code{set oprs\_data\_path "data:\$\{HOME\}/openprs/data:."}
+
 
 \pgindex{show oprs\_data\_path (oprs)}
 \item \code{show oprs\_data\_path}. Print the current OPRS\_DATA\_PATH value.
