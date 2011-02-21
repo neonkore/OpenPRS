@@ -128,11 +128,11 @@ at the Unix prompt:
 \code{\% oprs FOO}
 
 This will only work if there is already a \OPRSS{} running, or you will get
-this error message:\* 
+this error message:\\* 
 \code{``client: connect: Host is unreachable''}.
 
 If there is a \OPRSS{}, you will be reminded to issue the \code{accept}
-command in the \OPRSS{} with the following message:\*
+command in the \OPRSS{} with the following message:\\*
 \code{``Go in the oprs-server, and execute the accept command.''}
 
 or you can start a new \CPK{} with the \code{make} command of the \OPRSS{}
@@ -149,8 +149,8 @@ both programs expect connections. Unless you started the kernel with the
 \OPRSS{} with the \code{accept} command.
 
 Upon start-up, and just before entering the \CPK{} main loop, the kernel will
-execute the:\*
-\code{start\_kernel\_user\_hook}\*
+execute the:\\*
+\code{start\_kernel\_user\_hook}\\*
 function (\pxref{User Hooks}). This function can be used for example to
 initialize some data structures, or to install an intention scheduler
 (\pxref{Intention Graph Scheduling}). This function is executed before any
@@ -235,7 +235,7 @@ and \code{wait} instead of \samp{\^{}} and so on.
 
 \item[\code{-l upper|lower|none}] can be used to print and parse all the symbol
 and id in upper case, lower case or in no particular case. You may specify this
-option by setting the \code{OPRS\_ID\_CASE} environment variable:\*
+option by setting the \code{OPRS\_ID\_CASE} environment variable:\\*
 Example:
 \begin{verbatim}
 setenv OPRS_ID_CASE none
@@ -269,7 +269,7 @@ have precedence on those acquired from environment variables.
 \item[\code{OPRS\_DATA\_PATH}] is used  to specify a data path, i.e. a colon separated
 list of directories where the kernel will look for data files (\file{.inc},
 \file{.opf} and \file{.db}). It is used by the \CPK{} and the \XPK{}. It is
-equivalent to the \code{-d} command line argument.\*
+equivalent to the \code{-d} command line argument.\\*
 Example:
 \begin{verbatim}
 setenv OPRS_DATA_PATH ./data:/usr/local/oprs/data:${HOME}/data
@@ -286,7 +286,7 @@ setenv OPRS_DOC_DIR /usr/local/oprs/doc
 \cpindex{OPRS\_MP\_PORT}
 \item[\code{OPRS\_MP\_PORT}] is used  to specify the port on which the \MPA{} will
 listen to connection. It is used by the \CPK{}, the \XPK{}, the \OPRSS{}
-and the \MPA{}. It is equivalent to the \code{-j} command line argument. \*
+and the \MPA{}. It is equivalent to the \code{-j} command line argument. \\*
 Example:
 \begin{verbatim}
 setenv OPRS_MP_PORT 3456
@@ -295,7 +295,7 @@ setenv OPRS_MP_PORT 3456
 \cpindex{OPRS\_MP\_HOST}
 \item[\code{OPRS\_MP\_HOST}] is used  to specify the host on which the \MPA{} will
 listen to connection. It is used by the \CPK{}, the \XPK{}, the \MPA{} and the
-\OPRSS{}. It is equivalent to the \code{-m} command line argument.\*
+\OPRSS{}. It is equivalent to the \code{-m} command line argument.\\*
 Example:
 \begin{verbatim}
 setenv OPRS_MP_HOST alf.laas.fr
@@ -304,7 +304,7 @@ setenv OPRS_MP_HOST alf.laas.fr
 \cpindex{OPRS\_SERVER\_PORT}
 \item[\code{OPRS\_SERVER\_PORT}] is used to specify the port on which the
 \OPRSS{} will listen to connection. It is used by the \CPK{}, the \XPK{}
-and the \OPRSS{}. It is equivalent to the \code{-i} command line argument.\*
+and the \OPRSS{}. It is equivalent to the \code{-i} command line argument.\\*
 Example:
 \begin{verbatim}
 setenv OPRS_SERVER_PORT 3457
@@ -313,7 +313,7 @@ setenv OPRS_SERVER_PORT 3457
 \cpindex{OPRS\_SERVER\_HOST}
 \item[\code{OPRS\_SERVER\_HOST}] is used to specify the host on which the
 \OPRSS{} will listen to connection. It is used by the \CPK{} and the
-\XPK{}. It is equivalent to the \code{-s} command line argument.\*
+\XPK{}. It is equivalent to the \code{-s} command line argument.\\*
 Example:
 \begin{verbatim}
 setenv OPRS_SERVER_HOST alf.laas.fr
@@ -323,7 +323,7 @@ setenv OPRS_SERVER_HOST alf.laas.fr
 \item[\code{OPRS\_ID\_CASE}] is used to specify if the program should upper case,
 lower case or should not change the case of the parsed Id. This is equivalent
 to the \code{-l} option. The possible values
-are \code{lower}, \code{upper} or \code{none}:\*
+are \code{lower}, \code{upper} or \code{none}:\\*
 Example:
 \begin{verbatim}
 setenv OPRS_ID_CASE none
@@ -506,27 +506,27 @@ itself.
 (\pxref{General Expressions}) from the database. Note that you can delete
 expressions containing variables. Variables in this context are universally
 quantified, i.e. all the matching expressions will be deleted. Note that you
-cannot delete gexpressions containing logical operators.\*
-Example: \code{delete (foo a b \$x)}\*
+cannot delete gexpressions containing logical operators.\\*
+Example: \code{delete (foo a b \$x)}\\*
 \code{delete (bar 12.0 (+ 4 5))}
 
 \pgindex{consult (oprs)}
 \item \code{consult \var{gexpression}}. Consult the \var{gexpression}
 (\pxref{General Expressions}) in the database. Note that the consult
 command accepts a gexpression (i.e. expression combined with logical
-operators), not only an expression.\*
-Example: \code{consult (bar \$x b c)}\*
-\code{consult (\& (foo 4 "String") (bar \$x b c))}\*
+operators), not only an expression.\\*
+Example: \code{consult (bar \$x b c)}\\*
+\code{consult (\& (foo 4 "String") (bar \$x b c))}\\*
 \code{consult (|| (foo \$x "String") (bar \$x b c))}
 
 \pgindex{conclude (oprs)}
 \item \code{conclude \var{expression}}. Conclude the \var{expression}
 (\pxref{General Expressions}) in the database. You cannot conclude an
 expression with unbound variables, and you can only conclude expression, not
-gexpression.\*
-Example: \code{conclude (bar a b c)}, and\*
-\code{conclude (~ (foo 2 3 (+ 2 3)))}, are accepted, however\*
-\code{conclude (bar \$x b c)} is not allowed because of the variable, nor is\*
+gexpression.\\*
+Example: \code{conclude (bar a b c)}, and\\*
+\code{conclude (~ (foo 2 3 (+ 2 3)))}, are accepted, however\\*
+\code{conclude (bar \$x b c)} is not allowed because of the variable, nor is\\*
 \code{conclude (\& ( bar boo) (boo bar))} because of the conjunction.
 
 
@@ -538,8 +538,8 @@ particular order, so it can be rather tedious to look for a particular fact.
 \pgindex{save db (oprs)}
 \item \code{save db \file{file\_name}}. This command saves the contents of the
 database in a the file \file{file\_name}. It is saved in a format suitable to be
-read by the kernel. \*
-Example: \code{save db "my-database.db"}\*
+read by the kernel. \\*
+Example: \code{save db "my-database.db"}\\*
 \code{save db "/usr/name/oprs/application.db"}
 
 \pgindex{empty fact db (oprs)}
@@ -643,9 +643,11 @@ means of commands in include files. Remember that files are searched in the
 \begin{itemize}
 
 \pgindex{set oprs\_data\_path (oprs)}
-\item \code{set oprs\_data\_path \var{string}}. Set the OPRS\_DATA\_PATH to the given
+\item \code{set oprs\_data\_path \var{string}}. Override the OPRS\_DATA\_PATH to the given
 value. This command has priority over the OPRS\_DATA\_PATH given as environment
-variable or as argument to the \code{oprs} command. Note that you can use environment variable (e.g. \$\{HOME\}, etc),  in the string. Example: \code{set oprs\_data\_path "data:\$\{HOME\}/openprs/data:."}
+variable or as argument to the \code{oprs} command. Note that you can use environment variable (e.g. \$\{HOME\}, etc),  in the string.\\*
+Example: \code{set oprs\_data\_path "data:\$\{HOME\}/openprs/data:."}\\*
+\code{set oprs\_data\_path "\$\{OPRS\_DATA\_PATH\}:\$\{ROBOTPKG\_BASE\}/share/openprs/data:."}
 
 
 \pgindex{show oprs\_data\_path (oprs)}
@@ -955,27 +957,27 @@ on.
 \pgindex{declare be (oprs)}
 \item \code{declare be \var{predicate}}. Declare the \var{predicate} as a basic
 event predicate (\pxref{Basic Events}). This declaration is local to the
-\CPK{} the user is connected to.\*
+\CPK{} the user is connected to.\\*
 Example: \code{declare be foo}
 
 \pgindex{declare cwp (oprs)}
 \item \code{declare cwp \var{predicate}}. Declare the \var{predicate} as a closed
 world predicate (\pxref{Closed World Predicates}). This declaration is local to
-the \CPK{} the user is connected to. \*
+the \CPK{} the user is connected to. \\*
 Example: \code{declare cwp foo}
 
 \pgindex{declare ff (oprs)}
 \item \code{declare ff \var{predicate} \var{integer}}. Declare the
 \var{predicate} as functional fact for the argument integer (\pxref{Functional Facts}). This declaration is local to the \CPK{} the user is connected
 to. Keep in mind that all functional fact predicate are also considered as
-closed world predicate.\*
-Example: \code{declare ff position 1}\*
+closed world predicate.\\*
+Example: \code{declare ff position 1}\\*
 \code{declare ff connection\_status 2}
 
 \pgindex{declare function (oprs)}
 \item \code{declare function \var{function}}. Declare \var{function} as a
-function (\pxref{Function Checking}).\*
-Example: \code{declare function pressure-of}\*
+function (\pxref{Function Checking}).\\*
+Example: \code{declare function pressure-of}\\*
 \code{declare function status}
 
 \pgindex{declare id (oprs)}
@@ -988,19 +990,19 @@ will appears at the beginning of the include file. \xref{Symbol Checking}.
 \pgindex{declare op\_predicate (oprs)}
 \item \code{declare op\_predicate \var{predicate}}. Declare the
 \var{predicate} as OP predicate (\pxref{OP Predicates}). This declaration is not
-mandatory at all, but considerably improve the speed of the kernel.\*
-Example: \code{declare op\_predicate foo}\*
+mandatory at all, but considerably improve the speed of the kernel.\\*
+Example: \code{declare op\_predicate foo}\\*
 \code{declare op\_predicate print}
 
 \pgindex{declare predicate (oprs)}
 \item \code{declare predicate \var{predicate}}. Declare \var{predicate} as
-a predicate (\pxref{Predicate Checking}).\*
-Example: \code{declare predicate foobar}\*
+a predicate (\pxref{Predicate Checking}).\\*
+Example: \code{declare predicate foobar}\\*
 \code{declare predicate connection}
 
 \pgindex{undeclare be (oprs)}
 \item \code{undeclare be \var{predicate}}. Undeclare the \var{predicate} as a
-basic event predicate (\pxref{Basic Events}). \*
+basic event predicate (\pxref{Basic Events}). \\*
 Example: \code{undeclare be foo}
 
 \end{itemize}
@@ -1013,51 +1015,51 @@ Example: \code{undeclare be foo}
 
 \pgindex{list action (oprs)}
 \item \code{list action}. List all the functions which have been declared as
-action (\pxref{Using Action OPs}).\* 
+action (\pxref{Using Action OPs}).\\* 
 Example: \code{list action}
 
 \pgindex{list all (oprs)}
 \item \code{list all}. Equivalent to a \code{list be}, \code{list cwp},
 \code{list ff}, \code{list predicate}, \code{list evaluable predicate},
-\code{list op\_predicate}, \code{list function}, \code{list evaluable function}, \code{list action}.\*  
+\code{list op\_predicate}, \code{list function}, \code{list evaluable function}, \code{list action}.\\*  
 Example: \code{list all}
 
 \pgindex{list be (oprs)}
 \item \code{list be}. List all the predicates which have been declared as basic
-event predicate (\pxref{Basic Events}).\*
+event predicate (\pxref{Basic Events}).\\*
 Example: \code{list be}
 
 \pgindex{list cwp (oprs)}
 \item \code{list cwp}. List all the predicates which have been declared as
-closed world predicate (\pxref{Closed World Predicates}).\* 
+closed world predicate (\pxref{Closed World Predicates}).\\* 
 Example: \code{list cwp}
 
 \pgindex{list evaluable function (oprs)}
 \item \code{list evaluable function}. List all the functions which have been declared as
-evaluable function (\pxref{Evaluable Functions}).\* 
+evaluable function (\pxref{Evaluable Functions}).\\* 
 Example: \code{list evaluable function}
 
 \pgindex{list evaluable predicate (oprs)}
 \item \code{list evaluable predicate}. List all the predicates which have been declared as
-evaluable predicate (\pxref{Evaluable Predicates}).\* 
+evaluable predicate (\pxref{Evaluable Predicates}).\\* 
 Example: \code{list evaluable predicate}
 
 \pgindex{list ff (oprs)}
 \item \code{list ff}. List all the predicates which have been declared as
-functional fact predicate (\pxref{Functional Facts}).\* 
+functional fact predicate (\pxref{Functional Facts}).\\* 
 Example: \code{list ff}
 
 \pgindex{list function (oprs)}
-\item \code{list function}. List all the functions which have been declared.\* 
+\item \code{list function}. List all the functions which have been declared.\\* 
 Example: \code{list function}
 
 \pgindex{list op\_predicate (oprs)}
 \item \code{list op\_predicate}. List all the predicates which have been declared as
-op predicate (\pxref{OP Predicates}).\* 
+op predicate (\pxref{OP Predicates}).\\* 
 Example: \code{list op\_predicate}
 
 \pgindex{list predicate (oprs)}
-\item \code{list predicate}. List all the predicates which have been declared.\* 
+\item \code{list predicate}. List all the predicates which have been declared.\\* 
 Example: \code{list predicate}
 
 \end{itemize}
@@ -1128,20 +1130,20 @@ The currently supported commands are:
 \item \code{dump op \file{file\_name}}.  Dump in binary format all the OP
 currently loaded in the kernel. The suggested suffix for the dump OP file is
 \file{.dopf}. If this command isexecuted from the \XPK{}, graphical information
-is saved in the file.\* 
+is saved in the file.\\* 
 Example: \code{dump op "op-ex.dopf"}
 
 \pgindex{dump all opf (oprs)}
 \item \code{dump all opf}.  Dump in binary format all the OP files
 currently loaded in the kernel. Each file in its own \file{.dopf} file. This 
 command is very useful when an application is ready and one want to compile
-all the OPs at once.\* 
+all the OPs at once.\\* 
 Example: \code{dump op "op-ex.dopf"}
 
 \pgindex{dump db (oprs)}
 \item \code{dump db \file{file\_name}}.  Dump in binary format all the facts
 currently in the database. The suggested suffix for the dump db file is
-\file{.ddb}.\* 
+\file{.ddb}.\\* 
 Example: \code{dump db "op-ex.ddb"}
 
 \pgindex{load dump op (oprs)}
@@ -1151,13 +1153,13 @@ OP already loaded). The suggested suffix for the dump OP file is \file{.dopf}.
 If this command is executed from the \XPK{}, and the dump OP file was produced
 from an \XPK{}, the graphical information is restored, otherwise, it will be
 unavailable (but the OP will still remain executable).  However, if it is
-executed from a \CPK{}, graphical information if present is discarded. \*
+executed from a \CPK{}, graphical information if present is discarded. \\*
 Example: \code{load dump op "op-ex.dopf"}
 
 \pgindex{load dump db (oprs)}
 \item \code{load dump db \file{file\_name}}.  Load and add in the database all
 the fact in the dump fact binary format file. The suggested suffix for the dump
-db file is \file{.ddb}.\* 
+db file is \file{.ddb}.\\* 
 Example: \code{load dump db "db-ex.ddb"}
 
 \end{itemize}
@@ -1175,7 +1177,7 @@ current version but is not currently supported (i.e. use at your own risk).
 \item \code{dump kernel \file{file\_name}}.  Dump in binary format the complete
 kernel (i.e. the database, the OPs, and all the intentions). The suggested
 suffix for the dump kernel file is \file{.dkrn}. If this command is executed 
-from the \XPK{}, graphical information is saved in the file.\*
+from the \XPK{}, graphical information is saved in the file.\\*
 Example: \code{dump kernel "krn-ex.dkrn"}
 
 \pgindex{load kernel (oprs)}
@@ -1187,7 +1189,7 @@ from the file. The suggested suffix for the dump OP file is \file{.dkrn}.  If
 this command is executed from the \XPK{}, and the dump kernel file was produced
 from an \XPK{}, the graphical information is restored, otherwise, it will be
 unavailable (but the OP will still remain executable).  However, if it is
-executed from a \CPK{}, graphical information, if present, is discarded. \*
+executed from a \CPK{}, graphical information, if present, is discarded. \\*
 Example: \code{load dump kernel "krn-ex.dkrn"}
 
 \end{itemize}
@@ -1315,8 +1317,8 @@ or \code{xoprs} command (\pxref{Arguments to the oprs Command}).
 \pgindex{quit (oprs)}
 \pgindex{exit (oprs)}
 \item \code{q|quit|exit|EOF}. Quit the kernel. This command also disconnects
-you. It will execute the:\*
-\code{end\_kernel\_user\_hook}\*
+you. It will execute the:\\*
+\code{end\_kernel\_user\_hook}\\*
 function which can be usedto do some cleanup (\pxref{User Hooks}).
 
 \pgindex{show version (oprs)}
@@ -1415,7 +1417,7 @@ variables} (their name starts with the at sign character \samp{@}).
 \node{Logical Variables}
 \cpindex{Logical Variables}
 
-Logical variables start with the dollar character \samp{\$}.\*
+Logical variables start with the dollar character \samp{\$}.\\*
 Example: \code{\$x}, \code{\$y} and \code{\$FOO}.
 
 The behavior of these variables is quite standard in logic programming (like
@@ -1431,7 +1433,7 @@ variables is done.
 \node{Program Variables}
 \cpindex{Program Variables}
 
-Program variables start with the at sign character \samp{@}.\*
+Program variables start with the at sign character \samp{@}.\\*
 Example: \code{@x}, \code{@y} and \code{@FOO}.
 
 \figuregif[scale=0.5]{op-ite-fact-if-then-else}{A OP to Compute Factorial with an Inner Loop and Program Variables.}{ite-fact-prog-var-op}
@@ -1484,7 +1486,7 @@ bignums (a la Lisp). Therefore, there are maximum values for these numbers. Chec
 compiler and your machine architecture for specific maximum and minimum
 values.
 
-Example of integers: (the parser will accept a useless l) \code{0 1 -3 4732 +34l -0 +0 -023l}. \*
+Example of integers: (the parser will accept a useless l) \code{0 1 -3 4732 +34l -0 +0 -023l}. \\*
 Example of numbers which are probably not recognized as integers:
 \code{123123123123123123 --4}.
 
@@ -1498,7 +1500,7 @@ is then \code{LONG\_LONG}. In the \CPK{}, long long integers become C
 ``regular'' int. Yet , there is a maximum value (probably 2**(63) - 1). Check the C compiler
 and your machine architecture for specific maximum and minimum values.
 
-Example of integers: \code{0ll 1123ll -345345ll +83453234ll}. \*
+Example of integers: \code{0ll 1123ll -345345ll +83453234ll}. \\*
 Example of numbers which are probably not recognized as long long integers:
 \code{121231231233123123123123123 --4l}.
 
@@ -1511,7 +1513,7 @@ A term can be a \dfn{float}. Its C type in the Term structure is then
 these floats are casted in C \code{double}. Check your C compiler and your
 machine architecture for specific maximum and minimum values.
 
-Example of floats: \code{123.234, -45.0, +34.1, 123E-4, -45.90e+23,  45.90e23} \* 
+Example of floats: \code{123.234, -45.0, +34.1, 123E-4, -45.90e+23,  45.90e23} \\* 
 Example of numbers which are probably not recognized as floats: \code{+.345
 234 e34}.
 
@@ -1524,9 +1526,9 @@ A term can be a \dfn{string}. Its C type in the Term structure is then
 C. They use the same backslash notation as the one used in C. To insert a
 \samp{"} in a string you must backslash it with a \samp{\\}.
 
-Example of strings: \code{"This is a string \$\#\%\$\^{}\%\$\^{} "}, \*
-\code{"This is another  string with a \\" embedded and even a \\n which will
-become new line."} \*
+Example of strings: \code{"This is a string \$\#\%\$\^{}\%\$\^{} "}, \\*
+\code{"This is another  string with a $\backslash$" embedded and even a $\backslash$n\\* which will
+become new line."} \\*
 Example of non strings: \code{"This is a " not a string because of the
 char " in it"}.
 
@@ -1540,7 +1542,7 @@ changed automatically according to the option used (unless they are surrounded
 by vertical bars (\samp{|})). In some situations, (such as printing node names,
 or scripts names, the vertical bars are not printed around the symbol).
 
-Example of symbols: \code{nil, t, |Foo Bar|, :BOO, bar}.\*
+Example of symbols: \code{nil, t, |Foo Bar|, :BOO, bar}.\\*
 Example of non symbols: \code{123il, |\#:|123|, \$g45, @x, \$32a, .asd}.
 
 \subsection{Variable as a Term}
@@ -1794,17 +1796,17 @@ logical operators.
 General expressions (gexpression) are defined as follows:
 
 \noindent
-\code{gexpression := expression | lexpression} \*
-\code{lexpression := ( expr\_logical\_operator gexpression+ )} \*
-\code{expression := ( predicate term* ) | ( ~ ( predicate term* ) )} \*
-\code{predicate :=  SYMBOL} \*
+\code{gexpression := expression | lexpression} \\*
+\code{lexpression := ( expr\_logical\_operator gexpression+ )} \\*
+\code{expression := ( predicate term* ) | ( ~ ( predicate term* ) )} \\*
+\code{predicate :=  SYMBOL} \\*
 \code{expr\_logical\_operator := \& | V}
 
-Example of gexpressions: \*
-\code{(foo a b)},\*
-\code{(factorial 5 120)},\*
-\code{(> 3 2)},\*
-\code{(\& (foo a \$x) (bar \$x 7))},\*
+Example of gexpressions: \\*
+\code{(foo a b)},\\*
+\code{(factorial 5 120)},\\*
+\code{(> 3 2)},\\*
+\code{(\& (foo a \$x) (bar \$x 7))},\\*
 \code{(~ (toto 45 (+ 3 4)))}.
 
 \section{General Temporal Expressions}
@@ -1821,12 +1823,12 @@ of general temporal expressions using the standard logical operators.
 General Temporal Expressions (gtexpression) are defined as follows:
 
 \noindent
-\code{gtexpression := texpression | ltexpression} \*
-\code{ltexpression := ( texpr\_logical\_operator gtexpression+ )} \*
-\code{texpression := ( temporal\_operator gexpression )} \*
-\code{temporal\_operator := ! | ? | \^{} | \# | \% | => | ~> |}\*
-\code{                     achieve | test | wait | preserve |}\*
-\code{                     maintain | conclude | assert | retract}\*
+\code{gtexpression := texpression | ltexpression} \\*
+\code{ltexpression := ( texpr\_logical\_operator gtexpression+ )} \\*
+\code{texpression := ( temporal\_operator gexpression )} \\*
+\code{temporal\_operator := ! | ? | \^{} | \# | \% | => | ~> |}\\*
+\code{                     achieve | test | wait | preserve |}\\*
+\code{                     maintain | conclude | assert | retract}\\*
 \code{texpr\_logical\_operator := \& | V}
 
 According to the temporal operators, the gexpression contained is treated
@@ -1837,10 +1839,10 @@ operator, the \dfn{wait} operator, the \dfn{passive preserve} operator, the
 \dfn{active preserve} operator, the \dfn{assert/conclude} operator and the
 \dfn{retract} operator.
 
-Example of gtexpression:\*
-\code{(! (factorial 5 \$x))},\*
-\code{(wait (tank full))},\*
-\code{(? (> \$x 5))},\*
+Example of gtexpression:\\*
+\code{(! (factorial 5 \$x))},\\*
+\code{(wait (tank full))},\\*
+\code{(? (> \$x 5))},\\*
 \code{(test (! (position valve close)) (\# (< (pressure-of tk1) 320)))}.
 
 Note that not all gtexpressions have a defined associated semantic. We
@@ -2010,9 +2012,9 @@ gexpressions and gtexpressions. The parser does nore recognizes the old
 \code{*FACT} and \code{*GOAL} markers (\pxref{Principal Differences with SRI PRS}).
 
 \noindent
-\code{gmexpression := mexpression | lmexpression} \*
-\code{lmexpression := ( mexpr\_logical\_operator gmexpression+ )} \*
-\code{mexpression :=  gexpression | gtexpression } \*
+\code{gmexpression := mexpression | lmexpression} \\*
+\code{lmexpression := ( mexpr\_logical\_operator gmexpression+ )} \\*
+\code{mexpression :=  gexpression | gtexpression } \\*
 \code{mexpr\_logical\_operator := AND | OR | NOT}
 
 
@@ -2024,10 +2026,10 @@ gexpressions and gtexpressions. The parser does nore recognizes the old
 The FACT Meta Expressions are used to designate a gexpression in the OP
 applicability fields.
 
-Example of FACT Meta Expressions:\*
-\code{(FOO a b)},\*
-\code{(> 4 3)},\*
-\code{(foo 32 "this is a string")},\*
+Example of FACT Meta Expressions:\\*
+\code{(FOO a b)},\\*
+\code{(> 4 3)},\\*
+\code{(foo 32 "this is a string")},\\*
 \code{(elapsed-time (time) 32)}.
 
 \subsection{GOAL Meta Expressions}
@@ -2037,10 +2039,10 @@ Example of FACT Meta Expressions:\*
 The GOAL Meta Expressions are used to designate a gtexpression in the OP
 applicability fields.
 
-Example of GOAL Meta Expressions:\*
-\code{(? (bar a b))},\*
-\code{(! (factorial \$x \$y))},\*
-\code{(? (> 3 4))},\*
+Example of GOAL Meta Expressions:\\*
+\code{(? (bar a b))},\\*
+\code{(! (factorial \$x \$y))},\\*
+\code{(? (> 3 4))},\\*
 \code{(\^{} (elapsed-time (time) 10))}.
 
 \section{Facts}
@@ -2158,10 +2160,10 @@ only if the system has a new goal or a new fact which is specified in
 the invocation part of this OP. Note that for this reason there is no point at
 all in putting an evaluable predicate in the invocation part of a OP.
 
-Example of invocation part: \*
-\code{(ALARM)}, \*
-\code{(position \$x BP)}, \*
-\code{(OR (ALARM) (FIRE))}, \*
+Example of invocation part: \\*
+\code{(ALARM)}, \\*
+\code{(position \$x BP)}, \\*
+\code{(OR (ALARM) (FIRE))}, \\*
 \code{(AND (ALARM) (OVERPRESSURIZED \$TANK))}.
 
 \subsection{Context Part}
@@ -2174,10 +2176,10 @@ It contains information which must be true for the OP to be applicable, but the
 difference with the invocation part is that the occurrence of this information
 does not trigger the OP applicability.
 
-Example of context part: \*
-\code{(POSITION \$T \$POS)}, \*
-\code{(> \$X 245)}, \*
-\code{(OR (FOO \$x) (BAR \$Y))}, \*
+Example of context part: \\*
+\code{(POSITION \$T \$POS)}, \\*
+\code{(> \$X 245)}, \\*
+\code{(OR (FOO \$x) (BAR \$Y))}, \\*
 \code{(AND (POSTION \$T OPEN) (STATUS \$T GOOD))}.
 
 \subsection{Setting Part}
@@ -2192,10 +2194,10 @@ truth value of this part (or more accurately, the frames in which this
 gmexpression is true) can be defined at OP compile time (providing the
 fact database is loaded).
 
-Example of setting part: \*
-\code{(CONNECTED \$PIPE \$TANK)}, \*
-\code{(ASSOCIATED-SENSORS \$S1 \$S2)}, \*
-\code{(OR (ASSOCIATED-SENSORS \$S1 \$S2) (ASSOCIATED-SENSORS \$S2 \$S1))}, \*
+Example of setting part: \\*
+\code{(CONNECTED \$PIPE \$TANK)}, \\*
+\code{(ASSOCIATED-SENSORS \$S1 \$S2)}, \\*
+\code{(OR (ASSOCIATED-SENSORS \$S1 \$S2) (ASSOCIATED-SENSORS \$S2 \$S1))}, \\*
 \code{(AND (ASSOCIATED-XDCR \$TK1 \$XDR1) (ASSOCIATED-XDCR \$TK2 \$XDR2))}.
 
 \section{OP Other Fields}
@@ -2215,13 +2217,13 @@ The Effects part is either a list of General Temporal Expressions
 It contains a list of conclude or retract texpressions which are
 concluded or retracted upon successful execution of the OP.
 
-Example of effects part: \*
-\code{()}, \*
-\code{((=> (POSITION \$T \$POS)))}, \*
-\code{((~> (POSITION \$T \$POS)))}, \*
+Example of effects part: \\*
+\code{()}, \\*
+\code{((=> (POSITION \$T \$POS)))}, \\*
+\code{((~> (POSITION \$T \$POS)))}, \\*
 \code{((=> (POSITION \$T1 \$POS1))
 (=> (POSITION \$T2 \$POS2))
-(=> (POSITION \$T3 \$POS3)))}, \*
+(=> (POSITION \$T3 \$POS3)))}, \\*
 \code{((~> (FOO \$x))
 (=> (FOO \$y))
 (=> (BAR \$X \$Y)))}.
@@ -2237,12 +2239,12 @@ predicates (\pxref{OP Instance Related Evaluable Predicates} and functions
 \pxref{OP Instance Related Evaluable Functions}). Properties are usually used
 by meta level OP (\pxref{OP Properties}) to retrieve specific information about OPs.
 
-Example of properties part: \*
-\code{()}, \*
-\code{((DECISION-PROCEDURE T))}, \*
-\code{((ID FOO))}, \*
-\code{((RESOURCE-USED PLATINE))}, \*
-\code{((SPEED (evaluate-speed \$x \$y \$z)) (RELIABILITY 23))}, \*
+Example of properties part: \\*
+\code{()}, \\*
+\code{((DECISION-PROCEDURE T))}, \\*
+\code{((ID FOO))}, \\*
+\code{((RESOURCE-USED PLATINE))}, \\*
+\code{((SPEED (evaluate-speed \$x \$y \$z)) (RELIABILITY 23))}, \\*
 \code{((PRIORITY \$X))}.
 
 \subsection{Documentation Part}
@@ -2251,13 +2253,13 @@ Example of properties part: \*
 
 The Documentation is a string. Its purpose is to document the OP.
 
-Example of documentation part: \*
-\code{""}, \*
-\code{"This string document the OP."}, \*
+Example of documentation part: \\*
+\code{""}, \\*
+\code{"This string document the OP."}, \\*
 \code{"You can put variable names such as \$x in documentation strings."},
-\*
+\\*
 \code{"This OP will kill its own intention after 10 seconds. 10, 9, 8,
-7, 6, 5, 4, 3, 2, 1... Ophbooum..."}, \*
+7, 6, 5, 4, 3, 2, 1... Ophbooum..."}, \\*
 \code{"This is a test OP. Please ignore."}.
 
 \section{Execution Part}
@@ -2429,7 +2431,7 @@ Example of standard action: \code{(print \$x)}, \code{(send-message \$x
 
 Special actions are provided to allow the binding of the result from the
 action evaluation. Their syntax is different (see Figure
-\ref{special-act-op}). A special action must be of the following form: \*
+\ref{special-act-op}). A special action must be of the following form: \\*
 \code{(*=* <variable> <composed-term>)}.
 
 \figuregif[scale=0.5]{special-action-op}{A Special Action OP}{special-act-op}
@@ -2454,8 +2456,8 @@ Example of special action: \code{(*=* \$y (read))}, \code{(*=* \$status
 One can bind a list of terms/variables to a list of
 terms returned by an action (see Figure \ref{multi-special-act-op}).
 
-The newly allowed form for special action is thus: \*
-\code{(*=* (<variable>*) <composed-term>)}.\*
+The newly allowed form for special action is thus: \\*
+\code{(*=* (<variable>*) <composed-term>)}.\\*
 The old form remains valid. The behavior is exactly the same, except that
 the action is expected to return a list of terms. Each term will be
 unified against the corresponding term/variable in the list. If the number
@@ -2464,12 +2466,12 @@ returns three terms), or if one of the unification fails, the action
 fails. Note that if the action returns the term symbol \code{:WAIT}, the
 action will be called again later.
 
-Example of multi variable special action:\*
-\code{(*=* (\$x \$y \$theta) (position robot))},\*
+Example of multi variable special action:\\*
+\code{(*=* (\$x \$y \$theta) (position robot))},\\*
 \code{(*=* (\$result \$status) (init-system \$y))}.
 
 Example of a form which is not a multi variable special action (it must be a
-list of variables, not terms):\*
+list of variables, not terms):\\*
 \code{(*=* (T NIL T) (confirm-three-responses \$y \$z \$w))}.
 
 %One can find an example of an action returning a list of terms in the
@@ -3142,13 +3144,13 @@ variables.
 
 Functional facts are predicates which can be expressed as a function of a
 subset of their arguments which gives the rest of their arguments as a result.
-In some cases, there is only one possible result: \* For example:
+In some cases, there is only one possible result: \\* For example:
 \code{(factorial 5 120)} (because \code{factorial(5) => 120}).  This result
 being unique (\code{factorial 5} is always \code{120}), there is no reason a
 priori to make any bookkeeping on it. But in some situations or applications,
-the result is not unique and can change over time.  For example: \*
+the result is not unique and can change over time.  For example: \\*
 \code{(pressure tk1 245)} (indeed, we can express the fact that
-\code{pressure(tk1) => 245}). \* Most likely, there is only one possible value
+\code{pressure(tk1) => 245}). \\* Most likely, there is only one possible value
 of pressure at one time, therefore any previously recorded value for \code{tk1}
 should be discarded. In this case, if we had received \code{(pressure tk1 250)}
 few minutes (or seconds) ago, we must remove it from the database, otherwise
@@ -3165,17 +3167,17 @@ argument position at which the argument becomes the result of the
 functional evaluation. For example, in the pressure example above, you
 would invoke: \code{declare ff pressure 1}.
 
-For a predicate like: \*
-\code{(position-robot building-E)},\*
-it is \*
-\code{declare ff position-robot 0},\*
-because \*
-\code{position-robot() =>building-E}. \*
-For a predicate like \*
-\code{(connection-status paris toulouse up)},\*
-it is \*
-\code{declare ff connection-status 2},\*
-because \*
+For a predicate like: \\*
+\code{(position-robot building-E)},\\*
+it is \\*
+\code{declare ff position-robot 0},\\*
+because \\*
+\code{position-robot() =>building-E}. \\*
+For a predicate like \\*
+\code{(connection-status paris toulouse up)},\\*
+it is \\*
+\code{declare ff connection-status 2},\\*
+because \\*
 \code{connection-status(paris, toulouse) => up}.
 
 This mechanism requires the order of the arguments to be organized in such
@@ -3270,19 +3272,19 @@ the pressure predicate is used to carry this information).
 Note that you can declare any predicate as a basic event, and some
 predefined predicates are actually basic event predicates.
 Here is the list of the predicates which are, by default, declared as
-basic events in the kernel. \*
-\code{SOAK}, \*
-\code{APPLICABLE-OPS-FACT}, \*
-\code{FACT-INVOKED-OPS}, \*
-\code{DB-SATISFIED-GOAL}, \*
-\code{APPLICABLE-OPS-GOAL}, \*
+basic events in the kernel. \\*
+\code{SOAK}, \\*
+\code{APPLICABLE-OPS-FACT}, \\*
+\code{FACT-INVOKED-OPS}, \\*
+\code{DB-SATISFIED-GOAL}, \\*
+\code{APPLICABLE-OPS-GOAL}, \\*
 \code{GOAL-INVOKED-OPS},
-\code{FAILED-GOAL}, \*
-\code{FAILED}, \*
-\code{REQUEST}, \*
-\code{ACHIEVED}, \*
-\code{INTENTION-WAKE-UP}, \*
-\code{READ-RESPONSE-ID}, \*
+\code{FAILED-GOAL}, \\*
+\code{FAILED}, \\*
+\code{REQUEST}, \\*
+\code{ACHIEVED}, \\*
+\code{INTENTION-WAKE-UP}, \\*
+\code{READ-RESPONSE-ID}, \\*
 \code{READ-RESPONSE}.
 
 You can undeclare a basic event with the command: \code{undeclare\_be}
@@ -3318,7 +3320,7 @@ evaluates the \code{(> 7 -1)} and it returns TRUE.
 One can see from this mechanism that it is not possible to use an evaluable
 predicate in an environment where the terms are undefined (or unbound). It is
 usually meaningless, and very often an error, to consult evaluable predicates
-with unbound variables. Such as:\* \code{(> 4 \$x)} when \code{\$x} is unbound.
+with unbound variables. Such as:\\* \code{(> 4 \$x)} when \code{\$x} is unbound.
 In fact the \code{>} predicate will print an error message.
 
 Evaluable predicates can be used whenever a predicate is appropriate,
@@ -4583,8 +4585,8 @@ function. It is defined for 1 term. It prints the object and a cariage return.
 \begin{typeefa}{Action}{ATOM}{print-inside}{(COMPOSED\_TERM \var{term})}
 is defined for 1 term. The format of the term passed as argument is somewhat
 awkward and is here for upward compatibility with the old Lisp version of
-\OPRS{}. The Term should look like this: \*
-\code{(FORMAT NIL "The Factorial of ~a is ~a." \$X \$N)))}\*
+\OPRS{}. The Term should look like this: \\*
+\code{(FORMAT NIL "The Factorial of ~a is ~a." \$X \$N)))}\\*
 i.e. a list containing the word \code{FORMAT}, then the symbol
 \code{NIL}, then a string, and finally a number of variables or terms.
 The \samp{~a} in the string will be replaced at print time with the value of
@@ -4594,8 +4596,8 @@ the corresponding terms or variables.
 \begin{typeefa}{Action}{ATOM}{printf}{(COMPOSED\_TERM \var{term})}
 is defined for 1 term. The format of the term passed as argument is somewhat
 awkward but similar to the C format directive. 
-The Term should look like this: \*
-\code{(FORMAT "The Factorial of  \%d is \%d." \$X \$N)))}\*
+The Term should look like this: \\*
+\code{(FORMAT "The Factorial of  \%d is \%d." \$X \$N)))}\\*
 i.e. a list containing the word \code{FORMAT}, then a string, and finally a
 number of variables or terms.  The \samp{\%d} in the string will be replaced at
 print time with the value of the corresponding terms or variables. The

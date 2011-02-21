@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% -*- Mode: latex -*- %%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
-%% Copyright (c) 1991-2004 Francois Felix Ingrand.
+%% Copyright (c) 1991-2011 Francois Felix Ingrand.
 %% All rights reserved.
 %%
 %% Redistribution and use in source and binary forms, with or without
@@ -55,18 +55,18 @@ are minor differences between the two versions.
 
 \item The syntax is far more rigorous in \COPRS{}. As a result, a
 number of expressions perfectly correct in the Lisp PRS are not
-recognized by \COPRS{}. For example, the following goal is not allowed: \*
+recognized by \COPRS{}. For example, the following goal is not allowed: \\*
 \code{(! (SEND-COMMAND-ACTION (DISPLAY-FOO (((CURRENT \$O) (CURRENT
-\$B))))))} \*
-because \*
-\code{(((CURRENT \$O) (CURRENT \$B)))} \*
-is not a valid Composed Term. Similarly, this goal: \*
-\code{( ! (\& (~> (FOOBAR \$P \$A)) (=> (FOOBAR \$P \$A)))))))} \*
-is not allowed any longer\dots{} It should be replaced with: \*
+\$B))))))} \\*
+because \\*
+\code{(((CURRENT \$O) (CURRENT \$B)))} \\*
+is not a valid Composed Term. Similarly, this goal: \\*
+\code{( ! (\& (~> (FOOBAR \$P \$A)) (=> (FOOBAR \$P \$A)))))))} \\*
+is not allowed any longer\dots{} It should be replaced with: \\*
 \code{(\& (~> (FOOBAR \$P \$A)) (=> (FOOBAR \$P \$A))))))}
 
-\item The following syntax is still allowed: \*
-\code{( ! (=> (INITIAL-VALUE \$P \$O \$D \$V)))} \*
+\item The following syntax is still allowed: \\*
+\code{( ! (=> (INITIAL-VALUE \$P \$O \$D \$V)))} \\*
 but should be replaced with the \code{=>} temporal operator (a similar
 remark holds for \code{~>}) .
 
@@ -127,13 +127,13 @@ course, we still provide a number of OP the user can load in its
 kernel(\pxref{Default OPs}).
 
 \item The \code{APPLICABLE-OPS-FACT} and the \code{APPLICABLE-OPS-GOAL}
-facts have different arguments in \CPK{}. Their syntax is: \*
-\code{(APPLICABLE-OPS-FACT fact list-of-op-instances)} \*
-and \*
-\code{(APPLICABLE-OPS-GOAL goal list-of-op-instances)}. \*
-In SRI PRS it was: \*
-\code{(APPLICABLE-OPS-FACT list-of-op-instances)} \*
-and \*
+facts have different arguments in \CPK{}. Their syntax is: \\*
+\code{(APPLICABLE-OPS-FACT fact list-of-op-instances)} \\*
+and \\*
+\code{(APPLICABLE-OPS-GOAL goal list-of-op-instances)}. \\*
+In SRI PRS it was: \\*
+\code{(APPLICABLE-OPS-FACT list-of-op-instances)} \\*
+and \\*
 \code{(APPLICABLE-OPS-GOAL list-of-op-instances)}.
 
 \item By default, the \CPK{} always evaluates what is evaluable in a goal
@@ -169,7 +169,7 @@ string syntax... But for now, just the \code{\\"}, such as in \code{"foo bar
 \\"asd asd\\""}. Internally, strings now do not have double quote around as they
 used to. Now they are just C strings.
 
-\item Added a printf function, more like the C one. Example:\*
+\item Added a printf function, more like the C one. Example:\\*
 \code{(printf (format "The \%d of \%s is \%f." \$x \$y \$z))} 
 
 \item Added a list of symbols in the OP Editor and in the OPF format.
@@ -406,10 +406,10 @@ command to all connected kernel.
 The default is still upper case.
 The authorized options are "upper", "lower" or "none".  
 You may specify this option by setting the OPRS\_ID\_CASE
-environment variable:\*
-     setenv OPRS\_ID\_CASE none \*
-or in the command line with the '-l' option:\*
-     xoprs -n Foo -l none -x ...\*
+environment variable:\\*
+     setenv OPRS\_ID\_CASE none \\*
+or in the command line with the '-l' option:\\*
+     xoprs -n Foo -l none -x ...\\*
 The command line has precedence on the envionment variable.
 This option is avaible for the \OPRSS{}, the PK{}, and the \OPE{}.
 
@@ -1471,7 +1471,7 @@ add_external_fact(
                     ATOM, "atom"))));
 \end{verbatim}
 
-a call to the function above will post the fact:\*
+a call to the function above will post the fact:\\*
 \code{(BOO 3.1415 5 0x123456 FOOBAR "This is a string in the fact" (. 0.0
 SECOND. ) (BAR -1 ATOM))}
 
@@ -2592,12 +2592,12 @@ distribution).
 
 \begin{enumerate}
 
-\item Choose a directory where you want to install the distribution. \*
+\item Choose a directory where you want to install the distribution. \\*
 \code{\# cd /usr/local/oprs (or your preferred directory)}
 
-\item Unpack the distribution with: \*
-\code{\# tar xvf <tape-dev>} \*
-or, if you got the distribution as a compressed tar file: \*
+\item Unpack the distribution with: \\*
+\code{\# tar xvf <tape-dev>} \\*
+or, if you got the distribution as a compressed tar file: \\*
 \code{\# gnutar zxvf <dist-file> }
 
 \end{enumerate}
@@ -2672,7 +2672,7 @@ C++ functions).
 connect to the \MPA{}.
 
 \item [\file{libopaque.a}] is a library which can be necessary if the following
-symbols are missing: \*
+symbols are missing: \\*
 \code{user\_time, user\_time\_note, user\_call\_from\_parser}.
 
 \item [\file{oprs-relocatable}] is a relocatable \CPK{},  you can use
@@ -3259,10 +3259,9 @@ systems which are not directly under our control (such as X11, Motif or
 Unix).
 
 In any case, bugs and problems should be reported to the following electronic
-mail address:\*
-\code{oprs-bug@ingenia.fr}.\*
-If your license agreement include software support, your problem will be taken
-care of as specified in the License Agreement.
+mail address:\\*
+\code{felix@laas.fr}.\\*
+
 
 
 

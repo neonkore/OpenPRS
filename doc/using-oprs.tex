@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% -*- Mode: latex -*- %%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
-%% Copyright (c) 1991-2003 Francois Felix Ingrand.
+%% Copyright (c) 1991-2011 Francois Felix Ingrand.
 %% All rights reserved.
 %%
 %% Redistribution and use in source and binary forms, with or without
@@ -328,7 +328,7 @@ facts or beliefs in the database? Which format should be used? What is
 the proper way to represent such and such information and what is the
 wrong way to do it?
 
-The format used to represent facts in the database is simple: \*
+The format used to represent facts in the database is simple: \\*
 \code{(predicate-name <arguments>*)}.
 
 The semantic associated with the predicate name and the arguments (and
@@ -399,7 +399,7 @@ rules, it is question of readability of the OPs and the database.
 
 To help organize a database, very often, one use a \code{type} predicate
 to specify the type of the various object. This is very useful for
-example when one looks for all the open valve of the system: \*
+example when one looks for all the open valve of the system: \\*
 \code{(\& (type valve \$v) (position \$v open))}.
 
 \subsection{Which Predicate Should be Declared as Closed World Predicate?}
@@ -451,7 +451,7 @@ automatically.
 
 \end{itemize}
 
-Here are example of predicates which are often declared as FF:\*
+Here are example of predicates which are often declared as FF:\\*
 \code{position}, \code{status}, \code{connected}. For each of them one
 usually want to remove the previous value when a new value for a specific
 object is concluded.
@@ -1034,7 +1034,7 @@ this case, an emergency shutdown is issued.
 \cpindex{How to Install the Truck Loading Demo}
 
 The \file{demo/truck-demo} directory should be placed or extracted in the \file{oprs}
-directory. Then just type \*
+directory. Then just type \\*
 \code{\% make truck-demo}.
 
 If everything goes well, you should end up with a \code{truck-demo} executable
@@ -1059,7 +1059,7 @@ are in ``Alone'' mode.
 If you want to get \COPRS{} to manage the ``filling station'', start a oprs-server,
 and then start a \CPK{} or \XPK{} with the following options (you must use the
 kernels from the \file{demo/truck-demo/oprs} directory as it defines some
-specific evaluable functions or predicates): \*
+specific evaluable functions or predicates): \\*
 \code{\% xoprs -n truck -x data/truck-demo.inc}
 
 You then need to issue an \code{accept} command in the \OPRSS{}.

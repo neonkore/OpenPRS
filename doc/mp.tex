@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% -*- Mode: latex -*- %%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
-%% Copyright (c) 1991-2010 Francois Felix Ingrand.
+%% Copyright (c) 1991-2011 Francois Felix Ingrand.
 %% All rights reserved.
 %%
 %% Redistribution and use in source and binary forms, with or without
@@ -159,7 +159,7 @@ acquired from the environment variables.
 \cpindex{OPRS\_MP\_PORT}
 \item[\code{OPRS\_MP\_PORT}] is used  to specify the port on which the \MPA{} will
 listen to connection. It is used by the \CPK{}, the \XPK{}, the \OPRSS{}
-and the \MPA{}.\*
+and the \MPA{}.\\*
 Example:
 \begin{verbatim}
 setenv OPRS_MP_PORT 3456
@@ -208,7 +208,7 @@ have precedence on the one acquired from the environment variables.
 \cpindex{OPRS\_MP\_PORT}
 \item[\code{OPRS\_MP\_PORT}] is used  to specify the port on which the \MPK{}
 connect to kill the \MPA{}. It is equivalent to the \code{-j} command line
-argument.\* 
+argument.\\* 
 Example:
 \begin{verbatim}
 setenv OPRS_MP_PORT 3456
@@ -216,7 +216,7 @@ setenv OPRS_MP_PORT 3456
 
 \cpindex{OPRS\_MP\_HOST}
 \item[\code{OPRS\_MP\_HOST}] is used  to specify the host on which the \MPK{} will
-connect to kill the \MPA{}. It is equivalent to the \code{-m} command line argument.\* 
+connect to kill the \MPA{}. It is equivalent to the \code{-m} command line argument.\\* 
 Example:
 \begin{verbatim}
 setenv OPRS_MP_HOST machine.site.domain
@@ -307,9 +307,9 @@ the message are sent as two separate strings, each string being sent as an int
 For example, in \code{MESSAGES\_PT} mode, if the \CPK{} \code{FOO} wants to send
 the message \code{(position valve1 closed)} to the \CPK{} \code{BAR}, then it
 calls the function send\_message. The \MPA{} sees two strings coming on
-\code{FOO}'s socket: \* \code{"BAR"} the recipient, and \code{"(POSITION VALVE1
+\code{FOO}'s socket: \\* \code{"BAR"} the recipient, and \code{"(POSITION VALVE1
 CLOSED)"} the printed representation of the message. After processing it, the
-\MPA{} sends one string to \code{BAR}: \* \code{"receive FOO (POSITION VALVE1
+\MPA{} sends one string to \code{BAR}: \\* \code{"receive FOO (POSITION VALVE1
 CLOSED)"} which is in fact interpreted as a command by the \code{BAR} kernel
 that the message \code{(POSITION VALVE1 CLOSED)} has been received from the
 kernel \code{FOO}.
