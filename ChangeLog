@@ -1,8 +1,13 @@
 2011-02-22  Francois Felix Ingrand  <felix@cturtle>
 
+ 	* configure.ac: Push the release to 1.0b10 to fix the 32/64 bits
+	problem with the message passer.
+
 	* Minor esthetic changes...
 
-	* oprs-cat.c (get_bytes): Fixed an annoying message when the xoprs quit properly.
+	* oprs-cat.c (get_bytes): Fixed an annoying message when the xoprs
+	quit properly.
+
 2011-02-22  Francois Ingrand  <felix@pr2c1>
 
 	* send-message.c: Another 32/64 bits problem... with the message
@@ -10,12 +15,16 @@
 
 2011-02-20  Francois Felix Ingrand  <felix@ingrand.net>
 
-	* parser-funct.c (replace_env_string): 
-	* oprs-parser.y : One can now specify environment variables (e.g. ${HOME}, ${ROBOTPKG_BASE}) in the "set oprs_data_path" command.
+	* parser-funct.c (replace_env_string):
+	* oprs-parser.y : One can now specify environment
+	variables (e.g. ${HOME}, ${ROBOTPKG_BASE}) in the "set
+	oprs_data_path" command.
 
 2011-02-18  Francois Felix Ingrand  <felix@ingrand.net>
 
-	* mp-register.c (read_int_from_socket): fix a 32/64 bits problem when the message passer and the client are running on 64 vs. 32 bits.
+	* mp-register.c (read_int_from_socket): fix a 32/64 bits problem
+	when the message passer and the client are running on 64 vs. 32
+	bits.
 
 	* configure.ac: push the version to 1.09beta
 
