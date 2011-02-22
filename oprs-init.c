@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * oprs-init.c -- 
  * 
- * Copyright (c) 1991-2010 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -272,8 +272,8 @@ void report_meta_option_array(void)
 {
      PBoolean one_is_on = FALSE;
 
-     fprintf(stdout, LG_STR("The following meta-fact are posted: \n",
-			    "Les méta faits suivant seront postés: \n"));
+     fprintf(stdout, LG_STR("The following meta-fact are posted:",
+			    "Les méta faits suivant seront postés:"));
 
      if (meta_option[META_LEVEL] && meta_option[SOAK_MF]) {
 	  fprintf(stdout, LG_STR(" SOAK",
@@ -1371,7 +1371,7 @@ The following commands are currently available:\n\
 void print_intro()
 {
      printf(LG_STR("\n\
-\t\tOPRS (%s EN).\n\
+\t\tOpenPRS (%s EN).\n\
 \n\
 \t%s\n\
 \n\
@@ -1381,10 +1381,10 @@ Date        : %s\n\
 \n\
  ALL RIGHTS RESERVED\n\
 \n\
-OPRS comes with ABSOLUTELY NO WARRANTY.\n\
+OpenPRS comes with ABSOLUTELY NO WARRANTY.\n\
 ",
 		   "\n\
-\t\tOPRS (%s FR).\n\
+\t\tOpenPRS (%s FR).\n\
 \n\
 \t%s\n\
 \n\
@@ -1394,6 +1394,6 @@ Date        : %s\n\
 \n\
  ALL RIGHTS RESERVED\n\
 \n\
-OPRS est fourni sans garantie aucune.\n\
+OpenPRS est fourni sans garantie aucune.\n\
 "), package_version, COPYRIGHT_STRING, package_version, host, date);
 }

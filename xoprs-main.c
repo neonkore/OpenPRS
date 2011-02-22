@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * xoprs-main.c -- Top level file for the X/Motif interface for one OPRS.
  * 
- * Copyright (c) 1991-2010 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -725,15 +725,15 @@ int main(int argc, char **argv, char **envp)
 
      idd_create_gc(&idd);
 
-     sprintf(welcome, LG_STR("\n\t\tThis is X-OPRS (%s).\n\t%s\n\n",
-			     "\n\t\tThis is X-OPRS (%s).\n\t%s\n\n"),
+     sprintf(welcome, LG_STR("\n\t\tThis is X-OpenPRS (%s).\n\t%s\n\n",
+			     "\n\t\tThis is X-OpenPRS (%s).\n\t%s\n\n"),
 	     package_version, COPYRIGHT_STRING);
 
      AppendTextWindow(textWindow,welcome,FALSE);
-     AppendTextWindow(textWindow, "X-OPRS comes with ABSOLUTELY NO WARRANTY.\n\n",FALSE);
+     AppendTextWindow(textWindow, "X-OpenPRS comes with ABSOLUTELY NO WARRANTY.\n\n",FALSE);
 
-     sprintf(title, LG_STR("Welcome to X-OPRS %s %s",
-			   "Welcome to X-OPRS %s %s"), 
+     sprintf(title, LG_STR("Welcome to X-OpenPRS %s %s",
+			   "Welcome to X-OpenPRS %s %s"), 
 	     package_version, COPYRIGHT_STRING);
      UpdateMessageWindow(title);
 

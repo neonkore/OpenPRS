@@ -3,7 +3,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * oprs-cat.c -- 
  * 
- * Copyright (c) 1991-2005 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -109,7 +109,7 @@ int main(int argc,char **argv)
  
           if (!info && quit) {
                close(1);
-               exit(1);
+               exit(0);
           }
  
           PROTECT_SYSCALL_FROM_EINTR(nfound, select(2, (!quit ? &readfds : NULL),
@@ -163,8 +163,11 @@ void get_bytes()
  
      PROTECT_SYSCALL_FROM_EINTR(res,read(0,buf,BUFSIZ));
      if (res == -1) {
-	  perror("oprs-cat: get_bytes");
-	  exit(1);
+       if (errno == EIO) {
+	 perror("oprs-cat: get_bytes");
+	 exit(1);
+       } else
+	 exit(0);
      }
 
      if (res == 0) {

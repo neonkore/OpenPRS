@@ -1,3 +1,9 @@
+2011-02-22  Francois Felix Ingrand  <felix@cturtle>
+
+	* Minor esthetic changes...
+
+	* oprs-cat.c (get_bytes): Fixed an annoying message when the xoprs quit properly.
+
 2011-02-20  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* parser-funct.c (replace_env_string): 
