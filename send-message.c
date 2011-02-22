@@ -74,10 +74,10 @@ static const char* const rcsid = "$Id$";
 
 void send_message_string_socket(int socket, PString rec, PString message )
 {
-     int h_size_name,i,total_size, h_size_mess;
-     u_long n_size_name, n_size_mess;                  /* for network */
+     uint32_t h_size_name,i,total_size, h_size_mess;
+     uint32_t n_size_name, n_size_mess;                  /* for network */
      Message_Type mt = MESSAGE_MT;
-     u_long n_mt;
+     uint32_t n_mt;
 
      char *buf, *tmp;
 
@@ -124,10 +124,10 @@ void send_message_string(PString message, PString rec)
 
 void broadcast_message_string_socket(int socket, PString message )
 {
-     int i,total_size, h_size_mess;
-     u_long n_size_mess;                  /* for network */
+     uint32_t i,total_size, h_size_mess;
+     uint32_t n_size_mess;                  /* for network */
      Message_Type mt = BROADCAST_MT;
-     u_long n_mt;
+     uint32_t n_mt;
 
      char *buf, *tmp;
 
@@ -164,12 +164,12 @@ void broadcast_message_string(PString message)
      broadcast_message_string_socket(mp_socket,message);
 }
 
-void multicast_message_string_socket(int socket, int nb_recs, PString *recs, PString message )
+void multicast_message_string_socket(int socket, unsigned int nb_recs, PString *recs, PString message )
 {
-     int h_size_name,i,total_size, h_size_mess;
-     u_long n_size_mess, n_nb_recs;                  /* for network */
+     uint32_t h_size_name,i,total_size, h_size_mess;
+     uint32_t n_size_mess, n_nb_recs;                  /* for network */
      Message_Type mt = MULTICAST_MT;
-     u_long n_mt;
+     uint32_t n_mt;
 
      char *buf, *tmp;
 
@@ -184,7 +184,7 @@ void multicast_message_string_socket(int socket, int nb_recs, PString *recs, PSt
      n_size_mess = htonl(h_size_mess);
      n_mt = htonl(mt);
 
-     total_size = sizeof(n_mt) + sizeof(n_nb_recs) + sizeof(u_long)*nb_recs + /* The number of int */
+     total_size = sizeof(n_mt) + sizeof(n_nb_recs) + sizeof(uint32_t)*nb_recs + /* The number of int */
 	  h_size_name + sizeof(n_size_mess) + h_size_mess;
 
      tmp = buf = (char *)malloc(total_size);
@@ -201,8 +201,8 @@ void multicast_message_string_socket(int socket, int nb_recs, PString *recs, PSt
      tmp +=  h_size_mess;
 
      for (i=0; i!=nb_recs; i++) {
-	  int  h_rec_name = strlen(recs[i]);
-	  u_long  n_rec_name = htonl(h_rec_name);
+          uint32_t h_rec_name = strlen(recs[i]);
+	  uint32_t n_rec_name = htonl(h_rec_name);
 
 	  BCOPY((char *)&n_rec_name,tmp, sizeof(n_rec_name));
 	  tmp +=  sizeof(n_rec_name);
