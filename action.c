@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * action.c -- 
  * 
- * Copyright (c) 1991-2010 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -96,6 +96,8 @@ static const char* const rcsid = "$Id$";
 #include "oprs-sprint_f.h"
 
 #include "pu-parse-tl_f.h"
+
+#include "tcl_f.h"
 
 
 
@@ -775,6 +777,29 @@ Term *action_fail(TermList terms)
 Term *action_succeed(TermList terms)
 {
      return build_t();
+}
+
+Term *action_tcl_command(TermList terms)
+{
+     Term *term, *res;
+
+     res = MAKE_OBJECT(Term);
+     res->type = TT_ATOM;
+
+     term = (Term *)sl_get_slist_pos(terms,1);
+     if (term->type != STRING) {
+	  report_recoverable_external_error(oprs_strerror(PE_EXPECTED_STRING_TERM_TYPE));
+	  res->u.id = nil_sym;
+     } else {
+	  PString command;
+
+	  command = (char *)MALLOC((strlen(term->u.string) + 2) * sizeof(char));
+	  sprintf(command, "%s\n", term->u.string);
+	  exec_tcl_command(command);
+	  FREE(command);
+	  res->u.id = lisp_t_sym;
+     }
+     return res;
 }
 
 Term *action_execute_command(TermList terms)
@@ -1644,6 +1669,8 @@ void declare_action(void)
 			     get_int_array_ef, 2);
      make_and_declare_action("GET-FLOAT-ARRAY",
 			     get_float_array_ef, 2);
+
+     make_and_declare_action("TCL-COMMAND"  ,action_tcl_command, 1);
 
 	  /* some log operations */
      make_and_declare_action("LOG-INIT"  ,action_log_init    , 2);
