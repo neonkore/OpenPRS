@@ -58,6 +58,7 @@ doc/oprs-macros.tex
 *.blg
 *.toc
 Makefile
+configure
 make.depend
 \.#*
 *.lex.[ch]
