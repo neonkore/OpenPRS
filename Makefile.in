@@ -912,8 +912,12 @@ dist_name = @PACKAGE_TARNAME@-@PACKAGE_VERSION@
 git-tag:
 	git tag -m "release @PACKAGE_VERSION@"  $(dist_name)
 
+ADD_TO_ROBOTPKG_DISTRIB = configure
+
 dist-robotpkg:
 	(cd $(top_srcdir); \
-	git archive --format=tar --prefix=$(dist_name)/ $(dist_name) | \
-	gzip -c - ) > $(dist_name).tar.gz
+	git archive --format=tar --prefix=$(dist_name)/ $(dist_name) | tar xf - ; \
+	cp $(ADD_TO_ROBOTPKG_DISTRIB) $(dist_name) ;\
+	tar zcf $(dist_name).tar.gz $(dist_name) )
 	scp $(dist_name).tar.gz softs.laas.fr:/ftp/pub/openrobots/openprs/
+	rm -rf  $(dist_name).tar.gz $(dist_name)

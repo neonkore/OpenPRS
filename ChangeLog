@@ -1,5 +1,9 @@
 2011-02-25  Felix Ingrand  <felix@cturtle>
 
+	* configure.ac: Pushed version to 1.0b12.
+
+	* Makefile.in: improve the dist-robotpkg target
+
 	* tcl.c (start_tcl_interpreter): First cut at sending commands to
 	a tcl interpreter. Fork a tclsh, and send it commands over a
 	socketpair. Added an action for this, and added an OP in
