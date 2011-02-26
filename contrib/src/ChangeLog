@@ -1,3 +1,34 @@
+2011-02-26  Felix Ingrand  <felix@cturtle>
+
+	* pu-parse-tl.c (PUGetOprsVarArgParameters): Added a function
+	which allows one to pass a variable number of arguments named
+	after a suffixe unique substring of the structure they must
+	"fill". This needs to be used in concjunction with the macro:
+	 set_parameter_or_default_value
+	Example, in you evaluable predicate/function or action you will
+	now do to parse the terms arguments passed:
+
+	learning_actionlib::FibonacciGoal goal;
+
+	if (PUGetOprsVarArgParameters(terms, // the arg passed to the action/ep/ef
+				      1, //numbers of parameters possibly to fill
+				      set_parameter_or_default_value(goal.order,10,INTEGER)
+				      ))
+	goal.order is the field of a goal structure which will take an
+        INTEGER, we will give a default value of 10.
+
+	terms in the action call needs to be of the form 
+	(VarArg (order 15)). For example:
+	(! (Fibonacci (VarArg (order 20))))
+	or even (! (Fibonacci (VarArg))) which will then default to 10.
+	Make sense?
+
+	This was made to handle ROS/PR2 Action which take so many
+	arguments (while most of them can be defaulted). That way, one can
+	call these action with only the arguments which are needed, and
+	not probide all of them each time. This can of course be used in
+	others application.
+
 2011-01-18  Felix Ingrand  <felix@cturtle>
 
 	* pu-mk-term_f.h and pu-parse-tl_f.h: Added extern "C" around those 

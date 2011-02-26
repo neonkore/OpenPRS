@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * pu-parse-tl.c -- 
  * 
- * Copyright (C) 1993-2005 LAAS/CNRS.
+ * Copyright (C) 1993-2011 LAAS/CNRS.
  *
  *                         -- C N R S -- 
  *         Laboratoire d'Automatique et d'Analyse des Systemes 
@@ -576,4 +576,124 @@ PBoolean PUGetOprsParametersSpecArg(TermList paramList, int rank, Term_Type type
 	  break;
      }
      return(TRUE);
+}
+
+/* We get an argument similar:
+   (VarArg (order 20)), This was passed from OpenPRS
+   10 <the result of the initialization>, "goal.order", int *, INTEGER
+ */
+PBoolean PUGetOprsVarArgParameters(TermList paramList, int nb, ...)
+{
+     va_list listArg;
+     int paramCour;
+     int result = TRUE;
+     Term *t;
+     TermList tl;
+
+     if (sl_slist_length(paramList) != 1 ) { /* one EXPRESSION */
+       fprintf(stderr,"PUGetOprsVarArgParameters: ERROR: expecting one Expression such as (VarArg ...)");
+       return FALSE;
+     }
+     
+     t = (Term *)sl_get_slist_head(paramList);
+     
+     if (t->type != EXPRESSION || (!strcmp(pred_func_rec_symbol(t->u.expr->pfr),"VarArg")))  { /* check the name too ;-) */
+       fprintf(stderr,"PUGetOprsVarArgParameters: ERROR: expecting one Expression such as (VarArg ...)");
+       return FALSE;
+     }
+
+     tl = t->u.expr->terms; /*  */
+
+     sl_loop_through_slist(tl, t, Term *) {
+       PBoolean found;
+       char *argName;
+       Term * argTerm;
+       
+       if (t->type != EXPRESSION) { 
+	 fprintf(stderr,"PUGetOprsVarArgParameters: ERROR: expecting an Expression");
+	 return FALSE;
+       }
+
+       argName = pred_func_rec_symbol(t->u.expr->pfr);
+       
+       argTerm = (Term *)sl_get_slist_head(t->u.expr->terms);
+       
+       found = FALSE;
+       for(paramCour = 0; paramCour <nb; paramCour++) {
+	  Term_Type type;
+	  char **fieldNamePtr;
+	  char *fieldName, *ptr;
+	  char *last = NULL;
+	  
+	  va_start(listArg, nb);
+  
+
+	  type = va_arg(listArg, Term_Type);
+    	  fieldName = va_arg(listArg, char *);
+	  //	  fieldName = *fieldNamePtr;
+ 
+	  ptr = fieldName;
+	  
+	  //	  fprintf(stderr,"argname %s fieldname %s\n", argName,fieldName);
+
+	  while((ptr = strstr(ptr, argName))) last = ptr++; /* find the last occurence of argName in fieldName. */
+	  
+	  if (last && (strlen(last) == strlen(argName))) { /* The last AND it terminates the string */
+
+	    found = TRUE;
+
+	    switch(type) {
+	    case FLOAT:
+	      result &= PU_bind_float(va_arg(listArg, double *),
+				      argTerm);
+	      break;
+	    case INTEGER:
+	      result &= PU_bind_integer(va_arg(listArg, int *),
+					argTerm);
+	      break;
+	    case LONG_LONG:
+	      result &= PU_bind_long_long(va_arg(listArg, long long int *),
+					  argTerm);
+	      break;
+	    case STRING:
+	      result &= PU_bind_string(va_arg(listArg, char **),
+				       argTerm);
+	      break;
+	    case EXPRESSION:
+	      result &= PU_bind_expr(va_arg(listArg, Expression **),
+				     argTerm);
+	      break;
+	    case U_POINTER:
+	      result &= PU_bind_u_pointer(va_arg(listArg, void **),
+					  argTerm);
+	      break;
+	    case U_MEMORY:
+	      result &= PU_bind_u_memory(va_arg(listArg, U_Memory **),
+					 argTerm);
+	      break;
+	    case ATOM:
+	      result &= PU_bind_atom(va_arg(listArg, Symbol *),
+				     argTerm);
+	      break;
+	    case LISP_LIST:
+	      result &= PU_bind_l_list(va_arg(listArg, L_List *),
+				       argTerm);
+	      break;
+	    default:
+	      fprintf(stderr,"PUGetOprsVarArgParameters: Unknown type in PUGetOprsVarArgParameters\n");
+	      return(FALSE);
+	      break;
+	    } 
+	    
+	    if (! result) return (FALSE);
+	  }
+	  va_end(listArg);
+       }
+       if (! found) {
+	 fprintf(stderr,"PUGetOprsVarArgParameters: could not find \"%s\" in the argument list.\n", argName);
+	 return (FALSE);
+       }
+     }
+     
+     return(result);
 }

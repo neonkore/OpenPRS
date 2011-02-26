@@ -72,3 +72,4 @@ TAGS
 *.rej
 *.orig
 .depend
+autom4te.cache
