@@ -590,15 +590,25 @@ PBoolean PUGetOprsVarArgParameters(TermList paramList, int nb, ...)
      Term *t;
      TermList tl;
 
+     if (sl_slist_empty(paramList)) { /* nothing... bad idea, OpenPRS probably already complain. */
+       fprintf(stderr,"PUGetOprsVarArgParameters: Warning: should not be called without any parameter, defaulting all the variables\n");
+       return TRUE;
+     }
+
      if (sl_slist_length(paramList) != 1 ) { /* one EXPRESSION */
-       fprintf(stderr,"PUGetOprsVarArgParameters: ERROR: expecting one Expression such as (VarArg ...)");
+       fprintf(stderr,"PUGetOprsVarArgParameters: ERROR: expecting one Expression such as (VarArg ...)\n");
        return FALSE;
      }
      
      t = (Term *)sl_get_slist_head(paramList);
      
-     if (t->type != EXPRESSION || (!strcmp(pred_func_rec_symbol(t->u.expr->pfr),"VarArg")))  { /* check the name too ;-) */
-       fprintf(stderr,"PUGetOprsVarArgParameters: ERROR: expecting one Expression such as (VarArg ...)");
+     if (t->type != EXPRESSION) {
+       fprintf(stderr,"PUGetOprsVarArgParameters: ERROR: expecting an EXPRESSION\n");
+       return FALSE;
+     }
+
+     if (strcmp(pred_func_rec_symbol(t->u.expr->pfr),"VarArg") != 0)  { /* check the name too ;-) */
+       fprintf(stderr,"PUGetOprsVarArgParameters: ERROR: expecting VarArg, not: %s\n", pred_func_rec_symbol(t->u.expr->pfr));
        return FALSE;
      }
 
@@ -610,7 +620,7 @@ PBoolean PUGetOprsVarArgParameters(TermList paramList, int nb, ...)
        Term * argTerm;
        
        if (t->type != EXPRESSION) { 
-	 fprintf(stderr,"PUGetOprsVarArgParameters: ERROR: expecting an Expression");
+	 fprintf(stderr,"PUGetOprsVarArgParameters: ERROR: expecting an Expression\n");
 	 return FALSE;
        }
 
@@ -619,14 +629,14 @@ PBoolean PUGetOprsVarArgParameters(TermList paramList, int nb, ...)
        argTerm = (Term *)sl_get_slist_head(t->u.expr->terms);
        
        found = FALSE;
+       va_start(listArg, nb);
+  
        for(paramCour = 0; paramCour <nb; paramCour++) {
 	  Term_Type type;
 	  char **fieldNamePtr;
 	  char *fieldName, *ptr;
 	  char *last = NULL;
 	  
-	  va_start(listArg, nb);
-  
 
 	  type = va_arg(listArg, Term_Type);
     	  fieldName = va_arg(listArg, char *);
@@ -638,8 +648,11 @@ PBoolean PUGetOprsVarArgParameters(TermList paramList, int nb, ...)
 
 	  while((ptr = strstr(ptr, argName))) last = ptr++; /* find the last occurence of argName in fieldName. */
 	  
-	  if (last && (strlen(last) == strlen(argName))) { /* The last AND it terminates the string */
-
+	  if (last && (strlen(last) == strlen(argName)) && /* The last AND it terminates the string */
+	      ((last == fieldName) ||			   /* argName is the whole field I am not sure it is a great idea, 
+							      no particular reasons why we should know the structure name. */
+	       (last[-1] == '.'))) {			   /* or the char before is a period . (better) */
+	    
 	    found = TRUE;
 
 	    switch(type) {
@@ -686,9 +699,13 @@ PBoolean PUGetOprsVarArgParameters(TermList paramList, int nb, ...)
 	    } 
 	    
 	    if (! result) return (FALSE);
+	    else break;		/* we have assigned the structure field... move to the nect arg. */
+	  } else {		/* this is not the right argument, still we need to skip the pointer  */
+	    va_arg(listArg, void *); /* this should do... no? */
 	  }
-	  va_end(listArg);
        }
+       va_end(listArg);
+
        if (! found) {
 	 fprintf(stderr,"PUGetOprsVarArgParameters: could not find \"%s\" in the argument list.\n", argName);
 	 return (FALSE);

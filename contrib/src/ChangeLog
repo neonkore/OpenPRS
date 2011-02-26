@@ -1,5 +1,42 @@
 2011-02-26  Felix Ingrand  <felix@cturtle>
 
+	* pu-parse-tl.c (PUGetOprsVarArgParameters): improve the test on
+	the argument name
+
+	Here is an example of a more complex usage:
+
+Term *pr2CallPointHeadAction(TermList terms) 
+{
+  pr2_controllers_msgs::PointHeadGoal goal;
+
+  //This call will parse the arguments, self explanatory... no?
+  if (PUGetOprsVarArgParameters(terms, 8,
+				set_parameter_or_default_value(goal.pointing_frame, "high_def_frame", STRING),
+				set_parameter_or_default_value(goal.target.header.frame_id, "base_link", STRING),
+				set_parameter_or_default_value(goal.target.point.x, 5, FLOAT),
+				set_parameter_or_default_value(goal.target.point.y, 0, FLOAT),
+				set_parameter_or_default_value(goal.target.point.z, 1.2, FLOAT),
+				set_parameter_or_default_value(goal.pointing_axis.x, 1.0, FLOAT),
+				set_parameter_or_default_value(goal.pointing_axis.y, 0.0, FLOAT),
+				set_parameter_or_default_value(goal.pointing_axis.z, 0.0, FLOAT)
+				)) {
+....
+This particular action can now be called with the following goal:
+(! (PR2PointHeadAction (VarArg))) 	; we get all the defaults value
+(! (PR2PointHeadAction (VarArg (x 3.0) (z 4.0)))) ; this will change 
+	; goal.target.point.x to 3.0
+	; goal.target.point.z to 4.0
+	; Note that it takes the first .x and .z in the list.
+	; All others value are set to default.
+(! (PR2PointHeadAction (VarArg (pointing_axis.x 1.0) (x 4.0)))) ; this will change
+	; goal.pointing_axis.x to 1.0
+	; goal.target.point.x to 4.0
+	; all others value are set to the default.
+	You get the idea...
+	The only problem I see for now is to make sure you clearly identify the type of the object...
+	do not rely on assignment casting. For example goal.pointing_axis.x is indeed a float64,
+	assigning it an int in the function will work (it will cast) but puting an int in its address will break. 
+
 	* pu-parse-tl.c (PUGetOprsVarArgParameters): Added a function
 	which allows one to pass a variable number of arguments named
 	after a suffixe unique substring of the structure they must
