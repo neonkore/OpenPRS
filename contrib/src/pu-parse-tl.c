@@ -622,7 +622,7 @@ PBoolean PUGetOprsVarArgParameters(TermList paramList, int nb, ...)
      TermList tl;
      static Symbol vararg_sym = NULL;
 
-     if (!vararg_sym) DECLARE_TEXT_ID("VarArg", vararg_sym);
+     if (!vararg_sym) vararg_sym = declare_atom("VarArg");
 
 
      if (sl_slist_empty(paramList)) { /* nothing... bad idea, OpenPRS probably already complain. */

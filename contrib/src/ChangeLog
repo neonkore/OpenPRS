@@ -2,7 +2,9 @@
 
 	* pu-parse-tl.c (PUGetOprsVarArgParameters): Minors changes (e.g. use
 	symbol instead of strings).
-
+	(PUGetOprsVarArgParameters): oops... DECLARE_ID is a macro and could
+	not be used in this lib. declare_atom will do the same thing.
+n
 2011-02-26  Felix Ingrand  <felix@cturtle>
 
 	* pu-parse-tl.c (PUGetOprsVarArgParameters): improve the test on the
