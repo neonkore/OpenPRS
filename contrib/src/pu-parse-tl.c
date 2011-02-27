@@ -1,7 +1,38 @@
 /*                               -*- Mode: C -*- 
+/* pu-parse-tl.c --- 
+ * 
+ * Filename: pu-parse-tl.c
+ * Description: 
+ * Author: Felix Ingrand <felix@laas.fr>
+ *
+ * Copyright (C) 1993-2011 LAAS/CNRS.
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *    - Redistributions of source code must retain the above copyright
+ *      notice, this list of conditions and the following disclaimer.
+ *    - Redistributions in binary form must reproduce the above
+ *      copyright notice, this list of conditions and the following
+ *      disclaimer in the documentation and/or other materials provided
+ *      with the distribution.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+/*                               -*- Mode: C -*- 
  * pu-parse-tl.c -- 
  * 
- * Copyright (C) 1993-2011 LAAS/CNRS.
  *
  *                         -- C N R S -- 
  *         Laboratoire d'Automatique et d'Analyse des Systemes 
@@ -589,9 +620,13 @@ PBoolean PUGetOprsVarArgParameters(TermList paramList, int nb, ...)
      int result = TRUE;
      Term *t;
      TermList tl;
+     static Symbol vararg_sym = NULL;
+
+     if (!vararg_sym) DECLARE_TEXT_ID("VarArg", vararg_sym);
+
 
      if (sl_slist_empty(paramList)) { /* nothing... bad idea, OpenPRS probably already complain. */
-       fprintf(stderr,"PUGetOprsVarArgParameters: Warning: should not be called without any parameter, defaulting all the variables\n");
+       fprintf(stderr,"PUGetOprsVarArgParameters: Warning: should not be called without any parameter, defaulting all the variables.\n");
        return TRUE;
      }
 
@@ -607,12 +642,12 @@ PBoolean PUGetOprsVarArgParameters(TermList paramList, int nb, ...)
        return FALSE;
      }
 
-     if (strcmp(pred_func_rec_symbol(t->u.expr->pfr),"VarArg") != 0)  { /* check the name too ;-) */
+     if (pred_func_rec_symbol(t->u.expr->pfr) != vararg_sym)  { /* check the name too ;-) */
        fprintf(stderr,"PUGetOprsVarArgParameters: ERROR: expecting VarArg, not: %s\n", pred_func_rec_symbol(t->u.expr->pfr));
        return FALSE;
      }
 
-     tl = t->u.expr->terms; /*  */
+     tl = t->u.expr->terms; /* The list of argument of the vararg */
 
      sl_loop_through_slist(tl, t, Term *) {
        PBoolean found;
@@ -625,7 +660,6 @@ PBoolean PUGetOprsVarArgParameters(TermList paramList, int nb, ...)
        }
 
        argName = pred_func_rec_symbol(t->u.expr->pfr);
-       
        argTerm = (Term *)sl_get_slist_head(t->u.expr->terms);
        
        found = FALSE;
@@ -640,12 +674,8 @@ PBoolean PUGetOprsVarArgParameters(TermList paramList, int nb, ...)
 
 	  type = va_arg(listArg, Term_Type);
     	  fieldName = va_arg(listArg, char *);
-	  //	  fieldName = *fieldNamePtr;
  
 	  ptr = fieldName;
-	  
-	  //	  fprintf(stderr,"argname %s fieldname %s\n", argName,fieldName);
-
 	  while((ptr = strstr(ptr, argName))) last = ptr++; /* find the last occurence of argName in fieldName. */
 	  
 	  if (last && (strlen(last) == strlen(argName)) && /* The last AND it terminates the string */
@@ -699,15 +729,16 @@ PBoolean PUGetOprsVarArgParameters(TermList paramList, int nb, ...)
 	    } 
 	    
 	    if (! result) return (FALSE);
-	    else break;		/* we have assigned the structure field... move to the nect arg. */
+	    else break;	/* we have assigned the structure field... move to the next arg.
+			   Note that this is also why we assign the first field in the list.*/
 	  } else {		/* this is not the right argument, still we need to skip the pointer  */
-	    va_arg(listArg, void *); /* this should do... no? */
+	    va_arg(listArg, void *); /* this should do... we are skipping a pointer... no? */
 	  }
        }
-       va_end(listArg);
+       va_end(listArg);		/* Will end this turn and then we can go back to the beginning of the list. */
 
        if (! found) {
-	 fprintf(stderr,"PUGetOprsVarArgParameters: could not find \"%s\" in the argument list.\n", argName);
+	 fprintf(stderr,"PUGetOprsVarArgParameters: Error: could not find \"%s\" in the argument list.\n", argName);
 	 return (FALSE);
        }
      }

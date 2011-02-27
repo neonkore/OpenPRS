@@ -1,7 +1,12 @@
+2011-02-27  Felix Ingrand  <felix@cturtle>
+
+	* pu-parse-tl.c (PUGetOprsVarArgParameters): Minors changes (e.g. use
+	symbol instead of strings).
+
 2011-02-26  Felix Ingrand  <felix@cturtle>
 
-	* pu-parse-tl.c (PUGetOprsVarArgParameters): improve the test on
-	the argument name
+	* pu-parse-tl.c (PUGetOprsVarArgParameters): improve the test on the
+	argument name
 
 	Here is an example of a more complex usage:
 
