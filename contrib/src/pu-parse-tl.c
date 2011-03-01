@@ -667,7 +667,6 @@ PBoolean PUGetOprsVarArgParameters(TermList paramList, int nb, ...)
   
        for(paramCour = 0; paramCour <nb; paramCour++) {
 	  Term_Type type;
-	  char **fieldNamePtr;
 	  char *fieldName, *ptr;
 	  char *last = NULL;
 	  

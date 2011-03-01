@@ -1,3 +1,7 @@
+2011-03-01  Felix Ingrand  <felix@cturtle>
+
+	* pu-genom.c added function to add simple type (not expecting array like with GenoM).
+
 2011-02-27  Felix Ingrand  <felix@cturtle>
 
 	* pu-parse-tl.c (PUGetOprsVarArgParameters): Minors changes (e.g. use
