@@ -56,6 +56,7 @@ extern Term *pu_simple_decode_char ( char *name, char addr );
 extern Term *pu_simple_decode_float ( char *name, float addr );
 extern Term *pu_simple_decode_double ( char *name, double addr );
 extern Term *pu_simple_decode_string ( char *name, char *addr );
+extern Term *pu_simple_decode_atom(char *key, char *value);
 
 #ifdef __cplusplus
 }

@@ -219,11 +219,20 @@ define_pu_simple_decode(char, char, PUMakeTermInteger, int, INTEGER)
 define_pu_simple_decode(float, float, PUMakeTermFloat, double, FLOAT)
 define_pu_simple_decode(double, double, PUMakeTermFloat, double, FLOAT)
 
-Term *pu_simple_decode_string(char *name, char *addr)
+Term *pu_simple_decode_atom(char *key, char *value)
 {
-  Pred_Func_Rec *fr = find_or_create_pred_func(declare_atom(name?name:"STRING"));
+  Pred_Func_Rec *fr = find_or_create_pred_func(declare_atom(key?key:"ATOM"));
   TermList tl = sl_make_slist();
-  sl_add_to_tail(tl, PUMakeTermString(addr));
+  sl_add_to_tail(tl, PUMakeTermAtom(value));
+  
+  return(build_term_expr(build_expr_pfr_terms(fr, tl)));
+}
+
+Term *pu_simple_decode_string(char *key, char *value)
+{
+  Pred_Func_Rec *fr = find_or_create_pred_func(declare_atom(key?key:"STRING"));
+  TermList tl = sl_make_slist();
+  sl_add_to_tail(tl, PUMakeTermString(value));
   
   return(build_term_expr(build_expr_pfr_terms(fr, tl)));
 }
