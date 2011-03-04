@@ -613,7 +613,7 @@ PBoolean PUGetOprsParametersSpecArg(TermList paramList, int rank, Term_Type type
    (VarArg (order 20)), This was passed from OpenPRS
    10 <the result of the initialization>, "goal.order", int *, INTEGER
  */
-PBoolean PUGetOprsVarArgParameters(TermList paramList, int nb, ...)
+PBoolean PUGetOprsVarArgParameters(TermList paramList, PBoolean find_them_all, int nb, ...)
 {
      va_list listArg;
      int paramCour;
@@ -736,7 +736,7 @@ PBoolean PUGetOprsVarArgParameters(TermList paramList, int nb, ...)
        }
        va_end(listArg);		/* Will end this turn and then we can go back to the beginning of the list. */
 
-       if (! found) {
+       if (! found && find_them_all) {
 	 fprintf(stderr,"PUGetOprsVarArgParameters: Error: could not find \"%s\" in the argument list.\n", argName);
 	 return (FALSE);
        }
