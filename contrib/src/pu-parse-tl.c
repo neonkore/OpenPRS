@@ -736,10 +736,11 @@ PBoolean PUGetOprsVarArgParameters(TermList paramList, PBoolean find_them_all, i
        }
        va_end(listArg);		/* Will end this turn and then we can go back to the beginning of the list. */
 
-       if (! found && find_them_all) {
-	 fprintf(stderr,"PUGetOprsVarArgParameters: Error: could not find \"%s\" in the argument list.\n", argName);
-	 return (FALSE);
-       }
+       if (! found)
+	 if (find_them_all) {
+	   fprintf(stderr,"PUGetOprsVarArgParameters: Error: could not find \"%s\" in the argument list.\n", argName);
+	   return (FALSE);
+	 }
      }
      
      return(result);
