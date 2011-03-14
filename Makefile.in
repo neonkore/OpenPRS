@@ -882,13 +882,14 @@ TAGS: $(SRCS) $(YACC_SRC) $(LEX_SRC) $(C_TOOLKIT_SRC) \
 	$(RESOURCES_FILES)
 	etags $^
 
-$(srcdir)/configure: configure.ac aclocal.m4
+
+$(srcdir)/configure $(srcdir)/aclocal.m4: configure.ac
 	cd $(srcdir) && autoreconf
 
 # From autoconf info documentation
 # autoheader might not change config-ac.h.in, so touch a stamp file.
 $(srcdir)/config-ac.h.in: stamp-h.in
-$(srcdir)/stamp-h.in: configure.ac aclocal.m4 ac_find_motif.m4 ac_readline.m4
+$(srcdir)/stamp-h.in: configure.ac ac_find_motif.m4 ac_readline.m4
 	cd $(srcdir) && autoheader
 	echo timestamp > $(srcdir)/stamp-h.in
 
@@ -912,7 +913,7 @@ dist_name = @PACKAGE_TARNAME@-@PACKAGE_VERSION@
 git-tag:
 	git tag -m "release @PACKAGE_VERSION@"  $(dist_name)
 
-ADD_TO_ROBOTPKG_DISTRIB = configure
+ADD_TO_ROBOTPKG_DISTRIB = configure aclocal.m4 config-ac.h.in
 
 dist-robotpkg:
 	(cd $(top_srcdir); \
