@@ -73,3 +73,5 @@ TAGS
 *.orig
 .depend
 autom4te.cache
+config-ac.h.in
+stamp-h.in
