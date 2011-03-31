@@ -3,7 +3,7 @@
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2010 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,7 +44,9 @@
  * Ces macros sont utilisees a differents endroits dans OPRS
  * ************************************************************** */
 
+#ifndef ABS
 #define ABS(a)       (((a) >= 0) ? (a) : -(a))
+#endif
 #ifndef	MIN
 #define	MIN(a,b) (((a)<(b))?(a):(b))
 #endif

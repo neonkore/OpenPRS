@@ -3,7 +3,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*-
  * ope-menu.c --
  *
- * Copyright (c) 1991-2010 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -705,7 +705,7 @@ Widget create_menu_bar(Widget parent, Draw_Data *dd)
 
 Widget toggled_button = NULL; 
 
-void toggle_button(Widget w)
+void toggle_button(Widget *w)
 {
      Pixel back,fore;
      Arg args[2];

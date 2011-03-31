@@ -1,5 +1,5 @@
 /*                               -*- Mode: C -*-
- * ope-menu_f.h --
+ * ope-filesel_f.h --
  *
  * $Id$
  *
@@ -32,11 +32,10 @@
  *
  */
 
-Widget create_menu_bar(Widget parent, Draw_Data *dd);
-Widget create_menu_pane(Widget parent, Draw_Data *dd);
-void report_user_error(PString message);
-void update_select_sensitivity(PBoolean sensible);
-void update_buffer_sensitivity(PBoolean sensible);
-void update_toggle_sensitivity(PBoolean sensible);
-void update_empty_sensitivity(PBoolean sensible);
-void update_file_sensitivity(PBoolean sensible);
+void ope_create_warning(Widget parent);
+void ope_create_filesel(GtkWidget *parent, Draw_Data *dd);
+PBoolean check_duplicated_names(Draw_Data *dd);
+
+PBoolean AskUser(Widget parent, char *question);
+PBoolean check_exist_access(char *selected_file);
+PBoolean check_write_access(char *selected_file);

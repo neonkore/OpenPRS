@@ -32,8 +32,8 @@
  *
  */
 
-Widget create_menu_bar(Widget parent, Draw_Data *dd);
-Widget create_menu_pane(Widget parent, Draw_Data *dd);
+GtkWidget *create_menu_bar(GtkWidget *parent, Draw_Data *dd);
+GtkWidget *create_tool_bar(GtkWidget *parent, Draw_Data *dd);
 void report_user_error(PString message);
 void update_select_sensitivity(PBoolean sensible);
 void update_buffer_sensitivity(PBoolean sensible);

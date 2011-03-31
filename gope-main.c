@@ -38,18 +38,21 @@
 #include <stdlib.h>
 #include <locale.h>
 
+#include <gtk/gtk.h>
+
 #include "constant.h"
 #include "macro.h"
 #include "oprs-type.h"
 
-#include "ope-graphic.h"
+#include "gope-graphic.h"
 #include "op-structure.h"
-#include "ope-global.h"
-#include "ope-menu_f.h"
+#include "gope-global.h"
+#include "gope-main_f.h"
+#include "gope-menu_f.h"
 #include "ope-graphic_f.h"
 #include "ope-edit_f.h"
 #include "ope-bboard_f.h"
-#include "ope-filesel_f.h"
+#include "gope-filesel_f.h"
 #include "ope-op-opf_f.h"
 #include "op-structure_f.h"
 #include "parser-funct.h"
@@ -64,8 +67,6 @@
 #include "xhelp_f.h"
 
 #include "ope-icon.bit"
-
-#include <gtk/gtk.h>
 
 #define OPE_ARG_ERR_MESSAGE LG_STR("Usage: ope [-l upper|lower|none ] [-F opfile]\n\
 \t[-D files-directory] [opfile]*\n","Usage: ope [-l upper|lower|none ] [-F opfile]\n\
@@ -355,40 +356,60 @@ Slist *ope_init_nw_arg(int argc,char **argv)
 
 }
 
-void quitQuestionManage()
+void ReallyQuit()
 {
-     XmString to_free;
-     Arg args[1];
-     OPFile *opf;
-
-     PBoolean unsaved = FALSE;
-     char title[BUFSIZ];
-     char *message = title;
-
-     message += NUM_CHAR_SPRINT(sprintf(message, LG_STR("The following files are unsaved:\n",
-							"The following files are unsaved:\n")));
-
-     sl_loop_through_slist(list_opfiles, opf, OPFile *) {
-	  if (opf->modified) {
-	       unsaved = TRUE;
-	       message += NUM_CHAR_SPRINT(sprintf(message, "%s\n", opf->name));
-	  }
-     }
-     if (unsaved) {
-	  message += NUM_CHAR_SPRINT(sprintf(message, LG_STR("\nDo you really want to quit?",
-							     "\nDo you really want to quit?")));
-	  message = title;
-     } else {
-	  message = "Do you really want to quit?";
-     }
-
-     XtSetArg(args[0], XmNmessageString, to_free = XmStringCreateLtoR(message, XmSTRING_DEFAULT_CHARSET));
-     XtSetValues(quitQuestion, args, 1);
-     XmStringFree(to_free);
-     XtManageChild(quitQuestion);
+  gtk_main_quit ();
+  
+  fprintf(stderr, LG_STR("May the OP Gtk Editor be with you...\n",
+			 "Que le OP Gtk Editor soit avec vous...\n"));
+  exit(0);
 }
 
-void ReallyQuit(Widget w, XtPointer client_data, XtPointer call_data);
+void quitQuestionManage(GtkWidget *w, gpointer window)
+{
+  GtkWidget *dialog;
+
+  OPFile *opf;
+
+  PBoolean unsaved = FALSE;
+  char title[BUFSIZ];
+  char *message = title;
+
+  message += NUM_CHAR_SPRINT(sprintf(message, LG_STR("The following files are unsaved:\n",
+						     "The following files are unsaved:\n")));
+
+  sl_loop_through_slist(list_opfiles, opf, OPFile *) {
+    if (opf->modified) {
+      unsaved = TRUE;
+      message += NUM_CHAR_SPRINT(sprintf(message, "%s\n", opf->name));
+    }
+  }
+  if (unsaved) {
+    message += NUM_CHAR_SPRINT(sprintf(message, LG_STR("\nDo you really want to quit?",
+						       "\nDo you really want to quit?")));
+    message = title;
+  } else {
+    message = "Do you really want to quit?";
+  }
+  
+  dialog = gtk_message_dialog_new(window,
+				  GTK_DIALOG_DESTROY_WITH_PARENT,
+				  GTK_MESSAGE_QUESTION,
+				  GTK_BUTTONS_YES_NO,
+				  "%s", message);
+  gtk_window_set_title(GTK_WINDOW(dialog), "Question");
+
+  gint result = gtk_dialog_run (GTK_DIALOG (dialog));
+  switch (result)
+    {
+    case GTK_RESPONSE_YES:
+      ReallyQuit();
+      break;
+    default:
+      break;
+    }
+  gtk_widget_destroy (dialog);
+}
 
 void reset_dd(Draw_Data *dd)
 {
@@ -561,93 +582,212 @@ GdkPixbuf *create_pixbuf(const gchar * filename)
    return pixbuf;
 }
 
+
+double coordx[100];
+double coordy[100];
+
+int count = 0;
+
+static gboolean
+on_expose_event(GtkWidget *widget,
+    GdkEventExpose *event,
+    gpointer data)
+{
+  //cairo_t *cr = global_draw_data->gc;
+
+  cairo_t *cr;
+
+  cr = gdk_cairo_create(GTK_LAYOUT(widget)->bin_window);
+
+  cairo_set_source_rgb(cr, 0, 0, 0);
+  cairo_set_line_width (cr, 0.5);
+
+  int i, j;
+  for ( i = 0; i <= count - 1; i++ ) {
+      for ( j  = 0; j <= count -1; j++ ) {
+          cairo_move_to(cr, coordx[i], coordy[i]);
+          cairo_line_to(cr, coordx[j], coordy[j]);
+      }
+  }
+
+  // count = 0;
+  cairo_stroke(cr);
+  cairo_destroy(cr);
+
+  return FALSE;
+}
+
+gboolean clicked(GtkWidget *widget, GdkEventButton *event,
+    gpointer user_data)
+{
+    if (event->button == 1) {
+        coordx[count] = event->x;
+        coordy[count++] = event->y;
+    }
+
+    if (event->button == 3) {
+        gtk_widget_queue_draw(widget);
+    }
+
+    return TRUE;
+}
+
+
 int main(int argc, char **argv, char **envp)
 {
-  GtkWidget *window;
+  GtkWidget *topLevelWindow;
+  GtkWidget *vbox;
+
+  GtkWidget *menubar;
+  GtkWidget *toolbar;
+  GtkWidget *opeDrawWin;
+  GtkWidget *filemenu;
+  GtkWidget *file;
+  GtkWidget *quit;
+
+  char title[LINSIZ];
+
+  OG *init_og;
+  Draw_Data dd;
+  Pixmap icon_pixmap;
+  char *language_str;
+  
+  Cardinal n;
+  Arg args[MAXARGS];
+  
+  Slist *list_of_commands;
+  char *command, *error;
+  char error_message[BUFSIZ];
+  
+  PBoolean loadedfiles = 0, res, errors = 0, ignore;
+  char welcome_message[3000];
+  char iconname[] = "OP Editor";
+  int pid=getpid();
+  
+  disable_slist_compaction();
+  
+  list_of_commands = ope_init_nw_arg(argc, argv);
+  init_hash_size_id(0);
+  make_id_hash();		/* Make the symbol hash table */
+  init_id_hash();
+  
+  init_hash_size_pred_func(0);
+  make_pred_func_hash();		/* Make the predicat hash table */
+  
+  make_global_var_list();
+  
+  relevant_op = (Relevant_Op *)make_relevant_op();
+  list_opfiles = sl_make_slist();
+  list_last_selected_ops = sl_make_slist();
+  
+  ope_parser = TRUE;
+  parse_source = PS_STRING;
+  
+  if (no_window) {
+    strcpy (error_message,  "The following files have not been loaded:\n");
+    
+    command = (char *) sl_get_from_head(list_of_commands);
+    while (command != NULL) {
+      res = yyparse_one_command_string(command); 
+      error = (char *) sl_get_from_head(list_of_commands);
+      
+      if (!res){
+	strcat(error_message, error);
+	errors++;
+      } else
+	loadedfiles++;
+      
+      FREE (command);
+      FREE (error);
+      command = (char *) sl_get_from_head(list_of_commands);
+    }
+    FREE_SLIST(list_of_commands);
+    exit(0);
+  }
+  
+  sprintf(title, LG_STR("OP Editor (GTK) %s",
+			"OP Editeur (GTK) %s"), package_version);
+
+
+  select_language(language_str, TRUE);
+  use_dialog_error = TRUE;
+  really_build_node = FALSE;
+  file_name_for_copy = (char *) MALLOC(sizeof(NAME_FOR_COPY) + 10); /* An integer is not biger than 10 char... */
+  sprintf(file_name_for_copy, "%s%d",NAME_FOR_COPY, pid);
+  
+  file_name_for_print = (char *) MALLOC(sizeof(NAME_FOR_PRINT) + 10);
+  sprintf(file_name_for_print, "%s%d",NAME_FOR_PRINT, pid);
+  global_draw_data = &dd;
 
   gtk_init(&argc, &argv);
 
-  window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title(GTK_WINDOW(window), "icon");
-  gtk_window_set_default_size(GTK_WINDOW(window), 230, 150);
-  gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
-  gtk_window_set_icon(GTK_WINDOW(window), create_pixbuf("ope-icon.png"));
-  gtk_widget_show(window);
+  topLevelWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+  gtk_window_set_title(GTK_WINDOW(topLevelWindow), title);
+  gtk_window_set_default_size(GTK_WINDOW(topLevelWindow), 1400, 800);
+  gtk_window_set_position(GTK_WINDOW(topLevelWindow), GTK_WIN_POS_CENTER);
+  gtk_window_set_icon(GTK_WINDOW(topLevelWindow), create_pixbuf("ope-icon.png"));
+  g_signal_connect(G_OBJECT(topLevelWindow), "destroy",
+      G_CALLBACK(quitQuestionManage), topLevelWindow);
 
-  g_signal_connect_swapped(G_OBJECT(window), "destroy",
-      G_CALLBACK(gtk_main_quit), NULL);
+
+  vbox = gtk_vbox_new(FALSE, 0);
+  gtk_container_add(GTK_CONTAINER(topLevelWindow), vbox);
+  
+  menubar = create_menu_bar(topLevelWindow, &dd);
+  gtk_box_pack_start(GTK_BOX(vbox), menubar, FALSE, FALSE, 1);
+
+  toolbar = create_tool_bar(topLevelWindow, &dd);
+  gtk_box_pack_start(GTK_BOX(vbox), toolbar, FALSE, FALSE, 1);
+
+  opeDrawWin = gtk_scrolled_window_new(NULL, NULL);
+  gtk_box_pack_start(GTK_BOX(vbox), opeDrawWin, TRUE, TRUE, 1);
+  
+
+     /* dd.canvas = XmCreateDrawingArea(opeDrawWin, "opeCanvas", NULL, 0); */
+     /* XtManageChild(dd.canvas); */
+
+     /* XtSetArg(args[0], XmNheight, &dd.canvas_height); */
+     /* XtSetArg(args[1], XmNwidth, &dd.canvas_width); */
+     /* XtGetValues(dd.canvas, args, 2); */
+
+
+  dd.canvas = gtk_layout_new(NULL,NULL);
+  gtk_widget_set_app_paintable(dd.canvas, TRUE);
+
+  gtk_container_add(GTK_CONTAINER(opeDrawWin),dd.canvas);
+
+  gtk_layout_get_size(GTK_LAYOUT(dd.canvas),&dd.canvas_width, &dd.canvas_height);
+  dd.work_height = MAX(WORK_HEIGHT, dd.canvas_height);
+  dd.work_width = MAX(WORK_WIDTH, dd.canvas_width);
+  gtk_layout_set_size(GTK_LAYOUT(dd.canvas), dd.work_width, dd.work_height); 
+
+  dd.top = 0;
+  dd.left = 0;
+
+  ope_create_filesel(topLevelWindow, &dd);
+
+  gtk_widget_show_all(topLevelWindow);
+
+  dd.window = GTK_LAYOUT(dd.canvas)->bin_window;
+
+  //  create_gc(&dd);
+ 
+  gtk_widget_add_events (dd.canvas, GDK_BUTTON_PRESS_MASK);
+
+  g_signal_connect(dd.canvas, "expose-event",
+		   G_CALLBACK(on_expose_event), NULL);
+  g_signal_connect(dd.canvas, "button-press-event", 
+		   G_CALLBACK(clicked), NULL);
 
   gtk_main();
 
   return 0;
-
+#ifdef IGNORE
 /*      XFontStruct  	*font; */
 
 #ifdef XEDITRESCHECKMESSAGES_AVAILABLE
      extern void _XEditResCheckMessages();
 #endif
-
-     OG *init_og;
-     Draw_Data dd;
-     Widget topForm, opeMenuFrame, opeDrawWinFrame, opeDrawWin;
-     Widget menuBar;
-     Pixmap icon_pixmap;
-     char *language_str;
-
-     Cardinal n;
-     Arg args[MAXARGS];
-
-     Slist *list_of_commands;
-     char *command, *error;
-     char error_message[BUFSIZ];
-
-     PBoolean loadedfiles = 0, res, errors = 0, ignore;
-
-     char title[LINSIZ];
-     char welcome_message[3000];
-     char iconname[] = "OP Editor";
-     int pid=getpid();
- 
-     disable_slist_compaction();
-
-     list_of_commands = ope_init_nw_arg(argc, argv);
-     init_hash_size_id(0);
-     make_id_hash();		/* Make the symbol hash table */
-     init_id_hash();
-
-     init_hash_size_pred_func(0);
-     make_pred_func_hash();		/* Make the predicat hash table */
-
-     make_global_var_list();
-
-     relevant_op = (Relevant_Op *)make_relevant_op();
-     list_opfiles = sl_make_slist();
-     list_last_selected_ops = sl_make_slist();
-
-     ope_parser = TRUE;
-     parse_source = PS_STRING;
-
-     if (no_window) {
-       strcpy (error_message,  "The following files have not been loaded:\n");
-
-       command = (char *) sl_get_from_head(list_of_commands);
-       while (command != NULL) {
-	 res = yyparse_one_command_string(command); 
-	 error = (char *) sl_get_from_head(list_of_commands);
-
-	 if (!res){
-	   strcat(error_message, error);
-	   errors++;
-	 } else
-	   loadedfiles++;
-	
-	 FREE (command);
-	 FREE (error);
-	 command = (char *) sl_get_from_head(list_of_commands);
-       }
-       FREE_SLIST(list_of_commands);
-       exit(0);
-     }
 
 /*      fprintf(stderr, "Locale set from env to %s.\n",setlocale(LC_CTYPE,"")); */
 
@@ -697,22 +837,12 @@ int main(int argc, char **argv, char **envp)
 /*      bd_y = Resrcs.bd_y; */
 /*      bd_width = Resrcs.bd_width; */
 /*      edge_width = Resrcs.edge_width; */
-
-     select_language(language_str, TRUE);
-     use_dialog_error = TRUE;
-     really_build_node = FALSE;
-     file_name_for_copy = (char *) MALLOC(sizeof(NAME_FOR_COPY) + 10); /* An integer is not biger than 10 char... */
-     sprintf(file_name_for_copy, "%s%d",NAME_FOR_COPY, pid);
-     
-     file_name_for_print = (char *) MALLOC(sizeof(NAME_FOR_PRINT) + 10);
-     sprintf(file_name_for_print, "%s%d",NAME_FOR_PRINT, pid);
-
 /* #ifdef YY_NO_CONST */
 /*      oprs_yyin = stdin; */
 /*      oprs_yyout = stdout; */
 /* #endif */
      
-     global_draw_data = &dd;
+
 
      list_of_commands = ope_init_arg(argc, argv);
 
@@ -720,9 +850,6 @@ int main(int argc, char **argv, char **envp)
      /* 					 RootWindowOfScreen(XtScreen(topLevel)), */
      /* 					 ope_icon_bits, */
      /* 					 ope_icon_width, ope_icon_height); */
-
-     sprintf(title, LG_STR("OP Editor %s",
-			   "OP Editor %s"), package_version);
 
      /* XtVaSetValues(topLevel, */
      /* 		   XmNiconPixmap, icon_pixmap, */
@@ -812,10 +939,6 @@ int main(int argc, char **argv, char **envp)
 
      reset_dd(&dd);
      dd.copy_area_index_queue = make_queue();
-     dd.work_height = MAX3(WORK_HEIGHT, Resrcs.work_height, (int)dd.canvas_height);
-     dd.work_width = MAX3(WORK_WIDTH, Resrcs.work_width, (int)dd.canvas_width);
-     dd.top = 0;
-     dd.left = 0;
      dd.node_selected = NULL;
      dd.sensitive_og = NULL;
      dd.edge_selected = NULL;
@@ -836,7 +959,7 @@ int main(int argc, char **argv, char **envp)
      /* XtAddEventHandler(dd.canvas, ButtonReleaseMask, FALSE, (XtEventHandler)canvas_mouse_release, &dd); */
 
 
-     create_scrollbars(opeDrawWin, &dd);
+     //     create_scrollbars(opeDrawWin, &dd);
 
      /* n = 0; */
      /* XtSetArg(args[n], XmNverticalScrollBar, dd.vscrollbar); n++; */
@@ -920,7 +1043,7 @@ Date        : %s\n\
      add_op_file_name(current_opfile->name, relevant_op);
 
 
-     init_og = create_text(dd.canvas, 80, 20, &dd, TT_TEXT_NONE, welcome_message, 0, FALSE);
+     //init_og = create_text(dd.canvas, 80, 20, &dd, TT_TEXT_NONE, welcome_message, 0, FALSE);
 
      /* Execute all the commands given in argument. */
 
@@ -959,20 +1082,7 @@ Date        : %s\n\
      /* XtAppMainLoop(app_context); */
 
      return (1);
-}
-
-void ReallyQuit(Widget w, XtPointer client_data, XtPointer call_data)
-{
-     XtCloseDisplay(XtDisplay(w));
-
-     if (Resrcs.printWidgetTree) {
-	  print_top_widget(topLevel);
-	  exit(0);
-     }
-
-     fprintf(stderr, LG_STR("May the OP Editor be with you...\n",
-			    "Que le OP Editor soit avec vous...\n"));
-     exit(0);
+#endif
 }
 
 void init_draw_mode_help()
