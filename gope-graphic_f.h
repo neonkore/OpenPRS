@@ -32,31 +32,35 @@
  *
  */
 
-void hscroll_bar_moved(Widget w, Draw_Data *dd, XmScrollBarCallbackStruct *call_data);
-void vscroll_bar_moved(Widget w, Draw_Data *dd, XmScrollBarCallbackStruct *call_data);
-void create_scrollbars(Widget parent, Draw_Data *dd);
+void hscroll_bar_moved(GtkWidget *w, Draw_Data *dd, XmScrollBarCallbackStruct *call_data);
+void vscroll_bar_moved(GtkWidget *w, Draw_Data *dd, XmScrollBarCallbackStruct *call_data);
+void create_scrollbars(GtkWidget *parent, Draw_Data *dd);
 void create_gc(Draw_Data *dd);
-void handle_exposures(Widget w, Draw_Data *dd, XmDrawingAreaCallbackStruct *cb);
-void handle_g_exposures(Widget w, Draw_Data *dd, XEvent *event);
-void scroll_bar_moved(Widget w, Draw_Data *dd, XmScrollBarCallbackStruct *call_data);
-void resize(Widget w, Draw_Data *dd, XtPointer call_data);
-void draw_inst(Widget w, Draw_Data *dd, int x, int y, int wi, int h, PBoolean sel);
-void draw_node(Widget w, Draw_Data *dd, int x, int y, int wi, int h, Gnode *n, PBoolean sel);
-void draw_edge(Widget w, Draw_Data *, Gedge *e);
-void erase_edge(Widget w, Draw_Data *dd, Gedge *e);
-void draw_edge_text(Widget w, Draw_Data *dd, int x, int y, int width, Gedge_text *et, PBoolean selected);
-void draw_text(Widget w, Draw_Data *dd, int x, int y, int width, Gtext *et, PBoolean selected);
-void erase_inst(Widget w, Draw_Data *dd, OG *og);
-void erase_og(Widget w, Draw_Data *dd, OG *og);
-void draw_og(Widget w, Draw_Data *dd, OG *og);
+void handle_exposures(GtkWidget *w, Draw_Data *dd, XmDrawingAreaCallbackStruct *cb);
+void handle_g_exposures(GtkWidget *w, Draw_Data *dd, XEvent *event);
+void scroll_bar_moved(GtkWidget *w, Draw_Data *dd, XmScrollBarCallbackStruct *call_data);
+void resize(GtkWidget *w, Draw_Data *dd, XtPointer call_data);
+void draw_inst(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, int x, int y, int wi, int h, PBoolean sel);
+void draw_node(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, int x, int y, int wi, int h, Gnode *n, PBoolean sel);
+void draw_edge(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, Gedge *e);
+void erase_edge(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, Gedge *e);
+void draw_edge_text(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, int x, int y, int width, Gedge_text *et, PBoolean selected);
+void draw_text(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, int x, int y, int width, Gtext *et, PBoolean selected);
+void erase_inst(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, OG *og);
+void erase_og(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, OG *og);
+void draw_og(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, OG *og);
 void set_canvas_view(Draw_Data *dd, int x, int y);
 void set_canvas_view_rel(Draw_Data *dd, int xv, int yv);
-void oprs_canvas_mouse_motion(Widget w, Draw_Data *dd, XEvent *event);
-void oprs_canvas_mouse_release(Widget w, Draw_Data *dd, XEvent *event);
-void oprs_canvas_mouse_press(Widget w, Draw_Data *dd, XEvent *event);
+void oprs_canvas_mouse_motion(GtkWidget *w, Draw_Data *dd, XEvent *event);
+void oprs_canvas_mouse_release(GtkWidget *w, Draw_Data *dd, XEvent *event);
+void oprs_canvas_mouse_press(GtkWidget *w, Draw_Data *dd, XEvent *event);
 PBoolean sort_op(Op_Structure *op1, Op_Structure *op2);
 OG *then_edge_og_from_if_og(OG *og);
 OG *else_edge_og_from_if_og(OG *og);
 OG *then_og_from_if_og(OG *og);
 OG *else_og_from_if_og(OG *og);
 OG *if_og_from_t_or_f_og(OG* og);
+
+
+void destroy_cgcs(CairoGCs *cgcs);
+void create_cgcs(CairoGCs *cgcs, GdkDrawable *window);

@@ -3,7 +3,7 @@
  *
  * $Id$
  *
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,7 @@ void free_lgt_string(List_Gtext_String lge_str);
 List_Gtext_String ope_string_to_lgt_string(XmFontList fl, char *string, char *cs, Text_Type tt, Dimension * w, Dimension * h);
 void report_syntax_error(PString message);
 
-void build_edge_graphic(Edge *edge, Expression *gtexpr);
+void build_edge_graphic(Edge *edge, Expression *gtexpr, Draw_Data *dd);
 
 OG *make_cp_graphic(PString name, Node *node);
 OG *make_og_edge(Draw_Data *dd, Op_Structure *op,  Edge *edge, Node *in, Node *out,  Slist *knots, int x, int y, int pp_width, PBoolean pp_fill);

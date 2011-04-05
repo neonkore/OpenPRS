@@ -38,67 +38,66 @@
 #include "op-default.h"
 
 typedef struct {
-     Widget createOPBBoard;
-     Widget act_bb;
-     Widget cbb_graph_radiobutton;
-     Widget cbb_name_field, cbb_ip_field, cbb_ctxt_field, cbb_set_field,
-	  cbb_call_field,
-            cbb_doc_field, cbb_act_field, cbb_eff_field, cbb_prop_field;
+     GtkWidget *createOPBBoard;
+     GtkWidget *act_bb;
+     GtkWidget *cbb_graph_radiobutton;
+     GtkWidget *cbb_name_field, *cbb_ip_field, *cbb_ctxt_field, *cbb_set_field,
+	  *cbb_call_field, *cbb_doc_field, *cbb_act_field, *cbb_eff_field, *cbb_prop_field;
 }      CreateOPBBoardStruct;
 
 extern CreateOPBBoardStruct *createOPBBoardStruct;
 
 typedef struct {
-     Widget createEdgeForm;
-     Widget text;
+     GtkWidget *createEdgeForm;
+     GtkWidget *text;
 }      CreateEdgeStruct;
 
 extern CreateEdgeStruct *createEdgeStruct;
 
 typedef struct {
-     Widget editObjectForm;
-     Widget text;
-     Widget width, fill_true, fill_false;
+     GtkWidget *editObjectForm;
+     GtkWidget *text;
+     GtkWidget *width, *fill_true, *fill_false;
 }      EditObjectStruct;
 
 extern ListOPFile list_opfiles;
 
 extern EditObjectStruct *editObjectStruct;
 
-extern Widget topLevel;
-extern Widget ope_information;
-extern Widget printQuestion;
-extern Widget op_information;
+extern GtkWidget *topLevel;
+extern GtkWidget *ope_information;
+extern GtkWidget *printQuestion;
+extern GtkWidget *op_information;
 extern GtkWidget *opeLoadFilesel;
-extern Widget opeAppendFilesel;
-extern Widget opeSaveFilesel;
-extern Widget printSaveFile;
-extern Widget opeWriteFilesel;
-extern Widget opeWriteTexFilesel;
-extern Widget opeUnloadFileDialog;
-extern Widget opeSelectFileDialog;
+extern GtkWidget *opeAppendFilesel;
+extern GtkWidget *opeSaveFilesel;
+extern GtkWidget *printSaveFile;
+extern GtkWidget *opeWriteFilesel;
+extern GtkWidget *opeWriteTexFilesel;
+extern GtkWidget *opeUnloadFileDialog;
+extern GtkWidget *opeSelectFileDialog;
 
-extern Widget selectOpDialog;
-extern Widget renameOpDialog;
-extern Widget symbolListDialog;
-extern Widget duplicateOpDialog;
-extern Widget destroyOpQuestion;
-extern Widget destroyOpDialog;
-extern Widget copyOpDialog;
-extern Widget pasteOpDialog;
-extern Widget editedOpDialog;
-extern Widget drawingSizeDialog, drawingSizeDialogTxtFldx, drawingSizeDialogTxtFldy;
+extern GtkWidget *selectOpDialog;
+extern GtkWidget *renameOpDialog;
+extern GtkWidget *symbolListDialog;
+extern GtkWidget *duplicateOpDialog;
+extern GtkWidget *destroyOpQuestion;
+extern GtkWidget *destroyOpDialog;
+extern GtkWidget *copyOpDialog;
+extern GtkWidget *pasteOpDialog;
+extern GtkWidget *editedOpDialog;
+extern GtkWidget *drawingSizeDialog, *drawingSizeDialogTxtFldx, *drawingSizeDialogTxtFldy;
 
-extern Widget name_errorDialog;
+extern GtkWidget *name_errorDialog;
 
-/* extern Widget working_dialog; */
-extern Widget syntax_error;
-extern Widget user_error;
+/* extern GtkWidget *working_dialog; */
+extern GtkWidget *syntax_error;
+extern GtkWidget *user_error;
 
-extern Widget printCommandDialog;
-extern Widget VisibleFieldsDialog;
+extern GtkWidget *printCommandDialog;
+extern GtkWidget *VisibleFieldsDialog;
 
-extern Widget editNodeNameDialog;
+extern GtkWidget *editNodeNameDialog;
 
 extern OPFile *current_opfile;
 
@@ -108,8 +107,8 @@ extern char *s_pretty_parsed;
 
 extern char *file_name_for_copy;
 extern char *file_name_for_print;
-extern String gx_print_command_template;
-extern String txt_print_command_template;
+extern char *gx_print_command_template;
+extern char *txt_print_command_template;
 
 extern OPFile *buffer_opfile;
 
@@ -125,5 +124,7 @@ extern ListOP list_rops;
 
 extern Relevant_Op *relevant_op;
 extern PBoolean no_window;
+
+extern GtkWidget *opList;
 
 #endif

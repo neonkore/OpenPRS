@@ -1,9 +1,7 @@
 /*                               -*- Mode: C -*-
- * ope-filesel_f.h --
+ * ope-op-opf_f.h --
  *
- * $Id$
- *
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 2011 LAAS/CNRS
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,10 +30,35 @@
  *
  */
 
-void ope_create_warning(GtkWidget parent);
-void ope_create_filesel(GtkWidget *parent, Draw_Data *dd);
-PBoolean check_duplicated_names(Draw_Data *dd);
+void update_last_selected_list(char *file_name, char *op_name);
+void remove_last_selected_list(char *file_name, char *op_name);
+void remove_file_last_selected_list(char *file_name);
+void rename_file_last_selected_list(char *old_file_name, char *new_file_name);
 
-PBoolean AskUser(GtkWidget *parent, char *question);
-PBoolean check_exist_access(char *selected_file);
-PBoolean check_write_access(char *selected_file);
+void toggle_last_selected_ops(Draw_Data *dd);
+void select_previous_op_in_same_file(Draw_Data *dd);
+void select_previous_op_in_same_file(Draw_Data *dd);
+
+void unselect_current_op(Draw_Data *dd, PBoolean update_sensitivity);
+void select_op(Op_Structure * op, Draw_Data *dd);
+void destroy_op(Op_Structure * op, Draw_Data *dd);
+void destroy_opfile(OPFile *opf);
+void select_opfile(OPFile *opf);
+void make_opfile(PString ext_name, Opf_Type type);
+
+void updateOpList(void);
+void SelectOpFileDialogManage(void);
+
+OPFile *make_buffer_opfile(void);
+void clear_buffer_opfile(void);
+
+/*
+void open_working_dialog(PString message);
+void close_working_dialog();
+void report_working_dialog(PString message);
+*/
+void report_opfile_modification();
+void report_opfile_saved();
+PBoolean sort_opf(OPFile *opf1, OPFile *opf2);
+
+void on_changed_oplist(GtkWidget *widget, gpointer label) ;

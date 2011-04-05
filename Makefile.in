@@ -47,7 +47,7 @@ VPATH=		.:@srcdir@
 C_SRC = action.c activate.c database.c ev-function.c shary-user-ev-function.c ev-predicate.c \
 	fact-goal.c help.c int-graph.c intend.c intention.c op-compiler.c op-dump-load.c \
 	op-instance.c op-structure.c op-x-opaque.c ope-bboard.c ope-edit.c \
-	ope-external.c ope-filesel.c gope-filesel.c ope-graphic.c gope-graphic.c ope-op-opf.c ope-main.c gope-main.c ope-menu.c gope-menu.c \
+	ope-external.c gope-external.c ope-filesel.c gope-filesel.c ope-graphic.c gope-graphic.c ope-op-opf.c gope-op-opf.c ope-main.c gope-main.c ope-menu.c gope-menu.c \
 	ope-print.c ope-pxmw.c ope-save.c ope-syntax.c ope-vsblf.c oprs-subst.c\
 	lisp-list.c mp.c mp-register.c opaque-ext.c parser-funct.c oprs-array.c \
 	oprs-cat.c oprs-client.c oprs-copy.c oprs-dup.c oprs-free.c oprs-init.c tcl.c oprs-main.c \
@@ -82,8 +82,8 @@ FINC = action_f.h activate_f.h database_f.h ev-function_f.h oprs-pred-func_f.h \
 	ev-predicate_f.h fact-goal_f-pub.h fact-goal_f.h \
 	help_f.h int-graph_f-pub.h int-graph_f.h intend_f.h intention_f-pub.h \
 	intention_f.h op-compiler_f.h op-instance_f-pub.h op-instance_f.h \
-	op-structure_f.h ope-bboard_f.h ope-edit_f.h ope-external_f.h \
-	ope-filesel_f.h gope-filesel_f.h ope-graphic_f.h gope-graphic_f.h ope-op-opf_f.h ope-menu_f.h gope-menu_f.h \
+	op-structure_f.h ope-bboard_f.h ope-edit_f.h ope-external_f.h gope-external_f.h \
+	ope-filesel_f.h gope-filesel_f.h ope-graphic_f.h gope-graphic_f.h ope-op-opf_f.h gope-op-opf_f.h ope-menu_f.h gope-menu_f.h \
 	ope-print_f.h ope-pxmw_f.h ope-save_f.h ope-syntax_f.h ope-vsblf_f.h \
 	lisp-list_f-pub.h lisp-list_f.h mp-register_f.h other_proto.h \
 	parser-funct_f.h oprs-array_f.h oprs-client_f.h oprs-print_f.h \
@@ -180,7 +180,7 @@ OP_EDITOR_OBJ = ope-bboard.o ope-edit.o ope-filesel.o ope-op-opf.o ope-main.o \
 	ope-save.o ope-syntax.o \
 	ope-vsblf.o xt-util.o ope-rop.o ope-op-str.o ope-opaque.o
 
-GOP_EDITOR_OBJ = ope-bboard.o ope-edit.o gope-filesel.o ope-op-opf.o gope-main.o \
+GOP_EDITOR_OBJ = ope-bboard.o ope-edit.o gope-filesel.o gope-op-opf.o gope-main.o \
 	gope-menu.o ope-parser.tab.o ope-parser.lex.o ope-print.o ope-pxmw.o \
 	ope-save.o ope-syntax.o \
 	ope-vsblf.o xt-util.o ope-rop.o ope-op-str.o ope-opaque.o
@@ -213,7 +213,7 @@ OPRS_LIB = libOprs.a
 
 OPRS_LIB_OBJ = help.o lisp-list.o oprs-ll.o oprs-send-m.o oprs-sprint.o\
 		parser-funct.o oprs-array.o oprs-copy.o oprs-dup.o oprs-free.o oprs-print.o \
-		oprs-error.o op-compiler.o type.o oprs-pred-func.o
+		oprs-error.o type.o oprs-pred-func.o
 
 OPRS_LIB_SRC = $(OPRS_LIB_OBJ:%.o=%.c)
 
@@ -224,6 +224,8 @@ OPRS_LIB_SRC = $(OPRS_LIB_OBJ:%.o=%.c)
 TEXT_OPE_OPRS_LIB = libTOpEOprs.a
 
 GRAPHIC_OPE_OPRS_LIB = libGOpEOprs.a
+
+GGRAPHIC_OPE_OPRS_LIB = #libGGOpEOprs.a
 
 BOTH_OPE_OPRS_LIB_OBJ = oprs-dump.o oprs-load.o
 
@@ -237,7 +239,9 @@ TEXT_OPRS_LIB = libTOprs.a
 
 GRAPHIC_OPRS_LIB = libGOprs.a
 
-BOTH_OPRS_LIB_OBJ = op-structure.o oprs-subst.o oprs-type.o conditions.o top-structure.o consult-rop.o relevant-op.o  op-dump-load.o
+GGRAPHIC_OPRS_LIB = libGGOprs.a
+
+BOTH_OPRS_LIB_OBJ = op-structure.o op-compiler.o oprs-subst.o oprs-type.o conditions.o top-structure.o consult-rop.o relevant-op.o  op-dump-load.o
 
 BOTH_OPRS_LIB_SRC = $(BOTH_OPRS_LIB_OBJ:%.o=%.c)
 
@@ -271,6 +275,8 @@ KERNEL_LIB_SRC = $(KERNEL_LIB_OBJ:%.o=%.c)
 TEXT_KERNEL_LIB = libTKernel.a
 
 GRAPHIC_KERNEL_LIB = libGKernel.a
+
+GGRAPHIC_KERNEL_LIB = libGGKernel.a
 
 BOTH_KERNEL_LIB_OBJ = action.o activate.o ev-function.o shary-user-ev-function.o intend.o intention.o \
 	int-graph.o op-instance.o oprs-init.o tcl.o soak.o oprs-parser.tab.o \
@@ -310,12 +316,12 @@ OPG_LIB_OBJ = ope-external.o ope-graphic.o xhelp.o oprs-pprint.o ope-report.o
 OPG_LIB_SRC = $(OPG_LIB_OBJ:%.o=%.c)
 
 #
-# graphic op library (used by xoprs and ope)
+# graphic op library (used by goprs and gope)
 #
 
 GOPG_LIB = libGOpG.a
 
-GOPG_LIB_OBJ = ope-external.o gope-graphic.o xhelp.o oprs-pprint.o ope-report.o
+GOPG_LIB_OBJ = gope-external.o gope-graphic.o xhelp.o oprs-pprint.o ope-report.o
 
 GOPG_LIB_SRC = $(GOPG_LIB_OBJ:%.o=%.c)
 
@@ -346,7 +352,7 @@ LIST_LIB = -L$(C_TOOLKIT_DIR) -lOPList
 
 # All the executables
 
-PROG = oprs-server mp-oprs kill-mp oprs xoprs oprs-cat ope opc
+PROG = oprs-server mp-oprs kill-mp oprs xoprs oprs-cat ope opc gope
 
 # and the relocatable.
 
@@ -408,9 +414,9 @@ ope: $(OP_EDITOR_OBJ) $(C_TOOLKIT_LIB) $(MP_LIB) $(BASIC_LIB) $(OPRS_LIB) \
 	$(CC) $(LDFLAGS) -o ope version.o $(OP_EDITOR_OBJ) $(BASIC_LIB) $(GRAPHIC_OPRS_LIB) $(OPRS_LIB) $(GRAPHIC_OPE_OPRS_LIB) $(MP_LIB) $(OPG_LIB) $(X_LIB) $(LIST_LIB) $(SYS_LIB) $(EXTRA_LIB)
 
 gope: $(GOP_EDITOR_OBJ) $(C_TOOLKIT_LIB) $(MP_LIB) $(BASIC_LIB) $(OPRS_LIB) \
-		$(GRAPHIC_OPE_OPRS_LIB) $(GRAPHIC_OPRS_LIB) $(GOPG_LIB)
+		$(GGRAPHIC_OPE_OPRS_LIB) $(GGRAPHIC_OPRS_LIB) $(GOPG_LIB)
 	$(MAKE) version
-	$(CC) $(LDFLAGS) -o gope version.o $(GOP_EDITOR_OBJ) $(BASIC_LIB) $(GRAPHIC_OPRS_LIB) $(OPRS_LIB) $(GRAPHIC_OPE_OPRS_LIB) $(MP_LIB) $(GOPG_LIB) $(GTK_LIB) $(X_LIB) $(LIST_LIB) $(SYS_LIB) $(EXTRA_LIB)
+	$(CC) $(LDFLAGS) -o gope version.o $(GOP_EDITOR_OBJ) $(BASIC_LIB) $(GGRAPHIC_OPRS_LIB) $(OPRS_LIB) $(GGRAPHIC_OPE_OPRS_LIB) $(MP_LIB) $(GOPG_LIB) $(GTK_LIB) $(X_LIB) $(LIST_LIB) $(SYS_LIB) $(EXTRA_LIB)
 
 oprs-cat: $(OPRS_CAT_OBJ) $(C_TOOLKIT_LIB)
 	$(CC) $(LDFLAGS) -o oprs-cat $(OPRS_CAT_OBJ) $(LIST_LIB)
@@ -463,6 +469,9 @@ c++-xoprs-relocatable:  $(filter-out xoprs-main.o, $(X_OBJ)) xoprs-main++.o $(C_
 xoprs-user: xoprs-relocatable $(USER_OBJ)
 	$(CC) -o $@ xoprs-relocatable $(USER_OBJ) $(SYS_LIB) $(X_LIB) $(EXTRA_LIB)
 
+
+$(GOP_EDITOR_OBJ): CPPFLAGS += -DGTK
+
 #
 # Libraries
 #
@@ -482,6 +491,9 @@ $(OPRS_LIB): $(OPRS_LIB_OBJ:%=$(OPRS_LIB)(%))
 $(GRAPHIC_OPE_OPRS_LIB): $(BOTH_OPE_OPRS_LIB_OBJ:%=$(GRAPHIC_OPE_OPRS_LIB)(%))
 	$(RANLIB) $@
 
+$(GGRAPHIC_OPE_OPRS_LIB): $(BOTH_OPE_OPRS_LIB_OBJ:%=$(GGRAPHIC_OPE_OPRS_LIB)(%))
+	$(RANLIB) $@
+
 $(TEXT_OPE_OPRS_LIB): $(BOTH_OPE_OPRS_LIB_OBJ:%=$(TEXT_OPE_OPRS_LIB)(%))
 	$(RANLIB) $@
 
@@ -489,6 +501,9 @@ $(TEXT_OPRS_LIB): $(BOTH_OPRS_LIB_OBJ:%=$(TEXT_OPRS_LIB)(%))
 	$(RANLIB) $@
 
 $(GRAPHIC_OPRS_LIB): $(BOTH_OPRS_LIB_OBJ:%=$(GRAPHIC_OPRS_LIB)(%))
+	$(RANLIB) $@
+
+$(GGRAPHIC_OPRS_LIB): $(BOTH_OPRS_LIB_OBJ:%=$(GGRAPHIC_OPRS_LIB)(%))
 	$(RANLIB) $@
 
 $(MP_LIB): $(MP_LIB_OBJ:%=$(MP_LIB)(%))
@@ -504,6 +519,9 @@ $(TEXT_KERNEL_LIB): $(BOTH_KERNEL_LIB_OBJ:%=$(TEXT_KERNEL_LIB)(%))
 	$(RANLIB) $@
 
 $(GRAPHIC_KERNEL_LIB): $(BOTH_KERNEL_LIB_OBJ:%=$(GRAPHIC_KERNEL_LIB)(%))
+	$(RANLIB) $@
+
+$(GGRAPHIC_KERNEL_LIB): $(BOTH_KERNEL_LIB_OBJ:%=$(GGRAPHIC_KERNEL_LIB)(%))
 	$(RANLIB) $@
 
 $(XOPRS_LIB): $(XOPRS_LIB_OBJ:%=$(XOPRS_LIB)(%))
@@ -545,6 +563,21 @@ $(GRAPHIC_OPRS_LIB)(%.o): %.c
 
 $(GRAPHIC_OPE_OPRS_LIB)(%.o): %.c
 	$(CC) $(CFLAGS) -UNO_GRAPHIX $(CPPFLAGS) -c $< -o $%
+	$(AR) r $@ $*.o
+	$(RM) $*.o
+
+$(GGRAPHIC_KERNEL_LIB)(%.o): %.c
+	$(CC) $(CFLAGS) -UNO_GRAPHIX -DGTK -DOPRS_KERNEL $(CPPFLAGS) -c $< -o $%
+	$(AR) r $@ $*.o
+	$(RM) $*.o
+
+$(GGRAPHIC_OPRS_LIB)(%.o): %.c
+	$(CC) $(CFLAGS) -UNO_GRAPHIX -DGTK $(CPPFLAGS) -c $< -o $%
+	$(AR) r $@ $*.o
+	$(RM) $*.o
+
+$(GGRAPHIC_OPE_OPRS_LIB)(%.o): %.c
+	$(CC) $(CFLAGS) -UNO_GRAPHIX -DGTK $(CPPFLAGS) -c $< -o $%
 	$(AR) r $@ $*.o
 	$(RM) $*.o
 

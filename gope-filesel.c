@@ -34,31 +34,35 @@
 
 #include <stdio.h>
 
+#include <cairo.h>
 #include <gtk/gtk.h>
 
 /*
  * Standard Toolkit include files
  */
-#include <X11/Intrinsic.h>
-#include <Xm/Xm.h>
+/* #include <X11/Intrinsic.h> */
+/* #include <Xm/Xm.h> */
 
-#include <Xm/FileSB.h>
-#include <Xm/Text.h>
-#include <Xm/TextF.h>
-#include <Xm/SelectioB.h>
-#include <Xm/MessageB.h>
-#include <Xm/RowColumn.h>
-#include <Xm/List.h>
-#include <Xm/Label.h>
-#include <Xm/ToggleB.h>
-#include <X11/cursorfont.h>
+/* #include <Xm/FileSB.h> */
+/* #include <Xm/Text.h> */
+/* #include <Xm/TextF.h> */
+/* #include <Xm/SelectioB.h> */
+/* #include <Xm/MessageB.h> */
+/* #include <Xm/RowColumn.h> */
+/* #include <Xm/List.h> */
+/* #include <Xm/Label.h> */
+/* #include <Xm/ToggleB.h> */
+/* #include <X11/cursorfont.h> */
+
+#include "xm2gtk.h"
 
 #include "constant.h"
 #include "macro.h"
 #include "oprs-type.h"
 #include "oprs-type_f.h"
 #include "parser-funct_f.h"
-#include "ope-graphic.h"
+#include "op-structure.h"
+#include "gope-graphic.h"
 #include "gope-global.h"
 #include "gope-filesel_f.h"
 #include "ope-bboard_f.h"
@@ -75,7 +79,10 @@
 #include "xhelp.h"
 #include "xhelp_f.h"
 
-Widget drawingSizeDialog, drawingSizeWA, drawingSizeDialogTxtFldx, drawingSizeDialogTxtLblx, drawingSizeDialogTxtLbly, drawingSizeDialogTxtFldy;
+#include "xm2gtk_f.h"
+
+
+GtkWidget *drawingSizeDialog, *drawingSizeWA, *drawingSizeDialogTxtFldx, *drawingSizeDialogTxtLblx, *drawingSizeDialogTxtLbly, *drawingSizeDialogTxtFldy;
 
 static int nb_modify = 0;
 
@@ -113,6 +120,7 @@ void modify_op_name (Op_Structure *op, Draw_Data *dd)
 
 PBoolean check_duplicated_names(Draw_Data *dd)
 {
+#ifdef IGNORE_GTK
      void *ptr1, *ptr2;
      char *name1, *name2;
      Op_Structure *op1, *op2;
@@ -161,16 +169,19 @@ PBoolean check_duplicated_names(Draw_Data *dd)
      }
      FREE(message);
      return (no_duplicated);
+#endif
 }
 
 
-Widget name_errorDialog;
+GtkWidget *name_errorDialog;
 
 void ope_create_name_error(Widget parent)
 {
+#ifdef IGNORE_GTK
      name_errorDialog =  XmCreateWarningDialog(parent, "name_errorDialog", NULL, 0);
      XtUnmanageChild(XmMessageBoxGetChild(name_errorDialog, XmDIALOG_HELP_BUTTON));
      XtUnmanageChild(XmMessageBoxGetChild(name_errorDialog, XmDIALOG_CANCEL_BUTTON));
+#endif
 }
 
 PBoolean check_ep_in_ip(Op_Structure *op, Symbol predicat)
@@ -178,10 +189,11 @@ PBoolean check_ep_in_ip(Op_Structure *op, Symbol predicat)
      return TRUE;
 }
 
-Widget opeUnloadFileDialog;
+GtkWidget *opeUnloadFileDialog;
 
 void opeUnloadFileDialogAccept(Widget w, XtPointer client_data, XtPointer call_data)
 {
+#ifdef IGNORE_GTK
      char *res;
      OPFile *opf;
      PBoolean select_another_file = FALSE;
@@ -219,12 +231,14 @@ void opeUnloadFileDialogAccept(Widget w, XtPointer client_data, XtPointer call_d
 	  }
      }
      XtFree(res);
+#endif
 }
 
-Widget opeSelectFileDialog;
+GtkWidget *opeSelectFileDialog;
 
 void opeSelectFileDialogAccept(Widget w, XtPointer client_data, XtPointer call_data)
 {
+#ifdef GTK_IGNORE
      char *res;
      OPFile *opf;
 
@@ -251,9 +265,10 @@ void opeSelectFileDialogAccept(Widget w, XtPointer client_data, XtPointer call_d
 	  }
      }
      XtFree(res);
+#endif
 }
 
-Widget symbolListDialog;
+GtkWidget *symbolListDialog;
 
 PBoolean sort_string(PString a1, PString a2)
 {
@@ -263,6 +278,7 @@ PBoolean sort_string(PString a1, PString a2)
 void symbolListDialogUpdate(Widget w)
 {
      
+#ifdef IGNORE_GTK
      Cardinal n;
      Arg args[MAXARGS];
      XmStringTable item;
@@ -292,7 +308,7 @@ void symbolListDialogUpdate(Widget w)
 
      XmListDeselectAllItems(XmSelectionBoxGetChild(symbolListDialog, XmDIALOG_LIST));
      XmTextSetString(XmSelectionBoxGetChild(symbolListDialog, XmDIALOG_TEXT),"");
-
+#endif
 }
 
 void symbolListDialogManage(Widget w)
@@ -303,6 +319,7 @@ void symbolListDialogManage(Widget w)
 
 void symbolListDialogAdd(Widget w, Draw_Data *dd, XtPointer call_data)
 {
+#ifdef GTK_IGNORE
      PString sres;
      PString *res;
 
@@ -320,10 +337,12 @@ void symbolListDialogAdd(Widget w, Draw_Data *dd, XtPointer call_data)
 	  symbolListDialogUpdate(w);
 	  report_opfile_modification();
      }
+#endif
 }
 
 void symbolListDialogDelete(Widget w, Draw_Data *dd, XtPointer call_data)
 {
+#ifdef GTK_IGNORE
      PString res,elt;
 
      res = XmTextGetString(XmSelectionBoxGetChild(symbolListDialog, XmDIALOG_TEXT));
@@ -333,17 +352,21 @@ void symbolListDialogDelete(Widget w, Draw_Data *dd, XtPointer call_data)
 	  symbolListDialogUpdate(w);
 	  report_opfile_modification();
      }
+#endif
 }
 
 void symbolListDialogDismiss(Widget w, Draw_Data *dd, XtPointer call_data)
 {
+#ifdef GTK_IGNORE
      XtUnmanageChild(w);
+#endif
 }
 
-Widget selectOpDialog;
+GtkWidget *selectOpDialog;
 
 void selectOpDialogAccept(Widget w, Draw_Data *dd, XtPointer call_data)
 {
+#ifdef GTK_IGNORE
      char *res;
      Op_Structure *op;
 
@@ -357,6 +380,7 @@ void selectOpDialogAccept(Widget w, Draw_Data *dd, XtPointer call_data)
 		    break;
 	       }
      XtFree(res);
+#endif
 }
 
 /* Not used anymore 
@@ -367,10 +391,11 @@ void selectOpDialogCancel(Widget w, Draw_Data *dd, XtPointer call_data)
 }
 */
 
-Widget renameOpDialog;
+GtkWidget *renameOpDialog;
 
 void renameOpDialogAccept(Widget w, Draw_Data *dd, XtPointer call_data)
 {
+#ifdef GTK_IGNORE
      char *sname;
      Op_Structure *op;
      String to_free;
@@ -408,12 +433,14 @@ void renameOpDialogAccept(Widget w, Draw_Data *dd, XtPointer call_data)
      report_opfile_modification();
 
      sl_sort_slist_func(current_opfile->list_op,sort_op);
+#endif
 }
 
-Widget duplicateOpDialog;
+GtkWidget *duplicateOpDialog;
 
 void duplicateOpDialogAccept(Widget w, Draw_Data *dd, XtPointer call_data)
 {
+#ifdef GTK_IGNORE
      char *sname;
      Op_Structure *op, *current_op_save = current_op;
      String to_free;
@@ -447,9 +474,10 @@ void duplicateOpDialogAccept(Widget w, Draw_Data *dd, XtPointer call_data)
 	  }
 
      FREE(sname);
+#endif
 }
 
-Widget destroyOpQuestion;
+GtkWidget *destroyOpQuestion;
 
 void destroyOpQuestionAccept(Widget w, Draw_Data *dd, XtPointer call_data)
 {
@@ -461,10 +489,11 @@ void destroyOpQuestionAccept(Widget w, Draw_Data *dd, XtPointer call_data)
 
 }
 
-Widget destroyOpDialog;
+GtkWidget *destroyOpDialog;
 
 void destroyOpDialogAccept(Widget w, Draw_Data *dd, XtPointer call_data)
 {
+#ifdef GTK_IGNORE
      char *res;
      Op_Structure *op;
 
@@ -479,12 +508,14 @@ void destroyOpDialogAccept(Widget w, Draw_Data *dd, XtPointer call_data)
 	       }
      }
      XtFree(res);
+#endif
 }
 
-Widget copyOpDialog;
+GtkWidget *copyOpDialog;
 
 void copyOpDialogAccept(Widget w, Draw_Data *dd, XtPointer call_data)
 {
+#ifdef GTK_IGNORE
      char *sname;
      Op_Structure *op, *current_op_save = current_op;
      OPFile *current_opfile_save = current_opfile;
@@ -513,13 +544,15 @@ void copyOpDialogAccept(Widget w, Draw_Data *dd, XtPointer call_data)
 
      current_op = current_op_save;
      current_opfile = current_opfile_save;
+#endif
 }
 
-Widget pasteOpDialog;
-Widget pasteOpScrollList;
+GtkWidget *pasteOpDialog;
+GtkWidget *pasteOpScrollList;
 
 void pasteOpDialogManage()
 {
+#ifdef GTK_IGNORE
      Arg args[3];
      Op_Structure *op;
      XmStringTable op_xmstring;
@@ -544,10 +577,12 @@ void pasteOpDialogManage()
      XtFree((char *)op_xmstring);
 
      XtManageChild(pasteOpDialog);
+#endif
 }
 
 void pasteOpDialogAccept(Widget w, Draw_Data *dd, XtPointer call_data)
 {
+#ifdef GTK_IGNORE
      Arg args[2];
      char *sname;
      Op_Structure *op, *current_op_save = current_op, *last_pasted_op = NULL;
@@ -595,12 +630,14 @@ void pasteOpDialogAccept(Widget w, Draw_Data *dd, XtPointer call_data)
 	  update_empty_sensitivity(True);
 	  select_op(last_pasted_op, dd);
      }
+#endif
 }
 
-Widget last_selectedOpDialog;
+GtkWidget *last_selectedOpDialog;
 
 void last_selectedOpDialogManage(void)
 {
+#ifdef GTK_IGNORE
      Cardinal n;
      Arg args[MAXARGS];
      XmStringTable item;
@@ -627,10 +664,12 @@ void last_selectedOpDialogManage(void)
      XmListDeselectAllItems(XmSelectionBoxGetChild(last_selectedOpDialog, XmDIALOG_LIST));
      XmTextSetString(XmSelectionBoxGetChild(last_selectedOpDialog, XmDIALOG_TEXT),"");
      XtManageChild(last_selectedOpDialog);
+#endif
 }
 
 void last_selectedOpDialogAccept(Widget w, Draw_Data *dd, XtPointer call_data)
 {
+#ifdef GTK_IGNORE
      OPFullNameStruct *tmp;
      char *res, *file_name = NULL, *op_name = NULL;
      OPFile *opf;
@@ -670,81 +709,66 @@ void last_selectedOpDialogAccept(Widget w, Draw_Data *dd, XtPointer call_data)
 
      }
      XtFree(res);
+#endif
 }
 
 GtkWidget *opeLoadFilesel;
 
-void opeLoadFileSelRun(GtkWidget *dialog)
+void opeLoadFileSelRun(GtkWidget *dialog, Draw_Data *dd)
 {
-  if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
-    {
-      char *filename;
-      filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
-      g_print ("%s\n",  filename);
-      g_free (filename);
+  if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
+    char *filename;
+    
+    char s[LINSIZ];
+    PBoolean res;
+    OPFile *opf;
+    
+    filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+    //    g_print ("%s\n",  filename);
+    sl_loop_through_slist(list_opfiles, opf, OPFile *) {
+      if (strcmp(opf->name, filename) == 0) {
+	if (opf->modified && 
+	    (! AskUser(dd->topLevelWindow, "There is already a file under this name, which has been modified.\nDo you want to load the disk version and discard your modifications?"))) {
+	  break;
+	}
+	destroy_opfile(opf);
+	break;
+      }
     }
+    
+    unselect_current_op(dd, TRUE);
+    
+    UpdateMessageWindow("Loading Op File.");
+    sprintf(s, "compile_ops \"%s\"", filename);
+    res = yyparse_one_command_string(s);
+    
+    UpdateMessageWindow("");
+    current_op = NULL;   
+    
+    if (!res) {
+      report_syntax_error(LG_STR("Invalid Graph, or Invalid OP",
+				 "Invalid Graph, or Invalid OP"));
+      
+    } else {
+      if (sl_slist_empty(current_opfile->list_op)) {
+	update_empty_sensitivity(FALSE);
+      } else {
+	update_empty_sensitivity(TRUE);
+	updateOpList();
+      }
+      // symbolListDialogUpdate(symbolListDialog);
+    }
+    
+    g_free (filename);
+  }
   gtk_widget_hide(dialog);
 }
-  
-#ifdef IGNORE
 
-void opeLoadFileselok(GtkWidget *w,  GtkFileSelection *fs)
-{
-    g_print ("%s\n", gtk_file_selection_get_filename (GTK_FILE_SELECTION (fs)));
-
-  char *selected_file;
-     char s[LINSIZ];
-     PBoolean res;
-     OPFile *opf;
-
-     selected_file = XmTextGetString(XmSelectionBoxGetChild(opeLoadFilesel, XmDIALOG_TEXT));
-     XmListDeselectAllItems(XmSelectionBoxGetChild(opeLoadFilesel, XmDIALOG_LIST));
-
-     sl_loop_through_slist(list_opfiles, opf, OPFile *) {
-	  if (strcmp(opf->name, selected_file) == 0) {
-	       if (opf->modified && 
-		   (! AskUser(w,"There is already a file under this name, which has been modified.\nDo you want to load the disk version and discard your modifications?"))) {
-		    XtUnmanageChild(w);
-		    XtFree(selected_file);
-		    return;
-		    }
-	       destroy_opfile(opf);
-	       break;
-	  }
-     }
-     XtUnmanageChild(w);
-
-     unselect_current_op(dd, TRUE);
-
-     UpdateMessageWindow("Loading Op File.");
-     sprintf(s, "compile_ops \"%s\"", selected_file);
-     res = yyparse_one_command_string(s);
-
-     UpdateMessageWindow("");
-     current_op = NULL;   
-
-     if (!res) {
-	  report_syntax_error(LG_STR("Invalid Graph, or Invalid OP",
-				     "Invalid Graph, or Invalid OP"));
-
-     } else {
-	  if (sl_slist_empty(current_opfile->list_op)) {
-	       update_empty_sensitivity(False);
-	  } else {
-	       update_empty_sensitivity(True);
-	       selectOpDialogManage();
-	  }
-
-	  symbolListDialogUpdate(symbolListDialog);
-     }
-     XtFree(selected_file);
-}
-#endif     
-
-Widget opeAppendFilesel;
+GtkWidget *opeAppendFilesel;
 
 void opeAppendFileselok(Widget w, Draw_Data *dd, XtPointer call_data)
 {
+#ifdef GTK_IGNORE
      char *selected_file;
      char s[LINSIZ];
      PBoolean res;
@@ -786,12 +810,14 @@ void opeAppendFileselok(Widget w, Draw_Data *dd, XtPointer call_data)
      }
      symbolListDialogUpdate(symbolListDialog);
      XtFree(selected_file);
+#endif
 }
 
-Widget opeSaveFilesel;
+GtkWidget *opeSaveFilesel;
 
 void opeSaveFileselok(Widget w, XtPointer client_data, XtPointer call_data)
 {
+#ifdef GTK_IGNORE
      char *selected_file;
 
      selected_file = XmTextGetString(XmSelectionBoxGetChild(opeSaveFilesel, XmDIALOG_TEXT));
@@ -820,12 +846,14 @@ void opeSaveFileselok(Widget w, XtPointer client_data, XtPointer call_data)
 	  current_opfile->filed = TRUE;
      } else
 	  XtFree(selected_file);
+#endif
 }
 
-Widget printSaveFile;
+GtkWidget *printSaveFile;
 
 void printSaveFileok(Widget w,  Draw_Data *dd, XtPointer call_data)
 {
+#ifdef GTK_IGNORE
      char *selected_file;
 
      selected_file = XmTextGetString(XmSelectionBoxGetChild(printSaveFile, XmDIALOG_TEXT));
@@ -851,24 +879,28 @@ void printSaveFileok(Widget w,  Draw_Data *dd, XtPointer call_data)
 					 "Error while writing the file."));
      }
      XtFree(selected_file);
+#endif
 }
 
 
-static Widget dialog = NULL;
+static GtkWidget *dialog = NULL;
 static int locked = 0;
 
 void TimeoutCursorsOK(Widget w, XtPointer client_data, XtPointer call_data)
 {
+#ifdef IGNORE
      XSetWindowAttributes attrs;
 
      XtPopdown(XtParent(dialog));
      locked = 0;
      attrs.cursor = None;
      XChangeWindowAttributes(XtDisplay(topLevel), XtWindow(topLevel), CWCursor, &attrs);
+#endif
 }
 
 void TimeoutCursors(PBoolean on, PString message)
 {
+#ifdef IGNORE
     static Cursor cursor;
     
     XSetWindowAttributes attrs;
@@ -935,12 +967,14 @@ void TimeoutCursors(PBoolean on, PString message)
         }
 	XtPopdown(XtParent(dialog));
    }
+#endif
 }
 
-Widget opeWriteFilesel;
+GtkWidget *opeWriteFilesel;
 
 void opeWriteFileselok(Widget w, XtPointer client_data, XtPointer call_data)
 {
+#ifdef GTK_IGNORE
      char *selected_file;
      OPFile *opf;
 
@@ -983,12 +1017,14 @@ void opeWriteFileselok(Widget w, XtPointer client_data, XtPointer call_data)
 	  XtFree(selected_file);
      }
 
+#endif
 }
 
-Widget opeWriteTexFilesel;
+GtkWidget *opeWriteTexFilesel;
 
 void opeWriteTexFileselok(Widget w, XtPointer client_data, XtPointer call_data)
 {
+#ifdef GTK_IGNORE
      char *selected_file;
 
      selected_file = XmTextGetString(XmSelectionBoxGetChild(opeWriteTexFilesel, XmDIALOG_TEXT));
@@ -1013,6 +1049,7 @@ void opeWriteTexFileselok(Widget w, XtPointer client_data, XtPointer call_data)
 					"Error while writing the file."));
      }
      XtFree(selected_file);
+#endif
 }
 
 /*
@@ -1157,6 +1194,7 @@ void ope_create_filesel(GtkWidget *parent, Draw_Data *dd)
 
 void drawingSizeDialogAccept(Widget w, Draw_Data *dd, XtPointer call_data)
 {
+#ifdef GTK_IGNORE
      char s[LINSIZ];
      int xnewsize, ynewsize;
      String to_free;
@@ -1176,10 +1214,12 @@ void drawingSizeDialogAccept(Widget w, Draw_Data *dd, XtPointer call_data)
      }
 
      return;
+#endif
 }
 
 void ope_create_dialogs(Widget parent, Draw_Data *dd)
 {
+#ifdef GTK_IGNORE
      Cardinal n;
      Arg args[MAXARGS];
 
@@ -1220,12 +1260,13 @@ void ope_create_dialogs(Widget parent, Draw_Data *dd)
      pasteOpScrollList = XmCreateScrolledList(pasteOpDialog,"pasteOpScrollList",args,n);
      XtManageChild(pasteOpScrollList);
 
+#endif
 }
 
 #define YES 1
 #define NO  2
 
-extern XtAppContext app_context;
+//extern XtAppContext app_context;
 
 void response_yes(Widget w, int *answer, XtPointer call_data)
 {
@@ -1237,50 +1278,37 @@ void response_no(Widget w, int *answer, XtPointer call_data)
      *answer = NO;
 }
 
-PBoolean AskUser(Widget parent, char *question)
+PBoolean AskUser(GtkWidget *parent,  char *question)
 {
-    static Widget dialog;
-    XmString text, yes, no;
-    static int answer = 0;
+  GtkWidget *dialog;
+  PBoolean response;
 
-    if (!dialog) {
-        dialog = XmCreateQuestionDialog(parent, "dialog", NULL, 0);
-        yes = XmStringCreateSimple("Yes");
-        no = XmStringCreateSimple("No");
-        XtVaSetValues(dialog,
-            XmNdialogStyle,        XmDIALOG_SYSTEM_MODAL,
-            XmNokLabelString,      yes,
-            XmNcancelLabelString,  no,
-            NULL);
+  dialog = gtk_message_dialog_new(GTK_WINDOW(parent),
+				  GTK_DIALOG_DESTROY_WITH_PARENT,
+				  GTK_MESSAGE_QUESTION,
+				  GTK_BUTTONS_YES_NO,
+				  "%s",question);
+  
+  gtk_window_set_title(GTK_WINDOW(dialog), "Question");
 
-	XtUnmanageChild(XmMessageBoxGetChild(dialog, XmDIALOG_HELP_BUTTON));
-
-        XtAddCallback(dialog, XmNokCallback, (XtCallbackProc)response_yes, &answer);
-        XtAddCallback(dialog, XmNcancelCallback, (XtCallbackProc)response_no, &answer);
+  gint result = gtk_dialog_run (GTK_DIALOG (dialog));
+  switch (result)
+    {
+    case GTK_RESPONSE_YES:
+      response = TRUE;
+      break;
+    default:
+      response = FALSE;
+      break;
     }
-    text = XmStringCreateLtoR(question, XmSTRING_DEFAULT_CHARSET);
-    XtVaSetValues(dialog,
-        XmNmessageString,      text,
-        NULL);
-    XmStringFree(text);
-    XtManageChild(dialog);
-    answer = 0;
-    XtPopup(XtParent(dialog), XtGrabNone);
+  gtk_widget_destroy (dialog);
 
-    /* while the user hasn't provided an answer, simulate XtMainLoop.
-     * The answer changes as soon as the user selects one of the
-     * buttons and the callback routine changes its value.  Don't
-     * break loop until XtPending() also returns False to assure
-     * widget destruction.
-     */
-    while (answer == 0 || XtAppPending(app_context))
-        XtAppProcessEvent(app_context, XtIMAll);
-
-    return (answer == YES);
+  return response;
 }
 
 PBoolean AskUserHelp(Widget parent, char *question, FileNode *helpnode)
 {
+#ifdef GTK_IGNORE
     static Widget dialog;
     XmString text, yes, no;
     static int answer = 0;
@@ -1324,4 +1352,5 @@ PBoolean AskUserHelp(Widget parent, char *question, FileNode *helpnode)
         XtAppProcessEvent(app_context, XtIMAll);
 
     return (answer == YES);
+#endif
 }

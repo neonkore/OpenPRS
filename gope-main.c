@@ -40,12 +40,15 @@
 
 #include <gtk/gtk.h>
 
+#include <X11/Intrinsic.h>
+#include <Xm/Xm.h>
+
 #include "constant.h"
 #include "macro.h"
 #include "oprs-type.h"
+#include "op-structure.h"
 
 #include "gope-graphic.h"
-#include "op-structure.h"
 #include "gope-global.h"
 #include "gope-main_f.h"
 #include "gope-menu_f.h"
@@ -53,7 +56,7 @@
 #include "ope-edit_f.h"
 #include "ope-bboard_f.h"
 #include "gope-filesel_f.h"
-#include "ope-op-opf_f.h"
+#include "gope-op-opf_f.h"
 #include "op-structure_f.h"
 #include "parser-funct.h"
 #include "ope-print_f.h"
@@ -97,6 +100,7 @@ OPFile *buffer_opfile;
 
 PBoolean flushing_xt_events;
 PBoolean no_window = FALSE;
+int gtk = 1;
 
 char *mp_hostname;
 int mp_port;
@@ -537,6 +541,10 @@ static XtResource resources[] = {
 
 
 Draw_Data *global_draw_data;
+Draw_Data dd;
+CairoGCs mainCGCs;		/* this will be the one for the main */
+CairoGCs *mainCGCsp;		/* this will be the one for the main */
+
 
 /* this is to allow our parsing of these options. */
 static XrmOptionDescRec options[] = {
@@ -561,7 +569,6 @@ NULL
 };
 
 XtAppContext app_context;
-Widget topLevel;
 
 extern PBoolean use_dialog_error;
 
@@ -593,14 +600,27 @@ on_expose_event(GtkWidget *widget,
     GdkEventExpose *event,
     gpointer data)
 {
-  //cairo_t *cr = global_draw_data->gc;
+  CairoGCs CGCs;
 
-  cairo_t *cr;
+  create_cgcs(&CGCs, global_draw_data->window);
+  
 
-  cr = gdk_cairo_create(GTK_LAYOUT(widget)->bin_window);
+  cairo_t *cr = CGCs.cr_basic;
 
-  cairo_set_source_rgb(cr, 0, 0, 0);
-  cairo_set_line_width (cr, 0.5);
+  cairo_move_to(cr, 20, 30);
+  cairo_show_text(cr, "Most relationships seem so transitory");  
+  cairo_move_to(cr, 20, 60);
+  cairo_show_text(cr, "They're all good but not the permanent one");
+
+  cairo_move_to(cr, 20, 120);
+  cairo_show_text(cr, "Who doesn't long for someone to hold");
+
+  cairo_move_to(cr, 20, 150);
+  cairo_show_text(cr, "Who knows how to love you without being told");
+  cairo_move_to(cr, 20, 180);
+  cairo_show_text(cr, "Somebody tell me why I'm on my own");
+  cairo_move_to(cr, 20, 210);
+  cairo_show_text(cr, "If there's a soulmate for everyone");
 
   int i, j;
   for ( i = 0; i <= count - 1; i++ ) {
@@ -612,7 +632,8 @@ on_expose_event(GtkWidget *widget,
 
   // count = 0;
   cairo_stroke(cr);
-  cairo_destroy(cr);
+
+  destroy_cgcs(&CGCs);
 
   return FALSE;
 }
@@ -632,11 +653,16 @@ gboolean clicked(GtkWidget *widget, GdkEventButton *event,
     return TRUE;
 }
 
+GtkWidget *opList;
+GtkWidget *topLevel;
 
 int main(int argc, char **argv, char **envp)
 {
   GtkWidget *topLevelWindow;
   GtkWidget *vbox;
+  GtkWidget *hbox;
+  GtkWidget *sw;
+  GtkWidget *label;
 
   GtkWidget *menubar;
   GtkWidget *toolbar;
@@ -645,10 +671,11 @@ int main(int argc, char **argv, char **envp)
   GtkWidget *file;
   GtkWidget *quit;
 
+  GtkTreeSelection *selection; 
+
   char title[LINSIZ];
 
   OG *init_og;
-  Draw_Data dd;
   Pixmap icon_pixmap;
   char *language_str;
   
@@ -722,6 +749,7 @@ int main(int argc, char **argv, char **envp)
   gtk_init(&argc, &argv);
 
   topLevelWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+  dd.topLevelWindow = topLevelWindow;
   gtk_window_set_title(GTK_WINDOW(topLevelWindow), title);
   gtk_window_set_default_size(GTK_WINDOW(topLevelWindow), 1400, 800);
   gtk_window_set_position(GTK_WINDOW(topLevelWindow), GTK_WIN_POS_CENTER);
@@ -730,30 +758,46 @@ int main(int argc, char **argv, char **envp)
       G_CALLBACK(quitQuestionManage), topLevelWindow);
 
 
-  vbox = gtk_vbox_new(FALSE, 0);
-  gtk_container_add(GTK_CONTAINER(topLevelWindow), vbox);
+  vbox = gtk_vbox_new(FALSE, 0); /* The main vbox */
+  gtk_container_add(GTK_CONTAINER(topLevelWindow), vbox); /* in the topLevelWindow */
   
   menubar = create_menu_bar(topLevelWindow, &dd);
-  gtk_box_pack_start(GTK_BOX(vbox), menubar, FALSE, FALSE, 1);
+  gtk_box_pack_start(GTK_BOX(vbox), menubar, FALSE, FALSE, 1); /* add a menubar to the main vbox */
 
   toolbar = create_tool_bar(topLevelWindow, &dd);
-  gtk_box_pack_start(GTK_BOX(vbox), toolbar, FALSE, FALSE, 1);
+  gtk_box_pack_start(GTK_BOX(vbox), toolbar, FALSE, FALSE, 1); /* add a toolbar just bellow the menubar */
 
-  opeDrawWin = gtk_scrolled_window_new(NULL, NULL);
-  gtk_box_pack_start(GTK_BOX(vbox), opeDrawWin, TRUE, TRUE, 1);
-  
+  hbox = gtk_hbox_new(FALSE, 0);
+  gtk_container_add(GTK_CONTAINER(vbox), hbox); /* create a hbox below the toolbar */
 
-     /* dd.canvas = XmCreateDrawingArea(opeDrawWin, "opeCanvas", NULL, 0); */
-     /* XtManageChild(dd.canvas); */
+  opeDrawWin = gtk_scrolled_window_new(NULL, NULL); /* create a large scrolled window in this hbox */
+  gtk_box_pack_start(GTK_BOX(hbox), opeDrawWin, TRUE, TRUE, 1);
 
-     /* XtSetArg(args[0], XmNheight, &dd.canvas_height); */
-     /* XtSetArg(args[1], XmNwidth, &dd.canvas_width); */
-     /* XtGetValues(dd.canvas, args, 2); */
+  vbox = gtk_vbox_new(FALSE, 0); /* pack anothe vbox on the right */
+  gtk_box_pack_end(GTK_BOX(hbox), vbox, FALSE, FALSE, 1);
+
+  label = gtk_label_new("This is a title may beit will give the size");	/* put a title on this vbox */
+  gtk_label_set_justify(GTK_LABEL(label), GTK_JUSTIFY_CENTER);
+  gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, FALSE, 5);
+
+  sw = gtk_scrolled_window_new(NULL, NULL); /* crea */
+  gtk_box_pack_end(GTK_BOX(vbox), sw, TRUE, TRUE, 1);
+
+  opList = gtk_tree_view_new();
+  gtk_widget_set_size_request(opList, 200, -1);
+  gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(opList), FALSE);
+
+  gtk_container_add(GTK_CONTAINER(sw), opList);
+
+
+  selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(opList));
+
+  g_signal_connect(selection, "changed", 
+      G_CALLBACK(on_changed_oplist), label);
 
 
   dd.canvas = gtk_layout_new(NULL,NULL);
   gtk_widget_set_app_paintable(dd.canvas, TRUE);
-
   gtk_container_add(GTK_CONTAINER(opeDrawWin),dd.canvas);
 
   gtk_layout_get_size(GTK_LAYOUT(dd.canvas),&dd.canvas_width, &dd.canvas_height);
@@ -770,14 +814,17 @@ int main(int argc, char **argv, char **envp)
 
   dd.window = GTK_LAYOUT(dd.canvas)->bin_window;
 
-  //  create_gc(&dd);
- 
+  mainCGCsp = &mainCGCs;
+  
+  create_cgcs(&mainCGCs, dd.window); /* this will create all the cairo context for the main loop... */
+   
   gtk_widget_add_events (dd.canvas, GDK_BUTTON_PRESS_MASK);
 
   g_signal_connect(dd.canvas, "expose-event",
 		   G_CALLBACK(on_expose_event), NULL);
   g_signal_connect(dd.canvas, "button-press-event", 
 		   G_CALLBACK(clicked), NULL);
+
 
   gtk_main();
 
@@ -1131,6 +1178,7 @@ void ClearMessageWindow()
 
 void UpdateMessageWindow(char *string)
 {
+#ifdef IGNORE
      Arg args[1];
      XmString xmres;
      XmString x1,x2;
@@ -1143,20 +1191,24 @@ void UpdateMessageWindow(char *string)
      XtSetArg(args[0], XmNlabelString, xmres);
      XtSetValues(messageWindow, args, 1);
      XmStringFree(xmres);
+#endif
 }
 
 void ClearTitleWindow()
 {
+#ifdef IGNORE
      XmString to_free;
      Arg args[1];
 
      XtSetArg(args[0], XmNlabelString, to_free = XmStringCreate("", XmSTRING_DEFAULT_CHARSET));
      XtSetValues(titleWindow, args, 1);
      XmStringFree(to_free);
+#endif
 }
 
 void UpdateTitleWindow()
 {
+#ifdef IGNORE
      char title[LINSIZ];
      Arg args[1];
      XmString xmres;
@@ -1187,7 +1239,7 @@ void UpdateTitleWindow()
      XtSetArg(args[0], XmNlabelString, xmres);
      XtSetValues(titleWindow, args, 1);
      XmStringFree(xmres);
-
+#endif
 }
 
 #ifdef DLSYMOPENCLOSE_UNDEFINED

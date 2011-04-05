@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * oprs-dump.c -- 
  * 
- * Copyright (c) 1991-2010 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -49,18 +49,24 @@ static const char* const rcsid = "$Id$";
 #include <slistPack.h>
 
 #include "string.h"
-
+#include "macro.h"
+#include "constant.h"
+#include "oprs-type.h"
 
 #ifndef NO_GRAPHIX
+#ifdef GTK
+#include <gtk/gtk.h>
+#include "gope-graphic.h"
+#else
+#include <X11/Intrinsic.h>
+#include <Xm/Xm.h>
 #include "ope-graphic.h"
+#endif
 #include "xoprs-intention.h"
 #include "xt-util_f.h"
 #endif
 
-#include "macro.h"
-#include "constant.h"
 #include "oprs.h"
-#include "oprs-type.h"
 #include "oprs-pred-func.h"
 #include "database.h"
 #include "relevant-op.h"

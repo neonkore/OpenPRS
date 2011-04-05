@@ -1,6 +1,6 @@
-/*                               -*- Mode: C -*-
- * ope-filesel_f.h --
- *
+/*                               -*- Mode: C -*- 
+ * xt-util_f.h -- 
+ * 
  * $Id$
  *
  * Copyright (c) 1991-2011 Francois Felix Ingrand.
@@ -32,10 +32,4 @@
  *
  */
 
-void ope_create_warning(GtkWidget parent);
-void ope_create_filesel(GtkWidget *parent, Draw_Data *dd);
-PBoolean check_duplicated_names(Draw_Data *dd);
-
-PBoolean AskUser(GtkWidget *parent, char *question);
-PBoolean check_exist_access(char *selected_file);
-PBoolean check_write_access(char *selected_file);
+void process_xt_events(void);

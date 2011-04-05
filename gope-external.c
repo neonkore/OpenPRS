@@ -1,9 +1,7 @@
-static const char* const rcsid = "$Id$";
-
 /*                               -*- Mode: C -*-
  * ope-external.c --
  *
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 2011 LAAS/CNRS
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,44 +30,50 @@ static const char* const rcsid = "$Id$";
  *
  */
 
+
 #include "config.h"
 
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
 
-#include <X11/Intrinsic.h>
-#include <Xm/Xm.h>
+#include <gtk/gtk.h>
+#define GTK
 
+#include "xm2gtk.h"
 #include "macro.h"
-
+#include "constant.h"
 #include "oprs-type.h"
-#include "ope-graphic.h"
-#include "ope-global.h"
+#include "op-structure.h"
+
+#include "gope-graphic.h"
+#include "gope-global.h"
 #include "oprs-print.h"
 #include "oprs-print_f.h"
 #include "oprs-pprint_f.h"
-#include "ope-graphic_f.h"
-#include "ope-external_f.h"
+#include "gope-graphic_f.h"
+#include "gope-external_f.h"
 #include "oprs-type_f.h"
+#include "xm2gtk_f.h"
 
 ListLines pretty_print_body(int width, Body *bd);
 
 void clear_op_graphic(Draw_Data *dd)
 {
-     if (!dd->just_compiling)
-	  XClearWindow(XtDisplay(dd->canvas), dd->window);
-     dd->op = NULL;
+  if (!dd->just_compiling)
+    XClearWindow(XtDisplay(dd->canvas), dd->window);
+  dd->op = NULL;
 }
 
 void clear_specified_op_graphic(Draw_Data *dd, Op_Structure *op)
 {
-     if (dd->op == op) {
-	  XClearWindow(XtDisplay(dd->canvas), dd->window);
-	  dd->op = NULL;
-     }
+  if (dd->op == op) {
+    XClearWindow(XtDisplay(dd->canvas), dd->window);
+    dd->op = NULL;
+  }
 }
 
+#ifndef GTK
 int xmstrcmp(XmString xs1, XmString xs2)
 {
      char s1[LINSIZ];
@@ -86,125 +90,131 @@ int xmstrcmp(XmString xs1, XmString xs2)
      else
 	  return 0;
 }
+#endif
 
-XmString xs_str_array_to_xmstr_cs(char *string_array[], int n, char *cs)
+XmString xs_str_array_to_xmstr_cs(char *string_array[], int n)
 {
-     XmString xmstr;
-     int i;
+  XmString xmstr;
+  int i;
 
-     /*
-      * If the array is empty just return an empty string.
-      */
-     if (cs == NULL)
-	  cs = XmSTRING_DEFAULT_CHARSET;
-     if (n <= 0)
-	  return (XmStringCreate("", cs));
+  /*
+   * If the array is empty just return an empty string.
+   */
+  if (n <= 0)
+    return (XmStringCreate(""));
 
-     xmstr = (XmString) NULL;
+  xmstr = (XmString) NULL;
 
-     for (i = 0; i < n; i++) {
-	  XmString x1,x2;
-	  if (i > 0) {
-	       xmstr = XmStringConcat(x1 = xmstr, x2 = XmStringSeparatorCreate());
-	       XmStringFree(x1);
-	       XmStringFree(x2);
-	  }
-	  xmstr = XmStringConcat(x1 = xmstr, x2 = XmStringCreate(string_array[i], cs));
-	  if (x1) XmStringFree(x1);
-	  XmStringFree(x2);
-     }
-     return (xmstr);
+  for (i = 0; i < n; i++) {
+    XmString x1,x2;
+    if (i > 0) {
+      xmstr = XmStringConcat(x1 = xmstr, x2 = XmStringSeparatorCreate());
+      XmStringFree(x1);
+      XmStringFree(x2);
+    }
+    xmstr = XmStringConcat(x1 = xmstr, x2 = XmStringCreate(string_array[i]));
+    if (x1) XmStringFree(x1);
+    XmStringFree(x2);
+  }
+  return (xmstr);
 }
 
-XmString ope_string_to_xmstring(XmFontList fl, char *string, char *cs, Text_Type tt, Dimension * w, Dimension * h)
+XmString ope_string_to_xmstring(cairo_t *cr, char *string, Text_Type tt, Dimension * w, Dimension * h)
 {
-     char **s;
-     char *search, *string_array, *tmp, *title;
-     int i = 0;
-     XmString res, res2;
-     XmString x1,x2;
-     Dimension w2, h2;
+  char **s;
+  char *search, *string_array, *tmp, *title;
+  int i = 0;
+  XmString res, res2;
+  XmString x1,x2;
+  Dimension w2, h2;
 
-     if (tt == TT_TEXT_NONE) {
-	  res = NULL;
-	  *w = *h = 0;
-     } else {  
-	  switch (tt) {
-	  case TT_INVOCATION:
-	       title = "INVOCATION:";
-	       break;
-	  case TT_CONTEXT:
-	       title = "CONTEXT:";
-	       break;
-	  case TT_CALL:
-	       title = "CALL:";
-	       break;
-	  case TT_SETTING:
-	       title = "SETTING:";
-	       break;
-	  case TT_PROPERTIES:
-	       title = "PROPERTIES:";
-	       break;
-	  case TT_DOCUMENTATION:
-	       title = "DOCUMENTATION:";
-	       break;
-	  case TT_EFFECTS:
-	       title = "EFFECTS:";
-	       break;
-	  case TT_ACTION:
-	       title = "ACTION:";
-	       break;
- 	  case TT_BODY:
-	       title = "BODY:";
-	       break;
-	  default:
-       	       title = "ERROR:"; /* To avoid gcc warnings */
-	       fprintf(stderr, LG_STR("ope_string_to_xmstring: unknown text_type string...\n",
-				      "ope_string_to_xmstring: unknown text_type string...\n"));
-	       break;
-	  }
-	  x1 = XmStringCreate(title, "text_title_cs");
-	  res = XmStringConcat(x1 , x2 = XmStringSeparatorCreate());
-	  XmStringFree(x1);
-	  XmStringFree(x2);
-	  XmStringExtent(fl, res, w, h);
-     }
+  if (tt == TT_TEXT_NONE) {
+    res = NULL;
+    *w = *h = 0;
+  } else {  
+    switch (tt) {
+    case TT_INVOCATION:
+      title = "INVOCATION:";
+      break;
+    case TT_CONTEXT:
+      title = "CONTEXT:";
+      break;
+    case TT_CALL:
+      title = "CALL:";
+      break;
+    case TT_SETTING:
+      title = "SETTING:";
+      break;
+    case TT_PROPERTIES:
+      title = "PROPERTIES:";
+      break;
+    case TT_DOCUMENTATION:
+      title = "DOCUMENTATION:";
+      break;
+    case TT_EFFECTS:
+      title = "EFFECTS:";
+      break;
+    case TT_ACTION:
+      title = "ACTION:";
+      break;
+    case TT_BODY:
+      title = "BODY:";
+      break;
+    default:
+      title = "ERROR:"; /* To avoid gcc warnings */
+      fprintf(stderr, LG_STR("ope_string_to_xmstring: unknown text_type string...\n",
+			     "ope_string_to_xmstring: unknown text_type string...\n"));
+      break;
+    }
+    x1 = XmStringCreate(title);
+    res = XmStringConcat(x1 , x2 = XmStringSeparatorCreate());
+    XmStringFree(x1);
+    XmStringFree(x2);
+    cairo_text_extents_t extents;
+ 
+    cairo_text_extents(cr, res, &extents);
+    *w = extents.width;
+    *h = extents.height;
+  }
 
-     NEWSTR(string, string_array);
-     tmp = string_array;
+  NEWSTR(string, string_array);
+  tmp = string_array;
 
-     i = 1;
-     while ((search = strchr(string_array, '\n')) != NULL) {
-	  string_array = search + 1;
-	  i++;
-     }
-     s = (char **) MALLOC( i * sizeof(char *));
+  i = 1;
+  while ((search = strchr(string_array, '\n')) != NULL) {
+    string_array = search + 1;
+    i++;
+  }
+  s = (char **) MALLOC( i * sizeof(char *));
 
-     i = 0;
-     string_array = tmp;
-     s[i++] = string_array;
-     while ((search = strchr(string_array, '\n')) != NULL) {
-	  *search = '\0';
-	  s[i++] = string_array = search + 1;
-     }
+  i = 0;
+  string_array = tmp;
+  s[i++] = string_array;
+  while ((search = strchr(string_array, '\n')) != NULL) {
+    *search = '\0';
+    s[i++] = string_array = search + 1;
+  }
+  cairo_text_extents_t extents;
+ 
+  res2 = xs_str_array_to_xmstr_cs(s, i);
+  cairo_text_extents(cr, res2, &extents);
+  w2 = extents.width;
+  h2 = extents.height;
+  FREE(tmp);
+  FREE(s);
 
-     res2 = xs_str_array_to_xmstr_cs(s, i, cs);
-     XmStringExtent(fl, res2, &w2, &h2);
-     FREE(tmp);
-     FREE(s);
-
-     *w = MAX(*w, w2);
-     *h = *h + h2;
-     if (res) {
-	  res2 = XmStringConcat(x1 = res, x2 = res2);
-	  XmStringFree(x1);
-	  XmStringFree(x2);
-     }
-     return res2;
+  *w = MAX(*w, w2);
+  *h = *h + h2;
+  if (res) {
+    res2 = XmStringConcat(x1 = res, x2 = res2);
+    XmStringFree(x1);
+    XmStringFree(x2);
+  }
+  return res2;
 }
 
 
-Gtext_String *create_gt_str(char *s, char *cs, Dimension h, Dimension w )
+Gtext_String *create_gt_str(char *s, Dimension h, Dimension w )
 {
      int i = 0;
      char *tmp = s;
@@ -214,54 +224,57 @@ Gtext_String *create_gt_str(char *s, char *cs, Dimension h, Dimension w )
 	  tmp++;
 	  i ++;
      }
-     gt_str->xmstring = XmStringCreate(tmp, cs);
+     gt_str->xmstring = XmStringCreate(tmp);
      gt_str->off_x = w * i;
      gt_str->off_y = h;
 
      return gt_str;
 }
  
-List_Gtext_String xs_str_array_to_lgt_str_cs(char *string_array[], int n, XmFontList fl, char *cs,
+List_Gtext_String xs_str_array_to_lgt_str_cs(char *string_array[], int n, cairo_t *cr,
 					     Dimension *tw, Dimension *th)
 {
-     List_Gtext_String lgt_str = sl_make_slist();
-     Dimension height, width, h = *th;
-     XmString xmstr;
-     int i;
+  List_Gtext_String lgt_str = sl_make_slist();
+  Dimension height, width, h = *th;
+  XmString xmstr;
+  int i;
 
-     Gtext_String *gt_str;
+  Gtext_String *gt_str;
+  cairo_text_extents_t extents;
+  //cairo_t *cr;
 
-     if (cs == NULL)
-	  cs = XmSTRING_DEFAULT_CHARSET;
-
-     /* size of indent for this charset */
-     
-     xmstr = XmStringCreate(" ", cs);
-     height = XmStringHeight(fl, xmstr);
-     width = XmStringWidth(fl, xmstr);
-     XmStringFree(xmstr);
+  //  cr = mainCGCsp->cr_title;
+  cairo_text_extents(cr, " ", &extents);
+  height = extents.height;
+  width = extents.height;
 	
-     /*
-      * If the array is empty just return an empty string.
-      */
-     if (n <= 0) {
-	  sl_add_to_tail(lgt_str, create_gt_str("",  cs, 0, width));
-	  return lgt_str;
-     }
+  /*
+   * If the array is empty just return an empty string.
+   */
+  if (n <= 0) {
+    sl_add_to_tail(lgt_str, create_gt_str("", 0, width));
+    return lgt_str;
+  }
 	  
-     for (i = 0; i < n; i++) {
-	  gt_str = create_gt_str(string_array[i], cs, h, width);
-	  sl_add_to_tail(lgt_str, gt_str);
-	  h += height;
+  for (i = 0; i < n; i++) {
+    gint sw;
+    cairo_text_extents_t extents;
 
-	  *tw = MAX(*tw, (XmStringWidth(fl, gt_str->xmstring) +  (Dimension)gt_str->off_x));
-     }
-     *th = h;
+    gt_str = create_gt_str(string_array[i], h, width);
+    sl_add_to_tail(lgt_str, gt_str);
+    h += height;
+ 
+    cairo_text_extents(cr, gt_str->xmstring, &extents);
+    sw = extents.width;
 
-     return (lgt_str);
+    *tw = MAX(*tw, ( sw +  (Dimension)gt_str->off_x));
+  }
+  *th = h;
+
+  return (lgt_str);
 }
 
-List_Gtext_String ope_string_to_lgt_string(XmFontList fl, char *string, char *cs, 
+List_Gtext_String ope_string_to_lgt_string(cairo_t *cr, char *string, 
 					  Text_Type tt, Dimension * w, Dimension * h)
 {
      char **s;
@@ -310,8 +323,12 @@ List_Gtext_String ope_string_to_lgt_string(XmFontList fl, char *string, char *cs
 				      "ope_string_to_lgt_string: unknown text_type string...\n"));
 	       break;
 	  }
-	  xms_title = XmStringCreate(title, "text_title_cs");
- 	  XmStringExtent(fl, xms_title, w, h);
+	  xms_title = XmStringCreate(title);
+	  cairo_text_extents_t extents;
+	  
+	  cairo_text_extents(cr, xms_title, &extents);
+	  *w = extents.width;
+	  *h = extents.height;
 
 	  gt_str_title =  MAKE_OBJECT(Gtext_String);
 	  gt_str_title->xmstring = xms_title;
@@ -337,7 +354,7 @@ List_Gtext_String ope_string_to_lgt_string(XmFontList fl, char *string, char *cs
 	  s[i++] = string_array = search + 1;
      }
 
-     res = xs_str_array_to_lgt_str_cs(s, i, fl, cs, w, h);
+     res = xs_str_array_to_lgt_str_cs(s, i, cr, w, h);
 
      FREE(tmp);
      FREE(s);
@@ -388,7 +405,7 @@ OG *make_op_title(Draw_Data *dd, char *name)
      text->visible = TRUE;
      text->text_type = TT_TEXT_NONE;
      text->list_og_inst = NULL;
-     text->lgt_string = ope_string_to_lgt_string(dd->fontlist, text->string, "title_cs", 
+     text->lgt_string = ope_string_to_lgt_string(mainCGCsp->cr_title, text->string,
 						 TT_TEXT_NONE, &og->width, &og->height);
      rect.x = og->x = OP_TITLE_X;
      rect.y = og->y = OP_TITLE_Y;
@@ -590,34 +607,34 @@ void position_edge(OG *og_edge)
 
 void update_canvas_size(Draw_Data *dd, int x, int y)
 {
-     Arg args[1];
+  //     Arg args[1];
 
      if ((int)dd->work_height < y + 20) {
 	  dd->work_height = y + 20;
-	  XtSetArg(args[0], XmNmaximum, dd->work_height);
-	  XtSetValues(dd->vscrollbar, args, 1);
+	  // XtSetArg(args[0], XmNmaximum, dd->work_height);
+	  //XtSetValues(dd->vscrollbar, args, 1);
 
      }
      if ((int)dd->work_width < x + 20) {
 	  dd->work_width = x + 20;
-	  XtSetArg(args[0], XmNmaximum, dd->work_width);
-	  XtSetValues(dd->hscrollbar, args, 1);
+	  //XtSetArg(args[0], XmNmaximum, dd->work_width);
+	  //XtSetValues(dd->hscrollbar, args, 1);
      }
 }
 
 void change_canvas_size(Draw_Data *dd, int x, int y)
 {
-     Arg args[2];
+  // Arg args[2];
 
      dd->work_height = y;
-     XtSetArg(args[0], XmNmaximum, dd->work_height);
-     XtSetArg(args[1], XmNsliderSize, MIN(dd->canvas_height, dd->work_height));
-     XtSetValues(dd->vscrollbar, args, 2);
+     /* XtSetArg(args[0], XmNmaximum, dd->work_height); */
+     /* XtSetArg(args[1], XmNsliderSize, MIN(dd->canvas_height, dd->work_height)); */
+     /* XtSetValues(dd->vscrollbar, args, 2); */
 
      dd->work_width = x;
-     XtSetArg(args[0], XmNmaximum, dd->work_width);
-     XtSetArg(args[1], XmNsliderSize, MIN(dd->canvas_width, dd->work_width));
-     XtSetValues(dd->hscrollbar, args, 2);
+     /* XtSetArg(args[0], XmNmaximum, dd->work_width); */
+     /* XtSetArg(args[1], XmNsliderSize, MIN(dd->canvas_width, dd->work_width)); */
+     /* XtSetValues(dd->hscrollbar, args, 2); */
 }
 
 
@@ -721,7 +738,7 @@ void build_edge_graphic(Edge *edge, Expression *expr, Draw_Data *dd)
      gedge_text->text_width = width;
      gedge_text->fill_lines = fill_lines;
      gedge_text->edge = og_edge;
-     gedge_text->lgt_log_string = ope_string_to_lgt_string(global_draw_data->fontlist,text_string,"edge_cs",TT_TEXT_NONE,
+     gedge_text->lgt_log_string = ope_string_to_lgt_string(mainCGCsp->cr_edge, text_string,TT_TEXT_NONE,
 						       &og_edge_text->width,&og_edge_text->height);
      position_edge(og_edge);
 
@@ -813,7 +830,7 @@ OG *make_og_text_field(Draw_Data *dd, Op_Structure *op, Field_Type ft, Text_Type
      text->text_type = tt;
      text->list_og_inst = NULL;
 
-     text->lgt_string = ope_string_to_lgt_string(dd->fontlist,text_string,"text_cs",tt,
+     text->lgt_string = ope_string_to_lgt_string(mainCGCsp->cr_text,text_string,tt,
 						 &og->width,&og->height);
 
      rect.x = og->x =  MAX(0,x);
@@ -839,7 +856,7 @@ OG *make_og_text_field(Draw_Data *dd, Op_Structure *op, Field_Type ft, Text_Type
 
 void update_list_og_inst(Draw_Data *dd, Op_Structure *op, OG *og_body)
 {
-     XmFontList fl = dd->fontlist;
+  XmFontList fl;// = dd->fontlist;
      char *cs = "text_cs";
      Dimension height, width;
      XRectangle rect; 
@@ -860,7 +877,7 @@ void update_list_og_inst(Draw_Data *dd, Op_Structure *op, OG *og_body)
      y0 += gt_str->off_y; 
 
      /* size of indent for this charset */
-     xmstr = XmStringCreate(" ", cs);
+     xmstr = XmStringCreate(" ");
      height = XmStringHeight(fl, xmstr);
      width = XmStringWidth(fl, xmstr);
      XmStringFree(xmstr);
@@ -1000,7 +1017,7 @@ OG *make_og_edge(Draw_Data *dd, Op_Structure *op,  Edge *edge, Node *in, Node *o
      gedge_text->text_width = width;
      gedge_text->fill_lines = pp_fill;
      gedge_text->edge = og_edge;
-     gedge_text->lgt_log_string = ope_string_to_lgt_string(dd->fontlist,text_string,"edge_cs",TT_TEXT_NONE,
+     gedge_text->lgt_log_string = ope_string_to_lgt_string(mainCGCsp->cr_edge,text_string,TT_TEXT_NONE,
 						       &og_edge_text->width,&og_edge_text->height);
      position_edge(og_edge);
 
@@ -1028,10 +1045,10 @@ OG *make_cp_graphic(PString name, Node *node)
 
      stripped_name = remove_vert_bar(name);
 
-     gnode->xmstring = XmStringCreate(stripped_name, "node_cs"); /*  XmSTRING_DEFAULT_CHARSET */
+     gnode->xmstring = XmStringCreate(stripped_name); /*  XmSTRING_DEFAULT_CHARSET */
      FREE(stripped_name);
 
-     XmStringExtent(global_draw_data->fontlist,gnode->xmstring,&gnode->swidth, &gnode->sheight);
+     XmStringExtent(NULL,gnode->xmstring,&gnode->swidth, &gnode->sheight);
      gnode->swidth += 2;
      gnode->sheight += 2;
      og->width = gnode->swidth + 5;

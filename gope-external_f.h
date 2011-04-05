@@ -1,5 +1,5 @@
 /*                               -*- Mode: C -*-
- * ope-filesel_f.h --
+ * ope-external_f.h --
  *
  * $Id$
  *
@@ -32,10 +32,23 @@
  *
  */
 
-void ope_create_warning(GtkWidget parent);
-void ope_create_filesel(GtkWidget *parent, Draw_Data *dd);
-PBoolean check_duplicated_names(Draw_Data *dd);
+void clear_op_graphic(Draw_Data *dd);
+void clear_specified_op_graphic(Draw_Data *dd, Op_Structure *op);
+//XmString ope_string_to_xmstring(XmFontList, char *string, char *cs, Text_Type tt, Dimension *w, Dimension * h);
+XmString ope_string_to_xmstring(cairo_t *cr, char *string, Text_Type tt, Dimension * w, Dimension * h);
+XmString xs_str_array_to_xmstr_cs(char *string_array[], int n);
+OG *make_op_title(Draw_Data *dd, char *name);
+void free_lgt_string(List_Gtext_String lge_str);
+List_Gtext_String ope_string_to_lgt_string(cairo_t *cr, char *string, Text_Type tt, Dimension * w, Dimension * h);
+void report_syntax_error(PString message);
 
-PBoolean AskUser(GtkWidget *parent, char *question);
-PBoolean check_exist_access(char *selected_file);
-PBoolean check_write_access(char *selected_file);
+void build_edge_graphic(Edge *edge, Expression *gtexpr,Draw_Data *dd);
+
+OG *make_cp_graphic(PString name, Node *node);
+OG *make_og_edge(Draw_Data *dd, Op_Structure *op,  Edge *edge, Node *in, Node *out,  Slist *knots, int x, int y, int pp_width, PBoolean pp_fill);
+OG *make_og_text_field(Draw_Data *dd, Op_Structure *op, Field_Type ft, Text_Type tt, int x, int y, PBoolean visible, int string_width, PBoolean pp_fill, int default_width);
+void update_list_og_inst(Draw_Data *dd, Op_Structure *op, OG *og_body);
+OG *make_inst_graphic(Instruction *inst, Edge *edge);
+void update_canvas_size(Draw_Data *dd, int x, int y);
+void position_then_else(OG *og, int x, int y);
+void position_edge(OG *og_edge);

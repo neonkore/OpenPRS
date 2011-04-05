@@ -19,7 +19,7 @@
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-1 * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
  * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
  * COPYRIGHT HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
@@ -36,7 +36,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "ope-gope.h"
 
 #include <X11/IntrinsicP.h>
 #include <X11/Intrinsic.h>
@@ -44,7 +43,7 @@
 #include <Xm/Xm.h>
 
 #include "opaque.h"
-#include "xt-util_f.h"
+#include "gxt-util_f.h"
 
 extern PBoolean flushing_xt_events;
 extern XtAppContext app_context;
@@ -149,7 +148,6 @@ void print_top_widget(Widget  w)
 
 void process_xt_events()
 {
-  if (!gtk) {
      XtInputMask im;
      PBoolean tmp = flushing_xt_events;
 
@@ -169,5 +167,4 @@ void process_xt_events()
 	  XtAppProcessEvent(app_context,XtIMAll); /* This one does it all. */
      }
      flushing_xt_events = tmp;
-}
 }

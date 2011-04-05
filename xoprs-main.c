@@ -380,6 +380,7 @@ NULL
 };
 
 Widget textWindow;
+int gtk = 0;
 
 #ifdef C_PLUS_PLUS_RELOCATABLE
 int oprs_main(int argc,char **argv, char ** envp)

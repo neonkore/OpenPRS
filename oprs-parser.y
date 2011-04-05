@@ -54,6 +54,12 @@ static const char* const rcsid = "$Id$";
 #include "shashPack_f.h"
 
 #include "oprs-type.h"
+
+#ifndef NO_GRAPHIX
+#include <X11/Intrinsic.h>
+#include <Xm/Xm.h>
+#endif
+
 #include "op-structure.h"
 #include "oprs.h"
 #include "help_f.h"

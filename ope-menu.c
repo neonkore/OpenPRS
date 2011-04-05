@@ -705,7 +705,7 @@ Widget create_menu_bar(Widget parent, Draw_Data *dd)
 
 Widget toggled_button = NULL; 
 
-void toggle_button(Widget *w)
+void toggle_button(Widget w)
 {
      Pixel back,fore;
      Arg args[2];

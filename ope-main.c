@@ -559,6 +559,8 @@ extern PBoolean use_dialog_error;
 /* extern FILE *oprs_yyin, *oprs_yyout; */
 /* #endif */
 
+int gtk = 0;
+
 int main(int argc, char **argv, char **envp)
 {
 /*      XFontStruct  	*font; */

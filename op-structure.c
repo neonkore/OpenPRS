@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * op-structure.c -- Functions used for and with op-structure.
  * 
- * Copyright (c) 1991-2009 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,6 +40,13 @@ static const char* const rcsid = "$Id$";
 #include "stdio.h"
 #endif
 
+#ifndef NO_GRAPHIX
+#ifndef GTK
+#include <X11/Intrinsic.h>
+#include <Xm/Xm.h>
+#endif
+#endif
+
 #include "slistPack.h"
 #include "slistPack_f.h"
 #include "shashPack.h"
@@ -49,9 +56,17 @@ static const char* const rcsid = "$Id$";
 #include "op-structure.h"
 
 #ifndef NO_GRAPHIX
+#ifdef GTK
+#include <gtk/gtk.h>
+#include "xm2gtk.h"
+#include "gope-graphic.h"
+#include "gope-global.h"
+#include "gope-external_f.h"
+#else
 #include "ope-graphic.h"
 #include "ope-global.h"
 #include "ope-external_f.h"
+#endif
 #endif
 
 #include "top-structure_f.h"
@@ -389,7 +404,7 @@ Edge *build_edge(PString n1, PString n2, Expression *expr, PBoolean graphic)
 
 #ifndef NO_GRAPHIX
      if (graphic) 
-	  build_edge_graphic(edge, expr);
+       build_edge_graphic(edge, expr, global_draw_data);
      else {
 	  edge->og = NULL;
      }
@@ -460,7 +475,8 @@ void free_op(Op_Structure *op)
 	       free_text_og(op->gproperties);
 	       free_text_og(op->gdocumentation);
 	       free_text_og(op->gaction);
-	       if (op->xms_name) XmStringFree(op->xms_name);
+	       if (op->xms_name) 
+		 XmStringFree(op->xms_name);
 
 	       /* */
 	       clear_specified_op_graphic(global_draw_data, op);
@@ -796,6 +812,7 @@ OG *make_og_node(Draw_Data *dd, Op_Structure *op, Node *node, int x, int y)
      FREE(stripped_name);
 
      XmStringExtent(dd->fontlist,gnode->xmstring,&gnode->swidth, &gnode->sheight);
+
      gnode->swidth += 2;
      gnode->sheight += 2;
      og->width = gnode->swidth + 5;

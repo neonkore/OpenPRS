@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * oprs-load.c -- 
  * 
- * Copyright (c) 1991-2010 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -49,6 +49,12 @@ static const char* const rcsid = "$Id$";
 #include <shashPack.h>
 #include <slistPack.h>
 
+
+#ifndef NO_GRAPHIX
+#include <X11/Intrinsic.h>
+#include <Xm/Xm.h>
+#endif
+
 #include "string.h"
 #include "macro.h"
 #include "constant.h"
@@ -66,6 +72,8 @@ static const char* const rcsid = "$Id$";
 #include "oprs-sprint.h"
 #include "oprs.h"
 #include "type.h"
+#include <shashPack_f.h>
+#include <slistPack_f.h>
 
 #ifndef NO_GRAPHIX
 #include "xoprs-main.h"
@@ -75,8 +83,6 @@ static const char* const rcsid = "$Id$";
 #include "xt-util_f.h"
 #endif
 
-#include <shashPack_f.h>
-#include <slistPack_f.h>
 
 #include "oprs-error_f.h"
 #include "oprs-type_f.h"

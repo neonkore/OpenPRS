@@ -39,19 +39,25 @@
 
 
 #include <gtk/gtk.h>
+#define GTK
+
+#include "xm2gtk.h"
 
 
-#include <X11/Intrinsic.h>
-#include <Xm/Xm.h>
+/* #include <X11/Intrinsic.h> */
+/* #include <Xm/Xm.h> */
 
-#include <Xm/ScrollBar.h>
-#include <Xm/DrawingA.h>
+/* #include <Xm/ScrollBar.h> */
+/* #include <Xm/DrawingA.h> */
 
 /* #include <X11/X10.h> */
 
 #include "macro.h"
-
+#include "constant.h"
 #include "oprs-type.h"
+#include "op-structure.h"
+
+
 #include "gope-graphic.h"
 #include "ope-global.h"
 #include "ope-edit_f.h"
@@ -59,15 +65,73 @@
 #include "ope-external_f.h"
 #include "op-structure_f.h"
 
-void destroy_og(Draw_Data *dd, OG *og);
-void redraw_all_in_region(Widget w, Draw_Data *dd, Region region);
+#include "xm2gtk_f.h"
+
+void destroy_og(Draw_Data *dd, CairoGCs *cgcsp, OG *og);
+void redraw_all_in_region(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, Region region);
+
+void create_cgcs(CairoGCs *cgcs, GdkDrawable *window)
+{
+  cgcs->cr_basic = gdk_cairo_create(window);
+  cairo_set_source_rgb(cgcs->cr_basic, 0, 0, 0);
+  cairo_set_line_width(cgcs->cr_basic, 0.5);
+  cairo_select_font_face(cgcs->cr_basic, "Helvetica",
+			 CAIRO_FONT_SLANT_NORMAL,
+			 CAIRO_FONT_WEIGHT_NORMAL);
+  
+  cairo_set_font_size(cgcs->cr_basic, 14);
+
+  cgcs->cr_title = gdk_cairo_create(window);
+  cairo_set_source_rgb(cgcs->cr_title, 0, 0, 0);
+  cairo_set_line_width(cgcs->cr_title, 0.5);
+
+  cairo_select_font_face(cgcs->cr_title, "Courier",
+			 CAIRO_FONT_SLANT_NORMAL,
+			 CAIRO_FONT_WEIGHT_BOLD);
+  
+  cairo_set_font_size(cgcs->cr_title, 35);	
+
+  cgcs->cr_edge = gdk_cairo_create(window);
+  cairo_set_source_rgb(cgcs->cr_edge, 0, 0, 0);
+  cairo_set_line_width(cgcs->cr_edge, 0.5);
+  cairo_select_font_face(cgcs->cr_edge, "Helvetica",
+			 CAIRO_FONT_SLANT_NORMAL,
+			 CAIRO_FONT_WEIGHT_NORMAL);
+  
+  cairo_set_font_size(cgcs->cr_edge, 12);
+
+  cgcs->cr_node = gdk_cairo_create(window);
+  cairo_set_source_rgb(cgcs->cr_node, 0, 0, 0);
+  cairo_set_line_width(cgcs->cr_node, 0.5);
+  cairo_select_font_face(cgcs->cr_node, "Helvetica",
+			 CAIRO_FONT_SLANT_NORMAL,
+			 CAIRO_FONT_WEIGHT_NORMAL);
+  
+  cairo_set_font_size(cgcs->cr_node, 18);
+
+  cgcs->cr_text = gdk_cairo_create(window);
+  cairo_set_source_rgb(cgcs->cr_text, 0, 0, 0);
+  cairo_set_line_width(cgcs->cr_text, 0.5);
+  cairo_select_font_face(cgcs->cr_text, "Helvetica",
+			 CAIRO_FONT_SLANT_NORMAL,
+			 CAIRO_FONT_WEIGHT_NORMAL);
+  
+  cairo_set_font_size(cgcs->cr_text, 12);
+}
+
+
+void destroy_cgcs(CairoGCs *cgcs)
+{
+  cairo_destroy(cgcs->cr_basic);
+  cairo_destroy(cgcs->cr_title);
+  cairo_destroy(cgcs->cr_edge);
+  cairo_destroy(cgcs->cr_node);
+  cairo_destroy(cgcs->cr_text);
+}
+
 
 void create_gc(Draw_Data *dd)
 {
-  dd->gc = gdk_cairo_create(dd->window);
-  cairo_set_source_rgb(dd->gc, 0, 0, 0);
-  cairo_set_line_width(dd->gc, 0.5);
-
      /* XGCValues gcv; */
      /* Display *dpy = XtDisplay(dd->canvas); */
      /* Window w = dd->window; */
@@ -112,8 +176,9 @@ void create_gc(Draw_Data *dd)
  * DrawingArea widget's XmNexposeCallback list.
  */
 
-void handle_g_exposures(Widget w, Draw_Data *dd, XEvent *event)
+void handle_g_exposures(GtkWidget *w, Draw_Data *dd, XEvent *event)
 {
+#ifdef GTK_IGNORE
      /*
       * This routine will be called for all non-masopble events. Make sure it's
       * the type we want.
@@ -171,53 +236,56 @@ void handle_g_exposures(Widget w, Draw_Data *dd, XEvent *event)
 	       FREE(cai);
 	  }
      }
+#endif
 }
 
 void add_expose_region(Draw_Data *dd, Region region)
 {
+#ifndef GTK
      XOffsetRegion(region, -dd->left, -dd->top);
      if (!dd->expose_region) {
 	  dd->expose_region = XCreateRegion();
      }
      XUnionRegion(dd->expose_region, region, dd->expose_region);
+#endif
 }
 
-void redraw_all_in_pixmap(Widget w, Draw_Data *dd, unsigned int width, unsigned int heigh)
+void redraw_all_in_pixmap(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, unsigned int width, unsigned int heigh)
 {
      if (dd->op) {
 	  OG *og;
 
 
-	  //	  XSetClipMask(XtDisplay(w), dd->gc, None);
-	  XSetClipMask(XtDisplay(w), dd->sgc, None);
+	  //	  XSetClipMask(XtDisplay(w), cgcsp->cr_basic, None);
+	  //XSetClipMask(XtDisplay(w), dd->sgc, None);
 
 	  //XFillRectangle(XtDisplay(dd->canvas), dd->window, dd->sgc, 0, 0, width, heigh);
 
 	  sl_loop_through_slist(dd->op->list_og_edge, og, OG *) {
-	       draw_og(w, dd, og);
+	       draw_og(w, dd, cgcsp, og);
 	  }
 
 	  sl_loop_through_slist(dd->op->list_og_node, og, OG *) {
-	       draw_og(w, dd, og);
+	       draw_og(w, dd, cgcsp, og);
 	  }
 
 	  sl_loop_through_slist(dd->op->list_og_edge_text, og, OG *) {
-	       draw_og(w, dd, og);
+	       draw_og(w, dd, cgcsp, og);
 	  }
 
 	  sl_loop_through_slist(dd->op->list_og_text, og, OG *) {
 	       if (og->u.gtext->visible) {
-		    draw_og(w, dd, og);
+		    draw_og(w, dd, cgcsp, og);
 	       }
 	  }
 
-	  if (dd->op->op_title && dd->op->op_title->u.gtext->visible) draw_og(w, dd,  dd->op->op_title);
+	  if (dd->op->op_title && dd->op->op_title->u.gtext->visible) draw_og(w, dd, cgcsp,  dd->op->op_title);
 
 /* 	  XFlush(XtDisplay(dd->canvas)); */
      }
 }
 
-void redraw_all_in_region(Widget w, Draw_Data *dd, Region region)
+void redraw_all_in_region(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, Region region)
 {
      if (dd->op) {
 	  OG *og;
@@ -234,7 +302,7 @@ void redraw_all_in_region(Widget w, Draw_Data *dd, Region region)
 	       XDestroyRegion(dd->expose_region);
 	       dd->expose_region = NULL;
 	  }
-	  //	  XSetRegion(XtDisplay(w), dd->gc, region);
+	  //	  XSetRegion(XtDisplay(w), cgcsp->cr_basic, region);
 	  XSetRegion(XtDisplay(w), dd->sgc, region);
 	  XSetRegion(XtDisplay(w), dd->xorgc, region);
 
@@ -243,45 +311,48 @@ void redraw_all_in_region(Widget w, Draw_Data *dd, Region region)
 	  if (dd->op->op_title && dd->op->op_title->u.gtext->visible) {
 	       XIntersectRegion(region, dd->op->op_title->region, inter);
 	       if (!XEmptyRegion(inter))
-		    draw_og(w, dd,  dd->op->op_title);
+		    draw_og(w, dd, cgcsp,  dd->op->op_title);
 	  }
 
 	  SAFE_SL_LOOP_THROUGH_SLIST(dd->op->list_og_edge, og, OG *) {
 	       XIntersectRegion(region, og->region, inter);
 	       if (!XEmptyRegion(inter))
-		    draw_og(w, dd, og);
+		    draw_og(w, dd, cgcsp, og);
 	  }
 
 	  SAFE_SL_LOOP_THROUGH_SLIST(dd->op->list_og_node, og, OG *) {
 	       XIntersectRegion(region, og->region, inter);
 	       if (!XEmptyRegion(inter))
-		    draw_og(w, dd, og);
+		    draw_og(w, dd, cgcsp, og);
 	  }
 
 	  SAFE_SL_LOOP_THROUGH_SLIST(dd->op->list_og_edge_text, og, OG *) {
 	       XIntersectRegion(region, og->region, inter);
 	       if (!XEmptyRegion(inter))
-		    draw_og(w, dd, og);
+		    draw_og(w, dd, cgcsp, og);
 	  }
 
 	  SAFE_SL_LOOP_THROUGH_SLIST(dd->op->list_og_text, og, OG *) {
 	       if (og->u.gtext->visible) {
 		    XIntersectRegion(region, og->region, inter);
 		    if (!XEmptyRegion(inter))
-			 draw_og(w, dd, og);
+			 draw_og(w, dd, cgcsp, og);
 	       }
 	  }
 
 	  XDestroyRegion(inter);
 
-	  //	  XSetClipMask(XtDisplay(w), dd->gc, None);
+#ifdef IGNORE_GTK
+	  XSetClipMask(XtDisplay(w), cgcsp->cr_basic, None);
 	  XSetClipMask(XtDisplay(w), dd->sgc, None);
 	  XSetClipMask(XtDisplay(w), dd->xorgc, None);
+#endif
      }
 }
 
-void handle_exposures(Widget w, Draw_Data *dd, XmDrawingAreaCallbackStruct *cb)
+void handle_exposures(GtkWidget *w, Draw_Data *dd, XmDrawingAreaCallbackStruct *cb)
 {
+#ifdef GTK_IGNORE
      static Region region = NULL;
 
      /*
@@ -295,12 +366,13 @@ void handle_exposures(Widget w, Draw_Data *dd, XmDrawingAreaCallbackStruct *cb)
      if (cb->event->xexpose.count != 0)
 	  return;
 
-     redraw_all_in_region(w, dd, region);
+     redraw_all_in_region(w, dd, cgcsp, region);
      /*
       * Free the region.
       */
      XDestroyRegion(region);
      region = NULL;
+#endif
 }
 
 void enqueue_index(Draw_Data *dd,int top, int left)
@@ -315,6 +387,7 @@ void enqueue_index(Draw_Data *dd,int top, int left)
 
 void scroll_bars_moved(Display *disp, Draw_Data *dd, int hsliderpos, int vsliderpos)
 {
+#ifdef GTK_IGNORE
      int xsrc, redraw_left;
      int ysrc, redraw_top;
      Dimension hdelta, vdelta;
@@ -362,15 +435,16 @@ void scroll_bars_moved(Display *disp, Draw_Data *dd, int hsliderpos, int vslider
      } else
 	  ysrc = redraw_top = vdelta =  0;
 
-     //     XSetClipMask(disp, dd->gc, None);
+#ifdef IGNORE_GTK
+     XSetClipMask(disp, cgcsp->cr_basic, None);
      XSetClipMask(disp, dd->sgc, None);
-     /* XCopyArea(disp, dd->window, */
-     /* 	       dd->window, dd->gc, */
-     /* 	       xsrc, ysrc, */
-     /* 	       dd->canvas_width - hdelta, */
-     /* 	       dd->canvas_height - vdelta, */
-     /* 	       hdelta - xsrc, vdelta - ysrc); */
-
+     XCopyArea(disp, dd->window,
+     	       dd->window, cgcsp->cr_basic,
+     	       xsrc, ysrc,
+     	       dd->canvas_width - hdelta,
+     	       dd->canvas_height - vdelta,
+     	       hdelta - xsrc, vdelta - ysrc);
+#endif
 /*
      fprintf(stderr, "h enqueue %d %d.\n", dd->top, dd->left );
 */
@@ -404,23 +478,29 @@ void scroll_bars_moved(Display *disp, Draw_Data *dd, int hsliderpos, int vslider
 	  XUnionRectWithRegion(&rect, region, region);
      }
 
-     redraw_all_in_region(dd->canvas, dd, region);
+     redraw_all_in_region(dd->canvas, dd, cgcsp, region);
      XDestroyRegion(region);
 
+#endif
 }
 
-void hscroll_bar_moved(Widget w, Draw_Data *dd, XmScrollBarCallbackStruct *call_data)
+void hscroll_bar_moved(GtkWidget *w, Draw_Data *dd, XmScrollBarCallbackStruct *call_data)
 {
+#ifdef GTK_IGNORE
      scroll_bars_moved(XtDisplay(w), dd, call_data->value, -1);
+#endif
 }
 
-void vscroll_bar_moved(Widget w, Draw_Data *dd, XmScrollBarCallbackStruct *call_data)
+void vscroll_bar_moved(GtkWidget *w, Draw_Data *dd, XmScrollBarCallbackStruct *call_data)
 {
+#ifdef GTK_IGNORE
      scroll_bars_moved(XtDisplay(w), dd, -1, call_data->value);
+#endif
 }
 
-void resize(Widget w, Draw_Data *dd, XtPointer call_data)
+void resize(GtkWidget *w, Draw_Data *dd, XtPointer call_data)
 {
+#ifdef GTK_IGNORE
      Arg args[10];
      int n;
 
@@ -444,6 +524,7 @@ void resize(Widget w, Draw_Data *dd, XtPointer call_data)
      XtSetArg(args[n], XmNsliderSize, MIN(dd->canvas_width, dd->work_width)); n++;
      XtSetArg(args[n], XmNpageIncrement, dd->canvas_width); n++;
      XtSetValues(dd->hscrollbar, args, n);
+#endif
 }
 
 OG *then_edge_og_from_if_og(OG *og)
@@ -586,43 +667,43 @@ OG *if_og_from_t_or_f_og(OG* og)
      return ((Edge *)sl_get_slist_head(og->u.gnode->node->in))->in->og;
 }     
 
-void destroy_og(Draw_Data *dd, OG *og)
+void destroy_og(Draw_Data *dd, CairoGCs *cgcsp, OG *og)
 {
      Edge *edge;
      OG *edge_og;
      OG *knot_og;
      
      if (og->type == DT_EDGE_TEXT) {
-	  destroy_og(dd, og->u.gedge_text->edge);
+	  destroy_og(dd, cgcsp, og->u.gedge_text->edge);
 	  return;
      }
      sl_delete_slist_node(dd->op->list_destroyable_og, og);
      sl_delete_slist_node(dd->op->list_movable_og, og);
      sl_delete_slist_node(dd->op->list_editable_og, og);
-     erase_og(dd->canvas, dd, og);
+     erase_og(dd->canvas, dd, cgcsp, og);
      switch (og->type) {
      case DT_IF_NODE:
 	  sl_delete_slist_node(dd->op->list_og_node, og);
 	  sl_delete_slist_node(dd->op->node_list, og->u.gnode->node);
 
-	  destroy_og(dd,else_og_from_if_og(og));
-	  destroy_og(dd,then_og_from_if_og(og));
+	  destroy_og(dd, cgcsp, else_og_from_if_og(og));
+	  destroy_og(dd, cgcsp, then_og_from_if_og(og));
 
 	  sl_delete_slist_node(dd->op->edge_list, else_edge_from_if_og(og));
 	  sl_delete_slist_node(dd->op->edge_list, then_edge_from_if_og(og));
 
 	  sl_loop_through_slist(og->u.gnode->node->in, edge, Edge *) {
-	       destroy_og(dd, edge->og);
+	       destroy_og(dd, cgcsp, edge->og);
 	  }
 	  break;
      case DT_NODE:
 	  sl_delete_slist_node(dd->op->list_og_node, og);
 	  sl_delete_slist_node(dd->op->node_list, og->u.gnode->node);
 	  sl_loop_through_slist(og->u.gnode->node->in, edge, Edge *) {
-	       destroy_og(dd, edge->og);
+	       destroy_og(dd, cgcsp, edge->og);
 	  }
 	  sl_loop_through_slist(og->u.gnode->node->out, edge, Edge *) {
-	       destroy_og(dd, edge->og);
+	       destroy_og(dd, cgcsp, edge->og);
 	  }
 	  break;
      case DT_THEN_NODE:
@@ -630,16 +711,16 @@ void destroy_og(Draw_Data *dd, OG *og)
 	  sl_delete_slist_node(dd->op->list_og_node, og);
 	  sl_delete_slist_node(dd->op->node_list, og->u.gnode->node);
 	  sl_loop_through_slist(og->u.gnode->node->out, edge, Edge *) {
-	       destroy_og(dd, edge->og);
+	       destroy_og(dd, cgcsp, edge->og);
 	  }
 	  break;
      case DT_KNOT:
 	  edge_og =  og->u.gknot->edge;
-	  erase_og(dd->canvas, dd, og->u.gknot->edge->u.gedge->text);
+	  erase_og(dd->canvas, dd, cgcsp, og->u.gknot->edge->u.gedge->text);
 	  sl_delete_slist_node(edge_og->u.gedge->list_knot, og);
 	  position_edge(og->u.gknot->edge);
-	  draw_og(dd->canvas, dd, og->u.gknot->edge);
-	  draw_og(dd->canvas, dd, og->u.gknot->edge->u.gedge->text);
+	  draw_og(dd->canvas, dd, cgcsp, og->u.gknot->edge);
+	  draw_og(dd->canvas, dd, cgcsp, og->u.gknot->edge->u.gedge->text);
 	  break;
 /*
      case DT_THEN_EDGE:
@@ -662,13 +743,13 @@ void destroy_og(Draw_Data *dd, OG *og)
 	  sl_delete_slist_node(dd->op->list_destroyable_og, og->u.gedge->text);
 	  sl_delete_slist_node(dd->op->list_movable_og, og->u.gedge->text);
 	  sl_delete_slist_node(dd->op->list_editable_og, og->u.gedge->text);
-	  erase_og(dd->canvas, dd, og->u.gedge->text);
+	  erase_og(dd->canvas, dd, cgcsp, og->u.gedge->text);
 
 	  sl_loop_through_slist(og->u.gedge->list_knot, knot_og, OG *) {
 	       sl_delete_slist_node(dd->op->list_destroyable_og, knot_og);
 	       sl_delete_slist_node(dd->op->list_movable_og, knot_og);
 	       sl_delete_slist_node(dd->op->list_editable_og, knot_og);
-/* 	       erase_og(dd->canvas, dd, knot_og); */
+/* 	       erase_og(dd->canvas, dd, cgcsp, knot_og); */
 	  }
 	  break;
      default:
@@ -678,16 +759,16 @@ void destroy_og(Draw_Data *dd, OG *og)
      }
 }
 
-void erase_og(Widget w, Draw_Data *dd, OG *og)
+void erase_og(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, OG *og)
 {
      Display *dpy = XtDisplay(w);
      Window win = dd->window;
 
      switch (og->type) {
      case DT_EDGE:
-	  erase_edge(w, dd, og->u.gedge);
+	  erase_edge(w, dd, cgcsp, og->u.gedge);
 	  add_expose_region(dd, og->region);
-	  /* XSetRegion(XtDisplay(w), dd->gc, og->region); */
+	  /* XSetRegion(XtDisplay(w), cgcsp->cr_basic, og->region); */
 	  /* XClipBox(og->region,&rect); */
 	  /*
 	   * XClearArea(dpy, win, rect.x - dd->left, rect.y - dd->top,
@@ -699,7 +780,7 @@ void erase_og(Widget w, Draw_Data *dd, OG *og)
 	   * dd->left, MIN3(og->u.gedge->fy1,og->u.gedge->fy2,og->u.gedge->y2)
 	   * - dd->top, ARR_LENGTH, ARR_LENGTH, TRUE);
 	   */
-	  /* XSetClipMask(XtDisplay(w), dd->gc, None); */
+	  /* XSetClipMask(XtDisplay(w), cgcsp->cr_basic, None); */
 	  break;
      case DT_IF_NODE:
      case DT_THEN_NODE:
@@ -712,10 +793,10 @@ void erase_og(Widget w, Draw_Data *dd, OG *og)
 		     og->width + 1, og->height + 1, TRUE);
 	  break;
      case DT_INST:
-	  erase_inst(w, dd, og);
+	  erase_inst(w, dd, cgcsp, og);
 	  break;
      case DT_KNOT:
-	  erase_og(w, dd, og->u.gknot->edge);
+	  erase_og(w, dd, cgcsp, og->u.gknot->edge);
 	  break;
 /*
      case DT_THEN_EDGE:
@@ -729,7 +810,7 @@ void erase_og(Widget w, Draw_Data *dd, OG *og)
      }
 }
 
-void draw_og(Widget w, Draw_Data *dd, OG *og)
+void draw_og(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, OG *og)
 {
      Display *dpy = XtDisplay(w);
      Window win = dd->window;
@@ -743,7 +824,7 @@ void draw_og(Widget w, Draw_Data *dd, OG *og)
 /* 		    xs, ys, og->width, og->height); */
 
      if (og->selected && og->type != DT_KNOT)
-       XDrawRectangle(dpy, win, dd->gc,
+       XDrawRectangle(dpy, win, cgcsp->cr_basic,
 		      xs, ys, og->width-1, og->height-1);
 
      switch (og->type) {
@@ -751,22 +832,22 @@ void draw_og(Widget w, Draw_Data *dd, OG *og)
      case DT_THEN_NODE:
      case DT_ELSE_NODE:
      case DT_NODE:
-	  draw_node(w, dd, og->x, og->y, og->width, og->height, og->u.gnode, og->selected);
+       draw_node(w, dd, cgcsp, og->x, og->y, og->width, og->height, og->u.gnode, og->selected);
 	  break;
      case DT_EDGE:
-	  draw_edge(w, dd, og->u.gedge);
+	  draw_edge(w, dd, cgcsp, og->u.gedge);
 	  break;
      case DT_EDGE_TEXT:
-	  draw_edge_text(w, dd, og->x, og->y, og->width, og->u.gedge_text, og->selected);
+	  draw_edge_text(w, dd, cgcsp, og->x, og->y, og->width, og->u.gedge_text, og->selected);
 	  break;
      case DT_TEXT:
-	  draw_text(w, dd, og->x, og->y, og->width, og->u.gtext,og->selected);
+	  draw_text(w, dd, cgcsp, og->x, og->y, og->width, og->u.gtext,og->selected);
 	  break;
      case DT_INST:
-	  draw_inst(w, dd, og->x, og->y, og->width, og->height, og->selected);
+	  draw_inst(w, dd, cgcsp, og->x, og->y, og->width, og->height, og->selected);
 	  break;
      case DT_KNOT:
-	  draw_og(w, dd, og->u.gknot->edge);
+	  draw_og(w, dd, cgcsp, og->u.gknot->edge);
 	  break;
 /*
      case DT_THEN_EDGE:
@@ -780,7 +861,7 @@ void draw_og(Widget w, Draw_Data *dd, OG *og)
      }
 }
 
-void draw_node(Widget w, Draw_Data *dd, int x, int y, int wi, int h, Gnode *n, PBoolean sel)
+void draw_node(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, int x, int y, int wi, int h, Gnode *n, PBoolean sel)
 {
      Display *dpy = XtDisplay(w);
      Window win = dd->window;
@@ -791,38 +872,38 @@ void draw_node(Widget w, Draw_Data *dd, int x, int y, int wi, int h, Gnode *n, P
      xs = x - dd->left;
      ys = y - dd->top;
 
-     XDrawRectangle(dpy, win,  dd->gc ,
+     XDrawRectangle(dpy, win,  cgcsp->cr_basic ,
 		    xs + 1, ys + 1,
 		    n->swidth + 2, n->sheight + 2);
      
      XmStringDraw(dpy, win, dd->fontlist, n->xmstring, 
-		  dd->gc,
+		  cgcsp->cr_basic,
 		  xs + 4, ys + 3, n->swidth - 2,
 		  XmALIGNMENT_BEGINNING,
 		  XmSTRING_DIRECTION_L_TO_R,
 		  NULL);
 
      if (node->join) {
-	  XDrawLine(dpy, win,  dd->gc,
+	  XDrawLine(dpy, win,  cgcsp->cr_basic,
 		    xs + 1, ys + 2,
 		    xs + n->swidth + 3 , ys + 2);
-	  XDrawLine(dpy, win,  dd->gc,
+	  XDrawLine(dpy, win,  cgcsp->cr_basic,
 		    xs + 1, ys + 3,
 		    xs + n->swidth + 3 , ys + 3);
      }
      
      if (node->split) {
-	  XDrawLine(dpy, win,  dd->gc ,
+	  XDrawLine(dpy, win,  cgcsp->cr_basic ,
 		    xs + 1, ys  + n->sheight + 2,
 		    xs +  n->swidth + 3 , ys + n->sheight + 2);
-	  XDrawLine(dpy, win,  dd->gc ,
+	  XDrawLine(dpy, win,  cgcsp->cr_basic ,
 		    xs + 1, ys + n->sheight + 1,
 		    xs + n->swidth + 3 , ys + n->sheight + 1);
      }
 
 }
 
-void draw_text(Widget w, Draw_Data *dd, int x, int y, int width, Gtext *et,PBoolean sel)
+void draw_text(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, int x, int y, int width, Gtext *et,PBoolean sel)
 {
      Gtext_String *gt_str;
      OG *og_inst;
@@ -832,7 +913,7 @@ void draw_text(Widget w, Draw_Data *dd, int x, int y, int width, Gtext *et,PBool
 
      sl_loop_through_slist(et->lgt_string, gt_str, Gtext_String *) { 
 	  XmStringDraw(dpy, win, dd->fontlist, gt_str->xmstring, 
-		       dd->gc,
+		       cgcsp->cr_basic,
 		       x - dd->left + gt_str->off_x,
 		       y - dd->top + gt_str->off_y,
 		       width,
@@ -852,14 +933,14 @@ void draw_text(Widget w, Draw_Data *dd, int x, int y, int width, Gtext *et,PBool
 		    
 		    xs = og_inst->x - dd->left;
 		    ys = og_inst->y - dd->top;
-		    XDrawRectangle(dpy, win, dd->gc,
+		    XDrawRectangle(dpy, win, cgcsp->cr_basic,
 				   xs, ys, og_inst->width-1, og_inst->height-1);
 	       }
 	  }
      }
 }
 
-void draw_edge_text(Widget w, Draw_Data *dd, int x, int y, int width, Gedge_text *et, PBoolean selected)
+void draw_edge_text(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, int x, int y, int width, Gedge_text *et, PBoolean selected)
 {
      Gtext_String *gt_str;
 
@@ -868,7 +949,7 @@ void draw_edge_text(Widget w, Draw_Data *dd, int x, int y, int width, Gedge_text
 
     sl_loop_through_slist(et->lgt_log_string, gt_str, Gtext_String *) { 
 	  XmStringDraw(dpy, win, dd->fontlist, gt_str->xmstring, 
-			    dd->gc,
+			    cgcsp->cr_basic,
 			    x - dd->left + gt_str->off_x,
 			    y - dd->top + gt_str->off_y,
 			    width,
@@ -879,12 +960,12 @@ void draw_edge_text(Widget w, Draw_Data *dd, int x, int y, int width, Gedge_text
 }
 
 
-void draw_inst(Widget w, Draw_Data *dd, int x, int y, int wi, int h, PBoolean sel)
+void draw_inst(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, int x, int y, int wi, int h, PBoolean sel)
 {
      return;
 }
 
-void draw_clip_box(Widget w, Draw_Data *dd, OG *og)
+void draw_clip_box(GtkWidget *w, Draw_Data *dd, OG *og)
 {
      Display *dpy = XtDisplay(w);
      Window win = dd->window;
@@ -895,18 +976,18 @@ void draw_clip_box(Widget w, Draw_Data *dd, OG *og)
 		    og->width - 1, og->height - 1);
 }
 
-void draw_sel_box(Widget w, Draw_Data *dd, OG *og)
+void draw_sel_box(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, OG *og)
 {
      Display *dpy = XtDisplay(w);
      Window win = dd->window;
 
-     XDrawRectangle(dpy, win, dd->gc,
+     XDrawRectangle(dpy, win, cgcsp->cr_basic,
 		    og->x - dd->left,
 		    og->y - dd->top,
 		    og->width - 1, og->height - 1);
 }
 
-void erase_inst(Widget w, Draw_Data *dd, OG *og) 
+void erase_inst(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, OG *og) 
 {
      Display *dpy = XtDisplay(w);
      Window win = dd->window;
@@ -931,7 +1012,7 @@ void erase_inst(Widget w, Draw_Data *dd, OG *og)
 
 }
 
-void erase_edge(Widget w, Draw_Data *dd, Gedge *e)
+void erase_edge(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, Gedge *e)
 {
      Display *dpy = XtDisplay(w);
      Window win = dd->window;
@@ -965,7 +1046,7 @@ void erase_edge(Widget w, Draw_Data *dd, Gedge *e)
 
 }
 
-void draw_edge(Widget w, Draw_Data *dd, Gedge *e)
+void draw_edge(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, Gedge *e)
 {
      Display *dpy = XtDisplay(w);
      Window win = dd->window;
@@ -985,7 +1066,7 @@ void draw_edge(Widget w, Draw_Data *dd, Gedge *e)
      lines[n].x = e->x2 - dd->left;
      lines[n].y = e->y2 - dd->top; n++;
 
-     XDrawLines(dpy, win, dd->gc, lines, n, CoordModeOrigin);
+     XDrawLines(dpy, win, cgcsp->cr_basic, lines, n, CoordModeOrigin);
 
      arrows[0].x = e->x2 - dd->left;
      arrows[0].y = e->y2 - dd->top;
@@ -994,13 +1075,14 @@ void draw_edge(Widget w, Draw_Data *dd, Gedge *e)
      arrows[2].x = e->fx2 - dd->left;
      arrows[2].y = e->fy2 - dd->top;
 
-     XFillPolygon(dpy, win, dd->gc,
+     XFillPolygon(dpy, win, cgcsp->cr_basic,
 		  arrows, 3, Convex, CoordModeOrigin);
 
 }
 
 void set_canvas_view_rel(Draw_Data *dd, int xv, int yv)
 {
+#ifdef GTK_IGNORE
      Arg args[1];
      int x, y;
 
@@ -1025,10 +1107,12 @@ void set_canvas_view_rel(Draw_Data *dd, int xv, int yv)
      XmScrollBarSetValues(dd->hscrollbar, x, xss, 10, dd->canvas_width, False);
      XmScrollBarSetValues(dd->vscrollbar, y, yss, 10, dd->canvas_height, False);
      scroll_bars_moved(XtDisplay(dd->vscrollbar),dd,x,y);
+#endif
 }
 
 void set_canvas_view(Draw_Data *dd, int x, int y)
 {
+#ifdef GTK_IGNORE
 
      int xss = MIN(dd->canvas_width, dd->work_width);
      int yss = MIN(dd->canvas_height, dd->work_height);
@@ -1043,10 +1127,12 @@ void set_canvas_view(Draw_Data *dd, int x, int y)
      XmScrollBarSetValues(dd->hscrollbar, x, xss, 10, dd->canvas_width, False);
      XmScrollBarSetValues(dd->vscrollbar, y, yss, 10, dd->canvas_height, False);
      scroll_bars_moved(XtDisplay(dd->vscrollbar),dd,x,y);
+#endif
 }
 
 void set_canvas_view_no_redraw(Draw_Data *dd, int x, int y)
 {
+#ifdef GTK_IGNORE
      int xss = MIN(dd->canvas_width, dd->work_width);
      int yss = MIN(dd->canvas_height, dd->work_height);
 
@@ -1061,9 +1147,10 @@ void set_canvas_view_no_redraw(Draw_Data *dd, int x, int y)
 
      XmScrollBarSetValues(dd->hscrollbar, x, xss, 10, dd->canvas_width, False);
      XmScrollBarSetValues(dd->vscrollbar, y, yss, 10, dd->canvas_height, False);
+#endif
 }
 
-void display_op_pos(Op_Structure * op, Draw_Data *dd, int x, int y)
+void display_op_pos(Op_Structure * op, Draw_Data *dd, CairoGCs *cgcsp, int x, int y)
 {
      XRectangle rect;
      Region region;
@@ -1080,7 +1167,7 @@ void display_op_pos(Op_Structure * op, Draw_Data *dd, int x, int y)
 	  rect.width = dd->canvas_width;
 	  rect.height = dd->canvas_height;
 	  XUnionRectWithRegion(&rect, region, region);
-	  redraw_all_in_region(dd->canvas, dd, region);	/* We want to
+	  redraw_all_in_region(dd->canvas, dd, cgcsp, region);	/* We want to
 							 * synchronize... */
 	  XDestroyRegion(region);
      } else {
@@ -1091,7 +1178,7 @@ void display_op_pos(Op_Structure * op, Draw_Data *dd, int x, int y)
 
 void display_op_no_dd(Op_Structure * op)
 {
-     display_op_pos(op, global_draw_data, 0, 0);
+  display_op_pos(op, global_draw_data, mainCGCsp, 0, 0);
 }
 
 void display_op_edge_internal(Op_Structure * op, Edge *edge, PBoolean selected)
@@ -1128,6 +1215,7 @@ void display_op_edge_internal(Op_Structure * op, Edge *edge, PBoolean selected)
 	  rect.height = dd->canvas_height;
 	  region = XCreateRegion();
 	  XUnionRectWithRegion(&rect, region, region);
+#ifdef GTK_IGNORE
 	  if (og) {
 	       if (XRectInRegion(region, og->x, og->y, og->width, og->height) != RectangleIn) {
 		    set_canvas_view_no_redraw(dd, og->x + og->width / 2 - dd->canvas_width / 2,
@@ -1136,7 +1224,8 @@ void display_op_edge_internal(Op_Structure * op, Edge *edge, PBoolean selected)
 		    set_canvas_view_no_redraw(dd, 0, 0);
 	       }
 	  }
-	  redraw_all_in_region(dd->canvas, dd, region);	/* We want to
+#endif
+	  redraw_all_in_region(dd->canvas, dd, mainCGCsp, region);	/* We want to
 							 * synchronize... */
 	  XDestroyRegion(region);
 
@@ -1147,13 +1236,15 @@ void display_op_edge_internal(Op_Structure * op, Edge *edge, PBoolean selected)
 	  rect.width = dd->canvas_width;
 	  rect.height = dd->canvas_height;
 	  XUnionRectWithRegion(&rect, region, region);
+#ifdef GTK_IGNORE
 	  if (XRectInRegion(region, og->x, og->y, og->width, og->height) != RectangleIn) {
 	       set_canvas_view(dd, og->x + og->width / 2 - dd->canvas_width / 2,
 			       og->y + og->height / 2 - dd->canvas_height / 2);
 	  }
+#endif
 	  XDestroyRegion(region);
-	  if (! selected) erase_og(dd->canvas, dd, og);
-	  draw_og(dd->canvas, dd, og);
+	  if (! selected) erase_og(dd->canvas, dd, mainCGCsp, og);
+	  draw_og(dd->canvas, dd, mainCGCsp, og);
      }
 
      XFlush(XtDisplay(dd->canvas));

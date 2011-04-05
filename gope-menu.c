@@ -62,7 +62,7 @@
 #include "ope-bboard_f.h"
 #include "gope-filesel_f.h"
 #include "ope-edit_f.h"
-#include "ope-op-opf_f.h"
+#include "gope-op-opf_f.h"
 #include "ope-syntax_f.h"
 #include "op-structure_f.h"
 #include "xhelp.h"
@@ -80,9 +80,9 @@ void Debug(Widget w, Draw_Data *dd, XtPointer call_data)
 }
 #endif /* OPE_ADD_MSTATS_BUTTON */
 
-void OpfLoad(GtkWidget *w)
+void OpfLoad(GtkWidget *w, Draw_Data *dd)
 {
-  opeLoadFileSelRun(opeLoadFilesel);
+  opeLoadFileSelRun(opeLoadFilesel, dd);
 }
 
 void OpfSelect(Widget w, XtPointer client_data, XtPointer call_data)
@@ -244,11 +244,6 @@ void MiscSymbolList(Widget w, Draw_Data *dd, XtPointer call_data)
 {   
      symbolListDialogManage(symbolListDialog);
      return;
-}
-
-void OpSelect(Widget w, XtPointer client_data, XtPointer call_data)
-{
-     selectOpDialogManage();
 }
 
 void OpRedraw(Widget w, Draw_Data *dd, XtPointer call_data)
@@ -418,12 +413,11 @@ void update_toggle_sensitivity(PBoolean sensible)
 #endif
 }
 
-GtkWidget *opSelect, *opSelectDestroy, *opPrevious, *opNext;
+GtkWidget *opSelectDestroy, *opPrevious, *opNext;
 
 void update_empty_sensitivity(PBoolean sensible)
 {
 #ifdef IGNORE  
-     XtSetSensitive(opSelect, sensible);
      XtSetSensitive(opSelectDestroy, sensible);
      XtSetSensitive(opPrevious, sensible);
      XtSetSensitive(opNext, sensible);
@@ -521,7 +515,7 @@ GtkWidget *create_menu_bar(GtkWidget *window, Draw_Data *dd)
   opfLoad = gtk_image_menu_item_new_from_stock(GTK_STOCK_OPEN, NULL);
   gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu),opfLoad);
   g_signal_connect(G_OBJECT(opfLoad), "activate",
-		   G_CALLBACK(OpfLoad), NULL);
+		   G_CALLBACK(OpfLoad), dd);
 
   opfAppend =  gtk_menu_item_new_with_label("Append");
   gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu),opfAppend);
@@ -579,11 +573,6 @@ GtkWidget *create_menu_bar(GtkWidget *window, Draw_Data *dd)
 		   G_CALLBACK(OpfUnload), NULL);
 
   /* OP menu */
-
-  opSelect = gtk_menu_item_new_with_label("Select");
-  gtk_menu_shell_append(GTK_MENU_SHELL(opPDMenu), opSelect);
-  g_signal_connect(G_OBJECT(opSelect),"activate",
-		   G_CALLBACK(OpSelect), NULL);
 
   opCreate = gtk_menu_item_new_with_label("Create");
   gtk_menu_shell_append(GTK_MENU_SHELL(opPDMenu), opCreate);

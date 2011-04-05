@@ -35,9 +35,9 @@
 #ifndef INCLUDE_ope_graphic
 #define INCLUDE_ope_graphic
 
-#include "constant.h"
-#include "opaque.h"
-#include "op-structure.h"
+/* #include "constant.h" */
+/* #include "opaque.h" */
+/* #include "op-structure.h" */
 
 /* Some values and fraction of Pi. */
 #ifndef M_PI
@@ -97,29 +97,29 @@ typedef enum {
 
 typedef struct gnode {
      Node *node;
-     XmString xmstring;
-     Dimension swidth, sheight;
+     gchar *xmstring;
+     guint swidth, sheight;
 } Gnode; /* Graphic Node structure */
 
 typedef struct gknot {
-     Position x, y;
+     gint x, y;
      OG *edge;
 } Gknot; /* Graphic Knot structure */
 
 typedef Slist *List_Knot;
 
 typedef struct gtext_string {
-     Dimension off_x, off_y;
-     XmString xmstring;
+     gint off_x, off_y;
+     gchar *xmstring;
 } Gtext_String;
      
 typedef Slist *List_Gtext_String;
 
 typedef struct gedge_text {
-     Position dx, dy;
+     gint dx, dy;
      PString log_string;
      List_Gtext_String lgt_log_string;
-     Dimension text_width;
+     guint text_width;
      PBoolean fill_lines;
      OG *edge;
 } Gedge_text; /* Graphic Edge Text structure */
@@ -127,7 +127,7 @@ typedef struct gedge_text {
 typedef struct gtext {
      PString string;
      List_Gtext_String lgt_string;
-     Dimension text_width;
+     guint text_width;
      PBoolean fill_lines;
      PBoolean visible;
      Text_Type text_type;
@@ -137,8 +137,8 @@ typedef struct gtext {
 typedef struct gedge {
      Edge *edge;
      OG *text;
-     Position x1, y1, x2, y2;
-     Position fx1, fx2, fy1, fy2;
+     gint x1, y1, x2, y2;
+     gint fx1, fx2, fy1, fy2;
      List_Knot list_knot;
 } Gedge; /*Graphic Edge structure */
 
@@ -150,29 +150,37 @@ typedef struct ginst {
 } Ginst; /* Graphic Instruction structure */
 
 struct og {
-     Draw_Type type;
-     Position x, y;
-     Dimension width, height;
-     Region region;
-     PBoolean selected;
-     union {
-	  Gnode *gnode;
-	  Gedge *gedge;
-	  Gedge_text *gedge_text;
-	  Gtext *gtext;
-	  Gknot *gknot;
-	  Ginst *ginst;
-     }     u;
+  Draw_Type type;
+  gint x, y;
+  guint width, height;
+  GdkRegion *region;
+  PBoolean selected;
+  union {
+    Gnode *gnode;
+    Gedge *gedge;
+    Gedge_text *gedge_text;
+    Gtext *gtext;
+    Gknot *gknot;
+    Ginst *ginst;
+  }     u;
 }; /* Object Graphic structure */
 
 typedef struct copy_area_index {
      int top, left;
 } Copy_Area_Index;
 
+typedef struct cairo_gc {
+  cairo_t *cr_basic;	
+  cairo_t *cr_title;
+  cairo_t *cr_edge;
+  cairo_t *cr_node;
+  cairo_t *cr_text;
+} CairoGCs; 
+
 struct draw_data {
+  GtkWidget *topLevelWindow;
   GtkWidget *canvas;
   GdkDrawable *window;
-  cairo_t *gc;				  /* default GC       */
   guint canvas_height;		  /* canvas dimensions     */
   guint canvas_width;
   guint work_height;
@@ -185,10 +193,10 @@ struct draw_data {
   cairo_t *sgc;				  /* selected GC       */
   cairo_t *xorgc;				  /* xor GC       */
   PBoolean just_compiling;
-  Widget vscrollbar;
-  Widget hscrollbar;
-  XFontStruct *font;			  /* The font struct       */
-  XmFontList fontlist;
+  GtkWidget *vscrollbar;
+  GtkWidget *hscrollbar;
+  void *font;			  /* The font struct       */
+  void *fontlist;
   Draw_Mode mode, old_mode;
   OG *edited_og;
   OG *node_selected;
@@ -199,7 +207,7 @@ struct draw_data {
   OG *og_aligning;
   OG *og_selected_on_press;
   OG *sensitive_og;
-  Region expose_region;
+  GdkRegion *expose_region;
   Op_Structure *op;
   List_Knot list_knot;
   unsigned int pressed_button;
@@ -231,5 +239,6 @@ typedef Slist *ListLastSelectedOP;
 extern int node_x, node_y, visible , text_dx, text_dy, string_width, fill_lines;
 extern Slist *edge_location;
 extern Draw_Data *global_draw_data;
+extern CairoGCs *mainCGCsp;		/* this will be the one for the main */
 
 #endif
