@@ -52,7 +52,7 @@
 #include "gope-global.h"
 #include "gope-main_f.h"
 #include "gope-menu_f.h"
-#include "ope-graphic_f.h"
+#include "gope-graphic_f.h"
 #include "ope-edit_f.h"
 #include "ope-bboard_f.h"
 #include "gope-filesel_f.h"
@@ -607,20 +607,18 @@ on_expose_event(GtkWidget *widget,
 
   cairo_t *cr = CGCs.cr_basic;
 
-  cairo_move_to(cr, 20, 30);
-  cairo_show_text(cr, "Most relationships seem so transitory");  
-  cairo_move_to(cr, 20, 60);
-  cairo_show_text(cr, "They're all good but not the permanent one");
+  cairo_move_to(cr, 800,  30);
+  cairo_show_text(CGCs.cr_basic, "CGCs.cr_basic");
+  cairo_move_to(CGCs.cr_title, 800, 60);
+  cairo_show_text(CGCs.cr_title, "CGCs.cr_title");
 
-  cairo_move_to(cr, 20, 120);
-  cairo_show_text(cr, "Who doesn't long for someone to hold");
+  cairo_move_to(CGCs.cr_edge, 800, 120);
+  cairo_show_text(CGCs.cr_edge, "CGCs.cr_edge");
 
-  cairo_move_to(cr, 20, 150);
-  cairo_show_text(cr, "Who knows how to love you without being told");
-  cairo_move_to(cr, 20, 180);
-  cairo_show_text(cr, "Somebody tell me why I'm on my own");
-  cairo_move_to(cr, 20, 210);
-  cairo_show_text(cr, "If there's a soulmate for everyone");
+  cairo_move_to(CGCs.cr_node, 800, 150);
+  cairo_show_text(CGCs.cr_node, "CGCs.cr_node");
+  cairo_move_to(CGCs.cr_text, 800, 180);
+  cairo_show_text(CGCs.cr_text, "CGCs.cr_text");
 
   int i, j;
   for ( i = 0; i <= count - 1; i++ ) {
@@ -632,6 +630,7 @@ on_expose_event(GtkWidget *widget,
 
   // count = 0;
   cairo_stroke(cr);
+  handle_exposures(widget, global_draw_data, &CGCs);
 
   destroy_cgcs(&CGCs);
 
@@ -691,6 +690,37 @@ int main(int argc, char **argv, char **envp)
   char iconname[] = "OP Editor";
   int pid=getpid();
   
+     gx_print_command_template = DEFAULT_PRINT_COMMAND;
+     txt_print_command_template = DEFAULT_PRINT_COMMAND;
+     ip_x = IP_X;
+     ip_y = IP_Y;
+     ip_width = IP_WIDTH;
+     ctxt_x = CTXT_X;
+     ctxt_y = CTXT_Y;
+     ctxt_width = CTXT_WIDTH;
+     call_x = CALL_X;
+     call_y = CALL_Y;
+     call_width = CALL_WIDTH;
+     set_x = SET_X;
+     set_y = SET_Y;
+     set_width = SET_WIDTH;
+     eff_x = EFF_X;
+     eff_y = EFF_Y;
+     eff_width = EFF_WIDTH;
+     prop_x = PROP_X;
+     prop_y = PROP_Y;
+     prop_width = PROP_WIDTH;
+     doc_x = DOC_X;
+     doc_y = DOC_Y;
+     doc_width = DOC_WIDTH;
+     act_x = ACT_X;
+     act_y = ACT_Y;
+     act_width = ACT_WIDTH;
+     bd_x = BD_X;
+     bd_y = BD_Y;
+     bd_width = BD_WIDTH;
+     edge_width = EDGE_WIDTH;
+
   disable_slist_compaction();
   
   list_of_commands = ope_init_nw_arg(argc, argv);
@@ -776,7 +806,7 @@ int main(int argc, char **argv, char **envp)
   vbox = gtk_vbox_new(FALSE, 0); /* pack anothe vbox on the right */
   gtk_box_pack_end(GTK_BOX(hbox), vbox, FALSE, FALSE, 1);
 
-  label = gtk_label_new("This is a title may beit will give the size");	/* put a title on this vbox */
+  label = gtk_label_new("OP Name");	/* put a title on this vbox */
   gtk_label_set_justify(GTK_LABEL(label), GTK_JUSTIFY_CENTER);
   gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, FALSE, 5);
 
@@ -815,6 +845,7 @@ int main(int argc, char **argv, char **envp)
   dd.window = GTK_LAYOUT(dd.canvas)->bin_window;
 
   mainCGCsp = &mainCGCs;
+  dd.cgcsp = mainCGCsp;
   
   create_cgcs(&mainCGCs, dd.window); /* this will create all the cairo context for the main loop... */
    
@@ -852,38 +883,6 @@ int main(int argc, char **argv, char **envp)
 
 /*      XtGetApplicationResources(topLevel, &Resrcs, resources, XtNumber(resources), NULL, 0); */
 
-/*      gx_print_command_template = Resrcs.gxPrintCmd; */
-/*      txt_print_command_template = Resrcs.txtPrintCmd; */
-/*      print_english_operator = Resrcs.printEnglishOperator; */
-/*      language_str = Resrcs.language; */
-/*      ip_x = Resrcs.ip_x; */
-/*      ip_y = Resrcs.ip_y; */
-/*      ip_width = Resrcs.ip_width; */
-/*      ctxt_x = Resrcs.ctxt_x; */
-/*      ctxt_y = Resrcs.ctxt_y; */
-/*      ctxt_width = Resrcs.ctxt_width; */
-/*      call_x = Resrcs.call_x; */
-/*      call_y = Resrcs.call_y; */
-/*      call_width = Resrcs.call_width; */
-/*      set_x = Resrcs.set_x; */
-/*      set_y = Resrcs.set_y; */
-/*      set_width = Resrcs.set_width; */
-/*      eff_x = Resrcs.eff_x; */
-/*      eff_y = Resrcs.eff_y; */
-/*      eff_width = Resrcs.eff_width; */
-/*      prop_x = Resrcs.prop_x; */
-/*      prop_y = Resrcs.prop_y; */
-/*      prop_width = Resrcs.prop_width; */
-/*      doc_x = Resrcs.doc_x; */
-/*      doc_y = Resrcs.doc_y; */
-/*      doc_width = Resrcs.doc_width; */
-/*      act_x = Resrcs.act_x; */
-/*      act_y = Resrcs.act_y; */
-/*      act_width = Resrcs.act_width; */
-/*      bd_x = Resrcs.bd_x; */
-/*      bd_y = Resrcs.bd_y; */
-/*      bd_width = Resrcs.bd_width; */
-/*      edge_width = Resrcs.edge_width; */
 /* #ifdef YY_NO_CONST */
 /*      oprs_yyin = stdin; */
 /*      oprs_yyout = stdout; */
@@ -892,6 +891,7 @@ int main(int argc, char **argv, char **envp)
 
 
      list_of_commands = ope_init_arg(argc, argv);
+
 
      /* icon_pixmap = XCreateBitmapFromData(XtDisplay(topLevel), */
      /* 					 RootWindowOfScreen(XtScreen(topLevel)), */
@@ -1090,7 +1090,7 @@ Date        : %s\n\
      add_op_file_name(current_opfile->name, relevant_op);
 
 
-     //init_og = create_text(dd.canvas, 80, 20, &dd, TT_TEXT_NONE, welcome_message, 0, FALSE);
+     //init_og = create_text(dd.canvas, 80, 20 &dd, TT_TEXT_NONE, welcome_message, 0, FALSE);
 
      /* Execute all the commands given in argument. */
 

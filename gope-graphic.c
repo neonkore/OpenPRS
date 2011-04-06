@@ -39,7 +39,6 @@
 
 
 #include <gtk/gtk.h>
-#define GTK
 
 #include "xm2gtk.h"
 
@@ -73,50 +72,45 @@ void redraw_all_in_region(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, Region r
 void create_cgcs(CairoGCs *cgcs, GdkDrawable *window)
 {
   cgcs->cr_basic = gdk_cairo_create(window);
-  cairo_set_source_rgb(cgcs->cr_basic, 0, 0, 0);
-  cairo_set_line_width(cgcs->cr_basic, 0.5);
-  cairo_select_font_face(cgcs->cr_basic, "Helvetica",
+  cairo_set_source_rgb(cgcs->cr_basic, 1, 0, 0);
+  cairo_set_line_width(cgcs->cr_basic, 1);
+  cairo_select_font_face(cgcs->cr_basic, "fixed",
 			 CAIRO_FONT_SLANT_NORMAL,
 			 CAIRO_FONT_WEIGHT_NORMAL);
-  
-  cairo_set_font_size(cgcs->cr_basic, 14);
+  cairo_set_font_size(cgcs->cr_basic, 18);
 
   cgcs->cr_title = gdk_cairo_create(window);
-  cairo_set_source_rgb(cgcs->cr_title, 0, 0, 0);
-  cairo_set_line_width(cgcs->cr_title, 0.5);
-
-  cairo_select_font_face(cgcs->cr_title, "Courier",
+  cairo_set_source_rgb(cgcs->cr_title, 0, 1, 0);
+  cairo_set_line_width(cgcs->cr_title, 1);
+  cairo_select_font_face(cgcs->cr_title, "Helvetica",
 			 CAIRO_FONT_SLANT_NORMAL,
 			 CAIRO_FONT_WEIGHT_BOLD);
-  
-  cairo_set_font_size(cgcs->cr_title, 35);	
+  cairo_set_font_size(cgcs->cr_title, 24);	
 
   cgcs->cr_edge = gdk_cairo_create(window);
-  cairo_set_source_rgb(cgcs->cr_edge, 0, 0, 0);
-  cairo_set_line_width(cgcs->cr_edge, 0.5);
-  cairo_select_font_face(cgcs->cr_edge, "Helvetica",
+  cairo_set_source_rgb(cgcs->cr_edge, 0, 0, 1);
+  cairo_set_line_width(cgcs->cr_edge, 1);
+  cairo_select_font_face(cgcs->cr_edge, "DejaVu Sans Mono",
 			 CAIRO_FONT_SLANT_NORMAL,
 			 CAIRO_FONT_WEIGHT_NORMAL);
-  
   cairo_set_font_size(cgcs->cr_edge, 12);
 
   cgcs->cr_node = gdk_cairo_create(window);
-  cairo_set_source_rgb(cgcs->cr_node, 0, 0, 0);
-  cairo_set_line_width(cgcs->cr_node, 0.5);
+  cairo_set_source_rgb(cgcs->cr_node, 1, 1, 0);
+  cairo_set_line_width(cgcs->cr_node, 2);
   cairo_select_font_face(cgcs->cr_node, "Helvetica",
 			 CAIRO_FONT_SLANT_NORMAL,
-			 CAIRO_FONT_WEIGHT_NORMAL);
-  
-  cairo_set_font_size(cgcs->cr_node, 18);
+			 CAIRO_FONT_WEIGHT_BOLD);
+  cairo_set_font_size(cgcs->cr_node, 14);
 
   cgcs->cr_text = gdk_cairo_create(window);
-  cairo_set_source_rgb(cgcs->cr_text, 0, 0, 0);
-  cairo_set_line_width(cgcs->cr_text, 0.5);
-  cairo_select_font_face(cgcs->cr_text, "Helvetica",
+  cairo_set_source_rgb(cgcs->cr_text, 1, 0, 1);
+  cairo_set_line_width(cgcs->cr_text, 1);
+  cairo_select_font_face(cgcs->cr_text, "DejaVu Sans Mono",
 			 CAIRO_FONT_SLANT_NORMAL,
 			 CAIRO_FONT_WEIGHT_NORMAL);
   
-  cairo_set_font_size(cgcs->cr_text, 12);
+  cairo_set_font_size(cgcs->cr_text, 14);
 }
 
 
@@ -288,59 +282,58 @@ void redraw_all_in_pixmap(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, unsigned
 void redraw_all_in_region(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, Region region)
 {
      if (dd->op) {
-	  OG *og;
-	  Region inter;
+       OG *og; 
+	  /* Region inter; */
 
-	  /*
-	   * Set the clip mask of the GC.
-	   */
+	  /* /\* */
+	  /*  * Set the clip mask of the GC. */
+	  /*  *\/ */
 
-	  inter = XCreateRegion();
+	  /* inter = XCreateRegion(); */
+	  /* if (dd->expose_region) { */
+	  /*      XUnionRegion(dd->expose_region, region, region); */
+	  /*      XDestroyRegion(dd->expose_region); */
+	  /*      dd->expose_region = NULL; */
+	  /* } */
+	  /* //	  XSetRegion(XtDisplay(w), cgcsp->cr_basic, region); */
+	  /* XSetRegion(XtDisplay(w), dd->sgc, region); */
+	  /* XSetRegion(XtDisplay(w), dd->xorgc, region); */
 
-	  if (dd->expose_region) {
-	       XUnionRegion(dd->expose_region, region, region);
-	       XDestroyRegion(dd->expose_region);
-	       dd->expose_region = NULL;
-	  }
-	  //	  XSetRegion(XtDisplay(w), cgcsp->cr_basic, region);
-	  XSetRegion(XtDisplay(w), dd->sgc, region);
-	  XSetRegion(XtDisplay(w), dd->xorgc, region);
-
-	  XOffsetRegion(region, dd->left, dd->top);
+	  /* XOffsetRegion(region, dd->left, dd->top); */
 	  
 	  if (dd->op->op_title && dd->op->op_title->u.gtext->visible) {
-	       XIntersectRegion(region, dd->op->op_title->region, inter);
-	       if (!XEmptyRegion(inter))
-		    draw_og(w, dd, cgcsp,  dd->op->op_title);
+	       /* XIntersectRegion(region, dd->op->op_title->region, inter); */
+	       /* if (!XEmptyRegion(inter)) */
+	         draw_og(w, dd, cgcsp,  dd->op->op_title);
 	  }
 
 	  SAFE_SL_LOOP_THROUGH_SLIST(dd->op->list_og_edge, og, OG *) {
-	       XIntersectRegion(region, og->region, inter);
-	       if (!XEmptyRegion(inter))
+	       /* XIntersectRegion(region, og->region, inter); */
+	       /* if (!XEmptyRegion(inter)) */
 		    draw_og(w, dd, cgcsp, og);
 	  }
 
 	  SAFE_SL_LOOP_THROUGH_SLIST(dd->op->list_og_node, og, OG *) {
-	       XIntersectRegion(region, og->region, inter);
-	       if (!XEmptyRegion(inter))
+	       /* XIntersectRegion(region, og->region, inter); */
+	       /* if (!XEmptyRegion(inter)) */
 		    draw_og(w, dd, cgcsp, og);
 	  }
 
 	  SAFE_SL_LOOP_THROUGH_SLIST(dd->op->list_og_edge_text, og, OG *) {
-	       XIntersectRegion(region, og->region, inter);
-	       if (!XEmptyRegion(inter))
+	       /* XIntersectRegion(region, og->region, inter); */
+	       /* if (!XEmptyRegion(inter)) */
 		    draw_og(w, dd, cgcsp, og);
 	  }
 
 	  SAFE_SL_LOOP_THROUGH_SLIST(dd->op->list_og_text, og, OG *) {
 	       if (og->u.gtext->visible) {
-		    XIntersectRegion(region, og->region, inter);
-		    if (!XEmptyRegion(inter))
+		    /* XIntersectRegion(region, og->region, inter); */
+		    /* if (!XEmptyRegion(inter)) */
 			 draw_og(w, dd, cgcsp, og);
 	       }
 	  }
 
-	  XDestroyRegion(inter);
+	  /* XDestroyRegion(inter); */
 
 #ifdef IGNORE_GTK
 	  XSetClipMask(XtDisplay(w), cgcsp->cr_basic, None);
@@ -350,9 +343,8 @@ void redraw_all_in_region(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, Region r
      }
 }
 
-void handle_exposures(GtkWidget *w, Draw_Data *dd, XmDrawingAreaCallbackStruct *cb)
+void handle_exposures(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp)
 {
-#ifdef GTK_IGNORE
      static Region region = NULL;
 
      /*
@@ -361,18 +353,18 @@ void handle_exposures(GtkWidget *w, Draw_Data *dd, XmDrawingAreaCallbackStruct *
      if (!region)
 	  region = XCreateRegion();
 
+#ifdef GTK_IGNORE
      XtAddExposureToRegion(cb->event, region);
 
      if (cb->event->xexpose.count != 0)
 	  return;
-
+#endif
      redraw_all_in_region(w, dd, cgcsp, region);
      /*
       * Free the region.
       */
      XDestroyRegion(region);
      region = NULL;
-#endif
 }
 
 void enqueue_index(Draw_Data *dd,int top, int left)
@@ -866,37 +858,57 @@ void draw_node(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, int x, int y, int w
      Display *dpy = XtDisplay(w);
      Window win = dd->window;
      Node *node = n->node;
-
+     static int xx=0, yy =300;
      int xs, ys;
 
      xs = x - dd->left;
      ys = y - dd->top;
 
-     XDrawRectangle(dpy, win,  cgcsp->cr_basic ,
+#ifdef IGNORE
+     cairo_t *cr_node;
+     cr_node = gdk_cairo_create(dd->window);
+     cairo_set_source_rgb(cr_node, 1, 1, 0);
+     cairo_set_line_width(cr_node, 1);
+     cairo_select_font_face(cr_node, "Helvetica",
+			    CAIRO_FONT_SLANT_NORMAL,
+			    CAIRO_FONT_WEIGHT_BOLD);
+     cairo_set_font_size(cr_node, 14);
+     
+     XDrawRectangle(dpy, win,  cr_node ,
 		    xs + 1, ys + 1,
 		    n->swidth + 2, n->sheight + 2);
-     
-     XmStringDraw(dpy, win, dd->fontlist, n->xmstring, 
-		  cgcsp->cr_basic,
+#else
+     XDrawRectangle(dpy, win,  cgcsp->cr_node ,
+		    xs + 1, ys + 1,
+		    n->swidth + 2, n->sheight + 2);
+#endif     
+
+     XDrawRectangle(dpy, win,  cgcsp->cr_node ,
+		    xx, yy,
+		    4, 4);
+     xx += 6;
+
+     XmStringDraw(dpy, win, NULL, n->xmstring, 
+		  cgcsp->cr_node,
 		  xs + 4, ys + 3, n->swidth - 2,
 		  XmALIGNMENT_BEGINNING,
 		  XmSTRING_DIRECTION_L_TO_R,
 		  NULL);
 
      if (node->join) {
-	  XDrawLine(dpy, win,  cgcsp->cr_basic,
+	  XDrawLine(dpy, win,  cgcsp->cr_node,
 		    xs + 1, ys + 2,
 		    xs + n->swidth + 3 , ys + 2);
-	  XDrawLine(dpy, win,  cgcsp->cr_basic,
+	  XDrawLine(dpy, win,  cgcsp->cr_node,
 		    xs + 1, ys + 3,
 		    xs + n->swidth + 3 , ys + 3);
      }
      
      if (node->split) {
-	  XDrawLine(dpy, win,  cgcsp->cr_basic ,
+	  XDrawLine(dpy, win,  cgcsp->cr_node ,
 		    xs + 1, ys  + n->sheight + 2,
 		    xs +  n->swidth + 3 , ys + n->sheight + 2);
-	  XDrawLine(dpy, win,  cgcsp->cr_basic ,
+	  XDrawLine(dpy, win,  cgcsp->cr_node ,
 		    xs + 1, ys + n->sheight + 1,
 		    xs + n->swidth + 3 , ys + n->sheight + 1);
      }
@@ -912,8 +924,8 @@ void draw_text(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, int x, int y, int w
      Window win = dd->window;
 
      sl_loop_through_slist(et->lgt_string, gt_str, Gtext_String *) { 
-	  XmStringDraw(dpy, win, dd->fontlist, gt_str->xmstring, 
-		       cgcsp->cr_basic,
+	  XmStringDraw(dpy, win, NULL, gt_str->xmstring, 
+		       cgcsp->cr_text,
 		       x - dd->left + gt_str->off_x,
 		       y - dd->top + gt_str->off_y,
 		       width,
@@ -933,7 +945,7 @@ void draw_text(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, int x, int y, int w
 		    
 		    xs = og_inst->x - dd->left;
 		    ys = og_inst->y - dd->top;
-		    XDrawRectangle(dpy, win, cgcsp->cr_basic,
+		    XDrawRectangle(dpy, win, cgcsp->cr_text,
 				   xs, ys, og_inst->width-1, og_inst->height-1);
 	       }
 	  }
@@ -948,8 +960,8 @@ void draw_edge_text(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, int x, int y, 
      Window win = dd->window;
 
     sl_loop_through_slist(et->lgt_log_string, gt_str, Gtext_String *) { 
-	  XmStringDraw(dpy, win, dd->fontlist, gt_str->xmstring, 
-			    cgcsp->cr_basic,
+	  XmStringDraw(dpy, win, NULL, gt_str->xmstring, 
+			    cgcsp->cr_edge,
 			    x - dd->left + gt_str->off_x,
 			    y - dd->top + gt_str->off_y,
 			    width,
@@ -1066,7 +1078,7 @@ void draw_edge(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, Gedge *e)
      lines[n].x = e->x2 - dd->left;
      lines[n].y = e->y2 - dd->top; n++;
 
-     XDrawLines(dpy, win, cgcsp->cr_basic, lines, n, CoordModeOrigin);
+     XDrawLines(dpy, win, cgcsp->cr_edge, lines, n, CoordModeOrigin);
 
      arrows[0].x = e->x2 - dd->left;
      arrows[0].y = e->y2 - dd->top;
@@ -1075,8 +1087,9 @@ void draw_edge(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, Gedge *e)
      arrows[2].x = e->fx2 - dd->left;
      arrows[2].y = e->fy2 - dd->top;
 
-     XFillPolygon(dpy, win, cgcsp->cr_basic,
+     XFillPolygon(dpy, win, cgcsp->cr_edge,
 		  arrows, 3, Convex, CoordModeOrigin);
+
 
 }
 

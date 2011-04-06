@@ -74,6 +74,11 @@ static const char* const rcsid = "$Id$";
 #include "oprs-type_f.h"
 #include "oprs-print.h"
 #include "oprs-print_f.h"
+#ifndef NO_GRAPHIX
+#ifdef GTK
+#include "xm2gtk_f.h"
+#endif
+#endif
 
 void free_list_og_inst(List_OG list_og_inst);
 
@@ -808,11 +813,18 @@ OG *make_og_node(Draw_Data *dd, Op_Structure *op, Node *node, int x, int y)
      og->type =  dt;
      stripped_name = remove_vert_bar(name);
 
+#ifdef GTK
+     gnode->xmstring = XmStringCreate(stripped_name);
+#else
      gnode->xmstring = XmStringCreate(stripped_name, "node_cs");
+#endif
      FREE(stripped_name);
 
+#ifdef GTK
+     XmStringExtent(dd->cgcsp->cr_node,gnode->xmstring,&gnode->swidth, &gnode->sheight);
+#else
      XmStringExtent(dd->fontlist,gnode->xmstring,&gnode->swidth, &gnode->sheight);
-
+#endif
      gnode->swidth += 2;
      gnode->sheight += 2;
      og->width = gnode->swidth + 5;

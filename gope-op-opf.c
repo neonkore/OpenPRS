@@ -464,15 +464,22 @@ void on_changed_oplist(GtkWidget *widget, gpointer label)
 {
   GtkTreeIter iter;
   GtkTreeModel *model;
-  char *value;
+  char *ope_name;
+  Op_Structure *op;
 
 
   if (gtk_tree_selection_get_selected(
       GTK_TREE_SELECTION(widget), &model, &iter)) {
 
-    gtk_tree_model_get(model, &iter, LIST_ITEM, &value,  -1);
-    gtk_label_set_text(GTK_LABEL(label), value);
-    g_free(value);
+    gtk_tree_model_get(model, &iter, LIST_ITEM, &ope_name,  -1);
+    gtk_label_set_text(GTK_LABEL(label), ope_name);
+
+    sl_loop_through_slist(current_opfile->list_op, op, Op_Structure *)
+      if (strcmp(op->name, ope_name) == 0) {
+	select_op(op, global_draw_data);
+	break;
+      }
+    g_free(ope_name);
   }
 
 }

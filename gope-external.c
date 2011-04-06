@@ -38,7 +38,6 @@
 #include <string.h>
 
 #include <gtk/gtk.h>
-#define GTK
 
 #include "xm2gtk.h"
 #include "macro.h"
@@ -240,14 +239,14 @@ List_Gtext_String xs_str_array_to_lgt_str_cs(char *string_array[], int n, cairo_
   int i;
 
   Gtext_String *gt_str;
+  cairo_font_extents_t fextents;
   cairo_text_extents_t extents;
-  //cairo_t *cr;
 
-  //  cr = mainCGCsp->cr_title;
+  cairo_font_extents(cr, &fextents);
   cairo_text_extents(cr, " ", &extents);
-  height = extents.height;
-  width = extents.height;
-	
+  height = fextents.height;
+  width = extents.x_advance;
+  
   /*
    * If the array is empty just return an empty string.
    */

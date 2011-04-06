@@ -1,9 +1,7 @@
-static const char* const rcsid = "$Id$";
-
 /*                               -*- Mode: C -*- 
  * ope-vsblf.c -- 
  * 
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand, LAAS/CNRS
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,28 +32,42 @@ static const char* const rcsid = "$Id$";
 
 #include "config.h"
 
-#include <Xm/Xm.h>
 
+#include "constant.h"
+#include "macro.h"
+#include "oprs-type.h"
+#include "op-structure.h"
+
+#ifdef GTK
+#include <gtk/gtk.h>
+#include "xm2gtk.h"
+#include "gope-graphic.h"
+#include "gope-global.h"
+#else
+#include <Xm/Xm.h>
 #include <Xm/SelectioB.h>
 #include <Xm/RowColumn.h>
 #include <Xm/ToggleB.h>
 #include <Xm/Separator.h>
-
-#include "constant.h"
-#include "macro.h"
 #include "ope-graphic.h"
 #include "ope-global.h"
+#endif
 
 #include "ope-vsblf_f.h"
 
 #include "xhelp.h"
 #include "xhelp_f.h"
 
+#ifdef GTK
+#include "xm2gtk_f.h"
+#endif
+
 
 Widget VisibleFieldsDialog, VisibleFieldsMenu, VFTitle, VFCtxt, VFCall, VFSet, VFProp, VFEffe, VFDocu, VFNone, VFAll, VFNoneNT;
 
 void VFNoneChanged(Widget w, XtPointer client_data, XmToggleButtonCallbackStruct *call_data)
 {
+#ifdef GTK_IGNORE
      if (call_data->set) {
 	  XmToggleButtonSetState(VFAll, False, False);
 	  XmToggleButtonSetState(VFNoneNT, False, False);
@@ -67,10 +79,12 @@ void VFNoneChanged(Widget w, XtPointer client_data, XmToggleButtonCallbackStruct
 	  XmToggleButtonSetState(VFEffe, False, False);
 	  XmToggleButtonSetState(VFDocu, False, False);
      }
+#endif
 }
 
 void VFAllChanged(Widget w, XtPointer client_data, XmToggleButtonCallbackStruct *call_data)
 {
+#ifdef GTK_IGNORE
      if (call_data->set) {
 	  XmToggleButtonSetState(VFNone, False, False);
 	  XmToggleButtonSetState(VFNoneNT, False, False);
@@ -82,10 +96,12 @@ void VFAllChanged(Widget w, XtPointer client_data, XmToggleButtonCallbackStruct 
 	  XmToggleButtonSetState(VFEffe, True, False);
 	  XmToggleButtonSetState(VFDocu, True, False);
      }
+#endif
 }
 
 void VFNoneNTChanged(Widget w, XtPointer client_data, XmToggleButtonCallbackStruct *call_data)
 {
+#ifdef GTK_IGNORE
      if (call_data->set) {
 	  XmToggleButtonSetState(VFAll, False, False);
 	  XmToggleButtonSetState(VFNone, False, False);
@@ -97,10 +113,12 @@ void VFNoneNTChanged(Widget w, XtPointer client_data, XmToggleButtonCallbackStru
 	  XmToggleButtonSetState(VFEffe, False, False);
 	  XmToggleButtonSetState(VFDocu, False, False);
      }
+#endif
 }
 
 void updateVisibleFieldsDialog(Draw_Data *dd)
 {
+#ifdef GTK_IGNORE
      Op_Structure *op = dd->op;
 
      XtSetSensitive(VFTitle, True);
@@ -154,20 +172,25 @@ void updateVisibleFieldsDialog(Draw_Data *dd)
      XmToggleButtonSetState(VFNone,False,False);
      XmToggleButtonSetState(VFNoneNT,False,False);
      XmToggleButtonSetState(VFAll,False,False);
+#endif
 }
 
 void updateVisibleFieldsDialogIfManaged(Draw_Data *dd)
 {
+#ifdef IGNORE_GTK
      if (XtIsManaged(VisibleFieldsDialog))
 	  updateVisibleFieldsDialog(dd);
+#endif
 }
 
 void updateVisibleFieldsSensitivityIfManaged(PBoolean sensible)
 {
+#ifdef IGNORE_GTK
      if (XtIsManaged(VisibleFieldsDialog)) {
 	  XtSetSensitive(XmSelectionBoxGetChild(VisibleFieldsDialog, XmDIALOG_OK_BUTTON), sensible);
 	  XtSetSensitive(XmSelectionBoxGetChild(VisibleFieldsDialog, XmDIALOG_APPLY_BUTTON), sensible);
      }
+#endif
 }
 
 void update_list_ogs(Op_Structure *op, PBoolean prev, PBoolean now, OG *og)
@@ -230,12 +253,15 @@ void updateVisibleFields(Draw_Data *dd)
 
 void VisibleFieldsDialogAccept(Widget w, Draw_Data *dd, XtPointer call_data)
 {
+#ifdef GTK_IGNORE
      updateVisibleFields(dd);
      XClearArea(XtDisplay(dd->canvas), dd->window, 0, 0, 0, 0, True);
+#endif
 }
 
 void ope_create_vf_dialog(Widget parent, Draw_Data *dd)
 {
+#ifdef GTK_IGNORE
      Cardinal n;
      Arg args[MAXARGS];
 
@@ -281,4 +307,5 @@ void ope_create_vf_dialog(Widget parent, Draw_Data *dd)
      XtManageChild(VFNone);
      XtManageChild(VFNoneNT);
      XtManageChild(VFAll);
+#endif
 }

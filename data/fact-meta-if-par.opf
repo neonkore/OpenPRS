@@ -16,7 +16,7 @@
 (SETTING SETTING  10 210 0 60 0 )
 (EFFECTS EFFECTS  10 310 0 60 0 )
 (DOCUMENTATION DOCUMENTATION "This OP  computes the Factorial of $n and unifies the result with $result.
- It uses an iterative algorithm operating on local variables.
+It uses an iterative algorithm operating on local variables.
 Note the RECRUSIVE NIL property which will be used by the
 Meta level OP." 10 410 1 60 0 )
 (PROPERTIES PROPERTIES ((RECURSIVE NIL)) 10 360 1 60 0 )

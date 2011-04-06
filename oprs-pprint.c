@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * oprs-pprint.c -- 
  * 
- * Copyright (c) 1991-2010 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -54,7 +54,12 @@ static const char* const rcsid = "$Id$";
 #include "oprs-error_f.h"
 
 #ifndef NO_GRAPHIX
+#ifdef GTK
+#include <gtk/gtk.h>
+#include "gope-graphic.h"
+#else
 #include "ope-graphic.h"
+#endif
 #endif
 
 /**

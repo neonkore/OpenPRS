@@ -48,7 +48,7 @@ C_SRC = action.c activate.c database.c ev-function.c shary-user-ev-function.c ev
 	fact-goal.c help.c int-graph.c intend.c intention.c op-compiler.c op-dump-load.c \
 	op-instance.c op-structure.c op-x-opaque.c ope-bboard.c ope-edit.c \
 	ope-external.c gope-external.c ope-filesel.c gope-filesel.c ope-graphic.c gope-graphic.c ope-op-opf.c gope-op-opf.c ope-main.c gope-main.c ope-menu.c gope-menu.c \
-	ope-print.c ope-pxmw.c ope-save.c ope-syntax.c ope-vsblf.c oprs-subst.c\
+	ope-print.c ope-pxmw.c ope-save.c ope-syntax.c ope-vsblf.c gope-vsblf.c oprs-subst.c\
 	lisp-list.c mp.c mp-register.c opaque-ext.c parser-funct.c oprs-array.c \
 	oprs-cat.c oprs-client.c oprs-copy.c oprs-dup.c oprs-free.c oprs-init.c tcl.c oprs-main.c \
 	oprs-pprint.c oprs-print.c oprs-sprint.c oprs-send-m.c oprs-server-main.c oprs-socket.c \
@@ -61,7 +61,7 @@ C_SRC = action.c activate.c database.c ev-function.c shary-user-ev-function.c ev
 	xoprs-op-graphic.c xoprs-rop.c test-malloc.c conditions.c lang.c oprs-server-opaque.c \
 	ope-opaque.c oprs-rerror.c oprs-dump.c oprs-load.c opc-main.c \
 	type.c  oprs-pred-func.c\
-	yy-funct.c
+	yy-funct.c 
 
 # All the .h include files
 INC = action.h activate.h config.h constant-pub.h constant.h database.h \
@@ -75,7 +75,7 @@ INC = action.h activate.h config.h constant-pub.h constant.h database.h \
 	user-ev-predicate.h user-external.h version.h xoprs.h xhelp.h \
 	xoprs-intention.h xoprs-main-pub.h xoprs-main.h xoprs.h xoprs-textwin.h ope-syntax.h \
 	op-default.h oprs-sprint.h oprs-error.h oprs-rerror.h oprs-error-pub.h \
-	conditions.h lang.h oprs-dump.h opc.h type.h oprs-pred-func.h
+	conditions.h lang.h oprs-dump.h opc.h type.h oprs-pred-func.h xm2gtk.h
 
 #All the _f.h function include
 FINC = action_f.h activate_f.h database_f.h ev-function_f.h oprs-pred-func_f.h \
@@ -84,7 +84,7 @@ FINC = action_f.h activate_f.h database_f.h ev-function_f.h oprs-pred-func_f.h \
 	intention_f.h op-compiler_f.h op-instance_f-pub.h op-instance_f.h \
 	op-structure_f.h ope-bboard_f.h ope-edit_f.h ope-external_f.h gope-external_f.h \
 	ope-filesel_f.h gope-filesel_f.h ope-graphic_f.h gope-graphic_f.h ope-op-opf_f.h gope-op-opf_f.h ope-menu_f.h gope-menu_f.h \
-	ope-print_f.h ope-pxmw_f.h ope-save_f.h ope-syntax_f.h ope-vsblf_f.h \
+	ope-print_f.h ope-pxmw_f.h ope-save_f.h ope-syntax_f.h ope-vsblf_f.h gope-vsblf_f.h \
 	lisp-list_f-pub.h lisp-list_f.h mp-register_f.h other_proto.h \
 	parser-funct_f.h oprs-array_f.h oprs-client_f.h oprs-print_f.h \
 	oprs-send-m_f.h oprs-socket_f.h oprs-profiling_f.h oprs-type_f-pub.h \
@@ -94,7 +94,7 @@ FINC = action_f.h activate_f.h database_f.h ev-function_f.h oprs-pred-func_f.h \
 	xoprs-intention_f.h xoprs-menu_f.h xoprs-textwin_f.h ope-rop_f.h ope-report_f.h \
 	oprs-pprint_f.h tcl_f.h oprs-init_f.h oprs-sprint_f.h oprs-error_f.h \
 	oprs-rerror_f-pub.h oprs-sprint_f-pub.h conditions_f.h  oprs-rerror_f.h \
-	oprs-dump_f.h oprs-print_f-pub.h type_f.h
+	oprs-dump_f.h oprs-print_f-pub.h type_f.h xm2gtk_f.h
 
 # The X resources files
 RESOURCES_SRC = XOprs.adlang Ope.adlang
@@ -183,7 +183,7 @@ OP_EDITOR_OBJ = ope-bboard.o ope-edit.o ope-filesel.o ope-op-opf.o ope-main.o \
 GOP_EDITOR_OBJ = ope-bboard.o ope-edit.o gope-filesel.o gope-op-opf.o gope-main.o \
 	gope-menu.o ope-parser.tab.o ope-parser.lex.o ope-print.o ope-pxmw.o \
 	ope-save.o ope-syntax.o \
-	ope-vsblf.o xt-util.o ope-rop.o ope-op-str.o ope-opaque.o
+	gope-vsblf.o xt-util.o ope-rop.o ope-op-str.o ope-opaque.o
 
 OPC_OBJ = opc-main.o opc-parser.tab.o opc-parser.lex.o ope-opaque.o
 
@@ -225,7 +225,7 @@ TEXT_OPE_OPRS_LIB = libTOpEOprs.a
 
 GRAPHIC_OPE_OPRS_LIB = libGOpEOprs.a
 
-GGRAPHIC_OPE_OPRS_LIB = #libGGOpEOprs.a
+GGRAPHIC_OPE_OPRS_LIB =		#libGGOpEOprs.a Do we need it for the gope?
 
 BOTH_OPE_OPRS_LIB_OBJ = oprs-dump.o oprs-load.o
 
@@ -494,6 +494,11 @@ $(GRAPHIC_OPE_OPRS_LIB): $(BOTH_OPE_OPRS_LIB_OBJ:%=$(GRAPHIC_OPE_OPRS_LIB)(%))
 $(GGRAPHIC_OPE_OPRS_LIB): $(BOTH_OPE_OPRS_LIB_OBJ:%=$(GGRAPHIC_OPE_OPRS_LIB)(%))
 	$(RANLIB) $@
 
+$(GGRAPHIC_OPE_OPRS_LIB)(%.o): %.c
+	$(CC) $(CFLAGS) -UNO_GRAPHIX -DGTK $(CPPFLAGS) -c $< -o $%
+	$(AR) r $@ $*.o
+	$(RM) $*.o
+
 $(TEXT_OPE_OPRS_LIB): $(BOTH_OPE_OPRS_LIB_OBJ:%=$(TEXT_OPE_OPRS_LIB)(%))
 	$(RANLIB) $@
 
@@ -518,6 +523,11 @@ $(KERNEL_LIB): $(KERNEL_LIB_OBJ:%=$(KERNEL_LIB)(%))
 $(TEXT_KERNEL_LIB): $(BOTH_KERNEL_LIB_OBJ:%=$(TEXT_KERNEL_LIB)(%))
 	$(RANLIB) $@
 
+$(TEXT_KERNEL_LIB)(%.o): %.c
+	$(CC) $(CFLAGS) -DNO_GRAPHIX -DOPRS_KERNEL $(CPPFLAGS) -c $< -o $%
+	$(AR) r $@ $*.o
+	$(RM) $*.o
+
 $(GRAPHIC_KERNEL_LIB): $(BOTH_KERNEL_LIB_OBJ:%=$(GRAPHIC_KERNEL_LIB)(%))
 	$(RANLIB) $@
 
@@ -533,13 +543,13 @@ $(OPG_LIB): $(OPG_LIB_OBJ:%=$(OPG_LIB)(%))
 $(GOPG_LIB): $(GOPG_LIB_OBJ:%=$(GOPG_LIB)(%))
 	$(RANLIB) $@
 
-$(OPAQUE_LIB): $(OPAQUE_LIB_OBJ:%=$(OPAQUE_LIB)(%))
-	$(RANLIB) $@
-
-$(TEXT_KERNEL_LIB)(%.o): %.c
-	$(CC) $(CFLAGS) -DNO_GRAPHIX -DOPRS_KERNEL $(CPPFLAGS) -c $< -o $%
+$(GOPG_LIB)(%.o): %.c
+	$(CC) $(CFLAGS) -UNO_GRAPHIX -DGTK $(CPPFLAGS) -c $< -o $%
 	$(AR) r $@ $*.o
 	$(RM) $*.o
+
+$(OPAQUE_LIB): $(OPAQUE_LIB_OBJ:%=$(OPAQUE_LIB)(%))
+	$(RANLIB) $@
 
 $(TEXT_OPRS_LIB)(%.o): %.c
 	$(CC) $(CFLAGS) -DNO_GRAPHIX $(CPPFLAGS) -c $< -o $%
@@ -572,11 +582,6 @@ $(GGRAPHIC_KERNEL_LIB)(%.o): %.c
 	$(RM) $*.o
 
 $(GGRAPHIC_OPRS_LIB)(%.o): %.c
-	$(CC) $(CFLAGS) -UNO_GRAPHIX -DGTK $(CPPFLAGS) -c $< -o $%
-	$(AR) r $@ $*.o
-	$(RM) $*.o
-
-$(GGRAPHIC_OPE_OPRS_LIB)(%.o): %.c
 	$(CC) $(CFLAGS) -UNO_GRAPHIX -DGTK $(CPPFLAGS) -c $< -o $%
 	$(AR) r $@ $*.o
 	$(RM) $*.o

@@ -181,6 +181,7 @@ struct draw_data {
   GtkWidget *topLevelWindow;
   GtkWidget *canvas;
   GdkDrawable *window;
+  CairoGCs *cgcsp; 
   guint canvas_height;		  /* canvas dimensions     */
   guint canvas_width;
   guint work_height;
@@ -195,8 +196,8 @@ struct draw_data {
   PBoolean just_compiling;
   GtkWidget *vscrollbar;
   GtkWidget *hscrollbar;
-  void *font;			  /* The font struct       */
-  void *fontlist;
+  //void *font;			  /* The font struct       */
+  //void *fontlist;
   Draw_Mode mode, old_mode;
   OG *edited_og;
   OG *node_selected;
