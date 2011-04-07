@@ -9,9 +9,6 @@
 extern "C" {
 #endif
 
-#ifndef __CEXTRACT__
-#if __STDC__
-
 extern PBoolean pu_check_ttc_name ( Expression *tc, char *name, char *type_name );
 extern PBoolean pu_encode_genom_double ( char *name, Expression *tc, double *val_addr, int size );
 extern PBoolean pu_encode_genom_float ( char *name, Expression *tc, float *val_addr, int size );
@@ -44,42 +41,22 @@ extern Term *pu_decode_genom_float ( char *name, float *addr, int size );
 extern Term *pu_decode_genom_double ( char *name, double *addr, int size );
 extern Term *pu_decode_genom_string ( char *name, char *addr, int size, int max_size );
 
-#else /* __STDC__ */
-
-extern PBoolean pu_check_ttc_name (/* Expression *tc, char *name, char *type_name */);
-extern PBoolean pu_encode_genom_double (/* char *name, Expression *tc, double *val_addr, int size */);
-extern PBoolean pu_encode_genom_float (/* char *name, Expression *tc, float *val_addr, int size */);
-extern PBoolean pu_encode_genom_long_long_int (/* char *name, Expression *tc, long long int *val_addr, int size */);
-extern PBoolean pu_encode_genom_unsigned_long_long_int (/* char *name, Expression *tc, unsigned long long int *val_addr, int size */);
-extern PBoolean pu_encode_genom_int (/* char *name, Expression *tc, int *val_addr, int size */);
-extern PBoolean pu_encode_genom_unsigned_int (/* char *name, Expression *tc, unsigned int *val_addr, int size */);
-extern PBoolean pu_encode_genom_short (/* char *name, Expression *tc, short *val_addr, int size */);
-extern PBoolean pu_encode_genom_short_int (/* char *name, Expression *tc, short int *val_addr, int size */);
-extern PBoolean pu_encode_genom_unsigned_short_int (/* char *name, Expression *tc, unsigned short int *val_addr, int size */);
-extern PBoolean pu_encode_genom_long_int (/* char *name, Expression *tc, long int *val_addr, int size */);
-extern PBoolean pu_encode_genom_unsigned_long_int (/* char *name, Expression *tc, unsigned long int *val_addr, int size */);
-extern PBoolean pu_encode_genom_char (/* char *name, Expression *tc, char *val_addr, int size */);
-extern PBoolean pu_encode_genom_unsigned_char (/* char *name, Expression *tc, unsigned char *val_addr, int size */);
-extern PBoolean pu_encode_genom_addr (/* char *name, Expression *tc, void * *val_addr, int size */);
-extern PBoolean pu_encode_genom_string (/* char *name, Expression *tc, char *val_addr, int size, int max_size */);
-extern Term *pu_decode_genom_int (/* char *name, int *addr, int size */);
-extern Term *pu_decode_genom_long_long_int (/* char *name, long long int *addr, int size */);
-extern Term *pu_decode_genom_unsigned_long_long_int (/* char *name, unsigned long long int *addr, int size */);
-extern Term *pu_decode_genom_unsigned_int (/* char *name, unsigned int *addr, int size */);
-extern Term *pu_decode_genom_unsigned_char (/* char *name, unsigned char *addr, int size */);
-extern Term *pu_decode_genom_short (/* char *name, short *addr, int size */);
-extern Term *pu_decode_genom_short_int (/* char *name, short int *addr, int size */);
-extern Term *pu_decode_genom_unsigned_short_int (/* char *name, unsigned short int *addr, int size */);
-extern Term *pu_decode_genom_long_int (/* char *name, long int *addr, int size */);
-extern Term *pu_decode_genom_unsigned_long_int (/* char *name, unsigned long int *addr, int size */);
-extern Term *pu_decode_genom_addr (/* char *name, void * *addr, int size */);
-extern Term *pu_decode_genom_char (/* char *name, char *addr, int size */);
-extern Term *pu_decode_genom_float (/* char *name, float *addr, int size */);
-extern Term *pu_decode_genom_double (/* char *name, double *addr, int size */);
-extern Term *pu_decode_genom_string (/* char *name, char *addr, int size, int max_size */);
-
-#endif /* __STDC__ */
-#endif /* __CEXTRACT__ */
+extern Term *pu_simple_decode_int ( char *name, int addr );
+extern Term *pu_simple_decode_long_long_int ( char *name, long long int addr );
+extern Term *pu_simple_decode_unsigned_long_long_int ( char *name, unsigned long long int addr );
+extern Term *pu_simple_decode_unsigned_int ( char *name, unsigned int addr );
+extern Term *pu_simple_decode_unsigned_char ( char *name, unsigned char addr );
+extern Term *pu_simple_decode_short ( char *name, short addr );
+extern Term *pu_simple_decode_short_int ( char *name, short int addr );
+extern Term *pu_simple_decode_unsigned_short_int ( char *name, unsigned short int addr );
+extern Term *pu_simple_decode_long_int ( char *name, long int addr );
+extern Term *pu_simple_decode_unsigned_long_int ( char *name, unsigned long int addr );
+extern Term *pu_simple_decode_addr ( char *name, void *addr );
+extern Term *pu_simple_decode_char ( char *name, char addr );
+extern Term *pu_simple_decode_float ( char *name, float addr );
+extern Term *pu_simple_decode_double ( char *name, double addr );
+extern Term *pu_simple_decode_string ( char *name, char *addr );
+extern Term *pu_simple_decode_atom(char *key, char *value);
 
 #ifdef __cplusplus
 }

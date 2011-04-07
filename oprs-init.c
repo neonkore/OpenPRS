@@ -100,6 +100,8 @@ static const char* const rcsid = "$Id$";
 #include "oprs-sprint_f.h"
 #include "type_f.h"
 
+#include "tcl_f.h"
+
 #ifndef NO_GRAPHIX
 #include "xoprs-intention.h"
 #include "xoprs-intention_f.h"
@@ -514,7 +516,7 @@ char *oprs_init_arg(int argc,char **argv, char **mp_hostn, int *mp_p, char **ser
      int c, getoptflg = 0;
      int sname_flg = 0, snumber_flg = 0, mpname_flg = 0, mpnumber_flg = 0, oprsname_flg = 0;
      int quiet_flg = 0, dname_flg = 0, alone_flg = 0, alone_mp_flg = 0, english_flg = 0, lci_flg = 0;
-     int database_flg = 0, pred_func_flg = 0, id_flg = 0, lang_flg =0;
+     int database_flg = 0, pred_func_flg = 0, id_flg = 0, lang_flg = 0, tcl_flg = 0;
      int database_hash_size, pred_func_hash_size, id_hash_size;
 
      extern int optind;
@@ -523,9 +525,9 @@ char *oprs_init_arg(int argc,char **argv, char **mp_hostn, int *mp_p, char **ser
 
      while ((c = getopt(argc, argv, 
 #ifdef CONNECT_TO_IXTET
-			"c:d:s:x:X:i:m:j:n:D:P:I:l:L:hpqaA"
+			"c:d:s:x:X:i:m:j:n:D:P:I:l:L:htpqaA"
 #else
-			"c:d:s:x:i:m:j:n:D:P:I:l:L:hpqaA"
+			"c:d:s:x:i:m:j:n:D:P:I:l:L:htpqaA"
 #endif
 	  )) != EOF)
 	  switch (c)
@@ -566,6 +568,9 @@ char *oprs_init_arg(int argc,char **argv, char **mp_hostn, int *mp_p, char **ser
 	  case 'n':
 	       oprsname_flg++;
 	       oprs_name = optarg;
+	       break;
+	  case 't':
+	       tcl_flg++;
 	       break;
 	  case 'a':
 	       alone_flg++;
@@ -754,6 +759,12 @@ char *oprs_init_arg(int argc,char **argv, char **mp_hostn, int *mp_p, char **ser
 
      if ( !quiet_flg && !alone_flg)
 	  fprintf(stderr, OPRS_HELP_MESSAGE);
+
+     if ( tcl_flg ) {
+	  fprintf(stderr, LG_STR("This kernel will start a tcl interpreter.\n",
+				 "Ce noyau va demarrer un interpreteur tcl.\n"));
+	  start_tcl_interpreter();
+     }
 
      init_hash_size_type(0);
 

@@ -1,3 +1,82 @@
+2011-03-01  Felix Ingrand  <felix@cturtle>
+
+	* pu-genom.c added function to add simple type (not expecting array like with GenoM).
+
+2011-02-27  Felix Ingrand  <felix@cturtle>
+
+	* pu-parse-tl.c (PUGetOprsVarArgParameters): Minors changes (e.g. use
+	symbol instead of strings).
+	(PUGetOprsVarArgParameters): oops... DECLARE_ID is a macro and could
+	not be used in this lib. declare_atom will do the same thing.
+n
+2011-02-26  Felix Ingrand  <felix@cturtle>
+
+	* pu-parse-tl.c (PUGetOprsVarArgParameters): improve the test on the
+	argument name
+
+	Here is an example of a more complex usage:
+
+Term *pr2CallPointHeadAction(TermList terms) 
+{
+  pr2_controllers_msgs::PointHeadGoal goal;
+
+  //This call will parse the arguments, self explanatory... no?
+  if (PUGetOprsVarArgParameters(terms, 8,
+				set_parameter_or_default_value(goal.pointing_frame, "high_def_frame", STRING),
+				set_parameter_or_default_value(goal.target.header.frame_id, "base_link", STRING),
+				set_parameter_or_default_value(goal.target.point.x, 5, FLOAT),
+				set_parameter_or_default_value(goal.target.point.y, 0, FLOAT),
+				set_parameter_or_default_value(goal.target.point.z, 1.2, FLOAT),
+				set_parameter_or_default_value(goal.pointing_axis.x, 1.0, FLOAT),
+				set_parameter_or_default_value(goal.pointing_axis.y, 0.0, FLOAT),
+				set_parameter_or_default_value(goal.pointing_axis.z, 0.0, FLOAT)
+				)) {
+....
+This particular action can now be called with the following goal:
+(! (PR2PointHeadAction (VarArg))) 	; we get all the defaults value
+(! (PR2PointHeadAction (VarArg (x 3.0) (z 4.0)))) ; this will change 
+	; goal.target.point.x to 3.0
+	; goal.target.point.z to 4.0
+	; Note that it takes the first .x and .z in the list.
+	; All others value are set to default.
+(! (PR2PointHeadAction (VarArg (pointing_axis.x 1.0) (x 4.0)))) ; this will change
+	; goal.pointing_axis.x to 1.0
+	; goal.target.point.x to 4.0
+	; all others value are set to the default.
+	You get the idea...
+	The only problem I see for now is to make sure you clearly identify the type of the object...
+	do not rely on assignment casting. For example goal.pointing_axis.x is indeed a float64,
+	assigning it an int in the function will work (it will cast) but puting an int in its address will break. 
+
+	* pu-parse-tl.c (PUGetOprsVarArgParameters): Added a function
+	which allows one to pass a variable number of arguments named
+	after a suffixe unique substring of the structure they must
+	"fill". This needs to be used in concjunction with the macro:
+	 set_parameter_or_default_value
+	Example, in you evaluable predicate/function or action you will
+	now do to parse the terms arguments passed:
+
+	learning_actionlib::FibonacciGoal goal;
+
+	if (PUGetOprsVarArgParameters(terms, // the arg passed to the action/ep/ef
+				      1, //numbers of parameters possibly to fill
+				      set_parameter_or_default_value(goal.order,10,INTEGER)
+				      ))
+	goal.order is the field of a goal structure which will take an
+        INTEGER, we will give a default value of 10.
+
+	terms in the action call needs to be of the form 
+	(VarArg (order 15)). For example:
+	(! (Fibonacci (VarArg (order 20))))
+	or even (! (Fibonacci (VarArg))) which will then default to 10.
+	Make sense?
+
+	This was made to handle ROS/PR2 Action which take so many
+	arguments (while most of them can be defaulted). That way, one can
+	call these action with only the arguments which are needed, and
+	not probide all of them each time. This can of course be used in
+	others application.
+
 2011-01-18  Felix Ingrand  <felix@cturtle>
 
 	* pu-mk-term_f.h and pu-parse-tl_f.h: Added extern "C" around those 

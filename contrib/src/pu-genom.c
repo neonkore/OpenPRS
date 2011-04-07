@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * pu-genom.c -- 
  * 
- * Copyright (C) 1999-2009 LAAS/CNRS
+ * Copyright (C) 1999-2011 LAAS/CNRS
  * 
  * $Id$
  */
@@ -189,4 +189,50 @@ Term *pu_decode_genom_string(char *name, char *addr, int size, int max_size)
 	  sl_add_to_tail(tl, PUMakeTermString((addr+(j*max_size))));
      }
      return(build_term_expr(build_expr_pfr_terms(fr, tl)));
+}
+
+/* Same as above, but just take one object, no need to pass a pointer */
+#define define_pu_simple_decode(type_gen_name,type_gen,oprs_fct,type_term,prop_type) \
+Term *pu_simple_decode_ ## type_gen_name(char *name, type_gen val) \
+{\
+     Pred_Func_Rec *fr = find_or_create_pred_func(declare_atom(name?name:#prop_type));\
+     TermList tl = sl_make_slist();\
+     sl_add_to_tail(tl, oprs_fct((type_term)val));\
+     return build_term_expr(build_expr_pfr_terms(fr, tl));\
+}
+
+define_pu_simple_decode(int, int, PUMakeTermInteger, int, INTEGER)
+define_pu_simple_decode(long_long_int, long long int, PUMakeTermLongLong, long long int, LONG_LONG)
+define_pu_simple_decode(unsigned_long_long_int, unsigned long long int, PUMakeTermLongLong, long long int, LONG_LONG)
+define_pu_simple_decode(unsigned_int, unsigned int, PUMakeTermInteger, int, INTEGER)
+define_pu_simple_decode(unsigned_char, unsigned char, PUMakeTermInteger, int, INTEGER)
+
+define_pu_simple_decode(short, short, PUMakeTermInteger, int, INTEGER)
+define_pu_simple_decode(short_int, short int, PUMakeTermInteger, int, INTEGER)
+define_pu_simple_decode(unsigned_short_int, unsigned short int, PUMakeTermInteger, int, INTEGER)
+
+define_pu_simple_decode(long_int, long int, PUMakeTermInteger, int, INTEGER)
+define_pu_simple_decode(unsigned_long_int, unsigned long int, PUMakeTermInteger, int, INTEGER)
+
+define_pu_simple_decode(addr, void *, PUMakeTermUPointer, void *, U_POINTER)
+define_pu_simple_decode(char, char, PUMakeTermInteger, int, INTEGER)
+define_pu_simple_decode(float, float, PUMakeTermFloat, double, FLOAT)
+define_pu_simple_decode(double, double, PUMakeTermFloat, double, FLOAT)
+
+Term *pu_simple_decode_atom(char *key, char *value)
+{
+  Pred_Func_Rec *fr = find_or_create_pred_func(declare_atom(key?key:"ATOM"));
+  TermList tl = sl_make_slist();
+  sl_add_to_tail(tl, PUMakeTermAtom(value));
+  
+  return(build_term_expr(build_expr_pfr_terms(fr, tl)));
+}
+
+Term *pu_simple_decode_string(char *key, char *value)
+{
+  Pred_Func_Rec *fr = find_or_create_pred_func(declare_atom(key?key:"STRING"));
+  TermList tl = sl_make_slist();
+  sl_add_to_tail(tl, PUMakeTermString(value));
+  
+  return(build_term_expr(build_expr_pfr_terms(fr, tl)));
 }

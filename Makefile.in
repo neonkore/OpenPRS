@@ -3,7 +3,7 @@
 #
 # $Id: Makefile.in,v 1.11 2008/03/26 09:43:21 hcao Exp $
 #
-# Copyright (c) 1991-2010 Francois Felix Ingrand.
+# Copyright (c) 1991-2011 Francois Felix Ingrand.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -50,7 +50,7 @@ C_SRC = action.c activate.c database.c ev-function.c shary-user-ev-function.c ev
 	ope-external.c ope-filesel.c ope-graphic.c ope-op-opf.c ope-main.c ope-menu.c \
 	ope-print.c ope-pxmw.c ope-save.c ope-syntax.c ope-vsblf.c oprs-subst.c\
 	lisp-list.c mp.c mp-register.c opaque-ext.c parser-funct.c oprs-array.c \
-	oprs-cat.c oprs-client.c oprs-copy.c oprs-dup.c oprs-free.c oprs-init.c oprs-main.c \
+	oprs-cat.c oprs-client.c oprs-copy.c oprs-dup.c oprs-free.c oprs-init.c tcl.c oprs-main.c \
 	oprs-pprint.c oprs-print.c oprs-sprint.c oprs-send-m.c oprs-server-main.c oprs-socket.c \
 	oprs-profiling.c oprs-type.c oprs-util.c oprs.c relevant-op.c send-message.c \
 	soak.c top-lev-loop.c top-lev.c unification.c user-action.c user-trace.c\
@@ -92,7 +92,7 @@ FINC = action_f.h activate_f.h database_f.h ev-function_f.h oprs-pred-func_f.h \
 	send-message_f.h soak_f.h socket_f.h xt-util_f.h\
 	top-lev_f.h unification_f.h usage_f.h user-external_f.h xhelp_f.h \
 	xoprs-intention_f.h xoprs-menu_f.h xoprs-textwin_f.h ope-rop_f.h ope-report_f.h \
-	oprs-pprint_f.h oprs-init_f.h oprs-sprint_f.h oprs-error_f.h \
+	oprs-pprint_f.h tcl_f.h oprs-init_f.h oprs-sprint_f.h oprs-error_f.h \
 	oprs-rerror_f-pub.h oprs-sprint_f-pub.h conditions_f.h  oprs-rerror_f.h \
 	oprs-dump_f.h oprs-print_f-pub.h type_f.h
 
@@ -269,7 +269,7 @@ TEXT_KERNEL_LIB = libTKernel.a
 GRAPHIC_KERNEL_LIB = libGKernel.a
 
 BOTH_KERNEL_LIB_OBJ = action.o activate.o ev-function.o shary-user-ev-function.o intend.o intention.o \
-	int-graph.o op-instance.o oprs-init.o soak.o oprs-parser.tab.o \
+	int-graph.o op-instance.o oprs-init.o tcl.o soak.o oprs-parser.tab.o \
 	oprs-parser.lex.o top-lev.o
 
 BOTH_KERNEL_LIB_SRC = $(BOTH_KERNEL_LIB_OBJ:%.o=%.c)
@@ -882,13 +882,14 @@ TAGS: $(SRCS) $(YACC_SRC) $(LEX_SRC) $(C_TOOLKIT_SRC) \
 	$(RESOURCES_FILES)
 	etags $^
 
-$(srcdir)/configure: configure.ac aclocal.m4
+
+$(srcdir)/configure $(srcdir)/aclocal.m4: configure.ac
 	cd $(srcdir) && autoreconf
 
 # From autoconf info documentation
 # autoheader might not change config-ac.h.in, so touch a stamp file.
 $(srcdir)/config-ac.h.in: stamp-h.in
-$(srcdir)/stamp-h.in: configure.ac aclocal.m4 ac_find_motif.m4 ac_readline.m4
+$(srcdir)/stamp-h.in: configure.ac ac_find_motif.m4 ac_readline.m4
 	cd $(srcdir) && autoheader
 	echo timestamp > $(srcdir)/stamp-h.in
 
@@ -912,8 +913,12 @@ dist_name = @PACKAGE_TARNAME@-@PACKAGE_VERSION@
 git-tag:
 	git tag -m "release @PACKAGE_VERSION@"  $(dist_name)
 
+ADD_TO_ROBOTPKG_DISTRIB = configure aclocal.m4 config-ac.h.in stamp-h.in
+
 dist-robotpkg:
 	(cd $(top_srcdir); \
-	git archive --format=tar --prefix=$(dist_name)/ $(dist_name) | \
-	gzip -c - ) > $(dist_name).tar.gz
+	git archive --format=tar --prefix=$(dist_name)/ $(dist_name) | tar xf - ; \
+	cp $(ADD_TO_ROBOTPKG_DISTRIB) $(dist_name) ;\
+	tar zcf $(dist_name).tar.gz $(dist_name) )
 	scp $(dist_name).tar.gz softs.laas.fr:/ftp/pub/openrobots/openprs/
+	rm -rf  $(dist_name).tar.gz $(dist_name)
