@@ -1032,7 +1032,7 @@ OG *make_cp_graphic(PString name, Node *node)
      FREE(stripped_name);
 
      XmStringExtent(global_draw_data->fontlist,gnode->xmstring,&gnode->swidth, &gnode->sheight);
-     gnode->swidth += 2;
+     gnode->swidth += 3;
      gnode->sheight += 2;
      og->width = gnode->swidth + 5;
      og->height = gnode->sheight + 5;

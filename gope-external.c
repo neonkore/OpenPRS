@@ -127,7 +127,7 @@ XmString ope_string_to_xmstring(cairo_t *cr, char *string, Text_Type tt, Dimensi
   XmString x1,x2;
   Dimension w2, h2;
 
-  if (tt == TT_TEXT_NONE) {
+  if (tt == TT_TEXT_NONE || tt == TT_TITLE) {
     res = NULL;
     *w = *h = 0;
   } else {  
@@ -284,7 +284,7 @@ List_Gtext_String ope_string_to_lgt_string(cairo_t *cr, char *string,
      Gtext_String *gt_str_title;
      List_Gtext_String res;
      
-     if (tt == TT_TEXT_NONE) {
+     if (tt == TT_TEXT_NONE || tt == TT_TITLE) {
 	  gt_str_title = NULL;
 	  *w = *h = 0;
      } else {  
@@ -402,10 +402,10 @@ OG *make_op_title(Draw_Data *dd, char *name)
      text->fill_lines = FALSE;	/* see comment above */
 
      text->visible = TRUE;
-     text->text_type = TT_TEXT_NONE;
+     text->text_type = TT_TITLE;
      text->list_og_inst = NULL;
      text->lgt_string = ope_string_to_lgt_string(mainCGCsp->cr_title, text->string,
-						 TT_TEXT_NONE, &og->width, &og->height);
+						 TT_TITLE, &og->width, &og->height);
      rect.x = og->x = OP_TITLE_X;
      rect.y = og->y = OP_TITLE_Y;
 
@@ -1048,8 +1048,8 @@ OG *make_cp_graphic(PString name, Node *node)
      FREE(stripped_name);
 
      XmStringExtent(NULL,gnode->xmstring,&gnode->swidth, &gnode->sheight);
-     gnode->swidth += 2;
-     gnode->sheight += 2;
+     gnode->swidth += 4;
+     gnode->sheight += 4;
      og->width = gnode->swidth + 5;
      og->height = gnode->sheight + 5;
      og->selected = FALSE;

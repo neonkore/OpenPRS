@@ -82,6 +82,7 @@ static
 int XDrawRectangle(void *i1, void *i2, cairo_t *cr, int x, int y, unsigned int width, unsigned int height)
 {
   cairo_rectangle(cr, x, y, width, height);
+  cairo_stroke(cr);
   return 1;
 }
 
@@ -111,6 +112,14 @@ int XDrawLines(void *i1, void *i2, cairo_t *cr, XPoint *points, int npoints,void
 static
 int XFillPolygon(void *i1, void *i2, cairo_t *cr, XPoint *points, int npoints, void *shape, void * mode)
 {
+  gint i;
+  for ( i = 0; i < npoints; i++ ) {
+    cairo_line_to(cr, points[i].x, points[i].y);
+  }
+  
+  cairo_close_path(cr);
+  cairo_stroke_preserve(cr);
+  cairo_fill(cr);
 }
 
 static

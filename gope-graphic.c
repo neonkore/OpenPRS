@@ -97,7 +97,7 @@ void create_cgcs(CairoGCs *cgcs, GdkDrawable *window)
 
   cgcs->cr_node = gdk_cairo_create(window);
   cairo_set_source_rgb(cgcs->cr_node, 1, 1, 0);
-  cairo_set_line_width(cgcs->cr_node, 2);
+  cairo_set_line_width(cgcs->cr_node, 1);
   cairo_select_font_face(cgcs->cr_node, "Helvetica",
 			 CAIRO_FONT_SLANT_NORMAL,
 			 CAIRO_FONT_WEIGHT_BOLD);
@@ -858,98 +858,76 @@ void draw_node(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, int x, int y, int w
      Display *dpy = XtDisplay(w);
      Window win = dd->window;
      Node *node = n->node;
-     static int xx=0, yy =300;
      int xs, ys;
 
      xs = x - dd->left;
      ys = y - dd->top;
 
-#ifdef IGNORE
-     cairo_t *cr_node;
-     cr_node = gdk_cairo_create(dd->window);
-     cairo_set_source_rgb(cr_node, 1, 1, 0);
-     cairo_set_line_width(cr_node, 1);
-     cairo_select_font_face(cr_node, "Helvetica",
-			    CAIRO_FONT_SLANT_NORMAL,
-			    CAIRO_FONT_WEIGHT_BOLD);
-     cairo_set_font_size(cr_node, 14);
-     
-     XDrawRectangle(dpy, win,  cr_node ,
-		    xs + 1, ys + 1,
-		    n->swidth + 2, n->sheight + 2);
-#else
      XDrawRectangle(dpy, win,  cgcsp->cr_node ,
-		    xs + 1, ys + 1,
-		    n->swidth + 2, n->sheight + 2);
-#endif     
-
-     XDrawRectangle(dpy, win,  cgcsp->cr_node ,
-		    xx, yy,
-		    4, 4);
-     xx += 6;
+		    xs + 1, ys,
+		    n->swidth + 3, n->sheight + 4);
 
      XmStringDraw(dpy, win, NULL, n->xmstring, 
 		  cgcsp->cr_node,
-		  xs + 4, ys + 3, n->swidth - 2,
+		  xs + 3, ys + 3, n->swidth - 2,
 		  XmALIGNMENT_BEGINNING,
 		  XmSTRING_DIRECTION_L_TO_R,
 		  NULL);
 
      if (node->join) {
 	  XDrawLine(dpy, win,  cgcsp->cr_node,
-		    xs + 1, ys + 2,
-		    xs + n->swidth + 3 , ys + 2);
+		    xs + 1, ys- 1,
+		    xs + 1 + n->swidth + 3 , ys - 1);
 	  XDrawLine(dpy, win,  cgcsp->cr_node,
-		    xs + 1, ys + 3,
-		    xs + n->swidth + 3 , ys + 3);
+		    xs + 1, ys - 2,
+		    xs + n->swidth + 3 , ys -2);
      }
      
      if (node->split) {
 	  XDrawLine(dpy, win,  cgcsp->cr_node ,
-		    xs + 1, ys  + n->sheight + 2,
-		    xs +  n->swidth + 3 , ys + n->sheight + 2);
+		    xs + 1, ys  + n->sheight + 4 + 1,
+		    xs + 1 + n->swidth + 3 , ys + n->sheight + 4 + 1);
 	  XDrawLine(dpy, win,  cgcsp->cr_node ,
-		    xs + 1, ys + n->sheight + 1,
-		    xs + n->swidth + 3 , ys + n->sheight + 1);
+		    xs + 1, ys + n->sheight + 4 + 2,
+		    xs + n->swidth + 3 , ys + n->sheight + 4 + 2);
      }
 
 }
 
 void draw_text(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, int x, int y, int width, Gtext *et,PBoolean sel)
 {
-     Gtext_String *gt_str;
-     OG *og_inst;
+  Gtext_String *gt_str;
+  OG *og_inst;
 
-     Display *dpy = XtDisplay(w);
-     Window win = dd->window;
+  Display *dpy = XtDisplay(w);
+  Window win = dd->window;
+  sl_loop_through_slist(et->lgt_string, gt_str, Gtext_String *) { 
+    XmStringDraw(dpy, win, NULL, gt_str->xmstring, 
+		 (et->text_type == TT_TITLE ? cgcsp->cr_title:cgcsp->cr_text),
+		 x - dd->left + gt_str->off_x,
+		 y - dd->top + gt_str->off_y,
+		 width,
+		 XmALIGNMENT_BEGINNING,
+		 XmSTRING_DIRECTION_L_TO_R,
+		 NULL);
+  } 
 
-     sl_loop_through_slist(et->lgt_string, gt_str, Gtext_String *) { 
-	  XmStringDraw(dpy, win, NULL, gt_str->xmstring, 
-		       cgcsp->cr_text,
-		       x - dd->left + gt_str->off_x,
-		       y - dd->top + gt_str->off_y,
-		       width,
-		       XmALIGNMENT_BEGINNING,
-		       XmSTRING_DIRECTION_L_TO_R,
-		       NULL);
-     } 
-
-     if ((et->text_type == TT_BODY)
-	 && (et->list_og_inst != NULL)) {
-	  sl_loop_through_slist(et->list_og_inst, og_inst, OG *) {
-	       if (og_inst->selected) {
-		    Display *dpy = XtDisplay(w);
-		    Window win = dd->window;
+  if ((et->text_type == TT_BODY)
+      && (et->list_og_inst != NULL)) {
+    sl_loop_through_slist(et->list_og_inst, og_inst, OG *) {
+      if (og_inst->selected) {
+	Display *dpy = XtDisplay(w);
+	Window win = dd->window;
 		    
-		    int xs, ys;
+	int xs, ys;
 		    
-		    xs = og_inst->x - dd->left;
-		    ys = og_inst->y - dd->top;
-		    XDrawRectangle(dpy, win, cgcsp->cr_text,
-				   xs, ys, og_inst->width-1, og_inst->height-1);
-	       }
-	  }
-     }
+	xs = og_inst->x - dd->left;
+	ys = og_inst->y - dd->top;
+	XDrawRectangle(dpy, win, cgcsp->cr_text,
+		       xs, ys, og_inst->width-1, og_inst->height-1);
+      }
+    }
+  }
 }
 
 void draw_edge_text(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, int x, int y, int width, Gedge_text *et, PBoolean selected)
