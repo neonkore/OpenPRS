@@ -1,9 +1,7 @@
 /*                               -*- Mode: C -*-
- * constant.h -- Defines some constants system-wise.
+ * ope-edit_f.h --
  *
- * $Id$
- *
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand, LAAS/CNRS
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,54 +30,15 @@
  *
  */
 
-#ifndef INCLUDE_constant
-#define INCLUDE_constant
-
-#include "constant-pub.h"
-
-#if defined(VXWORKS)
-#define MAXPATHLEN MAX_FILENAME_LENGTH
-#endif
-
-#define LINSIZ 256
-
-#ifndef BUFSIZ
-#define BUFSIZ 1024
-#endif
-
-#define MAXARGS 20
-
-#define OPRS_NAME_MAX_LENGTH 128
-
-#define KILL_MP_NAME "kill-mp"
-#define OPRS_SERVER_MP_NAME "oprs-server"
-#define OP_EDITOR_MP_NAME "ope"
-
-#define OPRS_PROGNAME "oprs"
-#define OPRS_SERVER_PROGNAME "oprs-server"
-#define X_OPRS_PROGNAME "xoprs"
-#define MP_OPRS_PROGNAME "mp-oprs"
-
-typedef enum {MP_PG, SERV_PG, OPE_PG, XP_PG, OPRS_PG, KILL_PG, OPC_PG} Prog_Type;
-
-#define ASK_NAME_MESSAGE "who are you?"
-
-#define MAX_HOST_NAME 128	/* Maximum length for an host name */
-
-#ifndef MP_PORT
-#define MP_PORT 3300
-#endif
-
-#ifdef ALLOWED_PORT
-#undef MP_PORT
-#define MP_PORT ALLOWED_PORT
-#endif
-
-#ifndef SERVER_PORT
-#define SERVER_PORT 3400
-#endif
-
-#define COPYRIGHT_STRING "Copyright (c) 1991-2011 Felix Ingrand, LAAS/CNRS."
-
-#endif	/* INCLUDE_constant */
-
+void canvas_mouse_press(Widget w, Draw_Data *dd, CairoGCs *cgcsp, XEvent *event);
+void canvas_mouse_motion(Widget w, Draw_Data *dd, CairoGCs *cgcsp, XEvent *event);
+void canvas_mouse_release(Widget w, Draw_Data *dd, CairoGCs *cgcsp, XEvent *event);
+OG *create_text(Widget w, int x, int y, Draw_Data *dd, CairoGCs *cgcsp, Text_Type tt, PString test, int text_width, PBoolean fill_lines);
+void create_edge(Widget w, Draw_Data *dd, CairoGCs *cgcsp, OG *og1, OG *og2, char *t1, int width, PBoolean fill_lines, Draw_Type gtype, Edge_Type type, List_Knot list_knot, Expression *expr);
+void edit_og(Widget w, Draw_Data *dd, CairoGCs *cgcsp, OG *og, char *string);
+void set_editable_og_width(OG *og, int width);
+void set_editable_og_fill_lines(OG *og, PBoolean fill_lines);
+void make_start_node(Widget w, Draw_Data *dd, CairoGCs *cgcsp);
+void set_draw_mode(Draw_Data *dd, CairoGCs *cgcsp, Draw_Mode mode);
+void set_draw_mode_from_menu(Draw_Data *dd, CairoGCs *cgcsp, Draw_Mode mode);
+void rename_and_redraw_if_node(Widget w, Draw_Data *dd, CairoGCs *cgcsp, OG *og, PString if_name, PString then_name, PString else_name);

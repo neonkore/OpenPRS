@@ -279,12 +279,12 @@ void redraw_all_in_pixmap(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, unsigned
      }
 }
 
-void redraw_all_in_region(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, Region region)
+void redraw_all_in_region(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, GdkRegion *region)
 {
-     if (dd->op) {
-       OG *og; 
-	  /* Region inter; */
-
+  if (dd->op) {
+    OG *og; 
+    GdkRegion *inter;
+  
 	  /* /\* */
 	  /*  * Set the clip mask of the GC. */
 	  /*  *\/ */
@@ -300,71 +300,73 @@ void redraw_all_in_region(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, Region r
 	  /* XSetRegion(XtDisplay(w), dd->xorgc, region); */
 
 	  /* XOffsetRegion(region, dd->left, dd->top); */
-	  
-	  if (dd->op->op_title && dd->op->op_title->u.gtext->visible) {
-	       /* XIntersectRegion(region, dd->op->op_title->region, inter); */
-	       /* if (!XEmptyRegion(inter)) */
-	         draw_og(w, dd, cgcsp,  dd->op->op_title);
-	  }
-
-	  SAFE_SL_LOOP_THROUGH_SLIST(dd->op->list_og_edge, og, OG *) {
-	       /* XIntersectRegion(region, og->region, inter); */
-	       /* if (!XEmptyRegion(inter)) */
-		    draw_og(w, dd, cgcsp, og);
-	  }
-
-	  SAFE_SL_LOOP_THROUGH_SLIST(dd->op->list_og_node, og, OG *) {
-	       /* XIntersectRegion(region, og->region, inter); */
-	       /* if (!XEmptyRegion(inter)) */
-		    draw_og(w, dd, cgcsp, og);
-	  }
-
-	  SAFE_SL_LOOP_THROUGH_SLIST(dd->op->list_og_edge_text, og, OG *) {
-	       /* XIntersectRegion(region, og->region, inter); */
-	       /* if (!XEmptyRegion(inter)) */
-		    draw_og(w, dd, cgcsp, og);
-	  }
-
-	  SAFE_SL_LOOP_THROUGH_SLIST(dd->op->list_og_text, og, OG *) {
-	       if (og->u.gtext->visible) {
-		    /* XIntersectRegion(region, og->region, inter); */
-		    /* if (!XEmptyRegion(inter)) */
-			 draw_og(w, dd, cgcsp, og);
-	       }
-	  }
-
-	  /* XDestroyRegion(inter); */
-
+       
+    if (dd->op->op_title && dd->op->op_title->u.gtext->visible) {
+      inter = gdk_region_copy(dd->op->op_title->region);
+      gdk_region_intersect(inter, region);
+      if (!gdk_region_empty(inter))
+	draw_og(w, dd, cgcsp,  dd->op->op_title);
+      gdk_region_destroy(inter);
+    }
+    
+    SAFE_SL_LOOP_THROUGH_SLIST(dd->op->list_og_edge, og, OG *) {
+      inter = gdk_region_copy(og->region);
+      gdk_region_intersect(inter, region);
+      if (!gdk_region_empty(inter))
+	draw_og(w, dd, cgcsp, og);
+      gdk_region_destroy(inter);
+    }
+    
+    SAFE_SL_LOOP_THROUGH_SLIST(dd->op->list_og_node, og, OG *) {
+      inter = gdk_region_copy(og->region);
+      gdk_region_intersect(inter, region);
+      if (!gdk_region_empty(inter))
+	draw_og(w, dd, cgcsp, og);
+      gdk_region_destroy(inter);
+    }
+    
+    SAFE_SL_LOOP_THROUGH_SLIST(dd->op->list_og_edge_text, og, OG *) {
+      inter = gdk_region_copy(og->region);
+      gdk_region_intersect(inter, region);
+      if (!gdk_region_empty(inter))
+	draw_og(w, dd, cgcsp, og);
+      gdk_region_destroy(inter);
+    }
+    
+    SAFE_SL_LOOP_THROUGH_SLIST(dd->op->list_og_text, og, OG *) {
+      inter = gdk_region_copy(og->region);
+      gdk_region_intersect(inter, region);
+      if (!gdk_region_empty(inter))
+	draw_og(w, dd, cgcsp, og);
+      gdk_region_destroy(inter);
+    }
 #ifdef IGNORE_GTK
 	  XSetClipMask(XtDisplay(w), cgcsp->cr_basic, None);
 	  XSetClipMask(XtDisplay(w), dd->sgc, None);
 	  XSetClipMask(XtDisplay(w), dd->xorgc, None);
 #endif
-     }
+  }
 }
 
-void handle_exposures(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp)
+void handle_exposures(GtkWidget *w, Draw_Data *dd,  GdkEventExpose *event, CairoGCs *cgcsp)
 {
-     static Region region = NULL;
+  static Region region = NULL;
+  
+  if (!region) {
+    region = XCreateRegion();
+  }
+  
+  gdk_region_union(region,event->region);
 
-     /*
-      * Create a region and add the contents of the of the event
-      */
-     if (!region)
-	  region = XCreateRegion();
-
-#ifdef GTK_IGNORE
-     XtAddExposureToRegion(cb->event, region);
-
-     if (cb->event->xexpose.count != 0)
-	  return;
-#endif
-     redraw_all_in_region(w, dd, cgcsp, region);
-     /*
-      * Free the region.
-      */
-     XDestroyRegion(region);
-     region = NULL;
+  if (event->count != 0)	/* more to come, return and grab the following one */
+    return;
+  
+  redraw_all_in_region(w, dd, cgcsp, region);
+  /*
+   * Free the region.
+   */
+  XDestroyRegion(region);
+  region = NULL;
 }
 
 void enqueue_index(Draw_Data *dd,int top, int left)
@@ -472,7 +474,6 @@ void scroll_bars_moved(Display *disp, Draw_Data *dd, int hsliderpos, int vslider
 
      redraw_all_in_region(dd->canvas, dd, cgcsp, region);
      XDestroyRegion(region);
-
 #endif
 }
 

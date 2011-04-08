@@ -272,12 +272,13 @@ void select_op(Op_Structure * op, Draw_Data *dd)
 	  dd->op = op;
 	  update_select_sensitivity(TRUE);
 
-	  XClearArea(XtDisplay(dd->canvas), dd->window, 0, 0, 0, 0, TRUE);
 	  set_canvas_view(dd, op->last_view_x, op->last_view_y);
+	  //	  XClearArea(XtDisplay(dd->canvas), dd->window, 0, 0, 0, 0, TRUE);
 
 	  updateVisibleFieldsDialogIfManaged(dd);
 	  UpdateTitleWindow();
 	  update_last_selected_list(current_opfile->name, op->name);
+	  gtk_widget_queue_draw(dd->canvas);
      }
 }
 

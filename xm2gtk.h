@@ -5,6 +5,7 @@ typedef void *XmScrollBarCallbackStruct;
 typedef void *XmDrawingAreaCallbackStruct;
 typedef void *XmToggleButtonCallbackStruct;
 typedef void Display;
+typedef void *XtAppContext;
 typedef void *Window;
 typedef void *XtPointer;
 typedef void *XmFontList;

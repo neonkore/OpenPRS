@@ -36,7 +36,7 @@ void hscroll_bar_moved(GtkWidget *w, Draw_Data *dd, XmScrollBarCallbackStruct *c
 void vscroll_bar_moved(GtkWidget *w, Draw_Data *dd, XmScrollBarCallbackStruct *call_data);
 void create_scrollbars(GtkWidget *parent, Draw_Data *dd);
 void create_gc(Draw_Data *dd);
-void handle_exposures(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp);
+void handle_exposures(GtkWidget *w, Draw_Data *dd, GdkEventExpose *event, CairoGCs *cgcsp);
 void handle_g_exposures(GtkWidget *w, Draw_Data *dd, XEvent *event);
 void scroll_bar_moved(GtkWidget *w, Draw_Data *dd, XmScrollBarCallbackStruct *call_data);
 void resize(GtkWidget *w, Draw_Data *dd, XtPointer call_data);
