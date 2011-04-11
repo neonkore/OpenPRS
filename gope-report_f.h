@@ -1,7 +1,9 @@
-/*                               -*- Mode: C -*-
- * ope-edit_f.h --
+/*                               -*- Mode: C -*- 
+ * ope-report_f.h -- 
+ * 
+ * $Id$
  *
- * Copyright (c) 1991-2011 Francois Felix Ingrand, LAAS/CNRS
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,15 +32,11 @@
  *
  */
 
-void canvas_mouse_press(Widget w, Draw_Data *dd, CairoGCs *cgcsp, GdkEventButton *event);
-void canvas_mouse_motion(Widget w, Draw_Data *dd, CairoGCs *cgcsp, GdkEventMotion *event);
-void canvas_mouse_release(Widget w, Draw_Data *dd, CairoGCs *cgcsp, GdkEventButton *event);
-OG *create_text(Widget w, int x, int y, Draw_Data *dd, CairoGCs *cgcsp, Text_Type tt, PString test, int text_width, PBoolean fill_lines);
-void create_edge(Widget w, Draw_Data *dd, CairoGCs *cgcsp, OG *og1, OG *og2, char *t1, int width, PBoolean fill_lines, Draw_Type gtype, Edge_Type type, List_Knot list_knot, Expression *expr);
-void edit_og(Widget w, Draw_Data *dd, CairoGCs *cgcsp, OG *og, char *string);
-void set_editable_og_width(OG *og, int width);
-void set_editable_og_fill_lines(OG *og, PBoolean fill_lines);
-void make_start_node(Widget w, Draw_Data *dd, CairoGCs *cgcsp);
-void set_draw_mode(Draw_Data *dd, Draw_Mode mode);
-void set_draw_mode_from_menu(Draw_Data *dd, CairoGCs *cgcsp, Draw_Mode mode);
-void rename_and_redraw_if_node(Widget w, Draw_Data *dd, CairoGCs *cgcsp, OG *og, PString if_name, PString then_name, PString else_name);
+void ope_create_user_error(Widget parent);
+void report_user_error(PString message);
+
+void ope_create_syntax_error(Widget parent);
+void report_syntax_error(PString message);
+
+void ope_information_create(Widget parent);
+void ope_information_report(char *message);

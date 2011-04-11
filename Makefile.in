@@ -57,7 +57,7 @@ C_SRC = action.c activate.c database.c ev-function.c shary-user-ev-function.c ev
 	user-ev-function.c user-ev-predicate.c user-external.c version.c xhelp.c \
 	xoprs-dialog.c xoprs-filesel.c xoprs-intention.c xoprs-main.c xoprs-menu.c ope-op-str.c \
 	xoprs-call.c xoprs-textwin.c xt-util.c xtop-lev-loop.c consult-rop.c ope-rop.c \
-	ope-report.c oprs-ll.c kill-mp.c top-structure.c oprs-error.c \
+	ope-report.c gope-report.c oprs-ll.c kill-mp.c top-structure.c oprs-error.c \
 	xoprs-op-graphic.c xoprs-rop.c test-malloc.c conditions.c lang.c oprs-server-opaque.c \
 	ope-opaque.c oprs-rerror.c oprs-dump.c oprs-load.c opc-main.c \
 	type.c  oprs-pred-func.c\
@@ -91,7 +91,7 @@ FINC = action_f.h activate_f.h database_f.h ev-function_f.h oprs-pred-func_f.h \
 	oprs-type_f.h oprs-util_f.h oprs_f-pub.h oprs_f.h relevant-op_f.h \
 	send-message_f.h soak_f.h socket_f.h xt-util_f.h\
 	top-lev_f.h unification_f.h usage_f.h user-external_f.h xhelp_f.h \
-	xoprs-intention_f.h xoprs-menu_f.h xoprs-textwin_f.h ope-rop_f.h ope-report_f.h \
+	xoprs-intention_f.h xoprs-menu_f.h xoprs-textwin_f.h ope-rop_f.h ope-report_f.h gope-report_f.h \
 	oprs-pprint_f.h tcl_f.h oprs-init_f.h oprs-sprint_f.h oprs-error_f.h \
 	oprs-rerror_f-pub.h oprs-sprint_f-pub.h conditions_f.h  oprs-rerror_f.h \
 	oprs-dump_f.h oprs-print_f-pub.h type_f.h xm2gtk_f.h
@@ -321,7 +321,7 @@ OPG_LIB_SRC = $(OPG_LIB_OBJ:%.o=%.c)
 
 GOPG_LIB = libGOpG.a
 
-GOPG_LIB_OBJ = gope-external.o gope-graphic.o xhelp.o oprs-pprint.o ope-report.o
+GOPG_LIB_OBJ = gope-external.o gope-graphic.o xhelp.o oprs-pprint.o gope-report.o
 
 GOPG_LIB_SRC = $(GOPG_LIB_OBJ:%.o=%.c)
 

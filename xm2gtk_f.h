@@ -70,9 +70,18 @@ void XDestroyRegion(Region region)
 }
 
 static
+gboolean XPointInRegion(GdkRegion *region, int x, int y)
+{
+  return gdk_region_point_in(region, x, y);
+}
+
+static
 void XClearArea(void *canvas,  void *window, int x, int y, unsigned width, unsigned height, int exposures)
 {
- fprintf(stderr,"XClearArea need to be defined\n");
+  GdkRectangle rect;
+
+  rect.x = x; rect.y = y; rect.width = width; rect.height = height;
+  gdk_window_invalidate_rect(window, &rect, TRUE); /* no children... but it should not hurt... */
 }
 
 #define XtDisplay(s) (s)

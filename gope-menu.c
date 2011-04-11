@@ -38,30 +38,19 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 
-#include <X11/Intrinsic.h>
-#include <Xm/Xm.h>
-
-#include <Xm/RowColumn.h>
-#include <Xm/CascadeB.h>		  /* CascadeButton for menubar  */
-#include <Xm/PushB.h>			  /* PushButton Gadget for menu button */
-#include <Xm/PushBG.h>			  /* PushButton Gadget for menu button */
-#include <Xm/Frame.h>
-#include <Xm/Separator.h>
-#include <Xm/List.h>
-#include <Xm/Text.h>
-#include <Xm/SelectioB.h>
+#include "xm2gtk.h"
 
 #include "oprs-type.h"
 
 #include "gope-main_f.h"
-
-#include "ope-graphic.h"
+#include "op-structure.h"
+#include "gope-graphic.h"
 #include "gope-global.h"
 #include "relevant-op_f.h"
-#include "ope-graphic_f.h"
+#include "gope-graphic_f.h"
 #include "ope-bboard_f.h"
 #include "gope-filesel_f.h"
-#include "ope-edit_f.h"
+#include "gope-edit_f.h"
 #include "gope-op-opf_f.h"
 #include "ope-syntax_f.h"
 #include "op-structure_f.h"
@@ -71,6 +60,8 @@
 
 #include "ope-print_f.h"
 #include "ope-vsblf_f.h"
+
+#include "xm2gtk_f.h"
 
 
 #ifdef OPE_ADD_MSTATS_BUTTON
@@ -108,6 +99,7 @@ void OpfAppend(Widget w, XtPointer client_data, XtPointer call_data)
 
 void OpfUnload(Widget w, XtPointer client_data, XtPointer call_data)
 {
+#ifdef IGNORE_GTK
      Cardinal n;
      Arg args[MAXARGS];
      XmStringTable item;
@@ -137,10 +129,12 @@ void OpfUnload(Widget w, XtPointer client_data, XtPointer call_data)
      XmListDeselectAllItems(XmSelectionBoxGetChild(opeUnloadFileDialog, XmDIALOG_LIST));
      XmTextSetString(XmSelectionBoxGetChild(opeUnloadFileDialog, XmDIALOG_TEXT),"");
      XtManageChild(opeUnloadFileDialog);
+#endif
 }
 
 void OpfSave(Widget w, XtPointer client_data, XtPointer call_data)
 {
+#ifdef IGNORE_GTK
      if (current_opfile->type != ACS_GRAPH) {
 	  report_user_error(LG_STR("This version can only save in the graph format.\n You have to write it first in the graph format\nand then you can reload it and save it as you wish.",
 				   "This version can only save in the graph format.\n You have to write it first in the graph format\nand then you can reload it and save it as you wish."));
@@ -153,26 +147,34 @@ void OpfSave(Widget w, XtPointer client_data, XtPointer call_data)
 	  return;
      }
      XtManageChild(opeSaveFilesel);
+#endif
 }
 
 void OpfWrite(Widget w, XtPointer client_data, XtPointer call_data)
 {
+#ifdef IGNORE_GTK
      XtManageChild(opeWriteFilesel);
+#endif
 }
 
 void OpfWriteTex(Widget w, XtPointer client_data, XtPointer call_data)
 {
+#ifdef IGNORE_GTK
      XtManageChild(opeWriteTexFilesel);
+#endif
 }
 
 void OpDestroy(Widget w, Draw_Data *dd, XtPointer call_data)
 {
+#ifdef IGNORE_GTK
      if (current_op != NULL)
 	  XtManageChild(destroyOpQuestion);
+#endif
 }
 
 void OpSelectDestroy(Widget w, XtPointer client_data, XtPointer call_data)
 {
+#ifdef IGNORE_GTK
      Cardinal n;
      Arg args[MAXARGS];
      XmStringTable item;
@@ -200,10 +202,12 @@ void OpSelectDestroy(Widget w, XtPointer client_data, XtPointer call_data)
      XmTextSetString(XmSelectionBoxGetChild(destroyOpDialog, XmDIALOG_TEXT),"");
      XtManageChild(destroyOpDialog);
 
+#endif
 }
 
 void OpDump(Widget w, XtPointer client_data, XtPointer call_data)
 {
+#ifdef IGNORE_GTK
      if (! current_op) {
 	  report_user_error(LG_STR("You have to select a OP, before using this menu item.",
 				   "You have to select a OP, before using this menu item."));
@@ -211,10 +215,12 @@ void OpDump(Widget w, XtPointer client_data, XtPointer call_data)
      }
 
       XtManageChild(printSaveFile);
+#endif
 }
 
 void MiscSize(Widget w, Draw_Data *dd, XtPointer call_data)
-{   
+{
+#ifdef IGNORE_GTK   
      char s[LINSIZ];
      
      sprintf(s,"%d", dd->work_width);
@@ -225,10 +231,12 @@ void MiscSize(Widget w, Draw_Data *dd, XtPointer call_data)
 
      XtManageChild(drawingSizeDialog);
      return;
+#endif
 }
 
 void MiscVisibleFields(Widget w, Draw_Data *dd, XtPointer call_data)
-{   
+{
+#ifdef IGNORE_GTK   
      if (! current_op) {
 	  report_user_error(LG_STR("You have to select a OP, before using this menu item.",
 				   "You have to select a OP, before using this menu item."));
@@ -238,21 +246,27 @@ void MiscVisibleFields(Widget w, Draw_Data *dd, XtPointer call_data)
      updateVisibleFieldsDialog(dd);
      XtManageChild(VisibleFieldsDialog);
      return;
+#endif
 }
 
 void MiscSymbolList(Widget w, Draw_Data *dd, XtPointer call_data)
-{   
+{
+#ifdef IGNORE_GTK   
      symbolListDialogManage(symbolListDialog);
      return;
+#endif
 }
 
 void OpRedraw(Widget w, Draw_Data *dd, XtPointer call_data)
 {
+#ifdef IGNORE_GTK
      XClearArea(XtDisplay(dd->canvas), dd->window, 0, 0, 0, 0, True);
+#endif
 }
 
 void OpCreate(Widget w, Draw_Data *dd, XtPointer call_data)
 {
+#ifdef IGNORE_GTK
      Arg arg[1];
 
      XtSetArg(arg[0], XmNuserData, dd);
@@ -260,66 +274,85 @@ void OpCreate(Widget w, Draw_Data *dd, XtPointer call_data)
 
      XtManageChild(createOPBBoardStruct->createOPBBoard);
 
+#endif
 }
 
 void OpDuplicate(Widget w, XtPointer client_data, XtPointer call_data)
 {
+#ifdef IGNORE_GTK
      if (current_op != NULL) {
 	  XmTextSetString(XmSelectionBoxGetChild(duplicateOpDialog,XmDIALOG_TEXT), current_op->name);
 	  XtManageChild(duplicateOpDialog);
      } else
 	  report_user_error(LG_STR("you have to select a OP, before duplicating it.",
 				   "you have to select a OP, before duplicating it."));
+#endif
 }
 
 void OpRename(Widget w, XtPointer client_data, XtPointer call_data)
 {
+#ifdef IGNORE_GTK
      if (current_op != NULL) {
 	  XmTextSetString(XmSelectionBoxGetChild(renameOpDialog,XmDIALOG_TEXT), current_op->name);
 	  XtManageChild(renameOpDialog);
      } else
 	  report_user_error(LG_STR("you have to select a OP, before renaming it.",
 				   "you have to select a OP, before renaming it."));
+#endif
 }
 
 void OpCopy(Widget w, XtPointer client_data, XtPointer call_data)
 {
+#ifdef IGNORE_GTK
      if (current_op != NULL) {
 	  XmTextSetString(XmSelectionBoxGetChild(copyOpDialog,XmDIALOG_TEXT), current_op->name);
 	  XtManageChild(copyOpDialog);
      } else
 	  report_user_error(LG_STR("You have to select a OP, before copying it.",
 				   "You have to select a OP, before copying it."));
+#endif
 }
 
 void OpPaste(Widget w, XtPointer client_data, XtPointer call_data)
 {
+#ifdef IGNORE_GTK
      pasteOpDialogManage();
+#endif
 }
 
 void OpClear(Widget w, XtPointer client_data, XtPointer call_data)
 {
+#ifdef IGNORE_GTK
      clear_buffer_opfile();
+#endif
 }
 
 void OpPrevious(Widget w, Draw_Data *dd, XtPointer call_data)
 {
+#ifdef IGNORE_GTK
      select_previous_op_in_same_file(dd);
+#endif
 }
 
 void OpNext(Widget w, Draw_Data *dd, XtPointer call_data)
 {
+#ifdef IGNORE_GTK
      select_next_op_in_same_file(dd);
+#endif
 }
 
 void OpToggle_selected(Widget w, Draw_Data *dd, XtPointer call_data)
 {
+#ifdef IGNORE_GTK
      toggle_last_selected_ops(dd);
+#endif
 }
 
 void OpLast_selected(Widget w, XtPointer client_data, XtPointer call_data)
 {
+#ifdef IGNORE_GTK
      last_selectedOpDialogManage();
+#endif
 }
 
 GtkWidget *opRedraw, *opDestroy, *opDump, *opPrint, *opDuplicate, *opRename, *opCopy;
@@ -693,6 +726,7 @@ GtkWidget *toggled_button = NULL;
 
 void toggle_button(GtkWidget *w)
 {
+#ifdef IGNORE_GTK
      Pixel back,fore;
      Arg args[2];
      Cardinal n;
@@ -717,114 +751,115 @@ void toggle_button(GtkWidget *w)
      /* XtSetArg(args[n], XmNforeground, back); n++; */
      /* XtSetValues(w,args,n); */
      
+#endif
 }
 
 void CreateNode(GtkWidget *w, Draw_Data *dd, XtPointer call_data)
 {
   //     toggle_button(createNode);
-     set_draw_mode_from_menu(dd, DRAW_NODE);
+  set_draw_mode_from_menu(dd, dd->cgcsp, DRAW_NODE);
 }
 
 void CreateIfNode(GtkWidget *w, Draw_Data *dd, XtPointer call_data)
 {
   //     toggle_button(createIfNode);
-     set_draw_mode_from_menu(dd, DRAW_IFNODE);
+     set_draw_mode_from_menu(dd, dd->cgcsp, DRAW_IFNODE);
 }
 
 void FlipJoin(GtkWidget *w, Draw_Data *dd, XtPointer call_data)
 {
   //     toggle_button(flipJoin);
-     set_draw_mode_from_menu(dd, FLIP_JOIN);
+     set_draw_mode_from_menu(dd, dd->cgcsp, FLIP_JOIN);
 }
 
 void OpenNode(GtkWidget *w, Draw_Data *dd, XtPointer call_data)
 {
   //     toggle_button(openNode);
-     set_draw_mode_from_menu(dd, OPEN_NODE);
+     set_draw_mode_from_menu(dd, dd->cgcsp, OPEN_NODE);
 }
 
 void FlipSplit(GtkWidget *w, Draw_Data *dd, XtPointer call_data)
 {
   //     toggle_button(flipSplit);
-     set_draw_mode_from_menu(dd, FLIP_SPLIT);
+     set_draw_mode_from_menu(dd, dd->cgcsp, FLIP_SPLIT);
 }
 
 void EditObjects(GtkWidget *w, Draw_Data *dd, XtPointer call_data)
 {
   //     toggle_button(editObjects);
-     set_draw_mode_from_menu(dd, EDIT_OG);
+     set_draw_mode_from_menu(dd, dd->cgcsp, EDIT_OG);
 }
 
 void MoveObjects(GtkWidget *w, Draw_Data *dd, XtPointer call_data)
 {
   //     toggle_button(moveObjects);
-     set_draw_mode_from_menu(dd, MOVE_OG);
+     set_draw_mode_from_menu(dd, dd->cgcsp, MOVE_OG);
 }
 
 void RelevantOp(GtkWidget *w, Draw_Data *dd, XtPointer call_data)
 {
   //     toggle_button(relevantOp);
-     set_draw_mode_from_menu(dd, DM_RELEVANT_OP);
+     set_draw_mode_from_menu(dd, dd->cgcsp, DM_RELEVANT_OP);
 }
 
 void ConvertEnd(GtkWidget *w, Draw_Data *dd, XtPointer call_data)
 {
   //     toggle_button(convertEnd);
-     set_draw_mode_from_menu(dd, CONVERT_END);
+     set_draw_mode_from_menu(dd, dd->cgcsp, CONVERT_END);
 }
 
 void ConvertStart(GtkWidget *w, Draw_Data *dd, XtPointer call_data)
 {
   //     toggle_button(convertStart);
-     set_draw_mode_from_menu(dd, CONVERT_START);
+     set_draw_mode_from_menu(dd, dd->cgcsp, CONVERT_START);
 }
 
 void AlignObjects(GtkWidget *w, Draw_Data *dd, XtPointer call_data)
 {
   //     toggle_button(alignObjects);
-     set_draw_mode_from_menu(dd, ALIGN_OG);
+     set_draw_mode_from_menu(dd, dd->cgcsp, ALIGN_OG);
 }
 
 void AlignObjectsVert(GtkWidget *w, Draw_Data *dd, XtPointer call_data)
 {
   //     toggle_button(alignObjectsVert);
-     set_draw_mode_from_menu(dd, ALIGN_OG_V);
+     set_draw_mode_from_menu(dd, dd->cgcsp, ALIGN_OG_V);
 }
 
 void AlignObjectsHor(GtkWidget *w, Draw_Data *dd, XtPointer call_data)
 {
   //     toggle_button(alignObjectsHor);
-     set_draw_mode_from_menu(dd, ALIGN_OG_H);
+     set_draw_mode_from_menu(dd, dd->cgcsp, ALIGN_OG_H);
 }
 
 void DestroyObjects(GtkWidget *w, Draw_Data *dd, XtPointer call_data)
 {
   //     toggle_button(destroyObjects);
-     set_draw_mode_from_menu(dd, DESTROY_OG);
+     set_draw_mode_from_menu(dd, dd->cgcsp, DESTROY_OG);
 }
 
 void CreateEdge(GtkWidget *w, Draw_Data *dd, XtPointer call_data)
 {
   //     toggle_button(createEdge);
-     set_draw_mode_from_menu(dd, DRAW_EDGE);
+     set_draw_mode_from_menu(dd, dd->cgcsp, DRAW_EDGE);
 }
 
 void CreateKnot(GtkWidget *w, Draw_Data *dd, XtPointer call_data)
 {
   //     toggle_button(createKnot);
-     set_draw_mode_from_menu(dd, DRAW_KNOT);
+     set_draw_mode_from_menu(dd, dd->cgcsp, DRAW_KNOT);
 }
 
 void DuplicateObjects(GtkWidget *w, Draw_Data *dd, XtPointer call_data)
 {
   //     toggle_button(duplicateObjects);
-     set_draw_mode_from_menu(dd, DUPLICATE_OBJECTS);
+     set_draw_mode_from_menu(dd, dd->cgcsp, DUPLICATE_OBJECTS);
 }
 
 void MergeNode(GtkWidget *w, Draw_Data *dd, XtPointer call_data)
 {
   //     toggle_button(mergeNode);
-     set_draw_mode_from_menu(dd, MERGE_NODE);
+     set_draw_mode_from_menu(dd, dd->cgcsp, MERGE_NODE);
 }
 
 GtkWidget *create_tool_bar(GtkWidget *parent, Draw_Data *dd)
@@ -842,6 +877,8 @@ GtkWidget *create_tool_bar(GtkWidget *parent, Draw_Data *dd)
 
   moveObjects = gtk_tool_button_new_from_stock(GTK_STOCK_NEW); // "moveObjects", NULL, 0);
   gtk_toolbar_insert(GTK_TOOLBAR(toolbar), moveObjects, -1);
+   g_signal_connect(G_OBJECT(moveObjects),"clicked",
+		   G_CALLBACK(MoveObjects), dd);
   //  toggle_button(moveObjects);
 
   createNode = gtk_tool_button_new_from_stock(GTK_STOCK_NEW); // "createNode", NULL, 0);

@@ -42,15 +42,6 @@
 
 #include "xm2gtk.h"
 
-
-/* #include <X11/Intrinsic.h> */
-/* #include <Xm/Xm.h> */
-
-/* #include <Xm/ScrollBar.h> */
-/* #include <Xm/DrawingA.h> */
-
-/* #include <X11/X10.h> */
-
 #include "macro.h"
 #include "constant.h"
 #include "oprs-type.h"
@@ -235,13 +226,7 @@ void handle_g_exposures(GtkWidget *w, Draw_Data *dd, XEvent *event)
 
 void add_expose_region(Draw_Data *dd, Region region)
 {
-#ifndef GTK
-     XOffsetRegion(region, -dd->left, -dd->top);
-     if (!dd->expose_region) {
-	  dd->expose_region = XCreateRegion();
-     }
-     XUnionRegion(dd->expose_region, region, dd->expose_region);
-#endif
+  gdk_window_invalidate_region(dd->window,region, TRUE);
 }
 
 void redraw_all_in_pixmap(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, unsigned int width, unsigned int heigh)
@@ -1023,7 +1008,7 @@ void erase_edge(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, Gedge *e)
      lines[n].x = e->x2 - dd->left;
      lines[n].y = e->y2 - dd->top; n++;
 
-     XDrawLines(dpy, win, dd->sgc, lines, n, CoordModeOrigin);
+     XDrawLines(dpy, win, cgcsp->cr_edge, lines, n, CoordModeOrigin);
 
      arrows[0].x = e->x2 - dd->left;
      arrows[0].y = e->y2 - dd->top;
@@ -1032,7 +1017,7 @@ void erase_edge(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, Gedge *e)
      arrows[2].x = e->fx2 - dd->left;
      arrows[2].y = e->fy2 - dd->top;
 
-     XFillPolygon(dpy, win, dd->sgc,
+     XFillPolygon(dpy, win, cgcsp->cr_edge,
 		  arrows, 3, Convex, CoordModeOrigin);
 
 }

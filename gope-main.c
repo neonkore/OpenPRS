@@ -447,9 +447,7 @@ double coordy[100];
 int count = 0;
 
 static gboolean
-on_expose_event(GtkWidget *widget,
-    GdkEventExpose *event,
-    gpointer data)
+on_expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer data)
 {
   CairoGCs CGCs;
 
@@ -489,19 +487,46 @@ on_expose_event(GtkWidget *widget,
   return FALSE;
 }
 
-gboolean clicked(GtkWidget *widget, GdkEventButton *event,
-    gpointer user_data)
+gboolean motion(GtkWidget *widget, GdkEventMotion *event, gpointer user_data)
 {
-    if (event->button == 1) {
-      //        coordx[count] = event->x;
-      // coordy[count++] = event->y;
-    }
+  CairoGCs CGCs;
 
-    if (event->button == 3) {
-      //        gtk_widget_queue_draw(widget);
-    }
+  /* This will create graphic context specific to this expose thread. */
+  create_cgcs(&CGCs, global_draw_data->window);
 
-    return TRUE;
+  canvas_mouse_motion(widget, global_draw_data, &CGCs, event);
+
+  destroy_cgcs(&CGCs);
+
+  return TRUE;
+}
+
+gboolean released(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
+{
+  CairoGCs CGCs;
+
+  /* This will create graphic context specific to this expose thread. */
+  create_cgcs(&CGCs, global_draw_data->window);
+
+  canvas_mouse_release(widget, global_draw_data, &CGCs, event);
+
+  destroy_cgcs(&CGCs);
+
+  return TRUE;
+}
+
+gboolean clicked(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
+{
+  CairoGCs CGCs;
+
+  /* This will create graphic context specific to this expose thread. */
+  create_cgcs(&CGCs, global_draw_data->window);
+
+  canvas_mouse_press(widget, global_draw_data, &CGCs, event);
+
+  destroy_cgcs(&CGCs);
+
+  return TRUE;
 }
 
 XtAppContext app_context;
@@ -725,11 +750,17 @@ int main(int argc, char **argv, char **envp)
   create_cgcs(&mainCGCs, dd.window); /* this will create all the cairo context for the main loop... */
    
   gtk_widget_add_events (dd.canvas, GDK_BUTTON_PRESS_MASK);
+  gtk_widget_add_events (dd.canvas, GDK_BUTTON_RELEASE_MASK);
+  gtk_widget_add_events (dd.canvas, GDK_POINTER_MOTION_MASK);
 
   g_signal_connect(dd.canvas, "expose-event",
 		   G_CALLBACK(on_expose_event), NULL);
   g_signal_connect(dd.canvas, "button-press-event", 
 		   G_CALLBACK(clicked), NULL);
+  g_signal_connect(dd.canvas, "button-release-event", 
+		   G_CALLBACK(released), NULL);
+  g_signal_connect(dd.canvas, "motion-notify-event", 
+		   G_CALLBACK(motion), NULL);
 
   update_select_sensitivity(FALSE);
   update_buffer_sensitivity(FALSE);
@@ -782,6 +813,7 @@ Date        : %s\n\
   
   
   init_og = create_text(dd.canvas, 80, 20, &dd, mainCGCsp, TT_TEXT_NONE, welcome_message, 0, FALSE);
+  set_draw_mode(&dd, MOVE_OG); 
 
   gtk_main();
 
@@ -839,7 +871,6 @@ Date        : %s\n\
 
   /* XtRealizeWidget(topLevel); */
 
-  /* set_draw_mode(&dd, MOVE_OG); */
 
   /*
    * You cannot do that, this idiot does not have a fontlist... n = 0;

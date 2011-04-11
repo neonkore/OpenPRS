@@ -40,17 +40,6 @@
 
 #include "xm2gtk.h"
 
-/* #include <X11/Intrinsic.h> */
-/* #include <X11/cursorfont.h> */
-/* #include <Xm/Xm.h> */
-/* #include <Xm/ScrollBar.h> */
-/* #include <Xm/DrawingA.h> */
-/* #include <Xm/ToggleB.h> */
-/* #include <Xm/Text.h> */
-/* #include <Xm/TextF.h> */
-/* #include <Xm/SelectioB.h> */
-
-
 #include "macro.h"
 #include "oprs-type.h"
 #include "op-structure.h"
@@ -70,7 +59,7 @@
 
 void draw_clip_box(Widget w, Draw_Data *dd, CairoGCs *cgcsp, OG *og);
 
-void ChangeCursor(Draw_Data *dd, CairoGCs *cgcsp, PBoolean on, unsigned int shape)
+void ChangeCursor(Draw_Data *dd, PBoolean on, unsigned int shape)
 {
 #ifdef IGNORE_GTK
     Display *dpy = XtDisplay(dd->canvas);
@@ -143,36 +132,36 @@ void reset_draw_mode(Draw_Data *dd, CairoGCs *cgcsp)
 
      switch (mode) {
      case ALIGNING_OG:
-	  set_draw_mode(dd, cgcsp, ALIGN_OG);
+	  set_draw_mode(dd, ALIGN_OG);
 	  break;
      case ALIGNING_OG_V:
-	  set_draw_mode(dd, cgcsp, ALIGN_OG_V);
+	  set_draw_mode(dd, ALIGN_OG_V);
 	  break;
      case ALIGNING_OG_H:
-	  set_draw_mode(dd, cgcsp, ALIGN_OG_H);
+	  set_draw_mode(dd, ALIGN_OG_H);
 	  break;
      case NODE_SELECTED:
-	  set_draw_mode(dd, cgcsp, DRAW_EDGE);
+	  set_draw_mode(dd, DRAW_EDGE);
 	  break;
      case EDGE_SELECTED:
-	  set_draw_mode (dd, cgcsp, DRAW_KNOT);
+	  set_draw_mode (dd, DRAW_KNOT);
 	  break;
      case MERGING_NODE:
-	  set_draw_mode (dd, cgcsp, MERGE_NODE);
+	  set_draw_mode (dd, MERGE_NODE);
 	  break;
      case DUPLICATING_EDGE:
      case DUPLICATING_EDGE2:
-	  set_draw_mode(dd, cgcsp, DUPLICATE_OBJECTS);
+	  set_draw_mode(dd, DUPLICATE_OBJECTS);
 	  break;
      case DUPLICATING_NODE:
-	  set_draw_mode(dd, cgcsp, DUPLICATE_OBJECTS);
+	  set_draw_mode(dd, DUPLICATE_OBJECTS);
 	  break;
      default:
 	  break;
      }
 }
 
-void set_draw_mode(Draw_Data *dd, CairoGCs *cgcsp, Draw_Mode mode)
+void set_draw_mode(Draw_Data *dd, Draw_Mode mode)
 {
      unsigned int shape = FALSE;
      PBoolean on = TRUE;
@@ -204,14 +193,14 @@ void set_draw_mode(Draw_Data *dd, CairoGCs *cgcsp, Draw_Mode mode)
 	  break;
      }
 
-     ChangeCursor(dd, cgcsp, on , shape);
+     ChangeCursor(dd, on , shape);
 }
 
 
 void set_draw_mode_from_menu(Draw_Data *dd, CairoGCs *cgcsp, Draw_Mode mode)
 {
   reset_draw_data(dd, cgcsp);
-     set_draw_mode(dd, cgcsp, mode);
+  set_draw_mode(dd, mode);
 }
 
 void resize_node(Draw_Data *dd, CairoGCs *cgcsp, OG *og)
@@ -1086,14 +1075,13 @@ void check_sensitive_item(Widget w, Draw_Data *dd, CairoGCs *cgcsp, XEvent *even
 
 }
 
-void canvas_mouse_motion(Widget w, Draw_Data *dd, CairoGCs *cgcsp, XEvent *event)
+void canvas_mouse_motion(Widget w, Draw_Data *dd, CairoGCs *cgcsp, GdkEventMotion *event)
 {
-#ifdef IGNORE_GTK
      XRectangle rect;
      OG *og = dd->og_moving;
      Edge *edge;
-     int x = event->xbutton.x + dd->left;
-     int y = event->xbutton.y + dd->top;
+     int x = event->x + dd->left;
+     int y = event->y + dd->top;
      /* int button = event->xbutton.button; */
 
      x = MAX(10,x);
@@ -1227,8 +1215,8 @@ void canvas_mouse_motion(Widget w, Draw_Data *dd, CairoGCs *cgcsp, XEvent *event
 	  break;
      case MOVING_CANVAS:
      {
-	  int xx = event->xbutton.x;
-	  int yy = event->xbutton.y;
+	  int xx = event->x;
+	  int yy = event->y;
 	  int dx = xx - dd->start_x;
 	  int dy = yy - dd->start_y;
 
@@ -1249,149 +1237,16 @@ void canvas_mouse_motion(Widget w, Draw_Data *dd, CairoGCs *cgcsp, XEvent *event
      default:
 	  break;
      }
-
-#ifdef FELIX
-     Window root,child;
-     int rx,ry,wx,wy;
-     unsigned int mask;
-
-     unsigned int button_mask =  event->xbutton.state;
-	  
-     if (dd->mode == MOVING_OG) {
-	  
-
-	  int dx = 0;
-	  int dy = 0;
-
-	  int x = event->xbutton.x + dd->left;
-	  int y = event->xbutton.y + dd->top;
-
-/*
-	  switch (event->xbutton.button) {
-	  case Button1:
-	       button_mask = Button1Mask;
-	       break;
-	  case Button2:
-	       button_mask = Button2Mask;
-	       break;
-	  default:
-	       fprintf(stderr, LG_STR("Moving with an unknown button combination...\n",
-	       "Moving with an unknown button combination...\n"));
-	       return;
-	       break;
-	  }
-*/	  
-	  x = MAX(10,x);
-	  y = MAX(10,y);
-
-	  x = MIN((int)dd->work_width - 10,x);
-	  y = MIN((int)dd->work_height - 10,y);
-	  
-	  while (XQueryPointer(XtDisplay(w),XtWindow(w),&root,&child,&rx,&ry,
-			&wx,&wy,&mask) &&
-		 (mask == button_mask) &&
-		 ((wx < 0) || (wx > (int)dd->canvas_width) || 
-		  (wy < 0) || (wy > (int)dd->canvas_height))) {
-
-	       dx = dy = 0;
-
-	       if (wx < 0) {
-		    dx = - wx;
-	       } else if (wx > (int)dd->canvas_width) {
-		    dx =  dd->canvas_width - wx;
-	       }
-	       if (wy < 0) {
-		    dy = - wy;
-	       } else if (wy > (int)dd->canvas_height) {
-		    dy =  dd->canvas_height - wy;
-	       }
-
-	       draw_moving_clip_box(w, dd, dd->og_moving);
-
-	       set_canvas_view_rel(dd, dx, dy);
-	       
-	       x = MAX(10,wx + dd->left);
-	       y = MAX(10,wy + dd->top);
-
-	       x = MIN((int)dd->work_width - 10, x);
-	       y = MIN((int)dd->work_height - 10, y);
-
-	       dd->last_x = dd->start_x;
-	       dd->start_x = x;
-	       dd->last_y = dd->start_y;
-	       dd->start_y = y;
-
-	       draw_moving_clip_box(w, dd, dd->og_moving);
-
-	  }
-
-	  draw_moving_clip_box(w, dd, dd->og_moving);
-
-	  dd->last_x = dd->start_x;
-	  dd->start_x = x;
-	  dd->last_y = dd->start_y;
-	  dd->start_y = y;
-
-	  draw_moving_clip_box(w, dd, dd->og_moving);
-
-     } else if (dd->mode == MOVING_CANVAS) {
-/*
-	  int x = event->xbutton.x;
-	  int y = event->xbutton.y;
-	  int dx = x - dd->start_x;
-	  int dy = y - dd->start_y;
-*/
-	  int x, y, dx, dy;
-
-	  if ( !(XQueryPointer(XtDisplay(w),XtWindow(w),&root,&child,
-			       &rx,&ry,&x,&y,&mask) &&
-	      (mask == button_mask))) {
-	       x = event->xbutton.x;
-	       y = event->xbutton.y;
-	  }
-
-	  dx = x - dd->start_x;
-	  dy = y - dd->start_y;
-
-	  if (((dd->left == 0) && dx > 0) || ((dd->left == dd->work_width - dd->canvas_width) && dx < 0))
-	       dx = 0;
-	  else 
-	       dd->start_x = x; 
-
-/*
- {
-	       if (dx > 0 && dx > dd->left)
-		    dd->start_x = x - dx - dd->left ;
-	       else if  (dx < 0 && dx < dd->canvas_width + dd->left - dd->work_width)
-		    dd->start_x = x +  dd->canvas_width + dd->left - dd->work_width - dx;
-	       else 
-	  }
-*/
-
-	  if (((dd->top == 0) && dy > 0) || ((dd->top == dd->work_height - dd->canvas_height) && dy < 0))
-	       dy = 0;
-	  else 
-	       dd->start_y = y;
-	  
-	  if (! (dx == 0 && dy == 0))
-	       set_canvas_view_rel(dd, dx, dy);
-     } else {
-	  /* code for sensitive item */
-	  check_sensitive_item(w, dd,event);
-     }
-#endif
-#endif
 }
 
-void mouse_release_move(Widget w, Draw_Data *dd, CairoGCs *cgcsp, XEvent *event)
+void mouse_release_move(Widget w, Draw_Data *dd, CairoGCs *cgcsp,  GdkEventButton *event)
 {
-#ifdef GTK_IGNORE
      XRectangle rect;
      OG *og = dd->og_moving;
      Edge *edge;
-     int x = event->xbutton.x + dd->left;
-     int y = event->xbutton.y + dd->top;
-     /* int button = event->xbutton.button; */
+     int x = event->x + dd->left;
+     int y = event->y + dd->top;
+     int button = event->button; 
 
      x = MAX(10,x);
      y = MAX(10,y);
@@ -1528,8 +1383,8 @@ void mouse_release_move(Widget w, Draw_Data *dd, CairoGCs *cgcsp, XEvent *event)
 	  break;
      case MOVING_CANVAS:
      {
-	  int xx = event->xbutton.x;
-	  int yy = event->xbutton.y;
+	  int xx = event->x;
+	  int yy = event->y;
 	  int dx = xx - dd->start_x;
 	  int dy = yy - dd->start_y;
 
@@ -1550,194 +1405,184 @@ void mouse_release_move(Widget w, Draw_Data *dd, CairoGCs *cgcsp, XEvent *event)
      default:
 	  break;
      }
-#endif
 }
 
-void canvas_mouse_release(Widget w, Draw_Data *dd, CairoGCs *cgcsp, XEvent *event)
+void canvas_mouse_release(Widget w, Draw_Data *dd, CairoGCs *cgcsp, GdkEventButton *event)
 {
-#ifdef GTK_IGNORE
-     OG *og = dd->og_moving;
-     int x = event->xbutton.x + dd->left;
-     int y = event->xbutton.y + dd->top;
+  OG *og = dd->og_moving;
+  int x = event->x + dd->left;
+  int y = event->y + dd->top;
 
-#ifdef FELIX
-     if (button != dd->pressed_button) return;
-#endif
-
-     if (dd->pressed_button == Button2) {
-	  mouse_release_move(w, dd, event);
-	  set_draw_mode(dd, dd->old_mode);
-     } else {
-	  switch (dd->mode) {
-	  case ALIGNING_OG:
-	  case ALIGNING_OG_H:
-	  case ALIGNING_OG_V:
-	       report_opfile_modification();
-	       if (dd->og_aligning) {
-		    dd->og_aligning->selected = FALSE;
-		    draw_og(dd->canvas, dd, cgcsp, dd->og_aligning);
-	       }
-	       sl_loop_through_slist(dd->op->list_movable_og, og, OG *)
-		    if (XPointInRegion(og->region, x, y)) {
-			 if (dd->og_aligning == og) {
-			      if ((og->type == DT_THEN_NODE) || (og->type == DT_ELSE_NODE))
-				   og = if_og_from_t_or_f_og(dd->og_aligning);
-			      switch (dd->mode) {
-			      case ALIGNING_OG:
-				   align_og(dd, og, ANY);
-				   break;
-			      case ALIGNING_OG_H:
-				   align_og(dd, og, HOR);
-				   break;
-			      case ALIGNING_OG_V:
-				   align_og(dd, og, VERT);
-				   break;
-			      default:
-				   break;
-			      }
-			      break;
-			 }
-		    }
-	       dd->og_aligning = NULL;
-	       break;
-	  case MOVING_OG:
-	  case MOVING_CANVAS:
-	       mouse_release_move(w, dd, event);
-	       break;
-	  case DM_RELEVANT_OP:
-	       if (dd->og_selected_on_press) {
-		    draw_clip_box(w, dd, dd->og_selected_on_press);
-		    if (XPointInRegion(dd->og_selected_on_press->region, x, y)) {
-			 if(dd->og_selected_on_press->type == DT_EDGE_TEXT)
-			      ope_find_rel_ops(dd->og_selected_on_press->u.gedge_text->edge->u.gedge->edge);
-			 else if (dd->og_selected_on_press->type == DT_INST)
-			      ope_find_rel_ops_inst(dd->og_selected_on_press->u.ginst->inst);
-			 else if(dd->og_selected_on_press->type == DT_TEXT)
-			      if (dd->og_selected_on_press->u.gtext->text_type == TT_INVOCATION)
-				   ope_find_rel_ops_gmexpr_except_me(current_op->invocation, current_op);
-		/* 	      else if (dd->og_selected_on_press->u.gtext->text_type == TT_EFFECTS) */
-/* 				   ope_find_rel_ops_list_expr(current_op->effects); */
-			      else
-				   fprintf(stderr, LG_STR("This graphic type has no expr.\n",
-							  "This graphic type has no expr.\n"));
-			 else 
-			      fprintf(stderr, LG_STR("This graphic type has no expr.\n",
-						     "This graphic type has no expr.\n"));
-			      
-		    }
-		    dd->og_selected_on_press = NULL;
-	       }
-	       break;
-	  case DESTROY_OG:
-	       if (dd->og_selected_on_press) {
-		    if ((dd->og_selected_on_press->type == DT_THEN_NODE) || (dd->og_selected_on_press->type == DT_ELSE_NODE)) 
-			 draw_clip_box(w, dd, if_og_from_t_or_f_og(dd->og_selected_on_press));
-		    else
-			 draw_clip_box(w, dd, dd->og_selected_on_press);
-		    if (XPointInRegion(dd->og_selected_on_press->region, x, y)) {
-			 report_opfile_modification();
-			 if ((dd->og_selected_on_press->type == DT_THEN_NODE) || (dd->og_selected_on_press->type == DT_ELSE_NODE)) 
-			      destroy_og(dd, if_og_from_t_or_f_og(dd->og_selected_on_press));
-			 else
-			      destroy_og(dd, dd->og_selected_on_press);
-		    }
-	       }
-	       dd->og_selected_on_press = NULL;
-	       break;
-	  default: 	 
-	       break;
+  if (dd->pressed_button == 2) {
+    mouse_release_move(w, dd, cgcsp, event);
+    set_draw_mode(dd, dd->old_mode);
+  } else {
+    switch (dd->mode) {
+    case ALIGNING_OG:
+    case ALIGNING_OG_H:
+    case ALIGNING_OG_V:
+      report_opfile_modification();
+      if (dd->og_aligning) {
+	dd->og_aligning->selected = FALSE;
+	draw_og(dd->canvas, dd, cgcsp, dd->og_aligning);
+      }
+      sl_loop_through_slist(dd->op->list_movable_og, og, OG *)
+	if (XPointInRegion(og->region, x, y)) {
+	  if (dd->og_aligning == og) {
+	    if ((og->type == DT_THEN_NODE) || (og->type == DT_ELSE_NODE))
+	      og = if_og_from_t_or_f_og(dd->og_aligning);
+	    switch (dd->mode) {
+	    case ALIGNING_OG:
+	      align_og(dd, cgcsp, og, ANY);
+	      break;
+	    case ALIGNING_OG_H:
+	      align_og(dd, cgcsp, og, HOR);
+	      break;
+	    case ALIGNING_OG_V:
+	      align_og(dd, cgcsp, og, VERT);
+	      break;
+	    default:
+	      break;
+	    }
+	    break;
 	  }
-     }
-#ifdef FELIX
-     dd->pressed_button = 0;
-#endif
-#endif
+	}
+      dd->og_aligning = NULL;
+      break;
+    case MOVING_OG:
+    case MOVING_CANVAS:
+      mouse_release_move(w, dd, cgcsp, event);
+      break;
+    case DM_RELEVANT_OP:
+      if (dd->og_selected_on_press) {
+	draw_clip_box(w, dd, cgcsp, dd->og_selected_on_press);
+	if (XPointInRegion(dd->og_selected_on_press->region, x, y)) {
+	  if(dd->og_selected_on_press->type == DT_EDGE_TEXT)
+	    ope_find_rel_ops(dd->og_selected_on_press->u.gedge_text->edge->u.gedge->edge);
+	  else if (dd->og_selected_on_press->type == DT_INST)
+	    ope_find_rel_ops_inst(dd->og_selected_on_press->u.ginst->inst);
+	  else if(dd->og_selected_on_press->type == DT_TEXT)
+	    if (dd->og_selected_on_press->u.gtext->text_type == TT_INVOCATION)
+	      ope_find_rel_ops_gmexpr_except_me(current_op->invocation, current_op);
+	  /* 	      else if (dd->og_selected_on_press->u.gtext->text_type == TT_EFFECTS) */
+	  /* 				   ope_find_rel_ops_list_expr(current_op->effects); */
+	    else
+	      fprintf(stderr, LG_STR("This graphic type has no expr.\n",
+				     "This graphic type has no expr.\n"));
+	  else 
+	    fprintf(stderr, LG_STR("This graphic type has no expr.\n",
+				   "This graphic type has no expr.\n"));
+			      
+	}
+	dd->og_selected_on_press = NULL;
+      }
+      break;
+    case DESTROY_OG:
+      if (dd->og_selected_on_press) {
+	if ((dd->og_selected_on_press->type == DT_THEN_NODE) || (dd->og_selected_on_press->type == DT_ELSE_NODE)) 
+	  draw_clip_box(w, dd, cgcsp, if_og_from_t_or_f_og(dd->og_selected_on_press));
+	else
+	  draw_clip_box(w, dd, cgcsp, dd->og_selected_on_press);
+	if (XPointInRegion(dd->og_selected_on_press->region, x, y)) {
+	  report_opfile_modification();
+	  if ((dd->og_selected_on_press->type == DT_THEN_NODE) || (dd->og_selected_on_press->type == DT_ELSE_NODE)) 
+	    destroy_og(dd, if_og_from_t_or_f_og(dd->og_selected_on_press));
+	  else
+	    destroy_og(dd, dd->og_selected_on_press);
+	}
+      }
+      dd->og_selected_on_press = NULL;
+      break;
+    default: 	 
+      break;
+    }
+  }
 }
 
 char *get_editable_og_string(OG *og)
 {
-     switch (og->type) {
-	  case DT_EDGE_TEXT:
-	  return og->u.gedge_text->log_string;
-	  break;
-     case DT_TEXT:
-	  return og->u.gtext->string;
-	  break;
-     default:
-	  fprintf(stderr, LG_STR("This graphic type has no editable string...\n",
-				 "This graphic type has no editable string...\n"));
-	  return NULL;
-	  break;
-     }
+  switch (og->type) {
+  case DT_EDGE_TEXT:
+    return og->u.gedge_text->log_string;
+    break;
+  case DT_TEXT:
+    return og->u.gtext->string;
+    break;
+  default:
+    fprintf(stderr, LG_STR("This graphic type has no editable string...\n",
+			   "This graphic type has no editable string...\n"));
+    return NULL;
+    break;
+  }
 }
 
 int get_editable_og_width(OG *og)
 {
-     switch (og->type) {
-	  case DT_EDGE_TEXT:
-	  return og->u.gedge_text->text_width;
-	  break;
-     case DT_TEXT:
-	  return og->u.gtext->text_width;
-	  break;
-     default:
-	  fprintf(stderr, LG_STR("This graphic type has no editable string...\n",
-				 "This graphic type has no editable string...\n"));
-	  return 0;
-	  break;
-     }
+  switch (og->type) {
+  case DT_EDGE_TEXT:
+    return og->u.gedge_text->text_width;
+    break;
+  case DT_TEXT:
+    return og->u.gtext->text_width;
+    break;
+  default:
+    fprintf(stderr, LG_STR("This graphic type has no editable string...\n",
+			   "This graphic type has no editable string...\n"));
+    return 0;
+    break;
+  }
 }
 
 PBoolean get_editable_og_fill_lines(OG *og)
 {
-     switch (og->type) {
-     case DT_EDGE_TEXT:
-	  return og->u.gedge_text->fill_lines;
-	  break;
-     case DT_TEXT:
-	  return og->u.gtext->fill_lines;
-	  break;
-     default:
-	  fprintf(stderr, LG_STR("This graphic type has no editable string...\n",
-				 "This graphic type has no editable string...\n"));
-	  return 0;
-	  break;
-     }
+  switch (og->type) {
+  case DT_EDGE_TEXT:
+    return og->u.gedge_text->fill_lines;
+    break;
+  case DT_TEXT:
+    return og->u.gtext->fill_lines;
+    break;
+  default:
+    fprintf(stderr, LG_STR("This graphic type has no editable string...\n",
+			   "This graphic type has no editable string...\n"));
+    return 0;
+    break;
+  }
 }
 
 void set_editable_og_width(OG *og, int width)
 {
-     switch (og->type) {
-	  case DT_EDGE_TEXT:
-	  og->u.gedge_text->text_width = width;
-	  break;
-     case DT_TEXT:
-	  og->u.gtext->text_width = width;
-	  break;
-     default:
-	  fprintf(stderr, LG_STR("This graphic type has no editable string...\n",
-				 "This graphic type has no editable string...\n"));
-	  break;
-     }
+  switch (og->type) {
+  case DT_EDGE_TEXT:
+    og->u.gedge_text->text_width = width;
+    break;
+  case DT_TEXT:
+    og->u.gtext->text_width = width;
+    break;
+  default:
+    fprintf(stderr, LG_STR("This graphic type has no editable string...\n",
+			   "This graphic type has no editable string...\n"));
+    break;
+  }
 }
 
 void set_editable_og_fill_lines(OG *og, PBoolean fill_lines)
 {
-     switch (og->type) {
-	  case DT_EDGE_TEXT:
-	  og->u.gedge_text->fill_lines = fill_lines;
-	  break;
-     case DT_TEXT:
-	  og->u.gtext->fill_lines = fill_lines;
-	  break;
-     default:
-	  fprintf(stderr, LG_STR("This graphic type has no editable string...\n",
-				 "This graphic type has no editable string...\n"));
-	  break;
-     }
+  switch (og->type) {
+  case DT_EDGE_TEXT:
+    og->u.gedge_text->fill_lines = fill_lines;
+    break;
+  case DT_TEXT:
+    og->u.gtext->fill_lines = fill_lines;
+    break;
+  default:
+    fprintf(stderr, LG_STR("This graphic type has no editable string...\n",
+			   "This graphic type has no editable string...\n"));
+    break;
+  }
 }
 
-void mouse_press_edit(Widget w, Draw_Data *dd, CairoGCs *cgcsp, XEvent *event)
+void mouse_press_edit(Widget w, Draw_Data *dd, CairoGCs *cgcsp, GdkEventButton *event)
 {
 #ifdef IGNORE_GTK
      OG *og;
@@ -1801,12 +1646,11 @@ void mouse_press_edit(Widget w, Draw_Data *dd, CairoGCs *cgcsp, XEvent *event)
 #endif
 }
 
-void mouse_press_move(Widget w, Draw_Data *dd, CairoGCs *cgcsp, XEvent *event)
+void mouse_press_move(Widget w, Draw_Data *dd, CairoGCs *cgcsp,  GdkEventButton *event)
 {
-#ifdef IGNORE_GTK
      OG *og;
-     int x = event->xbutton.x + dd->left;
-     int y = event->xbutton.y + dd->top;
+     int x = event->x + dd->left;
+     int y = event->y + dd->top;
 
      if (dd->op->graphic) {
 	  sl_loop_through_slist(dd->op->list_movable_og, og, OG *)
@@ -1833,32 +1677,24 @@ void mouse_press_move(Widget w, Draw_Data *dd, CairoGCs *cgcsp, XEvent *event)
 	       }
      }
      set_draw_mode(dd, MOVING_CANVAS);
-     dd->start_x = event->xbutton.x;
-     dd->start_y = event->xbutton.y;
-#endif
+     dd->start_x = event->x;
+     dd->start_y = event->y;
 }
 
-void canvas_mouse_press(Widget w, Draw_Data *dd, CairoGCs *cgcsp, XEvent *event)
+void canvas_mouse_press(Widget w, Draw_Data *dd, CairoGCs *cgcsp, GdkEventButton *event)
 {
-#ifdef IGNORE_GTK
      OG *og;
-     int x = event->xbutton.x + dd->left;
-     int y = event->xbutton.y + dd->top;
-     int button = event->xbutton.button;
+     int x = event->x + dd->left;
+     int y = event->y + dd->top;
+     int button = event->button;
 
-#ifdef FELIX
-     if (dd->pressed_button)
-	  return;
-     else 
-	  dd->pressed_button = button;
-#endif
      dd->pressed_button = button;
 
      if (dd->op && current_op) {
-	  if (button == Button2) {
+	  if (button == 2) {
 	       dd->old_mode = dd->mode;
-	       mouse_press_move(w, dd, event);
-	  } else if ((button == Button3) &&
+	       mouse_press_move(w, dd, cgcsp, event);
+	  } else if ((button == 3) &&
 		     (dd->mode !=  ALIGNING_OG) &&
 		     (dd->mode !=  ALIGNING_OG_V) &&
 		     (dd->mode !=  ALIGNING_OG_H) &&
@@ -1868,13 +1704,13 @@ void canvas_mouse_press(Widget w, Draw_Data *dd, CairoGCs *cgcsp, XEvent *event)
 		     (dd->mode !=  DUPLICATING_EDGE2) &&
 		     (dd->mode !=  MERGING_NODE) &&
 		     (dd->mode !=  EDGE_SELECTED)) {
-	       mouse_press_edit(w, dd, event);
+	       mouse_press_edit(w, dd, cgcsp, event);
 	  } else {
 	       switch (dd->mode) {
 	       case ALIGNING_OG:
 	       case ALIGNING_OG_V:
 	       case ALIGNING_OG_H:
-		    if (button == Button3) {
+		    if (button == 3) {
 			 dd->og_align->selected = FALSE;
 			 draw_og(dd->canvas, dd, cgcsp, dd->og_align);
 			 switch (dd->mode) {
@@ -1933,19 +1769,19 @@ void canvas_mouse_press(Widget w, Draw_Data *dd, CairoGCs *cgcsp, XEvent *event)
 						       "This operation is not allowed on Text OP."));
 		    break;
 	       case MOVE_OG:
-			 mouse_press_move(w, dd, event);
+			 mouse_press_move(w, dd, cgcsp, event);
 		    break;
 	       case EDIT_OG:
-		    mouse_press_edit(w, dd, event);
+		    mouse_press_edit(w, dd, cgcsp, event);
 		    break;
 	       case DESTROY_OG:
 		    sl_loop_through_slist(dd->op->list_destroyable_og, og, OG *)
 			 if (XPointInRegion(og->region, x, y)) {
 			      dd->og_selected_on_press = og;
 			      if ((og->type == DT_THEN_NODE) || (og->type == DT_ELSE_NODE)) 
-				   draw_clip_box(w, dd, if_og_from_t_or_f_og(og));
+				   draw_clip_box(w, dd, cgcsp, if_og_from_t_or_f_og(og));
 			      else
-				   draw_clip_box(w, dd, og);
+				   draw_clip_box(w, dd, cgcsp, og);
 			      return;
 			 }
 		    break;
@@ -1953,23 +1789,23 @@ void canvas_mouse_press(Widget w, Draw_Data *dd, CairoGCs *cgcsp, XEvent *event)
 		    sl_loop_through_slist(dd->op->list_og_edge_text, og, OG *)
 			 if (XPointInRegion(og->region, x, y)) {
 			      dd->og_selected_on_press = og;
-			      draw_clip_box(w, dd, og);
+			      draw_clip_box(w, dd, cgcsp, og);
 			      return;
 			 }
 		    sl_loop_through_slist(dd->op->list_og_inst, og, OG *)
 			 if (XPointInRegion(og->region, x, y)) {
 			      dd->og_selected_on_press = og;
-			      draw_clip_box(w, dd, og);
+			      draw_clip_box(w, dd, cgcsp, og);
 			      return;
 			 }
 		    if (XPointInRegion(dd->op->ginvocation->region, x, y)) {
 			 dd->og_selected_on_press = dd->op->ginvocation;
-			 draw_clip_box(w, dd, dd->op->ginvocation);
+			 draw_clip_box(w, dd, cgcsp, dd->op->ginvocation);
 			 return;
 		    }
 		    if (XPointInRegion(dd->op->geffects->region, x, y)) {
 			 dd->og_selected_on_press = dd->op->geffects;
-			 draw_clip_box(w, dd, dd->op->geffects);
+			 draw_clip_box(w, dd, cgcsp, dd->op->geffects);
 			 return;
 		    }
 
@@ -1979,7 +1815,7 @@ void canvas_mouse_press(Widget w, Draw_Data *dd, CairoGCs *cgcsp, XEvent *event)
 			 sl_loop_through_slist(dd->op->list_og_node, og, OG *)
 			      if (XPointInRegion(og->region, x, y)) {
 				   report_opfile_modification();
-				   convert_end(w, dd, og);
+				   convert_end(w, dd, cgcsp, og);
 				   return;
 			      }
 		    break;
@@ -1987,21 +1823,21 @@ void canvas_mouse_press(Widget w, Draw_Data *dd, CairoGCs *cgcsp, XEvent *event)
 		    if (!(dd->op->gaction || dd->op->gbody))
 			 sl_loop_through_slist(dd->op->list_og_node, og, OG *)
 			      if (XPointInRegion(og->region, x, y)) {
-				   convert_start(w, dd, og);
+				   convert_start(w, dd, cgcsp, og);
 				   return;
 			      }
 		    break;
 	       case FLIP_SPLIT:
 		    sl_loop_through_slist(dd->op->list_og_node, og, OG *)
 			 if (XPointInRegion(og->region, x, y)) {
-			      flip_split(w, dd, og);
+			      flip_split(w, dd, cgcsp, og);
 			      return;
 			 }
 		    break;
 	       case FLIP_JOIN:
 		    sl_loop_through_slist(dd->op->list_og_node, og, OG *)
 			 if (XPointInRegion(og->region, x, y)) {
-			      flip_join(w, dd, og);
+			      flip_join(w, dd, cgcsp, og);
 			      return;
 			 }
 		    break;
@@ -2021,7 +1857,7 @@ void canvas_mouse_press(Widget w, Draw_Data *dd, CairoGCs *cgcsp, XEvent *event)
 	       case DRAW_IFNODE:
 		    if (!(dd->op->gaction || dd->op->gbody)) {
 			 report_opfile_modification();
-			 create_ifnode(w, x, y, dd);
+			 create_ifnode(w, x, y, dd, cgcsp);
 		    }
 		    break;
 	       case DRAW_EDGE:
@@ -2049,16 +1885,16 @@ void canvas_mouse_press(Widget w, Draw_Data *dd, CairoGCs *cgcsp, XEvent *event)
 	       {
 		    PBoolean node = FALSE;
 
-		    if (button != Button3) {
+		    if (button != 3) {
 			 sl_loop_through_slist(dd->op->list_og_node, og, OG *)
 			      if (XPointInRegion(og->region, x, y)) {
-				   Arg arg[1];
-				   
-				   dd->second_node_selected = og;
+				dd->second_node_selected = og;
+#ifdef IGNORE_GTK
 				   XtSetArg(arg[0], XmNuserData, dd);
 				   XtSetValues(createEdgeStruct->createEdgeForm, arg, 1);
 				   node = TRUE;
 				   XtManageChild(createEdgeStruct->createEdgeForm);
+#endif
 				   break; /* We need to break because there may be a recursive loop_though_list... */
 
 			      }
@@ -2080,7 +1916,7 @@ void canvas_mouse_press(Widget w, Draw_Data *dd, CairoGCs *cgcsp, XEvent *event)
 			      }
 			 }
 		    }
-		    if (node || (button == Button3)) {
+		    if (node || (button == 3)) {
 			 set_draw_mode(dd, DRAW_EDGE);
 			 dd->node_selected->selected = FALSE;
 			 draw_og(w, dd, cgcsp, dd->node_selected);
@@ -2099,7 +1935,7 @@ void canvas_mouse_press(Widget w, Draw_Data *dd, CairoGCs *cgcsp, XEvent *event)
 			      }
 		    break;
 	       case EDGE_SELECTED:
-		    if (button != Button3) {   
+		    if (button != 3) {   
 			 if (sl_slist_length(dd->edge_selected->u.gedge->list_knot) < MAX_KNOT) {
 			      int dx, dy;
 			      long dist = -1, dist_tmp, dist_prev, dist_next;
@@ -2187,7 +2023,7 @@ void canvas_mouse_press(Widget w, Draw_Data *dd, CairoGCs *cgcsp, XEvent *event)
 		    }
 		    break;
 	       case DUPLICATING_EDGE:
-		    if (button != Button3) {
+		    if (button != 3) {
 			 sl_loop_through_slist(dd->op->list_og_node, og, OG *)
 			      if (XPointInRegion(og->region, x, y)) {
 				   if (og->u.gnode->node->type == NT_END) {
@@ -2217,18 +2053,17 @@ void canvas_mouse_press(Widget w, Draw_Data *dd, CairoGCs *cgcsp, XEvent *event)
 	       {
 		    PBoolean node = FALSE;
 
-		    if (button != Button3) {
+		    if (button != 3) {
 			 sl_loop_through_slist(dd->op->list_og_node, og, OG *)
 			      if (XPointInRegion(og->region, x, y)) {
-				   Arg arg[2];
-
-				   dd->second_node_selected = og;
+				dd->second_node_selected = og;
+#ifdef IGNORE_GTK
 				   XtSetArg(arg[0], XmNuserData, dd);
 				   XtSetValues(createEdgeStruct->createEdgeForm, arg, 1);
 				   XmTextSetString(createEdgeStruct->text, dd->edge_selected->u.gedge->text->u.gedge_text->log_string);
 				   node = TRUE;
 				   XtManageChild(createEdgeStruct->createEdgeForm);
-
+#endif
 				   break; /* We need to break because there may be a recursive loop_though_list... */
 
 			      }
@@ -2249,7 +2084,7 @@ void canvas_mouse_press(Widget w, Draw_Data *dd, CairoGCs *cgcsp, XEvent *event)
 			      }
 			 }
 		    }
-		    if (node || (button == Button3)) {
+		    if (node || (button == 3)) {
 			 set_draw_mode(dd, DUPLICATING_EDGE);
 			 dd->node_selected->selected = FALSE;
 			 draw_og(w, dd, cgcsp, dd->node_selected);
@@ -2285,7 +2120,7 @@ void canvas_mouse_press(Widget w, Draw_Data *dd, CairoGCs *cgcsp, XEvent *event)
 		    }
 		    break;
 	       case DUPLICATING_NODE:
-		    if (button != Button3) {
+		    if (button != 3) {
 			 report_opfile_modification();
 			 duplicate_node(w, x, y, dd, cgcsp, dd->node_selected->u.gnode->node);
 		    } else {
@@ -2316,7 +2151,7 @@ void canvas_mouse_press(Widget w, Draw_Data *dd, CairoGCs *cgcsp, XEvent *event)
 	       {
 		    PBoolean node = FALSE;
 
-		    if (button != Button3) {
+		    if (button != 3) {
 			 sl_loop_through_slist(dd->op->list_og_node, og, OG *)
 			      if (XPointInRegion(og->region, x, y)) {
 				   
@@ -2331,7 +2166,7 @@ void canvas_mouse_press(Widget w, Draw_Data *dd, CairoGCs *cgcsp, XEvent *event)
 				   break; /* We need to break because there is a recursive sl_loop_through_slist... */
 			      }
 		    }
-		    if (node || (button == Button3)) {
+		    if (node || (button == 3)) {
 			 set_draw_mode(dd, MERGE_NODE);
 			 dd->node_selected->selected = FALSE;
 			 draw_og(w, dd, cgcsp, dd->node_selected);
@@ -2349,5 +2184,4 @@ void canvas_mouse_press(Widget w, Draw_Data *dd, CairoGCs *cgcsp, XEvent *event)
 	  ope_information_report(LG_STR("You have to create or select a OP first.",
 					"You have to create or select a OP first."));
      }
-#endif
 }
