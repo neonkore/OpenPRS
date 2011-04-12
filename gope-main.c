@@ -531,7 +531,7 @@ gboolean clicked(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
 
 XtAppContext app_context;
 GtkWidget *opList;
-GtkWidget *topLevel;
+GtkWidget *topLevelWindow;
 guint sb_cid;
 GtkWidget *statusbar;
 
@@ -567,8 +567,8 @@ int main(int argc, char **argv, char **envp)
   char iconname[] = "OP Editor";
   int pid=getpid();
   
-  gx_print_command_template = DEFAULT_PRINT_COMMAND;
-  txt_print_command_template = DEFAULT_PRINT_COMMAND;
+  //gx_print_command_template = DEFAULT_PRINT_COMMAND;
+  //  txt_print_command_template = DEFAULT_PRINT_COMMAND;
   ip_x = IP_X;
   ip_y = IP_Y;
   ip_width = IP_WIDTH;

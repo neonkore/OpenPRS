@@ -55,29 +55,11 @@ static const char* const rcsid = "$Id$";
 
 #include "xm2gtk_f.h"
 
-Widget ope_information;
-
-void ope_information_create(Widget parent)
-{
-#ifdef IGNORE_GTK
-     Cardinal n;
-     Arg args[MAXARGS];
-
-     n = 0;
-     XtSetArg(args[n], XmNdialogStyle, XmDIALOG_APPLICATION_MODAL); n++;
-     XtSetArg(args[n], XmNautoUnmanage, True); n++;
-     XtSetArg(args[n], XmNdialogTitle, XmStringCreateLtoR("Information", XmSTRING_DEFAULT_CHARSET)); n++;
-     ope_information = XmCreateInformationDialog(parent, "ope_information", args, n);
-     XtUnmanageChild(XmMessageBoxGetChild(ope_information, XmDIALOG_HELP_BUTTON));
-     XtUnmanageChild(XmMessageBoxGetChild(ope_information, XmDIALOG_CANCEL_BUTTON));
-#endif
-}
-
 void ope_information_report(char *message)
 {
   GtkWidget *dialog;
   
-  dialog = gtk_message_dialog_new(GTK_WINDOW(topLevel),
+  dialog = gtk_message_dialog_new(GTK_WINDOW(topLevelWindow),
 				  GTK_DIALOG_DESTROY_WITH_PARENT,
 				  GTK_MESSAGE_INFO,
 				  GTK_BUTTONS_OK,
@@ -87,76 +69,29 @@ void ope_information_report(char *message)
   gtk_widget_destroy(dialog);
 }
 
-Widget user_error;
-
-void ope_create_user_error(Widget parent)
-{
-#ifdef IGNORE_GTK
-     Cardinal n;
-     Arg args[MAXARGS];
-
-     n = 0;
-     XtSetArg(args[n], XmNdialogStyle, XmDIALOG_APPLICATION_MODAL); n++;
-     XtSetArg(args[n], XmNautoUnmanage, True); n++;
-     user_error = XmCreateErrorDialog(parent, "user_error", args, n);
-     XtUnmanageChild(XmMessageBoxGetChild(user_error, XmDIALOG_HELP_BUTTON));
-     XtUnmanageChild(XmMessageBoxGetChild(user_error, XmDIALOG_CANCEL_BUTTON));
-#endif
-}
-
 void report_user_error(PString message)
 {
-#ifdef IGNORE_GTK
-     XmString to_free;
-     Arg args[1];
-
-     XtSetArg(args[0], XmNmessageString, to_free = XmStringCreateLtoR(message, XmSTRING_DEFAULT_CHARSET));
-     XtSetValues(user_error, args, 1);
-     XmStringFree(to_free);
-     XtManageChild(user_error);
-#endif
+  GtkWidget *dialog;
+  dialog = gtk_message_dialog_new(GTK_WINDOW(topLevelWindow),
+				  GTK_DIALOG_DESTROY_WITH_PARENT,
+				  GTK_MESSAGE_ERROR,
+				  GTK_BUTTONS_OK,
+				  "%s", message);
+  gtk_window_set_title(GTK_WINDOW(dialog), "Error");
+  gtk_dialog_run(GTK_DIALOG(dialog));
+  gtk_widget_destroy(dialog);
 }
 
-Widget syntax_error;
-
-void create_syntax_error_dialog(Widget parent)
-{
-#ifdef IGNORE_GTK
-     Cardinal n;
-     Arg args[MAXARGS];
-
-     n = 0;
-     XtSetArg(args[n], XmNdialogStyle, XmDIALOG_APPLICATION_MODAL); n++;
-     XtSetArg(args[n], XmNautoUnmanage, True); n++;
-     syntax_error = XmCreateErrorDialog(parent, "syntax_error", args, n);
-     XtUnmanageChild(XmMessageBoxGetChild(syntax_error, XmDIALOG_HELP_BUTTON));
-     XtUnmanageChild(XmMessageBoxGetChild(syntax_error, XmDIALOG_CANCEL_BUTTON));
-#endif
-}
 
 void report_syntax_error(PString message)
 {
-#ifdef IGNORE_GTK
-     XmString to_free, str1, str2;
-     Arg args[1];
-
-     if (parser_message != NULL) {
-	  str1 = XmStringCreateLtoR(message, XmSTRING_DEFAULT_CHARSET);
-	  str2 = XmStringCreateLtoR(parser_message, XmSTRING_DEFAULT_CHARSET);
-
-	  to_free = XmStringConcat(str1, str2);
-	  XmStringFree(str1);
-	  XmStringFree(str2);
-	  
-	  FREE(parser_message);
-	  parser_message = NULL;
-	  too_long_message = FALSE;
-     } else {
-	  to_free = XmStringCreateLtoR(message, XmSTRING_DEFAULT_CHARSET);
-     }
-     XtSetArg(args[0], XmNmessageString, to_free);
-     XtSetValues(syntax_error, args, 1);
-     XmStringFree(to_free);
-     XtManageChild(syntax_error);
-#endif
+  GtkWidget *dialog;
+  dialog = gtk_message_dialog_new(GTK_WINDOW(topLevelWindow),
+				  GTK_DIALOG_DESTROY_WITH_PARENT,
+				  GTK_MESSAGE_ERROR,
+				  GTK_BUTTONS_OK,
+				  "%s%s", message,(parser_message?parser_message:""));
+  gtk_window_set_title(GTK_WINDOW(dialog), "parser Error");
+  gtk_dialog_run(GTK_DIALOG(dialog));
+  gtk_widget_destroy(dialog);
 }

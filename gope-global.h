@@ -64,7 +64,7 @@ extern ListOPFile list_opfiles;
 
 extern EditObjectStruct *editObjectStruct;
 
-extern GtkWidget *topLevel;
+extern GtkWidget *topLevelWindow;
 extern GtkWidget *ope_information;
 extern GtkWidget *printQuestion;
 extern GtkWidget *op_information;
@@ -96,8 +96,6 @@ extern GtkWidget *user_error;
 
 extern GtkWidget *printCommandDialog;
 extern GtkWidget *VisibleFieldsDialog;
-
-extern GtkWidget *editNodeNameDialog;
 
 extern OPFile *current_opfile;
 

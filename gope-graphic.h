@@ -70,6 +70,10 @@
 /* Size in pixel of the bounding box around a knot */
 #define KNOT_SIZE 16
 
+/* Number of pixels around text */
+#define PIX_AROUND_TEXT 3
+#define PIX_REGION_AROUND_OG 2
+
 #define MAX3(a,b,c)     (((a) > (b)) ? (MAX(a,c)) : (MAX(b,c)))
 
 #define EMPTY_STRING(s) ((s)[0]=='\0')

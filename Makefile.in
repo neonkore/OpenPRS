@@ -46,7 +46,7 @@ VPATH=		.:@srcdir@
 # All the C sources
 C_SRC = action.c activate.c database.c ev-function.c shary-user-ev-function.c ev-predicate.c \
 	fact-goal.c help.c int-graph.c intend.c intention.c op-compiler.c op-dump-load.c \
-	op-instance.c op-structure.c op-x-opaque.c ope-bboard.c ope-edit.c gope-edit.c \
+	op-instance.c op-structure.c op-x-opaque.c ope-bboard.c gope-bboard.c ope-edit.c gope-edit.c \
 	ope-external.c gope-external.c ope-filesel.c gope-filesel.c ope-graphic.c gope-graphic.c ope-op-opf.c gope-op-opf.c ope-main.c gope-main.c ope-menu.c gope-menu.c \
 	ope-print.c ope-pxmw.c ope-save.c ope-syntax.c ope-vsblf.c gope-vsblf.c oprs-subst.c\
 	lisp-list.c mp.c mp-register.c opaque-ext.c parser-funct.c oprs-array.c \
@@ -82,7 +82,7 @@ FINC = action_f.h activate_f.h database_f.h ev-function_f.h oprs-pred-func_f.h \
 	ev-predicate_f.h fact-goal_f-pub.h fact-goal_f.h \
 	help_f.h int-graph_f-pub.h int-graph_f.h intend_f.h intention_f-pub.h \
 	intention_f.h op-compiler_f.h op-instance_f-pub.h op-instance_f.h \
-	op-structure_f.h ope-bboard_f.h ope-edit_f.h gope-edit_f.h ope-external_f.h gope-external_f.h \
+	op-structure_f.h ope-bboard_f.h gope-bboard_f.h ope-edit_f.h gope-edit_f.h ope-external_f.h gope-external_f.h \
 	ope-filesel_f.h gope-filesel_f.h ope-graphic_f.h gope-graphic_f.h ope-op-opf_f.h gope-op-opf_f.h ope-menu_f.h gope-menu_f.h \
 	ope-print_f.h ope-pxmw_f.h ope-save_f.h ope-syntax_f.h ope-vsblf_f.h gope-vsblf_f.h \
 	lisp-list_f-pub.h lisp-list_f.h mp-register_f.h other_proto.h \
@@ -180,8 +180,8 @@ OP_EDITOR_OBJ = ope-bboard.o ope-edit.o ope-filesel.o ope-op-opf.o ope-main.o \
 	ope-save.o ope-syntax.o \
 	ope-vsblf.o xt-util.o ope-rop.o ope-op-str.o ope-opaque.o
 
-GOP_EDITOR_OBJ = ope-bboard.o gope-edit.o gope-filesel.o gope-op-opf.o gope-main.o \
-	gope-menu.o ope-parser.tab.o ope-parser.lex.o ope-print.o ope-pxmw.o \
+GOP_EDITOR_OBJ = gope-bboard.o gope-edit.o gope-filesel.o gope-op-opf.o gope-main.o \
+	gope-menu.o ope-parser.tab.o ope-parser.lex.o \
 	ope-save.o ope-syntax.o \
 	gope-vsblf.o xt-util.o ope-rop.o ope-op-str.o ope-opaque.o
 

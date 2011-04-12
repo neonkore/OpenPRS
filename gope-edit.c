@@ -41,6 +41,7 @@
 #include "xm2gtk.h"
 
 #include "macro.h"
+#include "constant.h"
 #include "oprs-type.h"
 #include "op-structure.h"
 
@@ -1584,21 +1585,21 @@ void set_editable_og_fill_lines(OG *og, PBoolean fill_lines)
 
 void mouse_press_edit(Widget w, Draw_Data *dd, CairoGCs *cgcsp, GdkEventButton *event)
 {
-#ifdef IGNORE_GTK
-     OG *og;
-     char *string;
-     int x = event->xbutton.x + dd->left;
-     int y = event->xbutton.y + dd->top;
+  OG *og;
+  char *string;
+  int x = event->x + dd->left;
+  int y = event->y + dd->top;
 
      sl_loop_through_slist(dd->op->list_editable_og, og, OG *)
 	  if (XPointInRegion(og->region, x, y)) {
-	       Arg arg[1];
+	    //	       Arg arg[1];
 	       char s[LINSIZ];
 
 	       if((og->type == DT_EDGE_TEXT) || (og->type == DT_TEXT))  {
 		    PBoolean line_filling = get_editable_og_fill_lines(og);
 
 		    dd->edited_og = og;
+#ifdef IGNORE_GTK
 		    XtSetArg(arg[0], XmNuserData, dd);
 		    XtSetValues(editObjectStruct->editObjectForm, arg, 1);
 		    string = get_editable_og_string(og);
@@ -1611,6 +1612,7 @@ void mouse_press_edit(Widget w, Draw_Data *dd, CairoGCs *cgcsp, GdkEventButton *
 		    XmToggleButtonSetState(editObjectStruct->fill_false, 
 					   (line_filling ? FALSE : TRUE), FALSE);
 		    XtManageChild(editObjectStruct->editObjectForm);
+#endif
 		    return;
 	       } else if (og->type == DT_NODE) {
 		    Node *node = og->u.gnode->node;
@@ -1621,9 +1623,7 @@ void mouse_press_edit(Widget w, Draw_Data *dd, CairoGCs *cgcsp, GdkEventButton *
 			 return;
 		    }
 		    dd->edited_og = og;
- 		    XmTextSetString(XmSelectionBoxGetChild(editNodeNameDialog,XmDIALOG_TEXT),
-				    node->name);
-		    XtManageChild(editNodeNameDialog);
+ 		    editNodeNameDialog(w, dd, cgcsp, node);
 		    return;
 	       } else if ((og->type == DT_IF_NODE) ||
 			  (og->type == DT_THEN_NODE) || 
@@ -1635,15 +1635,16 @@ void mouse_press_edit(Widget w, Draw_Data *dd, CairoGCs *cgcsp, GdkEventButton *
 		    else
 			 dd->edited_og = og;
 		    node = dd->edited_og->u.gnode->node;
+#ifdef IGNORE_GTK
  		    XmTextSetString(XmSelectionBoxGetChild(editNodeNameDialog,XmDIALOG_TEXT),
 				    node->name);
 		    XtManageChild(editNodeNameDialog);
+#endif
 		    return;
 	       } else
 		    fprintf(stderr, LG_STR("This graphic type has no editable string...\n",
 					   "This graphic type has no editable string...\n"));
 	  }
-#endif
 }
 
 void mouse_press_move(Widget w, Draw_Data *dd, CairoGCs *cgcsp,  GdkEventButton *event)

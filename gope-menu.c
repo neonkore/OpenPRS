@@ -81,10 +81,10 @@ void OpfSelect(Widget w, XtPointer client_data, XtPointer call_data)
      SelectOpFileDialogManage();
 }
 
-void OpfPrint(Widget w, XtPointer client_data, XtPointer call_data)
-{
-     printQuestionManage();
-}
+/* void OpfPrint(Widget w, XtPointer client_data, XtPointer call_data) */
+/* { */
+/*      printQuestionManage(); */
+/* } */
 
 void OpfNew(Widget w, XtPointer client_data, XtPointer call_data)
 {
@@ -595,10 +595,10 @@ GtkWidget *create_menu_bar(GtkWidget *window, Draw_Data *dd)
   g_signal_connect(G_OBJECT(opfSelect),"activate",
 		   G_CALLBACK(OpfSelect), NULL);
 
-  opfPrint = gtk_menu_item_new_with_label("Print");
-  gtk_menu_shell_append(GTK_MENU_SHELL(editPDMenu), opfPrint);
-  g_signal_connect(G_OBJECT(opfPrint),"activate",
-		   G_CALLBACK(OpfPrint), NULL);
+  /* opfPrint = gtk_menu_item_new_with_label("Print"); */
+  /* gtk_menu_shell_append(GTK_MENU_SHELL(editPDMenu), opfPrint); */
+  /* g_signal_connect(G_OBJECT(opfPrint),"activate", */
+  /* 		   G_CALLBACK(OpfPrint), NULL); */
 
   opfUnload = gtk_menu_item_new_with_label("Unload");
   gtk_menu_shell_append(GTK_MENU_SHELL(editPDMenu), opfUnload);
@@ -644,10 +644,10 @@ GtkWidget *create_menu_bar(GtkWidget *window, Draw_Data *dd)
   g_signal_connect(G_OBJECT(opDump),"activate",
 		   G_CALLBACK(OpDump), NULL);
      
-  opPrint = gtk_menu_item_new_with_label("Print");
-  gtk_menu_shell_append(GTK_MENU_SHELL(opPDMenu), opPrint);
-  g_signal_connect(G_OBJECT(opPrint),"activate",
-		   G_CALLBACK(OpPrint), NULL);
+  /* opPrint = gtk_menu_item_new_with_label("Print"); */
+  /* gtk_menu_shell_append(GTK_MENU_SHELL(opPDMenu), opPrint); */
+  /* g_signal_connect(G_OBJECT(opPrint),"activate", */
+  /* 		   G_CALLBACK(OpPrint), NULL); */
 
   gtk_menu_shell_append(GTK_MENU_SHELL(opPDMenu), gtk_separator_menu_item_new());
 
@@ -700,10 +700,10 @@ GtkWidget *create_menu_bar(GtkWidget *window, Draw_Data *dd)
   g_signal_connect(G_OBJECT(miscSize),"activate",
 		   G_CALLBACK(MiscSize), NULL);
 
-  miscPrint = gtk_menu_item_new_with_label("Print");
-  gtk_menu_shell_append(GTK_MENU_SHELL(miscPDMenu), miscPrint);
-  g_signal_connect(G_OBJECT(miscPrint),"activate",
-		   G_CALLBACK(MiscPrint), NULL);
+  /* miscPrint = gtk_menu_item_new_with_label("Print"); */
+  /* gtk_menu_shell_append(GTK_MENU_SHELL(miscPDMenu), miscPrint); */
+  /* g_signal_connect(G_OBJECT(miscPrint),"activate", */
+  /* 		   G_CALLBACK(MiscPrint), NULL); */
 
   miscVisibleFields = gtk_menu_item_new_with_label("VisibleFields");
   gtk_menu_shell_append(GTK_MENU_SHELL(miscPDMenu), miscVisibleFields);

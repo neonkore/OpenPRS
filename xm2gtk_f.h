@@ -136,11 +136,12 @@ void XmStringDraw(void* d, void *w, void *i1, XmString string, cairo_t *cr, gint
 		  Dimension i2, void * i3, void * i4, XRectangle *i5)
 {
   cairo_text_extents_t extents;
-  int h;
   
   cairo_text_extents(cr, string, &extents);
+  //  cairo_rectangle(cr, x, y, extents.width, extents.height);
+  // cairo_stroke(cr);
 
-  cairo_move_to(cr, x, y+extents.height);
+  cairo_move_to(cr, x-extents.x_bearing, y-extents.y_bearing);
   cairo_show_text(cr, string);  
 }
 

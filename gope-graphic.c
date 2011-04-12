@@ -87,7 +87,7 @@ void create_cgcs(CairoGCs *cgcs, GdkDrawable *window)
   cairo_set_font_size(cgcs->cr_edge, 12);
 
   cgcs->cr_node = gdk_cairo_create(window);
-  cairo_set_source_rgb(cgcs->cr_node, 1, 1, 0);
+  cairo_set_source_rgb(cgcs->cr_node, 0, 0, 0);
   cairo_set_line_width(cgcs->cr_node, 1);
   cairo_select_font_face(cgcs->cr_node, "Helvetica",
 			 CAIRO_FONT_SLANT_NORMAL,
@@ -746,29 +746,28 @@ void erase_og(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, OG *og)
      case DT_EDGE:
 	  erase_edge(w, dd, cgcsp, og->u.gedge);
 	  add_expose_region(dd, og->region);
-	  /* XSetRegion(XtDisplay(w), cgcsp->cr_basic, og->region); */
-	  /* XClipBox(og->region,&rect); */
-	  /*
-	   * XClearArea(dpy, win, rect.x - dd->left, rect.y - dd->top,
-	   * rect.widthdd->op->list_og_nod, rect.height, TRUE);
-	   */
-	  /*
-	   * XClearArea(dpy, win,
-	   * MIN3(og->u.gedge->fx1,og->u.gedge->fx2,og->u.gedge->x2) -
-	   * dd->left, MIN3(og->u.gedge->fy1,og->u.gedge->fy2,og->u.gedge->y2)
-	   * - dd->top, ARR_LENGTH, ARR_LENGTH, TRUE);
-	   */
-	  /* XSetClipMask(XtDisplay(w), cgcsp->cr_basic, None); */
+	  XClearArea(dpy, win,
+		      MIN3(og->u.gedge->fx1,og->u.gedge->fx2,og->u.gedge->x2) -  dd->left, 
+		     MIN3(og->u.gedge->fy1,og->u.gedge->fy2,og->u.gedge->y2) - dd->top, 
+		     ARR_LENGTH, ARR_LENGTH, TRUE);
 	  break;
      case DT_IF_NODE:
      case DT_THEN_NODE:
      case DT_ELSE_NODE:
      case DT_NODE:
+	  XClearArea(dpy, win,
+		     og->x - PIX_AROUND_TEXT- PIX_REGION_AROUND_OG, 
+		     og->y - PIX_AROUND_TEXT- PIX_REGION_AROUND_OG,
+		     og->width+2*(PIX_AROUND_TEXT + PIX_REGION_AROUND_OG), 
+		     og->height+2*(PIX_AROUND_TEXT + PIX_REGION_AROUND_OG), TRUE);
+	  break;
+
      case DT_EDGE_TEXT:
      case DT_TEXT:
 	  XClearArea(dpy, win,
-		     og->x - dd->left, og->y - dd->top,
-		     og->width + 1, og->height + 1, TRUE);
+		     og->x-1 ,// - PIX_AROUND_TEXT- PIX_REGION_AROUND_OG, 
+		     og->y-1 ,// -  - PIX_AROUND_TEXT- PIX_REGION_AROUND_OG,
+		     og->width+2, og->height+2, TRUE);
 	  break;
      case DT_INST:
 	  erase_inst(w, dd, cgcsp, og);
@@ -801,9 +800,11 @@ void draw_og(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, OG *og)
 /*      XFillRectangle(dpy, win, dd->sgc, */
 /* 		    xs, ys, og->width, og->height); */
 
-     if (og->selected && og->type != DT_KNOT)
-       XDrawRectangle(dpy, win, cgcsp->cr_basic,
-		      xs, ys, og->width-1, og->height-1);
+     /* if (og->selected && og->type != DT_KNOT) */
+     /*   XDrawRectangle(dpy, win, cgcsp->cr_basic, */
+     /* 		      xs , //- PIX_AROUND_TEXT- PIX_REGION_AROUND_OG,  */
+     /* 		      ys , //- PIX_AROUND_TEXT- PIX_REGION_AROUND_OG, */
+     /* 		      og->width, og->height); */
 
      switch (og->type) {
      case DT_IF_NODE:
@@ -811,31 +812,48 @@ void draw_og(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, OG *og)
      case DT_ELSE_NODE:
      case DT_NODE:
        draw_node(w, dd, cgcsp, og->x, og->y, og->width, og->height, og->u.gnode, og->selected);
-	  break;
+       if (og->selected)
+	 XDrawRectangle(dpy, win, cgcsp->cr_basic,
+			xs  , ys,
+			og->width, og->height);
+       break;
      case DT_EDGE:
-	  draw_edge(w, dd, cgcsp, og->u.gedge);
-	  break;
+       draw_edge(w, dd, cgcsp, og->u.gedge);
+       break;
      case DT_EDGE_TEXT:
-	  draw_edge_text(w, dd, cgcsp, og->x, og->y, og->width, og->u.gedge_text, og->selected);
-	  break;
+       draw_edge_text(w, dd, cgcsp, og->x, og->y, og->width, og->u.gedge_text, og->selected);
+       if (og->selected)
+	 XDrawRectangle(dpy, win, cgcsp->cr_basic,
+			xs , ys ,
+			og->width, og->height);
+       
+       break;
      case DT_TEXT:
-	  draw_text(w, dd, cgcsp, og->x, og->y, og->width, og->u.gtext,og->selected);
-	  break;
+       draw_text(w, dd, cgcsp, og->x, og->y, og->width, og->u.gtext,og->selected);
+       if (og->selected)
+	 XDrawRectangle(dpy, win, cgcsp->cr_basic,
+			xs , ys ,
+			og->width, og->height);
+       break;
      case DT_INST:
-	  draw_inst(w, dd, cgcsp, og->x, og->y, og->width, og->height, og->selected);
-	  break;
+       draw_inst(w, dd, cgcsp, og->x, og->y, og->width, og->height, og->selected);
+       break;
      case DT_KNOT:
-	  draw_og(w, dd, cgcsp, og->u.gknot->edge);
-	  break;
+       draw_og(w, dd, cgcsp, og->u.gknot->edge);
+       if (og->selected)
+	 XDrawRectangle(dpy, win, cgcsp->cr_basic,
+			xs , ys ,
+			20, 20);
+       break;
 /*
      case DT_THEN_EDGE:
      case DT_ELSE_EDGE:
 	  break;
 */
      default:
-	  fprintf(stderr, LG_STR("unknown graphic type..\n",
-				 "unknown graphic type..\n"));
-	  break;
+       fprintf(stderr, LG_STR("unknown graphic type..\n",
+			      "unknown graphic type..\n"));
+       break;
      }
 }
 
@@ -849,33 +867,28 @@ void draw_node(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, int x, int y, int w
      xs = x - dd->left;
      ys = y - dd->top;
 
+
      XDrawRectangle(dpy, win,  cgcsp->cr_node ,
-		    xs + 1, ys,
-		    n->swidth + 3, n->sheight + 4);
+		    xs, ys ,
+		    n->swidth, n->sheight);
 
      XmStringDraw(dpy, win, NULL, n->xmstring, 
 		  cgcsp->cr_node,
-		  xs + 3, ys + 3, n->swidth - 2,
+		  xs + PIX_AROUND_TEXT, ys + PIX_AROUND_TEXT, n->swidth,
 		  XmALIGNMENT_BEGINNING,
 		  XmSTRING_DIRECTION_L_TO_R,
 		  NULL);
 
      if (node->join) {
 	  XDrawLine(dpy, win,  cgcsp->cr_node,
-		    xs + 1, ys- 1,
-		    xs + 1 + n->swidth + 3 , ys - 1);
-	  XDrawLine(dpy, win,  cgcsp->cr_node,
-		    xs + 1, ys - 2,
-		    xs + n->swidth + 3 , ys -2);
+		    xs , ys + 1,
+		    xs + n->swidth  ,  ys + 1);
      }
      
      if (node->split) {
 	  XDrawLine(dpy, win,  cgcsp->cr_node ,
-		    xs + 1, ys  + n->sheight + 4 + 1,
-		    xs + 1 + n->swidth + 3 , ys + n->sheight + 4 + 1);
-	  XDrawLine(dpy, win,  cgcsp->cr_node ,
-		    xs + 1, ys + n->sheight + 4 + 2,
-		    xs + n->swidth + 3 , ys + n->sheight + 4 + 2);
+		     xs ,  ys + n->sheight - 1,
+		     xs + n->swidth, ys + n->sheight - 1);
      }
 
 }
