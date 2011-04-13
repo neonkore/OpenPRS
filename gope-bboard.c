@@ -1235,6 +1235,8 @@ void editNodeNameDialog(Widget w, Draw_Data *dd, CairoGCs *cgcsp, Node *node)
 						  NULL);
   GtkWidget *content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
   
+  GtkWidget *label = gtk_label_new("Edit node name");
+  gtk_container_add (GTK_CONTAINER (content_area), label);
   
   GtkWidget *entry = gtk_entry_new();
   gtk_entry_set_text(GTK_ENTRY(entry), node->name);

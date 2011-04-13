@@ -875,63 +875,97 @@ GtkWidget *create_tool_bar(GtkWidget *parent, Draw_Data *dd)
   
   gtk_container_set_border_width(GTK_CONTAINER(toolbar), 0);
 
-  moveObjects = gtk_tool_button_new_from_stock(GTK_STOCK_NEW); // "moveObjects", NULL, 0);
+  moveObjects = gtk_tool_button_new(NULL, "Move");
   gtk_toolbar_insert(GTK_TOOLBAR(toolbar), moveObjects, -1);
-   g_signal_connect(G_OBJECT(moveObjects),"clicked",
+  g_signal_connect(G_OBJECT(moveObjects),"clicked",
 		   G_CALLBACK(MoveObjects), dd);
   //  toggle_button(moveObjects);
 
-  createNode = gtk_tool_button_new_from_stock(GTK_STOCK_NEW); // "createNode", NULL, 0);
+  createNode = gtk_tool_button_new(NULL, "New N");
   gtk_toolbar_insert(GTK_TOOLBAR(toolbar), createNode, -1);
+  g_signal_connect(G_OBJECT(createNode),"clicked",
+		   G_CALLBACK(CreateNode), dd);
 
 
-  createIfNode = gtk_tool_button_new_from_stock(GTK_STOCK_NEW); // "createIfNode", NULL, 0);
+  createIfNode = gtk_tool_button_new(NULL, "New If");
   gtk_toolbar_insert(GTK_TOOLBAR(toolbar), createIfNode, -1);
+  g_signal_connect(G_OBJECT(createIfNode),"clicked",
+		   G_CALLBACK(CreateIfNode), dd);
 
-  openNode = gtk_tool_button_new_from_stock(GTK_STOCK_NEW); // "openNode", NULL, 0);
+  openNode = gtk_tool_button_new(NULL, "Open N");
   gtk_toolbar_insert(GTK_TOOLBAR(toolbar), openNode, -1);
+  g_signal_connect(G_OBJECT(openNode),"clicked",
+		   G_CALLBACK(OpenNode), dd);
 
-  createEdge = gtk_tool_button_new_from_stock(GTK_STOCK_NEW); // "createEdge", NULL, 0);
+  createEdge = gtk_tool_button_new(NULL, "New E");
   gtk_toolbar_insert(GTK_TOOLBAR(toolbar), createEdge, -1);
+  g_signal_connect(G_OBJECT(createEdge),"clicked",
+		   G_CALLBACK(CreateEdge), dd);
 
-  createKnot = gtk_tool_button_new_from_stock(GTK_STOCK_NEW); // "createKnot", NULL, 0);
+  createKnot = gtk_tool_button_new(NULL, "New K");
   gtk_toolbar_insert(GTK_TOOLBAR(toolbar), createKnot, -1);
+  g_signal_connect(G_OBJECT(createKnot),"clicked",
+		   G_CALLBACK(CreateKnot), dd);
 
-  flipJoin = gtk_tool_button_new_from_stock(GTK_STOCK_NEW); // "flipJoin", NULL, 0);
+  flipJoin = gtk_tool_button_new(NULL, "Join");
   gtk_toolbar_insert(GTK_TOOLBAR(toolbar), flipJoin, -1);
+  g_signal_connect(G_OBJECT(flipJoin),"clicked",
+		   G_CALLBACK(FlipJoin), dd);
 
-  flipSplit = gtk_tool_button_new_from_stock(GTK_STOCK_NEW); // "flipSplit", NULL, 0);
+  flipSplit = gtk_tool_button_new(NULL, "Split");
   gtk_toolbar_insert(GTK_TOOLBAR(toolbar), flipSplit, -1);
+  g_signal_connect(G_OBJECT(flipSplit),"clicked",
+		   G_CALLBACK(FlipSplit), dd);
 
-  editObjects = gtk_tool_button_new_from_stock(GTK_STOCK_NEW); // "editObjects", NULL, 0);
+  editObjects = gtk_tool_button_new_from_stock(GTK_STOCK_EDIT); // "editObjects", NULL, 0);
   gtk_toolbar_insert(GTK_TOOLBAR(toolbar), editObjects, -1);
+  g_signal_connect(G_OBJECT(editObjects),"clicked",
+		   G_CALLBACK(EditObjects), dd);
 
-  duplicateObjects = gtk_tool_button_new_from_stock(GTK_STOCK_NEW); // "duplicateObjects", NULL, 0);
+  duplicateObjects = gtk_tool_button_new_from_stock(GTK_STOCK_COPY); // "duplicateObjects", NULL, 0);
   gtk_toolbar_insert(GTK_TOOLBAR(toolbar), duplicateObjects, -1);
+  g_signal_connect(G_OBJECT(duplicateObjects),"clicked",
+		   G_CALLBACK(DuplicateObjects), dd);
 
-  mergeNode = gtk_tool_button_new_from_stock(GTK_STOCK_NEW); // "mergeNode", NULL, 0);
+  mergeNode = gtk_tool_button_new(NULL, "Merge");
   gtk_toolbar_insert(GTK_TOOLBAR(toolbar), mergeNode, -1);
+  g_signal_connect(G_OBJECT(mergeNode),"clicked",
+		   G_CALLBACK(MergeNode), dd);
 
-  convertEnd = gtk_tool_button_new_from_stock(GTK_STOCK_NEW); // "convertEnd", NULL, 0);
+  convertEnd = gtk_tool_button_new(NULL, "->End");
   gtk_toolbar_insert(GTK_TOOLBAR(toolbar), convertEnd, -1);
+  g_signal_connect(G_OBJECT(convertEnd),"clicked",
+		   G_CALLBACK(ConvertEnd), dd);
 
-  convertStart = gtk_tool_button_new_from_stock(GTK_STOCK_NEW); // "convertStart", NULL, 0);
+  convertStart = gtk_tool_button_new(NULL, "->Start");
   gtk_toolbar_insert(GTK_TOOLBAR(toolbar), convertStart, -1);
+  g_signal_connect(G_OBJECT(convertStart),"clicked",
+		   G_CALLBACK(ConvertStart), dd);
 
-  alignObjects = gtk_tool_button_new_from_stock(GTK_STOCK_NEW); // "alignObjects", NULL, 0);
+  alignObjects = gtk_tool_button_new(NULL, "Align");
   gtk_toolbar_insert(GTK_TOOLBAR(toolbar), alignObjects, -1);
+  g_signal_connect(G_OBJECT(alignObjects),"clicked",
+		   G_CALLBACK(AlignObjects), dd);
 
-  alignObjectsVert = gtk_tool_button_new_from_stock(GTK_STOCK_NEW); // "alignObjectsVert", NULL, 0);
+  alignObjectsVert = gtk_tool_button_new(NULL, "Align |");
   gtk_toolbar_insert(GTK_TOOLBAR(toolbar), alignObjectsVert, -1);
+  g_signal_connect(G_OBJECT(alignObjectsVert),"clicked",
+		   G_CALLBACK(AlignObjectsVert), dd);
 
-  alignObjectsHor = gtk_tool_button_new_from_stock(GTK_STOCK_NEW); // "alignObjectsHor", NULL, 0);
+  alignObjectsHor = gtk_tool_button_new(NULL, "Align —");
   gtk_toolbar_insert(GTK_TOOLBAR(toolbar), alignObjectsHor, -1);
+  g_signal_connect(G_OBJECT(alignObjectsHor),"clicked",
+		   G_CALLBACK(AlignObjectsHor), dd);
 
-  destroyObjects = gtk_tool_button_new_from_stock(GTK_STOCK_NEW); // "destroyObjects", NULL, 0);
+  destroyObjects = gtk_tool_button_new_from_stock(GTK_STOCK_DELETE);
   gtk_toolbar_insert(GTK_TOOLBAR(toolbar), destroyObjects, -1);
+  g_signal_connect(G_OBJECT(destroyObjects),"clicked",
+		   G_CALLBACK(DestroyObjects), dd);
 
-  relevantOp = gtk_tool_button_new_from_stock(GTK_STOCK_NEW); // "relevantOp", NULL, 0);
+  relevantOp = gtk_tool_button_new(NULL,"Relevant");
   gtk_toolbar_insert(GTK_TOOLBAR(toolbar), relevantOp, -1);
+  g_signal_connect(G_OBJECT(relevantOp),"clicked",
+		   G_CALLBACK(RelevantOp), dd);
 
   return toolbar;
 }

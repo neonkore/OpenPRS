@@ -3,7 +3,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * ope-parser.y -- yacc grammaire
  * 
- * Copyright (c) 1991-2005 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,9 +51,15 @@ static const char* const rcsid = "$Id$";
 #include "relevant-op.h"
 #include "parser-funct.h"
 #include "op-compiler.h"
+#ifdef GTK
+#include <gtk/gtk.h>
+#include "gope-graphic.h"
+#include "gope-global.h"
+#else
 #include "ope-graphic.h"
-#include "ope-syntax.h"
 #include "ope-global.h"
+#endif
+#include "ope-syntax.h"
 #include "oprs-print.h"
 #include "oprs-type_f.h"
 #include "oprs-array_f.h"

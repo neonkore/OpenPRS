@@ -124,5 +124,6 @@ extern Relevant_Op *relevant_op;
 extern PBoolean no_window;
 
 extern GtkWidget *opList;
+extern GtkWidget *opfList;
 
 #endif

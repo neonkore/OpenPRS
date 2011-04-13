@@ -46,7 +46,7 @@
 #include "gope-global.h"
 #include "oprs-type.h"
 #include "gope-op-opf_f.h"
-#include "ope-graphic_f.h"
+#include "gope-graphic_f.h"
 #include "xm2gtk_f.h"
 
 void update_last_selected_list(char *file_name, char *op_name)
@@ -337,7 +337,7 @@ void select_opfile(OPFile *opf)
      if (! no_window) {
           symbolListDialogUpdate(symbolListDialog);
 
-       //       XClearWindow(XtDisplay(global_draw_data->canvas), global_draw_data->window);
+	  //       XClearWindow(XtDisplay(global_draw_data->canvas), global_draw_data->window);
 
        UpdateTitleWindow();
        update_file_sensitivity(TRUE);
@@ -361,14 +361,27 @@ void make_opfile(PString ext_name, Opf_Type type)
      OPFile *opf_tmp, *opf = MAKE_OBJECT(OPFile);
 
      if (ext_name) {
-	  NEWSTR(ext_name, opf->name);
-	  opf->filed = TRUE;
+       char *f;
+       int d;
+       NEWSTR(ext_name, opf->name);
+       f = strrchr(ext_name,'/');
+       if (f) {
+	 NEWSTR(f+1,opf->fname);
+	 NEWSTR(ext_name, opf->dname);
+	 opf->dname[strlen(ext_name)-strlen(opf->fname)]='\0';
+       } else {
+	 NEWSTR(ext_name,opf->fname);
+	 NEWSTR("", opf->dname);
+       }
+       opf->filed = TRUE;
      } else {
 	  char name[30];
 
 	  sprintf(name, LG_STR("Untitled-%d",
 			       "Untitled-%d"), i++);
 	  NEWSTR(name, opf->name);
+	  NEWSTR(name, opf->fname);
+	  NEWSTR("", opf->dname);
 	  opf->filed = FALSE;
      }
      opf->type = type;
@@ -423,43 +436,111 @@ void clear_buffer_opfile(void)
 enum
 {
   LIST_ITEM = 0,
-  N_COLUMNS
+  LIST_POINTER
 };
 
-static void
-init_oplist(GtkWidget *list)
+void init_oplist(GtkWidget *list)
 {
 
   GtkCellRenderer *renderer;
   GtkTreeViewColumn *column;
-  GtkListStore *store;
+  GtkListStore *opStore;
 
   renderer = gtk_cell_renderer_text_new();
   column = gtk_tree_view_column_new_with_attributes("List Items",
           renderer, "text", LIST_ITEM, NULL);
   gtk_tree_view_append_column(GTK_TREE_VIEW(list), column);
 
-  store = gtk_list_store_new(N_COLUMNS, G_TYPE_STRING);
+  opStore = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_POINTER);
 
   gtk_tree_view_set_model(GTK_TREE_VIEW(list), 
-      GTK_TREE_MODEL(store));
+      GTK_TREE_MODEL(opStore));
 
-  g_object_unref(store);
+  g_object_unref(opStore);
+}
+
+void init_opflist(GtkWidget *list)
+{
+
+  GtkCellRenderer *renderer;
+  GtkTreeViewColumn *column;
+  GtkListStore *opfStore;
+
+  renderer = gtk_cell_renderer_text_new();
+  column = gtk_tree_view_column_new_with_attributes("List Items",
+          renderer, "text", LIST_ITEM, NULL);
+  gtk_tree_view_append_column(GTK_TREE_VIEW(list), column);
+
+  opfStore = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_POINTER);
+
+  gtk_tree_view_set_model(GTK_TREE_VIEW(list), 
+      GTK_TREE_MODEL(opfStore));
+
+  g_object_unref(opfStore);
 }
 
 static void
-add_to_oplist(GtkWidget *list, const gchar *str)
+add_to_oplist(GtkWidget *list, const gchar *str, Op_Structure *op)
 {
-  GtkListStore *store;
+  GtkListStore *opStore;
   GtkTreeIter iter;
 
-  store = GTK_LIST_STORE(gtk_tree_view_get_model
+  opStore = GTK_LIST_STORE(gtk_tree_view_get_model
       (GTK_TREE_VIEW(list)));
 
-  gtk_list_store_append(store, &iter);
-  gtk_list_store_set(store, &iter, LIST_ITEM, str, -1);
+  gtk_list_store_append(opStore, &iter);
+  gtk_list_store_set(opStore, &iter, LIST_ITEM, str, LIST_POINTER, (gpointer)op, -1);
 }
 
+
+static void
+add_to_opflist(GtkWidget *list, const gchar *str, OPFile *opf)
+{
+  GtkListStore *opfStore;
+  GtkTreeIter iter;
+
+  opfStore = GTK_LIST_STORE(gtk_tree_view_get_model
+      (GTK_TREE_VIEW(list)));
+
+  gtk_list_store_append(opfStore, &iter);
+  gtk_list_store_set(opfStore, &iter, LIST_ITEM, str, LIST_POINTER, (gpointer)opf, -1);
+}
+
+
+void on_changed_opflist(GtkWidget *widget, gpointer label) 
+{
+  GtkTreeIter iter;
+  GtkTreeModel *model;
+  char *opf_name;
+  OPFile *opf;
+
+  if (gtk_tree_selection_get_selected(
+				      GTK_TREE_SELECTION(widget), &model, &iter)) {
+    
+    gtk_tree_model_get(model, &iter, LIST_ITEM, &opf_name, LIST_POINTER, &opf,  -1);
+
+    //    gtk_label_set_text(GTK_LABEL(label), opf_name);
+    
+    /* OPFile *opf; */
+
+    /* if (strcmp(opf_name, "") != 0) { */
+    /*   int length_cmp = strlen(opf_name); */
+    /*   if (opf_name[length_cmp - 1] == '*'){ */
+    /* 	length_cmp -= 2; */
+    /*   } */
+    /*   sl_loop_through_slist(list_opfiles, opf, OPFile *) { */
+    /* 	if (strncmp(opf->name, opf_name, length_cmp) == 0) { */
+    select_opfile(opf);
+    UpdateTitleWindow();
+    if (sl_slist_empty(current_opfile->list_op)) {
+      update_empty_sensitivity(FALSE);
+    } else {
+      update_empty_sensitivity(TRUE);
+      updateOpList();
+    }
+    g_free(opf_name);
+  }
+}
 
 void on_changed_oplist(GtkWidget *widget, gpointer label) 
 {
@@ -470,19 +551,37 @@ void on_changed_oplist(GtkWidget *widget, gpointer label)
 
 
   if (gtk_tree_selection_get_selected(
-      GTK_TREE_SELECTION(widget), &model, &iter)) {
+				      GTK_TREE_SELECTION(widget), &model, &iter)) {
 
-    gtk_tree_model_get(model, &iter, LIST_ITEM, &ope_name,  -1);
-    gtk_label_set_text(GTK_LABEL(label), ope_name);
-
-    sl_loop_through_slist(current_opfile->list_op, op, Op_Structure *)
-      if (strcmp(op->name, ope_name) == 0) {
-	select_op(op, global_draw_data);
-	break;
-      }
+    gtk_tree_model_get(model, &iter, LIST_ITEM, &ope_name,  LIST_POINTER, &op,  -1);
+    //    gtk_label_set_text(GTK_LABEL(label), ope_name);
+    
+    select_op(op, global_draw_data);
     g_free(ope_name);
   }
+}
 
+
+void updateOpfList(void)
+{
+     OPFile *opf;
+
+     sl_sort_slist_func(list_opfiles, sort_opf);
+
+     sl_loop_through_slist(list_opfiles, opf, OPFile *) {
+       XmString fname, dname, mod, name2, name;
+       fname = XmStringCreateLtoR(opf->fname, XmSTRING_DEFAULT_CHARSET);
+       if (opf->modified) {
+	 mod =  XmStringCreateLtoR(" * ", XmSTRING_DEFAULT_CHARSET);
+       } else {
+	 mod =  XmStringCreateLtoR(" ", XmSTRING_DEFAULT_CHARSET);
+       }
+       dname = XmStringCreateLtoR(opf->dname, XmSTRING_DEFAULT_CHARSET);
+       name2 = XmStringConcat(fname, mod);
+       name = XmStringConcat(name2, dname);
+       /* should free this mess. */
+       add_to_opflist(opfList, name, opf);
+     }
 }
 
 void updateOpList(void)
@@ -490,13 +589,11 @@ void updateOpList(void)
   int i = 0;
   Op_Structure *op;
 
-  init_oplist(opList);
-
   sl_sort_slist_func(current_opfile->list_op,sort_op);
 
   sl_loop_through_slist(current_opfile->list_op, op, Op_Structure *) {
     if (!op->xms_name) op->xms_name = XmStringCreateLtoR(op->name, XmSTRING_DEFAULT_CHARSET);
-    add_to_oplist(opList, op->xms_name);
+    add_to_oplist(opList, op->xms_name, op);
   }
 
 }

@@ -231,6 +231,8 @@ typedef enum {
 
 typedef struct {
      PString name;
+     PString fname;
+     PString dname;
      ListOP list_op;
      PBoolean modified;
      PBoolean filed;

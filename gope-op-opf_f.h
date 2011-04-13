@@ -62,3 +62,7 @@ void report_opfile_saved();
 PBoolean sort_opf(OPFile *opf1, OPFile *opf2);
 
 void on_changed_oplist(GtkWidget *widget, gpointer label) ;
+void on_changed_opflist(GtkWidget *widget, gpointer label) ;
+
+void init_oplist(GtkWidget *list);
+void init_opflist(GtkWidget *list);

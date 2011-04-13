@@ -937,6 +937,71 @@ List_Knot parse_knots(Op_Structure *op, Draw_Data *dd, Slist *edge_loc)
      return list_knot;
 }
 
+OG *make_og_node(Draw_Data *dd, Op_Structure *op, Node *node, int x, int y)
+{
+     OG *og = MAKE_OBJECT(OG);
+     Gnode *gnode = MAKE_OBJECT(Gnode);
+     Node_Type nt = node->type;
+     PString name = node->name;
+     PString stripped_name;
+     Draw_Type dt = DT_NODE;	/* To please gcc. */
+
+     XRectangle rect; 
+
+     og->x = rect.x = MAX(0,x);
+     og->y = rect.y = MAX(0,y);
+     og->selected = FALSE;
+     og->u.gnode = gnode;
+
+     sl_add_to_tail(op->list_og_node,og);
+     sl_add_to_tail(op->list_movable_og,og);
+     sl_add_to_tail(op->list_destroyable_og,og);
+     sl_add_to_tail(op->list_editable_og,og);
+
+     if (!dd->just_compiling)
+	  update_canvas_size(dd, x, y);
+     gnode->node = node;
+
+     switch (nt) {
+     case NT_START:
+	  sl_delete_slist_node(op->list_destroyable_og,og);
+	  sl_delete_slist_node(op->list_editable_og,og);
+     case NT_PROCESS:
+     case NT_END:
+	  dt = DT_NODE;
+	  break;
+     case NT_IF:
+	  dt = DT_IF_NODE;
+	  break;
+     case NT_ELSE:
+	  dt = DT_ELSE_NODE;
+	  name = "F";
+	  break;
+     case NT_THEN:
+	  dt = DT_THEN_NODE;
+	  name = "T";
+	  break;
+     }
+
+     og->type =  dt;
+     stripped_name = remove_vert_bar(name);
+
+     gnode->xmstring = XmStringCreate(stripped_name, "node_cs");
+     FREE(stripped_name);
+
+     XmStringExtent(dd->fontlist,gnode->xmstring,&gnode->swidth, &gnode->sheight);
+     gnode->swidth += 2;
+     gnode->sheight += 2;
+     og->width = gnode->swidth + 5;
+     og->height = gnode->sheight + 5;
+     rect.width = og->width;
+     rect.height = og->height;
+     og->region = XCreateRegion();
+     XUnionRectWithRegion(&rect,og->region,og->region);
+
+     return og;
+}
+
 OG *make_og_edge(Draw_Data *dd, Op_Structure *op,  Edge *edge, Node *in, Node *out,  Slist *knots, int x, int y,
 		 int pp_width, PBoolean pp_fill)
 {

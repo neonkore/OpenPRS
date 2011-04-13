@@ -531,6 +531,7 @@ gboolean clicked(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
 
 XtAppContext app_context;
 GtkWidget *opList;
+GtkWidget *opfList;
 GtkWidget *topLevelWindow;
 guint sb_cid;
 GtkWidget *statusbar;
@@ -542,6 +543,8 @@ int main(int argc, char **argv, char **envp)
   GtkWidget *hbox;
   GtkWidget *sw;
   GtkWidget *label;
+  GtkWidget *swf;
+  GtkWidget *labelf;
 
   GtkWidget *menubar;
   GtkWidget *toolbar;
@@ -551,6 +554,7 @@ int main(int argc, char **argv, char **envp)
   GtkWidget *quit;
 
   GtkTreeSelection *selection; 
+  GtkTreeSelection *selectionf; 
 
   char title[LINSIZ];
 
@@ -692,12 +696,33 @@ int main(int argc, char **argv, char **envp)
   vbox = gtk_vbox_new(FALSE, 0); /* pack anothe vbox on the right */
   gtk_box_pack_end(GTK_BOX(hbox), vbox, FALSE, FALSE, 1);
 
+  labelf = gtk_label_new("OP File");	/* put a title on this vbox */
+  gtk_label_set_justify(GTK_LABEL(labelf), GTK_JUSTIFY_CENTER);
+  gtk_box_pack_start(GTK_BOX(vbox), labelf, FALSE, FALSE, 5);
+
+  swf = gtk_scrolled_window_new(NULL, NULL); /* crea */
+  gtk_box_pack_start(GTK_BOX(vbox), swf, TRUE, TRUE, 1);
+
+  opfList = gtk_tree_view_new();
+  gtk_widget_set_size_request(opfList, 200, -1);
+  gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(opfList), FALSE);
+
+  gtk_container_add(GTK_CONTAINER(swf), opfList);
+
+
+  selectionf = gtk_tree_view_get_selection(GTK_TREE_VIEW(opfList));
+
+  g_signal_connect(selectionf, "changed", 
+		   G_CALLBACK(on_changed_opflist), labelf);
+
+  init_opflist(opfList);
+
   label = gtk_label_new("OP Name");	/* put a title on this vbox */
   gtk_label_set_justify(GTK_LABEL(label), GTK_JUSTIFY_CENTER);
   gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, FALSE, 5);
 
   sw = gtk_scrolled_window_new(NULL, NULL); /* crea */
-  gtk_box_pack_end(GTK_BOX(vbox), sw, TRUE, TRUE, 1);
+  gtk_box_pack_start(GTK_BOX(vbox), sw, TRUE, TRUE, 1);
 
   opList = gtk_tree_view_new();
   gtk_widget_set_size_request(opList, 200, -1);
@@ -711,6 +736,7 @@ int main(int argc, char **argv, char **envp)
   g_signal_connect(selection, "changed", 
 		   G_CALLBACK(on_changed_oplist), label);
 
+  init_oplist(opList);
 
   dd.canvas = gtk_layout_new(NULL,NULL);
   gtk_widget_set_app_paintable(dd.canvas, TRUE);
@@ -815,6 +841,40 @@ Date        : %s\n\
   init_og = create_text(dd.canvas, 80, 20, &dd, mainCGCsp, TT_TEXT_NONE, welcome_message, 0, FALSE);
   set_draw_mode(&dd, MOVE_OG); 
 
+  strcpy (error_message,  "The following files have not been loaded:\n");
+
+  command = (char *) sl_get_from_head(list_of_commands);
+  while (command != NULL) {
+    res = yyparse_one_command_string(command); 
+    error = (char *) sl_get_from_head(list_of_commands);
+
+    if (!res){
+      strcat(error_message, error);
+      errors++;
+    } else
+      loadedfiles++;
+	
+    FREE (command);
+    FREE (error);
+    command = (char *) sl_get_from_head(list_of_commands);
+  }
+  FREE_SLIST(list_of_commands);
+  current_op = NULL;
+
+  if (errors)
+    report_syntax_error(error_message);
+
+  if ( loadedfiles ) {
+    if (!sl_slist_empty(current_opfile->list_op)) {
+      update_empty_sensitivity(TRUE);
+      updateOpfList();
+      //selectOpDialogManage();
+    }
+  }
+
+  buffer_opfile = make_buffer_opfile();
+
+
   gtk_main();
 
   return 0;
@@ -888,37 +948,6 @@ Date        : %s\n\
 
   /* Execute all the commands given in argument. */
 
-  strcpy (error_message,  "The following files have not been loaded:\n");
-
-  command = (char *) sl_get_from_head(list_of_commands);
-  while (command != NULL) {
-    res = yyparse_one_command_string(command); 
-    error = (char *) sl_get_from_head(list_of_commands);
-
-    if (!res){
-      strcat(error_message, error);
-      errors++;
-    } else
-      loadedfiles++;
-	
-    FREE (command);
-    FREE (error);
-    command = (char *) sl_get_from_head(list_of_commands);
-  }
-  FREE_SLIST(list_of_commands);
-  current_op = NULL;
-
-  if (errors)
-    report_syntax_error(error_message);
-
-  if ( loadedfiles ) {
-    if (!sl_slist_empty(current_opfile->list_op)) {
-      update_empty_sensitivity(True);
-      selectOpDialogManage();
-    }
-  }
-
-  buffer_opfile = make_buffer_opfile();
 
   /* XtAppMainLoop(app_context); */
 
