@@ -1,3 +1,9 @@
+2011-05-27  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* configure.ac: Bump the patch level to 1.0b14.
+
+	* op-structure.c (print_op): Probably fix a crash GMV had while loading op file with trace load opf on.
+
 2011-02-25  Felix Ingrand  <felix@cturtle>
 
 	* configure.ac: Pushed version to 1.0b12.

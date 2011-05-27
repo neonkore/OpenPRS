@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * op-structure.c -- Functions used for and with op-structure.
  * 
- * Copyright (c) 1991-2009 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -264,7 +264,7 @@ void print_op(Op_Structure *op)
 #ifndef NO_GRAPHIX
      printf(LG_STR("Documentation: ",
 		   "Documentation: "));
-     printf("%s\n", op->documentation);
+     printf("%s\n", (op->documentation?op->documentation:""));
 #endif
      printf(LG_STR("Variables List: ",
 		   "Liste Variables: "));
