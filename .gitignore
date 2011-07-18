@@ -72,5 +72,7 @@ TAGS
 *.rej
 *.orig
 .depend
+config-ac.h.in
+stamp-h.in
 autom4te.cache
 aclocal.m4
