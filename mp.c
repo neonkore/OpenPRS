@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*-
  * mp-oprs.c -- Message passer.
  *
- * Copyright (c) 1991-2010 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -520,7 +520,7 @@ mp-oprs (%s:%d): quit.\n"),
 void send_strings_message_string_socket(int socket, PString rec, PString message )
 {
      int h_size_name,i,total_size, h_size_mess;
-     u_long n_size_name, n_size_mess;                  /* for network */
+     uint32_t n_size_name, n_size_mess;                  /* for network */
 
      char *buf, *tmp;
 
@@ -643,7 +643,7 @@ void add_buffered_message(Mp_Oprs_Client *rec, Mp_Oprs_Client *sender, PString s
 	  
      } else {
 	  int h_size_name, h_size_mess;
-	  u_long n_size_name, n_size_mess;                  /* for network */
+	  uint32_t n_size_name, n_size_mess;                  /* for network */
 	  char *tmp;
 
 	  h_size_name = strlen(sender_name);
