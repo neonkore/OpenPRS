@@ -913,7 +913,7 @@ dist_name = @PACKAGE_TARNAME@-@PACKAGE_VERSION@
 git-tag:
 	git tag -m "release @PACKAGE_VERSION@"  $(dist_name)
 
-ADD_TO_ROBOTPKG_DISTRIB = configure aclocal.m4 config-ac.h.in stamp-h.in
+ADD_TO_ROBOTPKG_DISTRIB = configure aclocal.m4
 
 dist-robotpkg:
 	(cd $(top_srcdir); \
