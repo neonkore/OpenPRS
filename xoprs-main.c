@@ -1,4 +1,3 @@
-static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * xoprs-main.c -- Top level file for the X/Motif interface for one OPRS.
  * 
@@ -137,7 +136,7 @@ void deregister_main_loop(Oprs *oprs)
      main_loop_registered = FALSE;
      other_events_wp = XtAppAddWorkProc(app_context,&wait_other_events,oprs);
      other_events_registered = TRUE;
-     XtAppAddTimeOut(app_context, (main_loop_pool_sec * 100) +  (main_loop_pool_usec / 1000),
+     XtAppAddTimeOut(app_context, (main_loop_pool_sec * 1000) +  (main_loop_pool_usec / 1000),
 		     (XtTimerCallbackProc)register_main_loop, oprs); /* This guy will re register us. */
 }
 

@@ -1,4 +1,3 @@
-static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * relevant_op.c -- Gestion de la table des procedures "relevants"
  * 
@@ -48,7 +47,7 @@ static const char* const rcsid = "$Id$";
 
 #include "oprs-profiling.h"
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 #include <X11/Intrinsic.h>
 #include <Xm/Xm.h>
 #endif

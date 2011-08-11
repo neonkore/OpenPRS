@@ -1,3 +1,7 @@
+2011-08-08  Felix Ingrand  <felix@cturtle>
+
+	* xoprs-main.c (deregister_main_loop): This should be 1000 not 100
+
 2011-02-25  Felix Ingrand  <felix@cturtle>
 
 	* configure.ac: Pushed version to 1.0b12.

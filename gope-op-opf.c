@@ -49,6 +49,8 @@
 #include "gope-graphic_f.h"
 #include "xm2gtk_f.h"
 
+void updateOpfList(OPFile *opf);
+
 void update_last_selected_list(char *file_name, char *op_name)
 {
      OPFullNameStruct *last_selected_op, *tmp;
@@ -395,6 +397,7 @@ void make_opfile(PString ext_name, Opf_Type type)
 /*	  sl_delete_slist_node(list_opfiles, opf_tmp); */
      sl_add_to_tail(list_opfiles, opf);
      select_opfile(opf);
+     updateOpfList(opf);
      if (! no_window) {
        update_empty_sensitivity(FALSE);
      }
@@ -477,6 +480,17 @@ void init_opflist(GtkWidget *list)
       GTK_TREE_MODEL(opfStore));
 
   g_object_unref(opfStore);
+}
+
+
+static void
+reset_oplist(GtkWidget *list)
+{
+  GtkListStore *opStore;
+
+  opStore = GTK_LIST_STORE(gtk_tree_view_get_model
+      (GTK_TREE_VIEW(list)));
+  gtk_list_store_clear(opStore);
 }
 
 static void
@@ -562,13 +576,8 @@ void on_changed_oplist(GtkWidget *widget, gpointer label)
 }
 
 
-void updateOpfList(void)
+void updateOpfList(OPFile *opf)
 {
-     OPFile *opf;
-
-     sl_sort_slist_func(list_opfiles, sort_opf);
-
-     sl_loop_through_slist(list_opfiles, opf, OPFile *) {
        XmString fname, dname, mod, name2, name;
        fname = XmStringCreateLtoR(opf->fname, XmSTRING_DEFAULT_CHARSET);
        if (opf->modified) {
@@ -581,13 +590,14 @@ void updateOpfList(void)
        name = XmStringConcat(name2, dname);
        /* should free this mess. */
        add_to_opflist(opfList, name, opf);
-     }
 }
 
 void updateOpList(void)
 {
   int i = 0;
   Op_Structure *op;
+
+  reset_oplist(opList);
 
   sl_sort_slist_func(current_opfile->list_op,sort_op);
 

@@ -1,8 +1,7 @@
-static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * intention.c -- Functions and utilities to manipulate intentions.
  * 
- * Copyright (c) 1991-2010 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,9 +37,13 @@ static const char* const rcsid = "$Id$";
 #include <winsock.h>
 #endif
 
-#ifndef NO_GRAPHIX
+
+#ifdef GRAPHIX
+#ifdef GTK
+#else
 #include <X11/Intrinsic.h>
 #include <Xm/Xm.h>
+#endif
 #endif
 
 #include "constant.h"
@@ -61,7 +64,7 @@ static const char* const rcsid = "$Id$";
 #include "op-instance_f.h"
 #include "intention_f.h"
 #include "conditions_f.h"
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 #include "xoprs-intention_f.h"
 #endif
 #include "op-structure_f.h"
@@ -312,8 +315,8 @@ Intention *make_intention(Op_Instance *op_inst,Intention_Graph *ig, int prio)
      in->status = IS_ACTIVE;
      in->failed_goal_sprinter = make_sprinter(0);
      in->failed_goal_stack = sl_make_slist();
-#ifndef NO_GRAPHIX
-     in->iog =  (debug_trace[GRAPHIC_INTEND] && global_int_draw_data ? create_ginode(global_int_draw_data, in): NULL);
+#ifdef GRAPHIX
+     //gtk in->iog =  (debug_trace[GRAPHIC_INTEND] && global_int_draw_data ? create_ginode(global_int_draw_data, in): NULL);
      in->trace_dialog = NULL;
      in->trace_scrl_txt = NULL;
 #endif
@@ -325,9 +328,9 @@ void delete_intention(Intention *in)
 {
      Relevant_Condition *rc;
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      if (global_int_draw_data && in->iog) {
-	  destroy_ginode(global_int_draw_data, in->iog);
+       //gtk destroy_ginode(global_int_draw_data, in->iog);
 	  in->iog = NULL;
      }
 #endif
@@ -355,7 +358,7 @@ void free_intention(Intention *in)
 	  sl_free_slist(in->failed_goal_stack);
 	  if (in->fact) free_fact(in->fact);
 	  if (in->goal) free_goal(in->goal);
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	  if (global_int_draw_data && in->trace_dialog)
 	       XtDestroyWidget(in->trace_dialog);
 #endif
@@ -372,10 +375,10 @@ Intention *dup_intention(Intention *in)
 void set_intention_id(Intention *in, PString id)
 {
      in->id = id;
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      if (debug_trace[GRAPHIC_INTEND] && global_int_draw_data) {
-	  touch_intention_ginode(in);
-	  draw_intention_graph(global_int_draw_data);
+       //gtk touch_intention_ginode(in);
+       //gtk draw_intention_graph(global_int_draw_data);
      }
 #endif
 }
@@ -383,10 +386,10 @@ void set_intention_id(Intention *in, PString id)
 void set_intention_priority(Intention *in, int priority)
 {
      in->priority = priority;
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      if (debug_trace[GRAPHIC_INTEND] && global_int_draw_data) {
-	  touch_intention_ginode(in);
-	  draw_intention_graph(global_int_draw_data);
+       //gtk	  touch_intention_ginode(in);
+       //gtk draw_intention_graph(global_int_draw_data);
      }
 #endif
 }

@@ -1,4 +1,8 @@
 
+
+#ifndef INCLUDE_xm2gtk
+#define INCLUDE_xm2gtk
+
 typedef char *XmString;
 typedef char *String;
 typedef void *XmScrollBarCallbackStruct;
@@ -10,6 +14,7 @@ typedef void *Window;
 typedef void *XtPointer;
 typedef void *XmFontList;
 typedef guint Dimension;
+typedef glong XmTextPosition;
 typedef guint Cardinal;
 typedef gint Position;
 typedef GdkEvent XEvent;
@@ -24,3 +29,5 @@ typedef GtkPixmap *Pixmap;
 #define XmSTRING_DIRECTION_L_TO_R NULL
 #define CoordModeOrigin NULL
 #define Convex NULL
+
+#endif /* INCLUDE_xm2gtk */

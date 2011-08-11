@@ -1,4 +1,3 @@
-static const char* const rcsid = "$Id$";
 
 /*                               -*- Mode: C -*- 
  * top-structure.c -- 
@@ -50,7 +49,7 @@ static const char* const rcsid = "$Id$";
 #include "constant.h"
 #include "oprs-type.h"
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 #include <X11/Intrinsic.h>
 #include <X11/StringDefs.h>
 #include <Xm/Xm.h>
@@ -72,7 +71,7 @@ static const char* const rcsid = "$Id$";
 #include "oprs-print_f.h"
 #include "oprs-type_f.h"
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 #include "ope-external_f.h"
 #endif
 
@@ -85,7 +84,7 @@ static Slist *goto_list = NULL;
 /* Local prototyupes */
 void free_instruction(Instruction *inst);
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 void clean_inst_sl_in_slist_og_inst(List_OG list_og_inst)
 {
      /*
@@ -212,7 +211,7 @@ Instruction *make_simple_instruction(Expression *expr)
      Simple_Instruction *res_simple = MAKE_OBJECT(Simple_Instruction);
 
      res_simple->expr = expr;
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      res_simple->og = NULL;
 #endif
      res->type = IT_SIMPLE;
@@ -268,7 +267,7 @@ Instruction *make_simple_if_instruction(Expression *condition, List_Instruction 
      res_if->condition = condition;
      res_if->then_insts = then_insts;
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      res_if->og = NULL;
 #endif
 
@@ -309,7 +308,7 @@ Instruction *make_while_instruction(Expression *condition, List_Instruction inst
 
      res_while->condition = condition;
      res_while->insts = insts;
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      res_while->og = NULL;
 #endif
      res->type = IT_WHILE;
@@ -325,7 +324,7 @@ Instruction *make_do_instruction(Expression *condition, List_Instruction insts)
 
      res_do->condition = condition;
      res_do->insts = insts;
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      res_do->og = NULL;
 #endif
      res->type = IT_DO;
@@ -368,7 +367,7 @@ Node *make_simple_node()
 	  node->out = sl_make_slist();
 	  node->type = NT_PROCESS;
 	  sl_add_to_tail(current_op->node_list,node);
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	  node->og = NULL;
 	  node->name = declare_atom("no_name_node");
 #endif
@@ -402,7 +401,7 @@ Edge *make_and_connect_simple_edge(Control_Point *head, Control_Point *tail, Exp
      Edge *edge = MAKE_OBJECT(Edge);
 
      edge->type = ET_GOAL;
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      edge->in=head;
 #endif
      edge->out=tail;
@@ -411,7 +410,7 @@ Edge *make_and_connect_simple_edge(Control_Point *head, Control_Point *tail, Exp
      sl_add_to_head(current_op->edge_list,edge);
 
      edge->expr=expr;
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      edge->og = NULL;
 #endif
      return edge;
@@ -469,7 +468,7 @@ Control_Point *merge_top_node(Control_Point *first, Control_Point *second)
 
      sl_loop_through_slist(first->out, edge, Edge *) {
 	  sl_add_to_tail(second->out, edge);
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	  edge->in = second;
 #endif
      }
@@ -570,7 +569,7 @@ void insert_branch(Double_Node *branch, Node *head, Node *tail)
 Double_Node *build_do_until(Double_Node *insts, Expression *cond)
 {
      Double_Node *res;
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      Edge *edge = NULL;
 #endif
      Instruction *inst_res;
@@ -594,7 +593,7 @@ Double_Node *build_do_until(Double_Node *insts, Expression *cond)
 
 	  make_and_connect_edge(nnif, nnthen, NULL, ET_THEN);
 	  make_and_connect_edge(nnif, nnelse, NULL, ET_ELSE);
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	  edge =
 #endif
 	     make_and_connect_edge(node, nnif, cond, ET_IF);
@@ -608,7 +607,7 @@ Double_Node *build_do_until(Double_Node *insts, Expression *cond)
 	  res = make_double_node(NULL,NULL);
 
      DN_INST(res) = inst_res = make_do_instruction(cond,(insts ? DN_LIST_INST(insts) : NULL));
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      inst_res->u.do_inst->og = make_inst_graphic(inst_res, (really_build_node ? edge : NULL));
 #endif
      free_double_node(insts);
@@ -653,7 +652,7 @@ Double_Node *build_while(Expression *cond, Double_Node *insts)
 	  res= make_double_node(NULL, NULL);     
 
      DN_INST(res) = inst_res = make_while_instruction(cond, (insts ? DN_LIST_INST(insts) : NULL));
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      inst_res->u.while_inst->og = make_inst_graphic(inst_res, (really_build_node ? edge : NULL));
 #endif
 
@@ -730,7 +729,7 @@ Double_Node *build_if(Expression *cond, Double_Node *thenb, Double_Node *elseb, 
 						  (elseb ? DN_LIST_INST(elseb) : NULL)));
      
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
        inst_res->u.if_inst->og = make_inst_graphic(inst_res, (really_build_node ? edge : NULL));
 #endif
      }
@@ -755,7 +754,7 @@ Double_Node *build_inst(Expression *inst)
 
      DN_INST(res) = inst_res = make_simple_instruction(inst);
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      inst_res->u.simple_inst->og = make_inst_graphic(inst_res, (really_build_node ? edge : NULL));
 #endif
      return res;
@@ -854,7 +853,7 @@ void build_body(Op_Structure *op, PString name, Body *body, int  x, int y,
 		PBoolean visible, int pp_width, PBoolean pp_fill, Draw_Data *dd) 
 {
      op->body = body;
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      if (dd) 
 	  op->gbody = make_og_text_field(dd, op, FT_BODY, TT_BODY, x, y, visible, 
 					       pp_width, pp_fill, bd_width);
@@ -875,7 +874,7 @@ void  finish_loading_top(Op_Structure *op,  Draw_Data *dd)
      Goto_Label_Edge *goto_edge, *label_edge;
 
      if (! op->context)
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 	  build_context(current_op, "CONTEXT", NULL, 0, 0,
 			FALSE, 0, TRUE, dd);
 #else
@@ -884,7 +883,7 @@ void  finish_loading_top(Op_Structure *op,  Draw_Data *dd)
 #endif
 
      if (! op->call)
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 	  build_call(current_op, "CALL", NULL, 0, 0,
 			FALSE, 0, TRUE, dd);
 #else
@@ -892,7 +891,7 @@ void  finish_loading_top(Op_Structure *op,  Draw_Data *dd)
 			FALSE, call_width, TRUE, dd);
 #endif
      if (! op->setting)
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 	  build_setting(current_op, "SETTING", NULL, 0, 0,
 			FALSE, 0, TRUE, dd);
 #else
@@ -901,7 +900,7 @@ void  finish_loading_top(Op_Structure *op,  Draw_Data *dd)
 #endif
 
      if (! op->effects)
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 	  build_effects(current_op, "EFFECTS", NULL, 0, 0,
 			       FALSE, 0, TRUE, dd);
 #else
@@ -909,13 +908,13 @@ void  finish_loading_top(Op_Structure *op,  Draw_Data *dd)
 			       FALSE, eff_width, TRUE, dd);
 #endif
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      if (! op->documentation)
 	  build_documentation(current_op, "DOCUMENTATION", NULL, doc_x, doc_y,
 				  FALSE, doc_width, TRUE, dd);
 #endif
      if (sl_slist_empty(op->properties))
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 	  build_properties(current_op, "PROPERTIES", NULL, 0, 0,
 			   FALSE, 0, TRUE, dd);
 #else

@@ -76,5 +76,6 @@ autom4te.cache
 config-ac.h.in
 stamp-h.in
 gope
+goprs
 aclocal.m4
 test*

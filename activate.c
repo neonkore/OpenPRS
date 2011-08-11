@@ -1,8 +1,7 @@
-static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * activate.c -- Executes the intentions in the intention graph.
  * 
- * Copyright (c) 1991-2010 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -324,7 +323,7 @@ Thread_Execution_Result satisfied_thread(Thread_Intention_Block *tib)
 			 SPRINT(sp, 24 + strlen(op_ins->op->name),
 				sprintf(f, LG_STR(" achieved by %s.\n",
 						  " satisfait par %s.\n"), op_ins->op->name));
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 			 if (tib->intention->trace_dialog) 
 			      xpTraceIDialogUpdate(tib->intention->trace_scrl_txt, SPRINTER_STRING(sp));
 			 else 
@@ -352,7 +351,7 @@ Thread_Execution_Result satisfied_thread(Thread_Intention_Block *tib)
 			 SPRINT(sp, 64 + strlen(op_ins->op->name),
 				sprintf(f, LG_STR("led to the successful execution of %s.\n",
 						  "a conduit à l'exécution satisfaisante de %s.\n"), op_ins->op->name));
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 			 if (tib->intention->trace_dialog) 
 			      xpTraceIDialogUpdate(tib->intention->trace_scrl_txt, SPRINTER_STRING(sp));
 			 else 
@@ -436,7 +435,7 @@ Thread_Execution_Result failed_thread(Thread_Intention_Block *tib)
 	       SPRINT(sp, 24 + strlen(op_ins->op->name),
 		      sprintf(f, LG_STR(" failed by %s.\n",
 					" échoué par %s.\n"), op_ins->op->name));
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	       if (tib->intention->trace_dialog) 
 		    xpTraceIDialogUpdate(tib->intention->trace_scrl_txt, SPRINTER_STRING(sp));
 	       else 
@@ -457,7 +456,7 @@ Thread_Execution_Result failed_thread(Thread_Intention_Block *tib)
 	       SPRINT(sp, 32 + strlen(op_ins->op->name),
 		      sprintf(f, LG_STR("led to the failure of %s.\n",
 					"a conduit à l'échec de %s.\n"), op_ins->op->name));
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 			 if (tib->intention->trace_dialog) 
 			      xpTraceIDialogUpdate(tib->intention->trace_scrl_txt, SPRINTER_STRING(sp));
 			 else 
@@ -593,7 +592,7 @@ void trace_action_op(Thread_Intention_Block *tib)
 		 sprintf(f,LG_STR("Executing OP Action: %s\n",
 				  "Exécute le OP Action: %s\n"), op_ins->op->name));
 	  
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	  if (tib->intention->trace_dialog) 
 	       xpTraceIDialogUpdate(tib->intention->trace_scrl_txt, SPRINTER_STRING(sp));
 	  else 
@@ -606,7 +605,7 @@ void trace_action_op(Thread_Intention_Block *tib)
 
      if (op_ins->op->step_traced && (oprs_run_mode == STEP_NEXT)) set_oprs_run_mode(STEP_HALT);
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      if (debug_trace[GRAPHIC_OP] && op_ins->op->graphic_traced) {
 	  display_op_no_dd(op_ins->op);
      }
@@ -899,7 +898,7 @@ void trace_op_edge(Op_Instance *op_ins, Thread_Intention_Block *tib)
 				    sprintf(f,LG_STR(" from %s.\n",
 						     " de %s.\n"), op_ins->op->name));
 					 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	  if (tib->intention->trace_dialog) 
 	       xpTraceIDialogUpdate(tib->intention->trace_scrl_txt, SPRINTER_STRING(sp));
 	  else 
@@ -913,7 +912,7 @@ void trace_op_edge(Op_Instance *op_ins, Thread_Intention_Block *tib)
      if (op_ins->op->step_traced && goal->statement && (oprs_run_mode == STEP_NEXT))
 	  set_oprs_run_mode(STEP_HALT);
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      if (debug_trace[GRAPHIC_OP] && op_ins->op->graphic_traced && goal->statement) {
 	  display_op_edge(op_ins->op,goal->edge);
      }
@@ -937,7 +936,7 @@ void untrace_op_edge(Op_Instance *op_ins,Thread_Intention_Block *tib)
 				    sprintf(f,LG_STR(" from %s.\n",
 						     " de %s.\n"), op_ins->op->name));
 	  
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	  if (tib->intention->trace_dialog)
 	       xpTraceIDialogUpdate(tib->intention->trace_scrl_txt, SPRINTER_STRING(sp));
 	  else
@@ -948,7 +947,7 @@ void untrace_op_edge(Op_Instance *op_ins,Thread_Intention_Block *tib)
      if (user_trace[USER_TRACE] && user_trace[UT_OP])
 	  user_trace_op(tib,op_ins,goal,2);
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      if (debug_trace[GRAPHIC_OP] && op_ins->op->graphic_traced && goal->statement && goal->edge) {
 	  undisplay_op_edge(op_ins->op,goal->edge);
      }
@@ -986,7 +985,7 @@ PBoolean make_new_threads_and_post_goals(Thread_Intention_Block *tib, Op_Instanc
 				   tib->current_node,
 				   tib->curr_op_inst->op->name));
 		       
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 		    if (tib->intention->trace_dialog)
 			 xpTraceIDialogUpdate(tib->intention->trace_scrl_txt, SPRINTER_STRING(sp));
 		    else
@@ -1019,7 +1018,7 @@ PBoolean make_new_threads_and_post_goals(Thread_Intention_Block *tib, Op_Instanc
 				   tib->current_node,
 				   tib->curr_op_inst->op->name));
 		  
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 		    if (tib->intention->trace_dialog) 
 			 xpTraceIDialogUpdate(tib->intention->trace_scrl_txt, SPRINTER_STRING(sp));
 		    else
@@ -1091,7 +1090,7 @@ Thread_Execution_Result analyze_node_and_execute_intention_body(Thread_Intention
 				 tib->current_node,
 				 tib->curr_op_inst->op->name));
 		  
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 		  if (tib->intention->trace_dialog) 
 		       xpTraceIDialogUpdate(tib->intention->trace_scrl_txt, SPRINTER_STRING(sp));
 		  else
@@ -1129,7 +1128,7 @@ Thread_Execution_Result analyze_node_and_execute_intention_body(Thread_Intention
 				   tib->current_node,
 				   tib->curr_op_inst->op->name));
 		  
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 		    if (tib->intention->trace_dialog) 
 			 xpTraceIDialogUpdate(tib->intention->trace_scrl_txt, SPRINTER_STRING(sp));
 		    else
@@ -1326,7 +1325,7 @@ Thread_Execution_Result execute_active_thread_list(Thread_Intention_Block_List t
      PBoolean exit = FALSE;
      PBoolean one_done = FALSE;
      Intention *in = NULL;
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      int i = 0;
 #endif
 
@@ -1334,7 +1333,7 @@ Thread_Execution_Result execute_active_thread_list(Thread_Intention_Block_List t
 
 	  if (!in) in = TIB_INTENTION(tib);
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	  if (i++ == 5) {
 	       i = 0;
 	       process_xt_events();
@@ -1537,7 +1536,7 @@ void failed_maintained_tib(Thread_Intention_Block *tib)
 \n\tbecause the maintained condition became false.\n",
 						  " a été échoué par le OP %s,\
 \n\tparceque la condition de maintenance a échoué.\n"), op_ins->op->name));
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 			 if (tib->intention->trace_dialog) 
 			      xpTraceIDialogUpdate(tib->intention->trace_scrl_txt, SPRINTER_STRING(sp));
 			 else 
@@ -1711,7 +1710,7 @@ void restore_and_fail_suspended_tib(Thread_Intention_Block *tib)
 		    SPRINT(sp, 64,
 			   sprintf(f, LG_STR("because it fails to restore the maintained condition.\n",
 					     "parcequ'il a échouer à restorer la condition de maintenance.\n")));
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 		    if (tib->intention->trace_dialog) 
 			 xpTraceIDialogUpdate(tib->intention->trace_scrl_txt, SPRINTER_STRING(sp));
 		    else 

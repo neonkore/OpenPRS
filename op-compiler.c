@@ -1,4 +1,3 @@
-static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * op-compiler.c -- Compiler de OP.
  * 
@@ -41,7 +40,7 @@ static const char* const rcsid = "$Id$";
 
 #include "constant.h"
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 #include <X11/Intrinsic.h>
 #include <Xm/Xm.h>
 #endif

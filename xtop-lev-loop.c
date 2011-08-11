@@ -1,9 +1,8 @@
-static const char* const rcsid = "$Id$";
 
 /*                               -*- Mode: C -*-
- * top-lev-loop.c -- Main loop of a OPRS agent
+ * top-lev-loop.c -- Main loop of a graphical OpenPRS agent 
  *
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand, LAAS/CNRS.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -56,7 +55,7 @@ static const char* const rcsid = "$Id$";
 
 PBoolean xoprs_top_level_loop(Oprs *oprs)
 {
-     if (!flushing_xt_events) { /* We are flushing from yyparse... so do not screw up it environement. */
+     if (!flushing_xt_events) { /* We are flushing from yyparse... so do not screw up its environement. */
 
 	  Op_Instance_List soak;
 	  Op_Instance *opi1, *opi2;

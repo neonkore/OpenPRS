@@ -1,4 +1,3 @@
-static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * intend.c -- creation of intentions...
  * 
@@ -37,9 +36,13 @@ static const char* const rcsid = "$Id$";
 #include "constant.h"
 #include "op-instance.h"
 
-#ifndef NO_GRAPHIX
+
+#ifdef GRAPHIX
+#ifdef GTK
+#else
 #include <X11/Intrinsic.h>
 #include <Xm/Xm.h>
+#endif
 #endif
 
 #include "op-structure.h"
@@ -88,7 +91,7 @@ void intend_op_in_thread_intention_block(Thread_Intention_Block *tib,Op_Instance
 	  SPRINT(sp,32 + strlen(op_inst->op->name),
 				    sprintf(f,LG_STR("Intending %s in intention.\n",
 						     "Intend %s dans une intention.\n"), op_inst->op->name));
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	  if (tib->intention->trace_dialog) 
 	       xpTraceIDialogUpdate(tib->intention->trace_scrl_txt, SPRINTER_STRING(sp));
 	  else

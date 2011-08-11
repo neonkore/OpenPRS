@@ -1,4 +1,3 @@
-static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * op-instance.c -- Function dealing with op-instance.
  * 
@@ -38,10 +37,15 @@ static const char* const rcsid = "$Id$";
 
 #include "op-instance.h"
 
-#ifndef NO_GRAPHIX
+
+#ifdef GRAPHIX
+#ifdef GTK
+#else
 #include <X11/Intrinsic.h>
 #include <Xm/Xm.h>
 #endif
+#endif
+
 #include "op-structure.h"
 #include "unification_f.h"
 #include "oprs-type_f.h"

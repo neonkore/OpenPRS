@@ -55,7 +55,7 @@ static const char* const rcsid = "$Id$";
 
 #include "oprs-type.h"
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 #include <X11/Intrinsic.h>
 #include <Xm/Xm.h>
 #endif
@@ -75,7 +75,7 @@ static const char* const rcsid = "$Id$";
 #include "top-lev.h"
 #include "oprs-profiling.h"
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 #include "xoprs-main.h"
 #endif
 
@@ -277,7 +277,7 @@ command:
 									      "%sChargement/Compilation d'OPs du fichier OP terminé.\n"),parser_indent);}
 	| DELETE_TK OP_TK			{yy_begin_0();} 
 		op_name  			{delete_op_name_from_rop($4,current_oprs->relevant_op,
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 									 FALSE
 #else
 									 (global_draw_data?TRUE:FALSE)
@@ -285,7 +285,7 @@ command:
 									 );}
 	| DELETE_TK OPF_TK			{yy_begin_0();} 
 		file_name	  		{delete_opf_from_rop($4,current_oprs->relevant_op,
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 								     FALSE
 #else
 								     (global_draw_data?TRUE:FALSE)
@@ -299,7 +299,7 @@ command:
 
 						 store_trace_status($4,current_oprs->relevant_op, &text, &graphic, &step_list);
 						 delete_opf_from_rop($4,current_oprs->relevant_op,
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 								     FALSE
 #else
 								     (global_draw_data?TRUE:FALSE)
@@ -469,7 +469,7 @@ command:
 						 if (!be_quiet) printf(LG_STR("Database cleared.\n",
 									      "Base de faits vidée.\n"));}
 	| EMPTY_TK OP_TK DB_TK			{clear_op_database(current_oprs->relevant_op,
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 								   FALSE
 #else
 								   TRUE
@@ -688,12 +688,12 @@ reset_or_eof:  RESET_DOT_TK
 db_expr_list:
 	/*empty*/
 	| db_expr_list expr 			{
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 						 static int i = 0;
 #endif
 						 conclude($2, current_oprs->database);
 						 free_expr($2);
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 						 if (i++ == 35) {i = 0; process_xt_events();}
 #endif
 	                                      	}
@@ -748,7 +748,7 @@ top_or_nop: top
 
 nop: 	
 	OPENP_TK op_name 				{init_make_op($2,
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 							      FALSE
 #else
 							      TRUE
@@ -757,13 +757,13 @@ nop:
 	OPENP_TK nlist_fields CLOSEP_TK
 	OPENP_TK nlist_nodes CLOSEP_TK
 	OPENP_TK nlist_edges CLOSEP_TK CLOSEP_TK		{finish_loading_op(current_op,
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 								    NULL
 #else
 								    global_draw_data
 #endif
 								    );
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 						 process_xt_events();
 #endif
 						 if (!load_op_list || sl_in_slist(load_op_list,$2)) {
@@ -786,7 +786,7 @@ nnode:
 nnode_typed: 		
 	NT_ELSE_TK 				{yy_begin_0();} 
 	node_name join split pos_x pos_y	{build_and_add_node(current_op, $3, NT_ELSE, $4, $5, $6, $7,
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 								    NULL
 #else
 								    global_draw_data
@@ -794,7 +794,7 @@ nnode_typed:
 	     );}
 	| NT_THEN_TK  				{yy_begin_0();} 
 	node_name join split pos_x pos_y	{build_and_add_node(current_op, $3, NT_THEN, $4, $5, $6, $7,
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 								    NULL
 #else
 								    global_draw_data
@@ -802,7 +802,7 @@ nnode_typed:
 	     );}
 	| NT_IF_TK  {yy_begin_0();} node_name join split pos_x pos_y
 		{build_and_add_node(current_op, $3, NT_IF, $4, $5, $6, $7, 
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 				    NULL
 #else
 				    global_draw_data
@@ -810,7 +810,7 @@ nnode_typed:
 				    );}
 	| NT_PROCESS_TK  {yy_begin_0();} node_name join split pos_x pos_y
 		{build_and_add_node(current_op, $3, NT_PROCESS, $4, $5, $6, $7, 
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 				    NULL
 #else
 				    global_draw_data
@@ -818,7 +818,7 @@ nnode_typed:
 				    );}
 	| NT_END_TK  {yy_begin_0();} node_name join split pos_x pos_y
 		{build_and_add_node(current_op, $3, NT_END, $4, $5, $6, $7, 
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 				    NULL
 #else
 				    global_draw_data
@@ -826,7 +826,7 @@ nnode_typed:
 				    );}
 	| NT_START_TK {yy_begin_0();} node_name join split pos_x pos_y
 		{build_and_add_node(current_op, $3, NT_START, $4, $5, $6, $7, 
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 				    NULL
 #else
 				    global_draw_data
@@ -852,7 +852,7 @@ nfield:
 nfield_typed: 		
 	FT_INVOCATION_TK {yy_begin_0();} node_name invocation pos_x pos_y visible pp_width pp_fill
 		{build_invocation(current_op, $3, $4, $5, $6, $7, $8, $9,
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 				  NULL
 #else
 				  global_draw_data
@@ -860,7 +860,7 @@ nfield_typed:
 				  );}
 	| FT_CALL_TK {yy_begin_0();} node_name call  pos_x pos_y visible pp_width pp_fill
 		{build_call(current_op, $3, $4, $5, $6, $7, $8, $9, 
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 			       NULL
 #else
 			       global_draw_data
@@ -868,7 +868,7 @@ nfield_typed:
 			       );}
 	| FT_CONTEXT_TK {yy_begin_0();} node_name context  pos_x pos_y visible pp_width pp_fill
 		{build_context(current_op, $3, $4, $5, $6, $7, $8, $9, 
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 			       NULL
 #else
 			       global_draw_data
@@ -876,7 +876,7 @@ nfield_typed:
 			       );}
 	| FT_SETTING_TK {yy_begin_0();} node_name setting  pos_x pos_y visible pp_width pp_fill
 		{build_setting(current_op, $3, $4, $5, $6, $7, $8, $9, 
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 			       NULL
 #else
 			       global_draw_data
@@ -884,7 +884,7 @@ nfield_typed:
 			       );}
 	| FT_PROPERTIES_TK {yy_begin_0();} node_name properties  pos_x pos_y visible pp_width pp_fill
 		{build_properties(current_op, $3, $4, $5, $6, $7, $8, $9, 
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 				  NULL
 #else
 				  global_draw_data
@@ -892,7 +892,7 @@ nfield_typed:
 				  );}
 	| FT_DOCUMENTATION_TK {yy_begin_0();} node_name documentation pos_x pos_y visible pp_width pp_fill
 		{
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 		     build_documentation(current_op, $3, $4, $5, $6, $7, $8, $9, global_draw_data);
 #else
 		     FREE($4);
@@ -900,7 +900,7 @@ nfield_typed:
 		}
 	| FT_EFFECTS_TK {yy_begin_0();} node_name effects pos_x pos_y visible pp_width pp_fill
 		{build_effects(current_op, $3, $4, $5, $6, $7, $8, $9, 
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 			       NULL
 #else
 			       global_draw_data
@@ -908,7 +908,7 @@ nfield_typed:
 			       );}
 	| FT_ACTION_TK {yy_begin_0();} node_name action  pos_x pos_y visible pp_width pp_fill
 		{build_action(current_op, $3, $4, $5, $6, $7, $8, $9, 
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 			      NULL
 #else
 			      global_draw_data
@@ -921,7 +921,7 @@ include "yacc-graph-op.y"
 nedge_typed:
 	ET_GOAL_TK {yy_begin_0();} node_name edge_name node_name edge_expr edge_knots pos_x pos_y pp_width pp_fill
 		{build_and_add_edge(current_op, $3, $5, ET_GOAL, $6, $7, $8, $9, $10, $11, 
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 				    NULL
 #else
 				    global_draw_data
@@ -929,7 +929,7 @@ nedge_typed:
 				    );}
 	| ET_IF_TK {yy_begin_0();} node_name edge_name node_name edge_expr edge_knots pos_x pos_y pp_width pp_fill
 		{build_and_add_edge(current_op, $3, $5, ET_IF, $6, $7, $8, $9, $10, $11, 
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 				    NULL
 #else
 				    global_draw_data
@@ -937,7 +937,7 @@ nedge_typed:
 				    );}
 	| ET_ELSE_TK {yy_begin_0();} node_name edge_name node_name
 		{build_and_add_then_else_edge(current_op, $3, $5, ET_ELSE, 
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 					      NULL
 #else
 					      global_draw_data
@@ -945,7 +945,7 @@ nedge_typed:
 					      );}
 	| ET_THEN_TK {yy_begin_0();} node_name edge_name node_name
 		{build_and_add_then_else_edge(current_op, $3, $5, ET_THEN, 
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 					      NULL
 #else
 					      global_draw_data
@@ -961,7 +961,7 @@ top_list:
 	;
 
 top: OPENP_TK DEFOP_TK op_name 			{init_make_top($3,
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 							      FALSE
 #else
 							      TRUE
@@ -969,13 +969,13 @@ top: OPENP_TK DEFOP_TK op_name 			{init_make_top($3,
 							      );} /* Will initialize current_op. */
 	       fields_list
 	CLOSEP_TK					{finish_loading_top(current_op,
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 							      NULL
 #else
 							      global_draw_data
 #endif
 								    );
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 						 process_xt_events();
 #endif
 						 if (!load_op_list || sl_in_slist(load_op_list,$3)) {

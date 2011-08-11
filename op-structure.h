@@ -70,7 +70,7 @@ struct body {
 
 typedef struct simple_instruction {
      Expression *expr;
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      OG *og;
 #endif
 } Simple_Instruction;
@@ -84,7 +84,7 @@ struct if_instruction {
 	  Instruction *elseif_inst;
      } u;
      List_Instruction	else_insts;
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      OG *og;
 #endif
 };
@@ -92,7 +92,7 @@ struct if_instruction {
 typedef struct while_instruction {
      Expression *condition;
      List_Instruction	insts;
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      OG *og;
 #endif
 } While_Instruction;
@@ -143,7 +143,7 @@ struct  op_structure {
      unsigned int nb_failure;
 #endif
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      PString documentation;
 #ifdef GTK
      char *xms_name;
@@ -191,7 +191,7 @@ struct control_point {
      Node_Type type BITFIELDS(:4);
      unsigned int join BITFIELDS(:1);
      unsigned int split BITFIELDS(:1);
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      Symbol name;
      OG *og;
 #endif
@@ -201,7 +201,7 @@ struct logic {
      Expression *expr;
      Control_Point *out;
      Edge_Type type;
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      Control_Point *in;
      OG *og;
 #endif
@@ -231,7 +231,7 @@ extern Op_Structure *goal_satisfied_in_db_op_ptr;
 extern Op_Structure *goal_for_intention_op_ptr;
 extern Op_Structure *goal_waiting_op_ptr;
 extern PBoolean really_build_node;
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 extern List_OG current_list_og_inst;
 extern int current_body_indent;
 extern int current_body_line;

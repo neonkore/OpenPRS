@@ -1,4 +1,3 @@
-static const char* const rcsid = "$Id$";
 
 /*                               -*- Mode: C -*-
  * ope-external.c --
@@ -1079,7 +1078,7 @@ OG *make_og_edge(Draw_Data *dd, Op_Structure *op,  Edge *edge, Node *in, Node *o
 
 }
 
-OG *make_cp_graphic(PString name, Node *node)
+OG *make_node_graphic(PString name, Node *node)
 {
      PString stripped_name;
      Gnode *gnode = MAKE_OBJECT(Gnode);

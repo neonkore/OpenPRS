@@ -11,6 +11,10 @@ char *XmStringCreate(char *s)
 
 #define XmStringCreateLtoR(s,cs) XmStringCreate(s)
 
+#define XtMalloc(s) g_malloc(s)
+#define XtRealloc(s,t) g_realloc(s,t)
+#define XtFree(s) g_free(s)
+
 static 
 char *XmStringConcat(char *s1, char *s2)
 {

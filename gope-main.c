@@ -420,6 +420,7 @@ void quitQuestionManage(GtkWidget *w, gpointer window)
 
 
 Draw_Data *global_draw_data;
+Int_Draw_Data *global_int_draw_data;
 Draw_Data dd;
 CairoGCs mainCGCs;		/* this will be the one for the main */
 CairoGCs *mainCGCsp;		/* this will be the one for the main */
@@ -436,7 +437,6 @@ GdkPixbuf *create_pixbuf(const gchar * filename)
       fprintf(stderr, "%s\n", error->message);
       g_error_free(error);
    }
-
    return pixbuf;
 }
 
@@ -867,7 +867,7 @@ Date        : %s\n\
   if ( loadedfiles ) {
     if (!sl_slist_empty(current_opfile->list_op)) {
       update_empty_sensitivity(TRUE);
-      updateOpfList();
+      //      updateOpfList();
       //selectOpDialogManage();
     }
   }

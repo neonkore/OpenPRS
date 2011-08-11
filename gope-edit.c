@@ -687,7 +687,7 @@ void make_start_node(Widget w, Draw_Data *dd, CairoGCs *cgcsp)
      XRectangle rect;
 
      DECLARE_ID(name, node_name);
-     node = make_cp(node_name, TRUE);
+     node = make_node(node_name, TRUE);
      node->type = NT_START;
      current_op->start_point = node;
      og = node->og;
@@ -711,15 +711,17 @@ OG *create_node(Widget w, int x, int y, Draw_Data *dd, CairoGCs *cgcsp, PBoolean
      OG *og;
      XRectangle rect;
 
-     node = make_cp(new_node_name(dd->op), TRUE);
+     node = make_node(new_node_name(dd->op), TRUE);
      node->type = NT_PROCESS;
      node->split = split;
      node->join = join;
      og = node->og;
-     og->x = rect.x = x;
-     og->y = rect.y = y;
-     rect.width = og->width;
-     rect.height = og->height;
+     og->x = x;
+     og->y = y;
+     rect.x = x - 1;		/* This will make sure the region include all the node */
+     rect.y = y - 1;
+     rect.width = og->width + 2;
+     rect.height = og->height +2;
      og->region = XCreateRegion();
      XUnionRectWithRegion(&rect, og->region, og->region);
      draw_og(w, dd, cgcsp, og);

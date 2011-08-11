@@ -44,7 +44,7 @@
 #include "opaque.h"
 #include "oprs-type.h"
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 #include <X11/Intrinsic.h>
 #include <Xm/Xm.h>
 #endif

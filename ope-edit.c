@@ -1,9 +1,8 @@
-static const char* const rcsid = "$Id$";
 
 /*                               -*- Mode: C -*-
  * ope-edit.c --
  *
- * Copyright (c) 1991-2010 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -685,7 +684,7 @@ void make_start_node(Widget w, Draw_Data *dd)
      XRectangle rect;
 
      DECLARE_ID(name, node_name);
-     node = make_cp(node_name, TRUE);
+     node = make_node(node_name, TRUE);
      node->type = NT_START;
      current_op->start_point = node;
      og = node->og;
@@ -709,7 +708,7 @@ OG *create_node(Widget w, int x, int y, Draw_Data *dd, PBoolean split, PBoolean 
      OG *og;
      XRectangle rect;
 
-     node = make_cp(new_node_name(dd->op), TRUE);
+     node = make_node(new_node_name(dd->op), TRUE);
      node->type = NT_PROCESS;
      node->split = split;
      node->join = join;

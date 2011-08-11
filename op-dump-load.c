@@ -1,8 +1,7 @@
-static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * op-dump-load.c -- 
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,7 +41,7 @@ static const char* const rcsid = "$Id$";
 
 #include "oprs-profiling.h"
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 #include "xoprs-main.h"
 #endif
 
@@ -68,7 +67,7 @@ static const char* const rcsid = "$Id$";
 
 void clear_op_database(Relevant_Op *rk, PBoolean graphic)
 {
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      if (graphic) {
 	  clear_op_graphic(global_draw_data);
      }

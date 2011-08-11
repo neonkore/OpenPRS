@@ -1,4 +1,3 @@
-static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * op-structure.c -- Functions used for and with op-structure.
  * 
@@ -33,15 +32,14 @@ static const char* const rcsid = "$Id$";
 
 #include "config.h"
 
-#ifdef VXWORKS
-#include "vxWorks.h"
-#include "stdioLib.h"
-#else
 #include "stdio.h"
-#endif
 
-#ifndef NO_GRAPHIX
-#ifndef GTK
+
+#ifdef GRAPHIX
+#ifdef GTK
+#include <gtk/gtk.h>
+#include "xm2gtk.h"
+#else
 #include <X11/Intrinsic.h>
 #include <Xm/Xm.h>
 #endif
@@ -55,10 +53,8 @@ static const char* const rcsid = "$Id$";
 #include "constant.h"
 #include "op-structure.h"
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 #ifdef GTK
-#include <gtk/gtk.h>
-#include "xm2gtk.h"
 #include "gope-graphic.h"
 #include "gope-global.h"
 #include "gope-external_f.h"
@@ -74,7 +70,8 @@ static const char* const rcsid = "$Id$";
 #include "oprs-type_f.h"
 #include "oprs-print.h"
 #include "oprs-print_f.h"
-#ifndef NO_GRAPHIX
+
+#ifdef GRAPHIX
 #ifdef GTK
 #include "xm2gtk_f.h"
 #endif
@@ -94,7 +91,7 @@ static int node_index = 1;
 
 PBoolean compile_graphix = TRUE;
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 Draw_Data *global_draw_data = NULL;
 
 int  ip_x;
@@ -165,7 +162,7 @@ Op_Structure *make_op()
      t->nb_failure = 0;
 #endif     
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      t->documentation = (PString)NULL;
      t->graphic = TRUE;
      t->graphic_traced = FALSE;
@@ -210,7 +207,7 @@ void init_make_op(PString name, PBoolean graphic)
      op->list_var = dup_lenv(current_var_list); /* There was a dup_lenv here... a priori not needed  */
      current_op = op;
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      current_list_og_inst = op->list_og_inst;
 
      if (graphic) {
@@ -249,7 +246,7 @@ void print_node(Node *n)
 
 void print_op(Op_Structure *op)
 {
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      Node *node;
 #endif
 
@@ -281,7 +278,7 @@ void print_op(Op_Structure *op)
 		   "Effets: "));
      print_exprlist(op->effects);
      printf("\n");
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      printf(LG_STR("Documentation: ",
 		   "Documentation: "));
      printf("%s\n", op->documentation);
@@ -299,7 +296,7 @@ void print_op(Op_Structure *op)
 			"Action: "));
 	  print_action_field(op->action);
 	  printf("\n");
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      } else if (op->graphic) {
 	  printf(LG_STR("with the node(s): ",
 			"avec les noeuds: "));
@@ -314,7 +311,7 @@ void print_op(Op_Structure *op)
      }
 }
 
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 void register_node(Op_Structure *op, Symbol name, Node *n)
 {
      Node_Name *nn = MAKE_OBJECT(Node_Name);
@@ -325,11 +322,11 @@ void register_node(Op_Structure *op, Symbol name, Node *n)
 }
 #endif
 
-Node *make_cp(PString name, PBoolean graphic)
+Node *make_node(PString name, PBoolean graphic)
 {
      Node *node = MAKE_OBJECT(Node);
      
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      node->name = name;
 #else
      register_node(current_op,name, node);
@@ -340,9 +337,9 @@ Node *make_cp(PString name, PBoolean graphic)
      node->out = sl_make_slist();
      sl_add_to_tail(current_op->node_list,node);
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      if (graphic) {
-	  node->og = make_cp_graphic(name, node);
+	  node->og = make_node_graphic(name, node);
      } else {
 	  node->og = NULL;
      }
@@ -350,7 +347,7 @@ Node *make_cp(PString name, PBoolean graphic)
      return node;
 }
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 PBoolean equal_node_name (Symbol name, Node *n) 
 {
      return (name == n->name);
@@ -364,18 +361,18 @@ PBoolean equal_node_name_name_list (Symbol name, Node_Name *n)
 
 Node *find_node_or_create(Symbol name,PBoolean graphic)
 {
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      Node *n;
 
      if ((n = (Node *)sl_search_slist(current_op->node_list,name,equal_node_name)) == NULL) 
-	  n =  make_cp(name,graphic);
+	  n =  make_node(name,graphic);
 
      return n;
 #else
      Node_Name *n;
 
      if ((n = (Node_Name *)sl_search_slist(current_op->node_name_list,name,equal_node_name_name_list)) == NULL) 
-	  return make_cp(name,graphic);
+	  return make_node(name,graphic);
      else
 	  return n->node;
 #endif
@@ -385,7 +382,7 @@ Edge *make_edge(void)
 {
      Edge *e = MAKE_OBJECT(Edge);
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      e->og = NULL;
 #endif
      e->expr = NULL;
@@ -397,7 +394,7 @@ Edge *build_edge(PString n1, PString n2, Expression *expr, PBoolean graphic)
 {
      Edge *edge = MAKE_OBJECT(Edge);
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      edge->in = find_node_or_create(n1,graphic);
 #endif
      edge->type = ET_GOAL;
@@ -407,7 +404,7 @@ Edge *build_edge(PString n1, PString n2, Expression *expr, PBoolean graphic)
 
      edge->expr=expr;
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      if (graphic) 
        build_edge_graphic(edge, expr, global_draw_data);
      else {
@@ -466,7 +463,7 @@ void free_op(Op_Structure *op)
 
 	  free_lenv(op->list_var);
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	  FREE(op->documentation);
 	  if (op->op_title != NULL){ /* graphic objects */
 	       free_op_title(op->op_title);
@@ -516,7 +513,7 @@ void free_node_from_free_op(Node *node)
      FREE_SLIST(node->out);
      FREE_SLIST(node->in);
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      if (node->og != NULL)   free_node_og(node->og);
 #endif
 
@@ -527,14 +524,14 @@ void free_edge_from_free_op(Edge *edge)
 {
      free_expr(edge->expr);
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      if (edge->og != NULL) free_edge_og(edge->og);
 #endif
 
      FREE(edge);
 }
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 void free_node_og(OG *og)
 {
      Gnode *gnode;
@@ -671,7 +668,7 @@ void build_invocation(Op_Structure *op, PString name, Expression *expr,
 		      int  x, int y, PBoolean visible, int pp_width, PBoolean pp_fill, Draw_Data *dd)
 {
      op->invocation = expr;
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      if (dd) 
 	  op->ginvocation = make_og_text_field(dd, op, FT_INVOCATION, TT_INVOCATION, x, y, visible, 
 					       pp_width, pp_fill, ip_width);
@@ -682,7 +679,7 @@ void build_call(Op_Structure *op, PString name, Expression *expr,
 		      int  x, int y, PBoolean visible, int pp_width, PBoolean pp_fill, Draw_Data *dd)
 {
      op->call = expr;
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      if (dd) 
 	  op->gcall = make_og_text_field(dd, op, FT_CALL, TT_CALL, x, y, visible, 
 					       pp_width, pp_fill, call_width);
@@ -693,7 +690,7 @@ void build_context(Op_Structure *op, PString name, ExprList pcnd,
 		      int  x, int y, PBoolean visible, int pp_width, PBoolean pp_fill, Draw_Data *dd)
 {
      op->context = pcnd;
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      if (dd) 
 	  op->gcontext = make_og_text_field(dd, op, FT_CONTEXT, TT_CONTEXT, x, y, visible, 
 					   pp_width, pp_fill, ctxt_width);
@@ -704,7 +701,7 @@ void build_setting(Op_Structure *op, PString name, Expression *expr,
 		      int  x, int y, PBoolean visible, int pp_width, PBoolean pp_fill, Draw_Data *dd)
 {
      op->setting = expr;
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      if (dd) 
 	  op->gsetting = make_og_text_field(dd, op, FT_SETTING, TT_SETTING, x, y, visible, 
 					   pp_width, pp_fill, set_width);
@@ -716,14 +713,14 @@ void build_properties(Op_Structure *op, PString name, PropertyList pl,
 {
      if (op->properties) FREE_SLIST(op->properties); /* it was intialized with a empty list. */
      op->properties = (pl ? pl : sl_make_slist());
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      if (dd) 
 	  op->gproperties = make_og_text_field(dd, op, FT_PROPERTIES, TT_PROPERTIES, x, y, visible, 
 					       pp_width, pp_fill, prop_width);
 #endif
 }
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 void build_documentation(Op_Structure *op, PString name, PString documentation, 
 		      int  x, int y, PBoolean visible, int pp_width, PBoolean pp_fill, Draw_Data *dd)
 {
@@ -745,7 +742,7 @@ void build_effects(Op_Structure *op, PString name,  ExprList adl,
 /*      if (op->effects) FREE_SLIST(op->effects);  it was intialized with a empty list. */
      
      op->effects = make_adl_from_el(adl);
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      if (dd) 
 	  op->geffects = make_og_text_field(dd, op, FT_EFFECTS, TT_EFFECTS, x, y, visible, 
 					    pp_width, pp_fill, eff_width);
@@ -756,14 +753,14 @@ void build_action(Op_Structure *op, PString name, Action_Field *action,
 		      int  x, int y, PBoolean visible, int pp_width, PBoolean pp_fill, Draw_Data *dd)
 {
      op->action = action;
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      if (dd) 
 	  op->gaction = make_og_text_field(dd, op, FT_ACTION, TT_ACTION, x, y, visible, 
 					   pp_width, pp_fill, act_width);
 #endif
 }
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 OG *
 #else
 void
@@ -771,26 +768,28 @@ void
 build_and_add_node(Op_Structure *op, PString name, Node_Type nt, PBoolean join, PBoolean split,
 			int  x, int y, Draw_Data *dd)
 {
-     Node *node = MAKE_OBJECT(Node);
-     
-#ifndef NO_GRAPHIX
+  Node *node = MAKE_OBJECT(Node);
+  
+  node->join = join;
+  node->split = split;
+  node->type= nt;
+  
+#ifdef GRAPHIX
      node->name = name;
 #else
-     register_node(op,name,node);
+     register_node(current_op,name, node);
 #endif
-     node->join = join;
-     node->split = split;
      node->in = sl_make_slist();
      node->out = sl_make_slist();
-     node->type= nt;
-     sl_add_to_tail(op->node_list,node);
+     sl_add_to_tail(current_op->node_list,node);
 
+     
      if (nt == NT_START) {
-	  op->start_point=node;
+       op->start_point=node;
      }
-
-#ifndef NO_GRAPHIX
-     if (dd)
+     
+#ifdef GRAPHIX
+         if (dd)
 	  node->og = make_og_node(dd, op, node, x, y);
      else
 	  node->og = NULL;
@@ -801,7 +800,7 @@ build_and_add_node(Op_Structure *op, PString name, Node_Type nt, PBoolean join, 
 
 Node *find_node(Op_Structure *op, Symbol name)
 {
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      Node *n;
 
      if ((n = (Node *)sl_search_slist(op->node_list,name,equal_node_name)) == NULL)
@@ -827,7 +826,7 @@ void build_and_add_edge(Op_Structure *op,  PString in,  PString out,
      Edge *edge = MAKE_OBJECT(Edge);
      Node *node_in = find_node(op,in);
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      edge->in = node_in;
 #endif
      edge->out = find_node(op, out);
@@ -840,12 +839,12 @@ void build_and_add_edge(Op_Structure *op,  PString in,  PString out,
      edge->expr=expr;
 
      if (dd) {
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	  edge->og = make_og_edge(dd, op, edge, edge->in, edge->out, knots, x, y, pp_width, pp_fill);
 #endif
      } else {
 	  FREE_SLIST(knots);
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	  edge->og = NULL;
 #endif
      }
@@ -857,7 +856,7 @@ void build_and_add_then_else_edge(Op_Structure *op, PString in,  PString out,
      Edge *edge = MAKE_OBJECT(Edge);
      Node *node_in = find_node(op,in);
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      edge->in = node_in;
 #endif
      edge->out = find_node(op, out);
@@ -866,7 +865,7 @@ void build_and_add_then_else_edge(Op_Structure *op, PString in,  PString out,
 
      edge->expr = NULL;
      edge->type = et;
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      edge->og = NULL;
 #endif
      sl_add_to_head(op->edge_list,edge);
@@ -906,7 +905,7 @@ Node *then_node_from_if_node(Node *node)
 
 void  finish_loading_op(Op_Structure *op,  Draw_Data *dd)
 {
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      Node *node;
 
      if (dd) {
@@ -941,7 +940,7 @@ PString new_node_name(Op_Structure *op)
 	  sprintf(name, "N%d", node_index++);
 	  DECLARE_ID(name, node_name);
      } while
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	  (sl_search_slist(op->node_list, node_name, equal_node_name) != NULL)
 #else
           (sl_search_slist(op->node_name_list, node_name, equal_node_name_name_list) != NULL)
@@ -999,7 +998,7 @@ void new_if_then_else_node_name(Op_Structure *op, PString *nif, PString *nthen, 
 	  DECLARE_ID(name_else, *nelse);
 	  DECLARE_ID(name_then, *nthen);
      } while
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	  ((sl_search_slist(op->node_list, *nif, equal_node_name) != NULL) ||
 	   (sl_search_slist(op->node_list, *nelse, equal_node_name) != NULL) ||
 	   (sl_search_slist(op->node_list, *nthen, equal_node_name) != NULL))
@@ -1025,7 +1024,7 @@ PString new_end_node_name(Op_Structure *op)
 	  sprintf(name, "END%d", node_index++);
 	  DECLARE_ID(name, node_name);
      } while
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	  (sl_search_slist(op->node_list, node_name, equal_node_name) != NULL)
 #else
 	  (sl_search_slist(op->node_name_list, node_name, equal_node_name_name_list) != NULL)
@@ -1036,3 +1035,9 @@ PString new_end_node_name(Op_Structure *op)
 
      return node_name;
 }     
+
+
+PBoolean sort_op(Op_Structure *op1, Op_Structure *op2)
+{
+     return (strcmp(op1->name,op2->name) < 0);
+}

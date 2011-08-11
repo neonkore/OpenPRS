@@ -164,6 +164,7 @@ void create_gc(Draw_Data *dd)
 void handle_g_exposures(GtkWidget *w, Draw_Data *dd, XEvent *event)
 {
 #ifdef GTK_IGNORE
+  /* There is no graphic exposure in gtk... no? */
      /*
       * This routine will be called for all non-masopble events. Make sure it's
       * the type we want.
@@ -1248,10 +1249,5 @@ void display_op_edge(Op_Structure * op, Edge *edge)
 void undisplay_op_edge(Op_Structure * op, Edge *edge)
 {
      display_op_edge_internal(op, edge, FALSE);
-}
-
-PBoolean sort_op(Op_Structure *op1, Op_Structure *op2)
-{
-     return (strcmp(op1->name,op2->name) < 0);
 }
 

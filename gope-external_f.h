@@ -3,7 +3,7 @@
  *
  * $Id$
  *
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand, LAAS/CNRS.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,7 +44,7 @@ void report_syntax_error(PString message);
 
 void build_edge_graphic(Edge *edge, Expression *gtexpr,Draw_Data *dd);
 
-OG *make_cp_graphic(PString name, Node *node);
+OG *make_node_graphic(PString name, Node *node);
 OG *make_og_edge(Draw_Data *dd, Op_Structure *op,  Edge *edge, Node *in, Node *out,  Slist *knots, int x, int y, int pp_width, PBoolean pp_fill);
 OG *make_og_node(Draw_Data *dd, Op_Structure *op, Node *node, int x, int y);
 OG *make_og_text_field(Draw_Data *dd, Op_Structure *op, Field_Type ft, Text_Type tt, int x, int y, PBoolean visible, int string_width, PBoolean pp_fill, int default_width);
@@ -53,3 +53,5 @@ OG *make_inst_graphic(Instruction *inst, Edge *edge);
 void update_canvas_size(Draw_Data *dd, int x, int y);
 void position_then_else(OG *og, int x, int y);
 void position_edge(OG *og_edge);
+
+void position_og(Draw_Data *dd, OG *og, int x, int y);

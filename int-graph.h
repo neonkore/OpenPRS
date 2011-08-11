@@ -3,7 +3,7 @@
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -48,7 +48,7 @@ struct intention_graph {
      Intention_List sleeping;             /* All inactive intentions */
      Intention_List sleeping_on_cond;     /*  */
      PFB sort_predicat;
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      List_IOG list_inode;
      List_IOG list_iedge;
 #endif
@@ -57,7 +57,7 @@ struct intention_graph {
 typedef struct intention_paire {
      Intention *first;
      Intention *second;
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      IOG *iog;
 #endif
 } Intention_Paire;

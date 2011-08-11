@@ -466,7 +466,7 @@ top_list:
 	;
 
 top: OPENP_TK DEFOP_TK op_name 			{init_make_top($3,
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 							      FALSE
 #else
 							      ! no_window
@@ -475,7 +475,7 @@ top: OPENP_TK DEFOP_TK op_name 			{init_make_top($3,
 					         current_op->graphic = FALSE;} /* Will initialize current_op. */
 	       fields_list
 	CLOSEP_TK					{finish_loading_top(current_op,
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 							      NULL
 #else
 							      global_draw_data

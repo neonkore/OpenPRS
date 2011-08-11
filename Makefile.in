@@ -46,9 +46,9 @@ VPATH=		.:@srcdir@
 # All the C sources
 C_SRC = action.c activate.c database.c ev-function.c shary-user-ev-function.c ev-predicate.c \
 	fact-goal.c help.c int-graph.c intend.c intention.c op-compiler.c op-dump-load.c \
-	op-instance.c op-structure.c op-x-opaque.c ope-bboard.c gope-bboard.c ope-edit.c gope-edit.c \
-	ope-external.c gope-external.c ope-filesel.c gope-filesel.c ope-graphic.c gope-graphic.c ope-op-opf.c gope-op-opf.c ope-main.c gope-main.c ope-menu.c gope-menu.c \
-	ope-print.c ope-pxmw.c ope-save.c ope-syntax.c ope-vsblf.c gope-vsblf.c oprs-subst.c\
+	op-instance.c op-structure.c op-x-opaque.c gope-bboard.c ope-bboard.c gope-edit.c ope-edit.c gope-external.c \
+	ope-external.c gope-filesel.c ope-filesel.c gope-graphic.c ope-graphic.c gope-op-opf.c ope-op-opf.c gope-main.c ope-main.c gope-menu.c ope-menu.c \
+	ope-print.c ope-pxmw.c ope-save.c ope-syntax.c gope-vsblf.c ope-vsblf.c oprs-subst.c\
 	lisp-list.c mp.c mp-register.c opaque-ext.c parser-funct.c oprs-array.c \
 	oprs-cat.c oprs-client.c oprs-copy.c oprs-dup.c oprs-free.c oprs-init.c tcl.c oprs-main.c \
 	oprs-pprint.c oprs-print.c oprs-sprint.c oprs-send-m.c oprs-server-main.c oprs-socket.c \
@@ -56,18 +56,21 @@ C_SRC = action.c activate.c database.c ev-function.c shary-user-ev-function.c ev
 	soak.c top-lev-loop.c top-lev.c unification.c user-action.c user-trace.c\
 	user-ev-function.c user-ev-predicate.c user-external.c version.c xhelp.c \
 	xoprs-dialog.c xoprs-filesel.c xoprs-intention.c xoprs-main.c xoprs-menu.c ope-op-str.c \
-	xoprs-call.c xoprs-textwin.c xt-util.c xtop-lev-loop.c consult-rop.c ope-rop.c \
-	ope-report.c gope-report.c oprs-ll.c kill-mp.c top-structure.c oprs-error.c \
+	xoprs-call.c xoprs-textwin.c xt-util.c xtop-lev-loop.c consult-rop.c ope-rop.c gope-report.c \
+	ope-report.c oprs-ll.c kill-mp.c top-structure.c oprs-error.c \
 	xoprs-op-graphic.c xoprs-rop.c test-malloc.c conditions.c lang.c oprs-server-opaque.c \
 	ope-opaque.c oprs-rerror.c oprs-dump.c oprs-load.c opc-main.c \
-	type.c  oprs-pred-func.c\
-	yy-funct.c 
+	type.c  oprs-pred-func.c yy-funct.c g-util.c goprs-call.c goprs-dialog.c goprs-filesel.c \
+	goprs-intention.c goprs-main.c goprs-menu.c goprs-op-graphic.c goprs-rop.c goprs-textwin.c \
+	gtop-lev-loop.c
+
+
 
 # All the .h include files
 INC = action.h activate.h config.h constant-pub.h constant.h database.h \
 	ev-function.h shary-user-ev-function.h ev-predicate.h fact-goal.h int-graph.h \
 	intend.h intention.h op-compiler.h op-instance.h op-structure.h \
-	ope-global.h ope-graphic.h gope-graphic.h lisp-list.h macro-pub.h macro.h mp.h \
+	ope-global.h gope-graphic.h ope-graphic.h lisp-list.h macro-pub.h macro.h mp.h \
 	mp-pub.h mp-register.h opaque-ext.h opaque-pub.h opaque.h oprs-sprint-pub.h \
 	parser-funct.h oprs-client.h oprs-main.h oprs-print.h oprs-server.h \
 	oprs-profiling.h oprs-type-pub.h oprs-type.h oprs.h relevant-op.h soak.h \
@@ -75,26 +78,27 @@ INC = action.h activate.h config.h constant-pub.h constant.h database.h \
 	user-ev-predicate.h user-external.h version.h xoprs.h xhelp.h \
 	xoprs-intention.h xoprs-main-pub.h xoprs-main.h xoprs.h xoprs-textwin.h ope-syntax.h \
 	op-default.h oprs-sprint.h oprs-error.h oprs-rerror.h oprs-error-pub.h \
-	conditions.h lang.h oprs-dump.h opc.h type.h oprs-pred-func.h xm2gtk.h
+	conditions.h lang.h oprs-dump.h opc.h type.h oprs-pred-func.h xm2gtk.h \
+	goprs-intention.h goprs-main-pub.h goprs-main.h
 
 #All the _f.h function include
 FINC = action_f.h activate_f.h database_f.h ev-function_f.h oprs-pred-func_f.h \
 	ev-predicate_f.h fact-goal_f-pub.h fact-goal_f.h \
 	help_f.h int-graph_f-pub.h int-graph_f.h intend_f.h intention_f-pub.h \
 	intention_f.h op-compiler_f.h op-instance_f-pub.h op-instance_f.h \
-	op-structure_f.h ope-bboard_f.h gope-bboard_f.h ope-edit_f.h gope-edit_f.h ope-external_f.h gope-external_f.h \
-	ope-filesel_f.h gope-filesel_f.h ope-graphic_f.h gope-graphic_f.h ope-op-opf_f.h gope-op-opf_f.h ope-menu_f.h gope-menu_f.h \
-	ope-print_f.h ope-pxmw_f.h ope-save_f.h ope-syntax_f.h ope-vsblf_f.h gope-vsblf_f.h \
+	op-structure_f.h gope-bboard_f.h ope-bboard_f.h gope-edit_f.h ope-edit_f.h gope-external_f.h ope-external_f.h gope-filesel_f.h \
+	ope-filesel_f.h gope-graphic_f.h ope-graphic_f.h gope-op-opf_f.h ope-op-opf_f.h gope-menu_f.h ope-menu_f.h \
+	ope-print_f.h ope-pxmw_f.h ope-save_f.h ope-syntax_f.h gope-vsblf_f.h ope-vsblf_f.h \
 	lisp-list_f-pub.h lisp-list_f.h mp-register_f.h other_proto.h \
 	parser-funct_f.h oprs-array_f.h oprs-client_f.h oprs-print_f.h \
 	oprs-send-m_f.h oprs-socket_f.h oprs-profiling_f.h oprs-type_f-pub.h \
 	oprs-type_f.h oprs-util_f.h oprs_f-pub.h oprs_f.h relevant-op_f.h \
 	send-message_f.h soak_f.h socket_f.h xt-util_f.h\
 	top-lev_f.h unification_f.h usage_f.h user-external_f.h xhelp_f.h \
-	xoprs-intention_f.h xoprs-menu_f.h xoprs-textwin_f.h ope-rop_f.h ope-report_f.h gope-report_f.h \
+	xoprs-intention_f.h xoprs-menu_f.h xoprs-textwin_f.h ope-rop_f.h gope-report_f.h ope-report_f.h \
 	oprs-pprint_f.h tcl_f.h oprs-init_f.h oprs-sprint_f.h oprs-error_f.h \
 	oprs-rerror_f-pub.h oprs-sprint_f-pub.h conditions_f.h  oprs-rerror_f.h \
-	oprs-dump_f.h oprs-print_f-pub.h type_f.h xm2gtk_f.h
+	oprs-dump_f.h oprs-print_f-pub.h type_f.h xm2gtk_f.h goprs-menu_f.h goprs-textwin_f.h
 
 # The X resources files
 RESOURCES_SRC = XOprs.adlang Ope.adlang
@@ -104,7 +108,7 @@ RESOURCES_INC_FILES = Ope.ad.h XOprs.ad.h
 # Annex files to distribute
 DIST_ANNEX_FILES = $(XDEFAULT) COPYRIGHT DIFF-SRI FILE-COPYRIGHT HELP INSTALL.BIN \
 	INSTALL.DEMO INSTALL.SRC README.BIN README.DEMO README.OPE README.SRC \
-	ope-icon.bit xoprs-icon.bit
+	ope-icon.bit xoprs-icon.bit ope-icon.png xoprs-icon.png
 
 ANNEX_FILES = $(DIST_ANNEX_FILES) ChangeLog MISC Makefile Makefile.src \
 	TODO TODO-VC dec.make home.make laas.make
@@ -191,6 +195,10 @@ X_OBJ = xoprs-dialog.o xoprs-filesel.o xoprs-intention.o \
 	xoprs-main.o xoprs-menu.o xt-util.o xtop-lev-loop.o \
 	xoprs-op-graphic.o xoprs-rop.o
 
+G_OBJ = goprs-dialog.o goprs-filesel.o goprs-intention.o \
+	goprs-main.o goprs-menu.o g-util.o xtop-lev-loop.o \
+	goprs-op-graphic.o goprs-rop.o
+
 #
 # Libraries.
 #
@@ -225,7 +233,7 @@ TEXT_OPE_OPRS_LIB = libTOpEOprs.a
 
 GRAPHIC_OPE_OPRS_LIB = libGOpEOprs.a
 
-GGRAPHIC_OPE_OPRS_LIB =		#libGGOpEOprs.a Do we need it for the gope?
+GGRAPHIC_OPE_OPRS_LIB =	libGGOpEOprs.a
 
 BOTH_OPE_OPRS_LIB_OBJ = oprs-dump.o oprs-load.o
 
@@ -237,7 +245,7 @@ BOTH_OPE_OPRS_LIB_SRC = $(BOTH_OPE_OPRS_LIB_OBJ:%.o=%.c)
 
 TEXT_OPRS_LIB = libTOprs.a
 
-GRAPHIC_OPRS_LIB = libGOprs.a
+XGRAPHIC_OPRS_LIB = libXGOprs.a
 
 GGRAPHIC_OPRS_LIB = libGGOprs.a
 
@@ -293,6 +301,16 @@ XOPRS_LIB = libXOprs.a
 XOPRS_LIB_OBJ = xoprs-call.o xoprs-textwin.o
 
 XOPRS_LIB_SRC = $(XOPRS_LIB_OBJ:%.o=%.c)
+
+#
+# goprs kernel library (only used by xoprs)
+#
+
+GOPRS_LIB = libGOprs.a
+
+GOPRS_LIB_OBJ = goprs-call.o goprs-textwin.o
+
+GOPRS_LIB_SRC = $(GOPRS_LIB_OBJ:%.o=%.c)
 
 #
 # opaque library... should disapear...
@@ -352,17 +370,13 @@ LIST_LIB = -L$(C_TOOLKIT_DIR) -lOPList
 
 # All the executables
 
-PROG = oprs-server mp-oprs kill-mp oprs xoprs oprs-cat ope opc gope
+PROG = oprs-server mp-oprs kill-mp oprs xoprs oprs-cat ope opc gope goprs
 
 # and the relocatable.
 
 RELOCATABLE = oprs-relocatable xoprs-relocatable c++-oprs-relocatable c++-xoprs-relocatable
 
-ifdef VXWORKS
-all: lib vx-mp-oprs vx-kill-mp vxoprs vx-mp-lib.o
-else
 all: lib contrib_lib $(PROG)
-endif
 
 version: version.c
 	$(CC) $(CFLAGS) $(CPPFLAGS) -DCOMPIL_DATE="\"`date`\"" -DHOST="\"`hostname`\"" -c $<
@@ -382,10 +396,10 @@ oprs: $(USER_OBJ) $(OPRS_OBJ) $(C_TOOLKIT_LIB) $(CONTRIB_LIB) $(MP_LIB) $(BASIC_
 		$(TEXT_OPE_OPRS_LIB) $(LIST_LIB) $(CONTRIB_LIB) $(SYS_LIB) $(EXTRA_LIB)
 
 opc: $(OPC_OBJ) $(MP_LIB) $(BASIC_LIB) $(OPRS_LIB) $(C_TOOLKIT_LIB) \
-		$(GRAPHIC_OPE_OPRS_LIB) $(GRAPHIC_OPRS_LIB) $(OPG_LIB)
+		$(GRAPHIC_OPE_OPRS_LIB) $(XGRAPHIC_OPRS_LIB) $(OPG_LIB)
 	$(MAKE) version
 	$(CC) $(LDFLAGS) -o opc version.o $(OPC_OBJ) $(BASIC_LIB) $(MP_LIB) \
-		$(GRAPHIC_OPRS_LIB) $(OPRS_LIB) $(GRAPHIC_OPE_OPRS_LIB) \
+		$(XGRAPHIC_OPRS_LIB) $(OPRS_LIB) $(GRAPHIC_OPE_OPRS_LIB) \
 		$(OPG_LIB) $(LIST_LIB) $(X_LIB) $(SYS_LIB) $(EXTRA_LIB)
 
 oprs-server: $(SERVER_OBJ) $(C_TOOLKIT_LIB) $(MP_LIB) $(BASIC_LIB) $(OPRS_LIB) $(TEXT_OPRS_LIB) \
@@ -400,18 +414,27 @@ mp-oprs: $(MP_OBJ) $(C_TOOLKIT_LIB) $(MP_LIB) $(BASIC_LIB)
 		$(LIST_LIB) $(SYS_LIB) $(EXTRA_LIB)
 
 xoprs: $(X_OBJ) $(USER_OBJ) $(C_TOOLKIT_LIB) $(CONTRIB_LIB) $(MP_LIB) $(BASIC_LIB) $(OPRS_LIB) \
-		$(GRAPHIC_OPE_OPRS_LIB) $(GRAPHIC_OPRS_LIB) $(KERNEL_LIB) $(GRAPHIC_KERNEL_LIB) \
+		$(GRAPHIC_OPE_OPRS_LIB) $(XGRAPHIC_OPRS_LIB) $(KERNEL_LIB) $(GRAPHIC_KERNEL_LIB) \
 		$(XOPRS_LIB) $(OPG_LIB) user-trace-off.o
 	$(MAKE) version
 	$(CC) $(LDFLAGS) -o xoprs version.o user-trace-off.o $(X_OBJ) $(USER_OBJ) \
-		$(GRAPHIC_KERNEL_LIB) $(KERNEL_LIB) $(BASIC_LIB) $(GRAPHIC_OPRS_LIB) $(OPRS_LIB) \
+		$(GRAPHIC_KERNEL_LIB) $(KERNEL_LIB) $(BASIC_LIB) $(XGRAPHIC_OPRS_LIB) $(OPRS_LIB) \
 		$(MP_LIB) $(GRAPHIC_OPE_OPRS_LIB) $(XOPRS_LIB) $(OPG_LIB) $(X_LIB) \
 		$(LIST_LIB) $(CONTRIB_LIB) $(SYS_LIB) $(EXTRA_LIB)
 
-ope: $(OP_EDITOR_OBJ) $(C_TOOLKIT_LIB) $(MP_LIB) $(BASIC_LIB) $(OPRS_LIB) \
-		$(GRAPHIC_OPE_OPRS_LIB) $(GRAPHIC_OPRS_LIB) $(OPG_LIB)
+goprs: $(G_OBJ) $(USER_OBJ) $(C_TOOLKIT_LIB) $(CONTRIB_LIB) $(MP_LIB) $(BASIC_LIB) $(OPRS_LIB) \
+		$(GGRAPHIC_OPE_OPRS_LIB) $(GGRAPHIC_OPRS_LIB) $(KERNEL_LIB) $(GGRAPHIC_KERNEL_LIB) \
+		$(GOPRS_LIB) $(GOPG_LIB) user-trace-off.o
 	$(MAKE) version
-	$(CC) $(LDFLAGS) -o ope version.o $(OP_EDITOR_OBJ) $(BASIC_LIB) $(GRAPHIC_OPRS_LIB) $(OPRS_LIB) $(GRAPHIC_OPE_OPRS_LIB) $(MP_LIB) $(OPG_LIB) $(X_LIB) $(LIST_LIB) $(SYS_LIB) $(EXTRA_LIB)
+	$(CC) $(LDFLAGS) -o goprs version.o user-trace-off.o $(G_OBJ) $(USER_OBJ) \
+		$(GGRAPHIC_KERNEL_LIB) $(KERNEL_LIB) $(BASIC_LIB) $(GGRAPHIC_OPRS_LIB) $(OPRS_LIB) \
+		$(MP_LIB) $(GGRAPHIC_OPE_OPRS_LIB) $(GOPRS_LIB) $(GOPG_LIB) $(GTK_LIB) $(X_LIB) \
+		$(LIST_LIB) $(CONTRIB_LIB) $(SYS_LIB) $(EXTRA_LIB)
+
+ope: $(OP_EDITOR_OBJ) $(C_TOOLKIT_LIB) $(MP_LIB) $(BASIC_LIB) $(OPRS_LIB) \
+		$(GRAPHIC_OPE_OPRS_LIB) $(XGRAPHIC_OPRS_LIB) $(OPG_LIB)
+	$(MAKE) version
+	$(CC) $(LDFLAGS) -o ope version.o $(OP_EDITOR_OBJ) $(BASIC_LIB) $(XGRAPHIC_OPRS_LIB) $(OPRS_LIB) $(GRAPHIC_OPE_OPRS_LIB) $(MP_LIB) $(OPG_LIB) $(X_LIB) $(LIST_LIB) $(SYS_LIB) $(EXTRA_LIB)
 
 gope: $(GOP_EDITOR_OBJ) $(C_TOOLKIT_LIB) $(MP_LIB) $(BASIC_LIB) $(OPRS_LIB) \
 		$(GGRAPHIC_OPE_OPRS_LIB) $(GGRAPHIC_OPRS_LIB) $(GOPG_LIB)
@@ -454,23 +477,27 @@ oprs-user: oprs-relocatable $(USER_OBJ)
 	$(CC) -o $@ $(USER_OBJ) oprs-relocatable $(SYS_LIB) $(EXTRA_LIB)
 
 xoprs-relocatable: $(X_OBJ) $(C_TOOLKIT_LIB) $(CONTRIB_LIB) $(BASIC_LIB) $(OPRS_LIB) $(GRAPHIC_OPE_OPRS_LIB) \
-		$(GRAPHIC_OPRS_LIB) $(KERNEL_LIB) $(GRAPHIC_KERNEL_LIB) $(MP_LIB) $(XOPRS_LIB)\
+		$(XGRAPHIC_OPRS_LIB) $(KERNEL_LIB) $(GRAPHIC_KERNEL_LIB) $(MP_LIB) $(XOPRS_LIB)\
 		$(OPG_LIB) user-trace-on.o
 	$(MAKE) version
-	$(LD) -r -o $@ version.o user-trace-on.o $(X_OBJ) $(GRAPHIC_KERNEL_LIB) $(KERNEL_LIB) $(BASIC_LIB) $(GRAPHIC_OPRS_LIB) $(OPRS_LIB) $(GRAPHIC_OPE_OPRS_LIB) $(XOPRS_LIB) $(MP_LIB) $(OPG_LIB) $(LIST_LIB) $(CONTRIB_LIB)
+	$(LD) -r -o $@ version.o user-trace-on.o $(X_OBJ) $(GRAPHIC_KERNEL_LIB) $(KERNEL_LIB) $(BASIC_LIB) $(XGRAPHIC_OPRS_LIB) $(OPRS_LIB) $(GRAPHIC_OPE_OPRS_LIB) $(XOPRS_LIB) $(MP_LIB) $(OPG_LIB) $(LIST_LIB) $(CONTRIB_LIB)
 
 c++-xoprs-relocatable:  $(filter-out xoprs-main.o, $(X_OBJ)) xoprs-main++.o $(C_TOOLKIT_LIB) $(CONTRIB_LIB) \
-		$(BASIC_LIB) $(OPRS_LIB) $(GRAPHIC_OPE_OPRS_LIB) $(GRAPHIC_OPRS_LIB) \
+		$(BASIC_LIB) $(OPRS_LIB) $(GRAPHIC_OPE_OPRS_LIB) $(XGRAPHIC_OPRS_LIB) \
 		$(GRAPHIC_KERNEL_LIB) $(KERNEL_LIB) $(MP_LIB) $(XOPRS_LIB) $(OPG_LIB)\
 		user-trace-on.o
 	$(MAKE) version
-	$(LD) -r -o $@ version.o user-trace-on.o $(filter-out xoprs-main.o, $(X_OBJ)) xoprs-main++.o $(GRAPHIC_KERNEL_LIB) $(KERNEL_LIB) $(BASIC_LIB) $(GRAPHIC_OPRS_LIB) $(OPRS_LIB) $(GRAPHIC_OPE_OPRS_LIB) $(XOPRS_LIB) $(MP_LIB) $(OPG_LIB) $(LIST_LIB) $(CONTRIB_LIB)
+	$(LD) -r -o $@ version.o user-trace-on.o $(filter-out xoprs-main.o, $(X_OBJ)) xoprs-main++.o $(GRAPHIC_KERNEL_LIB) $(KERNEL_LIB) $(BASIC_LIB) $(XGRAPHIC_OPRS_LIB) $(OPRS_LIB) $(GRAPHIC_OPE_OPRS_LIB) $(XOPRS_LIB) $(MP_LIB) $(OPG_LIB) $(LIST_LIB) $(CONTRIB_LIB)
 
 xoprs-user: xoprs-relocatable $(USER_OBJ)
 	$(CC) -o $@ xoprs-relocatable $(USER_OBJ) $(SYS_LIB) $(X_LIB) $(EXTRA_LIB)
 
 
-$(GOP_EDITOR_OBJ): CPPFLAGS += -DGTK
+$(OP_EDITOR_OBJ): CPPFLAGS += -DGRAPHIX
+$(GOP_EDITOR_OBJ): CPPFLAGS += -DGRAPHIX -DGTK
+
+$(X_OBJ): CPPFLAGS += -DGRAPHIX
+$(G_OBJ): CPPFLAGS += -DGRAPHIX -DGTK
 
 #
 # Libraries
@@ -485,31 +512,58 @@ contrib_lib $(CONTRIB_LIB):
 $(BASIC_LIB): $(BASIC_LIB_OBJ:%=$(BASIC_LIB)(%))
 	$(RANLIB) $@
 
+$(BASIC_LIB)(%.o): %.c
+	$(CC) $(CFLAGS) -UGRAPHIX $(CPPFLAGS) -c $< -o $%
+	$(AR) r $@ $*.o
+	$(RM) $*.o
+
 $(OPRS_LIB): $(OPRS_LIB_OBJ:%=$(OPRS_LIB)(%))
 	$(RANLIB) $@
 
+$(OPRS_LIB)(%.o): %.c
+	$(CC) $(CFLAGS) -UGRAPHIX $(CPPFLAGS) -c $< -o $%
+	$(AR) r $@ $*.o
+	$(RM) $*.o
+
 $(GRAPHIC_OPE_OPRS_LIB): $(BOTH_OPE_OPRS_LIB_OBJ:%=$(GRAPHIC_OPE_OPRS_LIB)(%))
 	$(RANLIB) $@
+
+$(GRAPHIC_OPE_OPRS_LIB)(%.o): %.c
+	$(CC) $(CFLAGS) -DGRAPHIX $(CPPFLAGS) -c $< -o $%
+	$(AR) r $@ $*.o
+	$(RM) $*.o
 
 $(GGRAPHIC_OPE_OPRS_LIB): $(BOTH_OPE_OPRS_LIB_OBJ:%=$(GGRAPHIC_OPE_OPRS_LIB)(%))
 	$(RANLIB) $@
 
 $(GGRAPHIC_OPE_OPRS_LIB)(%.o): %.c
-	$(CC) $(CFLAGS) -UNO_GRAPHIX -DGTK $(CPPFLAGS) -c $< -o $%
+	$(CC) $(CFLAGS) -DGRAPHIX -DGTK $(CPPFLAGS) -c $< -o $%
 	$(AR) r $@ $*.o
 	$(RM) $*.o
-
-$(TEXT_OPE_OPRS_LIB): $(BOTH_OPE_OPRS_LIB_OBJ:%=$(TEXT_OPE_OPRS_LIB)(%))
-	$(RANLIB) $@
 
 $(TEXT_OPRS_LIB): $(BOTH_OPRS_LIB_OBJ:%=$(TEXT_OPRS_LIB)(%))
 	$(RANLIB) $@
 
-$(GRAPHIC_OPRS_LIB): $(BOTH_OPRS_LIB_OBJ:%=$(GRAPHIC_OPRS_LIB)(%))
+$(TEXT_OPRS_LIB)(%.o): %.c
+	$(CC) $(CFLAGS) -UGRAPHIX $(CPPFLAGS) -c $< -o $%
+	$(AR) r $@ $*.o
+	$(RM) $*.o
+
+$(XGRAPHIC_OPRS_LIB): $(BOTH_OPRS_LIB_OBJ:%=$(XGRAPHIC_OPRS_LIB)(%))
 	$(RANLIB) $@
+
+$(XGRAPHIC_OPRS_LIB)(%.o): %.c
+	$(CC) $(CFLAGS) -DGRAPHIX $(CPPFLAGS) -c $< -o $%
+	$(AR) r $@ $*.o
+	$(RM) $*.o
 
 $(GGRAPHIC_OPRS_LIB): $(BOTH_OPRS_LIB_OBJ:%=$(GGRAPHIC_OPRS_LIB)(%))
 	$(RANLIB) $@
+
+$(GGRAPHIC_OPRS_LIB)(%.o): %.c
+	$(CC) $(CFLAGS) -DGRAPHIX -DGTK $(CPPFLAGS) -c $< -o $%
+	$(AR) r $@ $*.o
+	$(RM) $*.o
 
 $(MP_LIB): $(MP_LIB_OBJ:%=$(MP_LIB)(%))
 	$(RANLIB) $@
@@ -524,65 +578,71 @@ $(TEXT_KERNEL_LIB): $(BOTH_KERNEL_LIB_OBJ:%=$(TEXT_KERNEL_LIB)(%))
 	$(RANLIB) $@
 
 $(TEXT_KERNEL_LIB)(%.o): %.c
-	$(CC) $(CFLAGS) -DNO_GRAPHIX -DOPRS_KERNEL $(CPPFLAGS) -c $< -o $%
+	$(CC) $(CFLAGS) -UGRAPHIX -DOPRS_KERNEL $(CPPFLAGS) -c $< -o $%
 	$(AR) r $@ $*.o
 	$(RM) $*.o
 
 $(GRAPHIC_KERNEL_LIB): $(BOTH_KERNEL_LIB_OBJ:%=$(GRAPHIC_KERNEL_LIB)(%))
 	$(RANLIB) $@
 
+$(GRAPHIC_KERNEL_LIB)(%.o): %.c
+	$(CC) $(CFLAGS) -DGRAPHIX -DOPRS_KERNEL $(CPPFLAGS) -c $< -o $%
+	$(AR) r $@ $*.o
+	$(RM) $*.o
+
 $(GGRAPHIC_KERNEL_LIB): $(BOTH_KERNEL_LIB_OBJ:%=$(GGRAPHIC_KERNEL_LIB)(%))
 	$(RANLIB) $@
+
+$(GGRAPHIC_KERNEL_LIB)(%.o): %.c
+	$(CC) $(CFLAGS) -DGRAPHIX -DGTK -DOPRS_KERNEL $(CPPFLAGS) -c $< -o $%
+	$(AR) r $@ $*.o
+	$(RM) $*.o
 
 $(XOPRS_LIB): $(XOPRS_LIB_OBJ:%=$(XOPRS_LIB)(%))
 	$(RANLIB) $@
 
+$(XOPRS_LIB)(%.o): %.c
+	$(CC) $(CFLAGS) -DGRAPHIX $(CPPFLAGS) -c $< -o $%
+	$(AR) r $@ $*.o
+	$(RM) $*.o
+
+$(GOPRS_LIB): $(GOPRS_LIB_OBJ:%=$(GOPRS_LIB)(%))
+	$(RANLIB) $@
+
+$(GOPRS_LIB)(%.o): %.c
+	$(CC) $(CFLAGS) -DGRAPHIX -DGTK $(CPPFLAGS) -c $< -o $%
+	$(AR) r $@ $*.o
+	$(RM) $*.o
+
 $(OPG_LIB): $(OPG_LIB_OBJ:%=$(OPG_LIB)(%))
 	$(RANLIB) $@
+
+$(OPG_LIB)(%.o): %.c
+	$(CC) $(CFLAGS) -DGRAPHIX $(CPPFLAGS) -c $< -o $%
+	$(AR) r $@ $*.o
+	$(RM) $*.o
 
 $(GOPG_LIB): $(GOPG_LIB_OBJ:%=$(GOPG_LIB)(%))
 	$(RANLIB) $@
 
 $(GOPG_LIB)(%.o): %.c
-	$(CC) $(CFLAGS) -UNO_GRAPHIX -DGTK $(CPPFLAGS) -c $< -o $%
+	$(CC) $(CFLAGS) -DGRAPHIX -DGTK $(CPPFLAGS) -c $< -o $%
 	$(AR) r $@ $*.o
 	$(RM) $*.o
 
 $(OPAQUE_LIB): $(OPAQUE_LIB_OBJ:%=$(OPAQUE_LIB)(%))
 	$(RANLIB) $@
 
-$(TEXT_OPRS_LIB)(%.o): %.c
-	$(CC) $(CFLAGS) -DNO_GRAPHIX $(CPPFLAGS) -c $< -o $%
+$(OPAQUE_LIB)(%.o): %.c
+	$(CC) $(CFLAGS) -UGRAPHIX $(CPPFLAGS) -c $< -o $%
 	$(AR) r $@ $*.o
 	$(RM) $*.o
+
+$(TEXT_OPE_OPRS_LIB): $(BOTH_OPE_OPRS_LIB_OBJ:%=$(TEXT_OPE_OPRS_LIB)(%))
+	$(RANLIB) $@
 
 $(TEXT_OPE_OPRS_LIB)(%.o): %.c
-	$(CC) $(CFLAGS) -DNO_GRAPHIX $(CPPFLAGS) -c $< -o $%
-	$(AR) r $@ $*.o
-	$(RM) $*.o
-
-$(GRAPHIC_KERNEL_LIB)(%.o): %.c
-	$(CC) $(CFLAGS) -UNO_GRAPHIX -DOPRS_KERNEL $(CPPFLAGS) -c $< -o $%
-	$(AR) r $@ $*.o
-	$(RM) $*.o
-
-$(GRAPHIC_OPRS_LIB)(%.o): %.c
-	$(CC) $(CFLAGS) -UNO_GRAPHIX $(CPPFLAGS) -c $< -o $%
-	$(AR) r $@ $*.o
-	$(RM) $*.o
-
-$(GRAPHIC_OPE_OPRS_LIB)(%.o): %.c
-	$(CC) $(CFLAGS) -UNO_GRAPHIX $(CPPFLAGS) -c $< -o $%
-	$(AR) r $@ $*.o
-	$(RM) $*.o
-
-$(GGRAPHIC_KERNEL_LIB)(%.o): %.c
-	$(CC) $(CFLAGS) -UNO_GRAPHIX -DGTK -DOPRS_KERNEL $(CPPFLAGS) -c $< -o $%
-	$(AR) r $@ $*.o
-	$(RM) $*.o
-
-$(GGRAPHIC_OPRS_LIB)(%.o): %.c
-	$(CC) $(CFLAGS) -UNO_GRAPHIX -DGTK $(CPPFLAGS) -c $< -o $%
+	$(CC) $(CFLAGS) -UGRAPHIX $(CPPFLAGS) -c $< -o $%
 	$(AR) r $@ $*.o
 	$(RM) $*.o
 
@@ -689,7 +749,7 @@ clean: local-clean
 
 very-clean: local-clean
 	$(RM) -f *.BAK Makefile.bak $(PROG) $(BASIC_LIB) $(OPRS_LIB) $(TEXT_OPRS_LIB) \
-	$(GRAPHIC_OPRS_LIB) $(KERNEL_LIB) $(TEXT_KERNEL_LIB) $(GRAPHIC_KERNEL_LIB) \
+	$(XGRAPHIC_OPRS_LIB) $(KERNEL_LIB) $(TEXT_KERNEL_LIB) $(GRAPHIC_KERNEL_LIB) \
 	$(XOPRS_LIB) $(OPAQUE_LIB) $(GOPG_LIB) $(OPG_LIB) $(GRAPHIC_OPE_OPRS_LIB) $(TEXT_OPE_OPRS_LIB) $(MP_LIB) \
 	$(EXT_MP_LIB) oprs-relocatable xoprs-relocatable c++-oprs-relocatable c++-xoprs-relocatable \
 	*-parser.lex.c *-parser.c *-parser.h *-parser.yy *.ad *.ad.h TAGS make.depend \
@@ -826,13 +886,12 @@ user-external_f.h:  default-user-external_f.h
 # If the make.depend does not exist, just touch it.
 #
 
-ifndef VXWORKS
-
 depend make.depend:: oprs-parser.lex.c oprs-server-parser.lex.c ope-parser.lex.c opc-parser.lex.c \
 	$(RESOURCES_INC_FILES) user-external.c user-external.h user-external_f.h \
 	oprs-parser.tab.c ope-parser.tab.c opc-parser.tab.c oprs-server-parser.tab.c
 
-depend make.depend:: $(filter-out $(OPRS_LIB_SRC) \
+depend make.depend:: $(filter-out  $(BASIC_LIB_SRC) \
+				$(OPRS_LIB_SRC) \
                                 $(BOTH_OPE_OPRS_LIB_SRC) \
 				$(BOTH_OPRS_LIB_SRC) \
 				$(MP_LIB_SRC) \
@@ -846,68 +905,51 @@ depend make.depend:: $(filter-out $(OPRS_LIB_SRC) \
 			$(C_SRC) $(LEX_YACC_C))
 	$(MKDEP) -c$(CC) $(CPPFLAGS) -omake.depend $?
 
+
+depend make.depend:: $(BASIC_LIB_SRC)
+	$(MKDEP) -c$(CC) $(CPPFLAGS) -UGRAPHIX -omake.depend -l$(BASIC_LIB) $?
+
+depend make.depend:: $(OPRS_LIB_SRC)
+	$(MKDEP) -c$(CC) $(CPPFLAGS) -UGRAPHIX -omake.depend -l$(OPRS_LIB) $?
+
 depend make.depend:: $(BOTH_OPE_OPRS_LIB_SRC)
-	$(MKDEP) -c$(CC) $(CPPFLAGS) -omake.depend -l$(GRAPHIC_OPE_OPRS_LIB) $?
+	$(MKDEP) -c$(CC) $(CPPFLAGS) -DGRAPHIX -omake.depend -l$(GRAPHIC_OPE_OPRS_LIB) $?
+
+depend make.depend:: $(BOTH_OPE_OPRS_LIB_SRC)
+	$(MKDEP) -c$(CC) $(CPPFLAGS) -DGRAPHIX -DGTK -omake.depend -l$(GGRAPHIC_OPE_OPRS_LIB) $?
 
 depend make.depend:: $(BOTH_OPRS_LIB_SRC)
-	$(MKDEP) -c$(CC) $(CPPFLAGS) -omake.depend -l$(GRAPHIC_OPRS_LIB) $?
+	$(MKDEP) -c$(CC) $(CPPFLAGS) -UGRAPHIX -omake.depend -l$(TEXT_OPRS_LIB) $?
+
+depend make.depend:: $(BOTH_OPRS_LIB_SRC)
+	$(MKDEP) -c$(CC) $(CPPFLAGS) -DGRAPHIX -omake.depend -l$(XGRAPHIC_OPRS_LIB) $?
+
+depend make.depend:: $(BOTH_OPRS_LIB_SRC)
+	$(MKDEP) -c$(CC) $(CPPFLAGS) -DGRAPHIX -DGTK -omake.depend -l$(GGRAPHIC_OPRS_LIB) $?
 
 depend make.depend:: $(BOTH_KERNEL_LIB_SRC)
-	$(MKDEP) -c$(CC) $(CPPFLAGS) -omake.depend -l$(GRAPHIC_KERNEL_LIB) $?
+	$(MKDEP) -c$(CC) $(CPPFLAGS)  -UGRAPHIX -DOPRS_KERNEL -omake.depend -l$(TEXT_KERNEL_LIB) $?
+
+depend make.depend:: $(BOTH_KERNEL_LIB_SRC)
+	$(MKDEP) -c$(CC) $(CPPFLAGS) -DGRAPHIX -DOPRS_KERNEL -omake.depend -l$(GRAPHIC_KERNEL_LIB) $?
+
+depend make.depend:: $(BOTH_KERNEL_LIB_SRC)
+	$(MKDEP) -c$(CC) $(CPPFLAGS) -DGRAPHIX -DGTK -DOPRS_KERNEL -omake.depend -l$(GGRAPHIC_KERNEL_LIB) $?
 
 depend make.depend:: $(XOPRS_LIB_SRC)
-	$(MKDEP) -c$(CC) $(CPPFLAGS) -omake.depend -l$(XOPRS_LIB) $?
+	$(MKDEP) -c$(CC) $(CPPFLAGS)-DGRAPHIX -omake.depend -l$(XOPRS_LIB) $?
+
+depend make.depend:: $(GOPRS_LIB_SRC)
+	$(MKDEP) -c$(CC) $(CPPFLAGS)-DGRAPHIX -DGTK -omake.depend -l$(GOPRS_LIB) $?
 
 depend make.depend:: $(OPG_LIB_SRC)
-	$(MKDEP) -c$(CC) $(CPPFLAGS) -omake.depend -l$(OPG_LIB) $?
+	$(MKDEP) -c$(CC) $(CPPFLAGS) -DGRAPHIX -omake.depend -l$(OPG_LIB) $?
 
 depend make.depend:: $(GOPG_LIB_SRC)
-	$(MKDEP) -c$(CC) $(CPPFLAGS) -omake.depend -l$(GOPG_LIB) $?
-
-else
-
-$(srcdir)/util/mkdep -c$(CC) -DNO_GRAPHIX $(CFLAGS) \
-		 -p$(VPATH) \
-		 -l$(BASIC_LIB) $(BASIC_LIB_SRC) \
-		 -l$(OPRS_LIB) $(OPRS_LIB_SRC) \
-		 -l$(TEXT_OPE_OPRS_LIB) $(BOTH_OPE_OPRS_LIB_SRC) \
-		 -l$(TEXT_OPRS_LIB) $(BOTH_OPRS_LIB_SRC) \
-		 -l$(MP_LIB) $(MP_LIB_SRC) \
-		 -l$(EXT_MP_LIB) $(MP_LIB_SRC) \
-		 -l$(KERNEL_LIB) $(KERNEL_LIB_SRC) \
-		 -l$(TEXT_KERNEL_LIB) $(BOTH_KERNEL_LIB_SRC) \
-		 -l$(OPAQUE_LIB) $(OPAQUE_LIB_SRC) \
-
-
-# Make entry for VxWorks.
-depend make.depend:: oprs-parser.lex.c user-external.c user-external.h user-external_f.h \
-	oprs-parser.tab.c
-
-
-depend make.depend:: $(filter-out $(OPRS_LIB_SRC) \
-                                $(BOTH_OPE_OPRS_LIB_SRC) \
-				$(BOTH_OPRS_LIB_SRC) \
-				$(EXT_MP_LIB_SRC) \
-				$(KERNEL_LIB_SRC) \
-				$(BOTH_KERNEL_LIB_SRC) \
-				$(OPAQUE_LIB_SRC), \
-				$(BASIC_LIB_OBJ:%.o=%.c) \
-				$(MP_LIB_OBJ:%.o=%.c) \
-				$(OPRS_OBJ:%.o=%.c) \
-				$(KILL_MP_OBJ:%.o=%.c) \
-				$(MP_OBJ:%.o=%.c) \
-				$(USER_OBJ:%.o=%.c))
-	$(MKDEP) -c$(CC) $(CPPFLAGS) -omake.depend $?
-endif
+	$(MKDEP) -c$(CC) $(CPPFLAGS)-DGRAPHIX -DGTK -omake.depend -l$(GOPG_LIB) $?
 
 depend make.depend:: $(BOTH_OPE_OPRS_LIB_SRC)
-	$(MKDEP) -c$(CC) $(CPPFLAGS) -DNO_GRAPHIX -omake.depend -l$(TEXT_OPE_OPRS_LIB) $?
-
-depend make.depend:: $(BOTH_OPRS_LIB_SRC)
-	$(MKDEP) -c$(CC) $(CPPFLAGS) -DNO_GRAPHIX -omake.depend -l$(TEXT_OPRS_LIB) $?
-
-depend make.depend:: $(BOTH_KERNEL_LIB_SRC)
-	$(MKDEP) -c$(CC) $(CPPFLAGS)  -DNO_GRAPHIX -omake.depend -l$(TEXT_KERNEL_LIB) $?
+	$(MKDEP) -c$(CC) $(CPPFLAGS) -UGRAPHIX -omake.depend -l$(TEXT_OPE_OPRS_LIB) $?
 
 depend make.depend:: $(OPAQUE_LIB_SRC)
 	$(MKDEP) -c$(CC) $(CPPFLAGS) -omake.depend -l$(OPAQUE_LIB) $?
@@ -920,12 +962,6 @@ depend make.depend:: $(MP_LIB_SRC)
 
 depend make.depend:: $(KERNEL_LIB_SRC)
 	$(MKDEP) -c$(CC) $(CPPFLAGS) -omake.depend -l$(KERNEL_LIB) $?
-
-depend make.depend:: $(BASIC_LIB_SRC)
-	$(MKDEP) -c$(CC) $(CPPFLAGS) -omake.depend -l$(BASIC_LIB) $?
-
-depend make.depend:: $(OPRS_LIB_SRC)
-	$(MKDEP) -c$(CC) $(CPPFLAGS) -omake.depend -l$(OPRS_LIB) $?
 
 depend::
 	-(cd $(C_TOOLKIT_DIR) ; $(MAKE) depend)

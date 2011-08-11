@@ -406,11 +406,13 @@ OG *make_op_title(Draw_Data *dd, char *name)
      text->list_og_inst = NULL;
      text->lgt_string = ope_string_to_lgt_string(mainCGCsp->cr_title, text->string,
 						 TT_TITLE, &og->width, &og->height);
-     rect.x = og->x = OP_TITLE_X;
-     rect.y = og->y = OP_TITLE_Y;
+     og->x = OP_TITLE_X;
+     rect.x = og->x - 1;
+     og->y = OP_TITLE_Y;
+     rect.y = og->y - 1;
 
-     rect.width = og->width;
-     rect.height = og->height;
+     rect.width = og->width + 2;
+     rect.height = og->height + 2;
      XUnionRectWithRegion(&rect, og->region, og->region);
 	  
      return og;
@@ -447,11 +449,13 @@ void position_edge_text(OG *og_edge_text, OG *og_edge)
 	  y2 = og2->y;
      }
 
-     rect.x = og_edge_text->x = og_edge_text->u.gedge_text->dx + (x1 + x2 - (int)og_edge_text->width) / 2;
-     rect.y = og_edge_text->y = og_edge_text->u.gedge_text->dy + (yy1 + y2 - (int)og_edge_text->height) / 2;
-
-     rect.width = og_edge_text->width;
-     rect.height = og_edge_text->height;
+     og_edge_text->x = og_edge_text->u.gedge_text->dx + (x1 + x2 - (int)og_edge_text->width) / 2;
+     rect.x = og_edge_text->x - 1;
+     og_edge_text->y = og_edge_text->u.gedge_text->dy + (yy1 + y2 - (int)og_edge_text->height) / 2;
+     rect.y =  og_edge_text->y -1;
+       
+     rect.width = og_edge_text->width + 2;
+     rect.height = og_edge_text->height + 2;
      XDestroyRegion(og_edge_text->region);
      og_edge_text->region = XCreateRegion();
      XUnionRectWithRegion(&rect, og_edge_text->region, og_edge_text->region);
@@ -464,18 +468,23 @@ void position_then_else(OG *og, int x, int y)
      OG *ogt = then_og_from_if_og(og);
      OG *ogf = else_og_from_if_og(og);
 
-     rect.width = ogt->width;
-     rect.height = ogt->height;
-     ogt->x = rect.x=  x - rect.width;
-     ogt->y = rect.y = y;
+     rect.width = ogt->width + 2;
+     rect.height = ogt->height + 2;
+     ogt->x =  x - ogt->width;
+     rect.x =  ogt->x -1 ;
+     ogt->y = y;
+     rect.y =  ogt->y -1 ;
+
      XDestroyRegion(ogt->region);
      ogt->region = XCreateRegion();
      XUnionRectWithRegion(&rect, ogt->region, ogt->region);
 
-     rect.width = ogf->width;
-     rect.height = ogf->height;
-     ogf->x = rect.x = x + width;
-     ogf->y = rect.y = y;
+     ogf->x = x + width;
+     ogf->y = y;
+     rect.x =  ogf->x -1 ;
+     rect.y =  ogf->y -1 ;
+     rect.width = ogf->width + 2;
+     rect.height = ogf->height + 2;
      XDestroyRegion(ogf->region);
      ogf->region = XCreateRegion();
      XUnionRectWithRegion(&rect, ogf->region, ogf->region);
@@ -549,10 +558,10 @@ void position_edge(OG *og_edge)
 	  max.y = MAX(max.y, ogk->u.gknot->y);
 	  min.x = MIN(min.x, ogk->u.gknot->x);
 	  min.y = MIN(min.y, ogk->u.gknot->y);
-	  rect.x = min.x;
-	  rect.y = min.y;
-	  rect.width = max.x - min.x + 1;
-	  rect.height = max.y - min.y + 1;
+	  rect.x = min.x -1;
+	  rect.y = min.y -1;
+	  rect.width = max.x - min.x + 2;
+	  rect.height = max.y - min.y + 2;
 	  XUnionRectWithRegion(&rect, og_edge->region, og_edge->region);
 	  max.x = ogk->u.gknot->x;
 	  max.y = ogk->u.gknot->y;
@@ -564,12 +573,16 @@ void position_edge(OG *og_edge)
      max.y = MAX(max.y, gedge->y2);
      min.x = MIN(min.x, gedge->x2);
      min.y = MIN(min.y, gedge->y2);
-     og_edge->x = rect.x = min.x;
-     og_edge->y = rect.y = min.y;
-     og_edge->width = rect.width = max.x - min.x + 1;
-     og_edge->height = rect.height = max.y - min.y + 1;
+     og_edge->x =  min.x;
+     og_edge->y =  min.y;
+     rect.x = min.x -1;
+     rect.y = min.y -1;
+     og_edge->width = max.x - min.x + 1;
+     og_edge->height = max.y - min.y + 1; 
+     rect.width = max.x - min.x + 2;
+     rect.height = max.y - min.y + 2;
      XUnionRectWithRegion(&rect, og_edge->region, og_edge->region);
-
+     
      if ((x2 - x22) == 0) {
 	  if (y2 > y22)
 	       alpha = M_PI_2;
@@ -583,9 +596,9 @@ void position_edge(OG *og_edge)
      gedge->fx2 = gedge->x2 - (int) (ARR_LENGTH * SIGN(x2 - x22) * cos(alpha + ARR_ANGLE));
      gedge->fy2 = gedge->y2 - (int) (ARR_LENGTH * SIGN(x22 - x2) * sin(alpha + ARR_ANGLE));
 
-     rect.x = MIN3(gedge->fx1, gedge->fx2, gedge->x2);
-     rect.y = MIN3(gedge->fy1, gedge->fy2, gedge->y2);
-     rect.width = rect.height = ARR_LENGTH + 1;
+     rect.x = MIN3(gedge->fx1, gedge->fx2, gedge->x2) - 1;
+     rect.y = MIN3(gedge->fy1, gedge->fy2, gedge->y2) - 1;
+     rect.width = rect.height = ARR_LENGTH + 2;
      XUnionRectWithRegion(&rect, og_edge->region, og_edge->region);
 
      /*
@@ -660,9 +673,12 @@ List_Knot parse_edge_location(Slist *edge_loc)
 	       og->u.gknot->x = MAX(0,x);
 	       og->u.gknot->y = MAX(0,i);
 	       sl_add_to_tail(list_knot,og);
-	       rect.x = og->x = og->u.gknot->x - (KNOT_SIZE/2);
-	       rect.y = og->y = og->u.gknot->y - (KNOT_SIZE/2);
-	       rect.width = rect.height = og->width = og->height = KNOT_SIZE;
+	       og->x = og->u.gknot->x - (KNOT_SIZE/2);
+	       og->y = og->u.gknot->y - (KNOT_SIZE/2);
+	       rect.x =  og->x - 1;
+	       rect.y =  og->y - 1;
+	       og->width = og->height = KNOT_SIZE;
+	       rect.width = rect.height = KNOT_SIZE + 2;
 	       og->region = XCreateRegion();
 	       XUnionRectWithRegion(&rect,og->region,og->region);
 	       sl_add_to_tail(current_op->list_movable_og,og);
@@ -831,15 +847,16 @@ OG *make_og_text_field(Draw_Data *dd, Op_Structure *op, Field_Type ft, Text_Type
 
      text->lgt_string = ope_string_to_lgt_string(mainCGCsp->cr_text,text_string,tt,
 						 &og->width,&og->height);
-
-     rect.x = og->x =  MAX(0,x);
-     rect.y = og->y =  MAX(0,y);
+     og->x =  MAX(1,x);
+     og->y =  MAX(1,y);
+     rect.x = og->x - 1 ;
+     rect.y = og->y - 1;
 
      if (!dd->just_compiling)
 	  update_canvas_size(dd, x + og->width , y + og->height);
 
-     rect.width = og->width;
-     rect.height = og->height;
+     rect.width = og->width + 2;
+     rect.height = og->height + 2;
      XUnionRectWithRegion(&rect,og->region,og->region);
 
      sl_add_to_tail(op->list_og_text,og);
@@ -904,10 +921,10 @@ void update_list_og_inst(Draw_Data *dd, Op_Structure *op, OG *og_body)
 	  og->height = og_inst->nb_lines * height;
 	  
 	  og->region = XCreateRegion();
-	  rect.x = og->x;
-	  rect.y = og->y;
-	  rect.width = og->width;
-	  rect.height = og->height;
+	  rect.x = og->x -1;
+	  rect.y = og->y -1 ;
+	  rect.width = og->width + 2;
+	  rect.height = og->height + 2;
 	  XUnionRectWithRegion(&rect,og->region,og->region);
 
      }
@@ -933,12 +950,15 @@ List_Knot parse_knots(Op_Structure *op, Draw_Data *dd, Slist *edge_loc)
 	       og->type = DT_KNOT;
 	       og->selected = FALSE;
 	       og->u.gknot = gknot;
-	       og->u.gknot->x = MAX(0,x);
-	       og->u.gknot->y = MAX(0,i);
+	       og->u.gknot->x = MAX(1,x);
+	       og->u.gknot->y = MAX(1,i);
 	       sl_add_to_tail(list_knot,og);
-	       rect.x = og->x = og->u.gknot->x - (KNOT_SIZE/2);
-	       rect.y = og->y = og->u.gknot->y - (KNOT_SIZE/2);
-	       rect.width = rect.height = og->width = og->height = KNOT_SIZE;
+	       og->x = og->u.gknot->x - (KNOT_SIZE/2);
+	       og->y = og->u.gknot->y - (KNOT_SIZE/2);
+	       rect.x =  og->x - 1;
+	       rect.y =  og->y - 1;
+	       og->width = og->height = KNOT_SIZE;
+	       rect.width = rect.height =  KNOT_SIZE + 2;
 	       og->region = XCreateRegion();
 	       XUnionRectWithRegion(&rect,og->region,og->region);
 	       sl_add_to_tail(op->list_movable_og,og);
@@ -953,6 +973,25 @@ List_Knot parse_knots(Op_Structure *op, Draw_Data *dd, Slist *edge_loc)
      return list_knot;
 }
 
+void position_og(Draw_Data *dd, OG *og, int x, int y)
+{
+
+     XRectangle rect; 
+
+     og->x = MAX(1,x);
+     rect.x = MAX(0,x -1);
+     og->y = MAX(1,y);
+     rect.y = MAX(0,y -1);
+     rect.width = og->width + 2;
+     rect.height = og->height + 2;
+     if (og->region) XDestroyRegion(og->region);
+     og->region = XCreateRegion();
+     XUnionRectWithRegion(&rect,og->region,og->region);
+     
+     if (!dd->just_compiling)
+       update_canvas_size(dd, x, y);
+}
+
 OG *make_og_node(Draw_Data *dd, Op_Structure *op, Node *node, int x, int y)
 {
      OG *og = MAKE_OBJECT(OG);
@@ -962,21 +1001,15 @@ OG *make_og_node(Draw_Data *dd, Op_Structure *op, Node *node, int x, int y)
      PString stripped_name;
      Draw_Type dt = DT_NODE;	/* To please gcc. */
 
-     XRectangle rect; 
-
-     og->x = rect.x = MAX(0,x);
-     og->y = rect.y = MAX(0,y);
+     og->region = NULL;
      og->selected = FALSE;
      og->u.gnode = gnode;
+     gnode->node = node;
 
      sl_add_to_tail(op->list_og_node,og);
      sl_add_to_tail(op->list_movable_og,og);
      sl_add_to_tail(op->list_destroyable_og,og);
      sl_add_to_tail(op->list_editable_og,og);
-
-     if (!dd->just_compiling)
-	  update_canvas_size(dd, x, y);
-     gnode->node = node;
 
      switch (nt) {
      case NT_START:
@@ -1017,10 +1050,8 @@ OG *make_og_node(Draw_Data *dd, Op_Structure *op, Node *node, int x, int y)
      gnode->sheight =  gnode->sheight + PIX_AROUND_TEXT*2;
      og->width = gnode->swidth;
      og->height = gnode->sheight;
-     rect.width = og->width+1;
-     rect.height = og->height+1;
-     og->region = XCreateRegion();
-     XUnionRectWithRegion(&rect,og->region,og->region);
+
+     position_og(dd, og, x, y);
 
      return og;
 }
@@ -1103,36 +1134,9 @@ OG *make_og_edge(Draw_Data *dd, Op_Structure *op,  Edge *edge, Node *in, Node *o
 
 }
 
-OG *make_cp_graphic(PString name, Node *node)
+OG *make_node_graphic(PString name, Node *node)
 {
-     PString stripped_name;
-     Gnode *gnode = MAKE_OBJECT(Gnode);
-     OG *og = MAKE_OBJECT(OG);
-	   
-     og->x = 0;			/* Just to initialize it */
-     og->y = 0;
-	
-     og->u.gnode = gnode;
-     gnode->node = node;
-
-     stripped_name = remove_vert_bar(name);
-
-     gnode->xmstring = XmStringCreate(stripped_name); /*  XmSTRING_DEFAULT_CHARSET */
-     FREE(stripped_name);
-
-     XmStringExtent(global_draw_data->cgcsp->cr_node,gnode->xmstring,&gnode->swidth, &gnode->sheight);
-     gnode->swidth =  gnode->swidth  + PIX_AROUND_TEXT*2;
-     gnode->sheight =  gnode->sheight + PIX_AROUND_TEXT*2;
-     og->width = gnode->swidth + PIX_REGION_AROUND_OG*2;
-     og->height = gnode->sheight + PIX_REGION_AROUND_OG*2;
-     og->selected = FALSE;
-     og->type = DT_NODE;
-     sl_add_to_tail(current_op->list_og_node,og);
-     sl_add_to_tail(current_op->list_movable_og,og);
-     sl_add_to_tail(current_op->list_destroyable_og,og);
-     sl_add_to_tail(current_op->list_editable_og,og);
-
-     return og;
+  return make_og_node(global_draw_data, current_op, node, 0, 0);
 }
 
 OG *make_inst_graphic(Instruction *inst, Edge *edge)
