@@ -52,15 +52,13 @@ extern PBoolean flushing_xt_events;
 
 void process_xt_events()
 {
-  if (!gtk) {
-     PBoolean tmp = flushing_xt_events;
+  PBoolean tmp = flushing_xt_events;
 
-     flushing_xt_events = TRUE;
+  flushing_xt_events = TRUE;
 
-     while (gtk_events_pending ())
-	  gtk_main_iteration ();
-
-     flushing_xt_events = tmp;
-  }
+  while (gtk_events_pending ())
+    gtk_main_iteration ();
+  
+  flushing_xt_events = tmp;
 }
 

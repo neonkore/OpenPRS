@@ -38,6 +38,9 @@
 #include <sys/time.h>
 #include <errno.h>
 
+#include <gtk/gtk.h>
+#include "xm2gtk.h"
+
 #include "constant.h"
 #include "macro.h"
 
@@ -49,78 +52,80 @@
 #include "oprs-type_f.h"
 #include "intend_f.h"
 #include "oprs_f.h"
-#include "top-lev_f.h"
+#include "gtop-lev_f.h"
 
 #include "soak_f.h"
 
-PBoolean xoprs_top_level_loop(Oprs *oprs)
+gboolean goprs_top_level_loop(gpointer data)
 {
-     if (!flushing_xt_events) { /* We are flushing from yyparse... so do not screw up it environement. */
+  Oprs *oprs= data;
 
-	  Op_Instance_List soak;
-	  Op_Instance *opi1, *opi2;
-	  PBoolean busy = FALSE;
+  if (!flushing_xt_events) { /* We are flushing from yyparse... so do not screw up it environement. */
 
-	  if ( !meta_option[META_LEVEL] || !oprs->posted_meta_fact ) /* We check the stdin only if 
-								    the Meta OPs have been intended. */
+    Op_Instance_List soak;
+    Op_Instance *opi1, *opi2;
+    PBoolean busy = FALSE;
+
+    if ( !meta_option[META_LEVEL] || !oprs->posted_meta_fact ) /* We check the stdin only if 
+								  the Meta OPs have been intended. */
 #ifdef HAS_TIMER
-	  if (check_the_stdin) {
-	       check_the_stdin = FALSE;
-	       check_stdin();
-	  }
+      if (check_the_stdin) {
+	check_the_stdin = FALSE;
+	check_stdin();
+      }
 #else
-	  check_stdin();
+    check_stdin();
 #endif
 
-	  if (oprs_run_mode != HALT) {
-	       shift_facts_goals(oprs);
+    if (oprs_run_mode != HALT) {
+      shift_facts_goals(oprs);
 
-	       soak = find_soak(oprs);
+      soak = find_soak(oprs);
 
-	       if (meta_option[META_LEVEL]) { /* Note this is not a while, because we may hang the kernel for ever... */
-		    if (!(SAFE_SL_SLIST_EMPTY(soak)) ) { 
-			 if (meta_option[META_LEVEL] && meta_option[SOAK_MF] &&
-			     (! oprs->critical_section)) {
-			      post_soak_meta_fact(soak, oprs);
-			      oprs->posted_meta_fact = TRUE;
-			 }
-			 busy = TRUE;
-		    } else {
-			 if (!(SAFE_SL_SLIST_EMPTY(previous_soak))) { /* soak empty but previous soak non empty */
-			      if (run_option[PAR_INTEND])  {
-				   previous_soak = reshuffle_randomly_soak_list(previous_soak);
-				   sl_loop_through_slist(previous_soak, opi1, Op_Instance *)
-					intend(oprs->intention_graph, opi1, empty_list,empty_list,0);
-			      } else
-				   intend(oprs->intention_graph, (Op_Instance *)select_randomly_c_list(previous_soak),
-					  empty_list,empty_list,0);
-			 }
-			 busy = activate(oprs->intention_graph);
-		    }
-	       } else {		/* no option[META_LEVEL] */
-		    if (!(SAFE_SL_SLIST_EMPTY(soak))) {
-			 if (run_option[PAR_INTEND]) {
-			      soak = reshuffle_randomly_soak_list(soak);
-			      sl_loop_through_slist(soak, opi1, Op_Instance *)
-				   intend(oprs->intention_graph, opi1, empty_list,empty_list,0);
-			 } else
-			      intend(oprs->intention_graph, (Op_Instance *) select_randomly_c_list(soak),
-				     empty_list,empty_list,0);
-		    }
-		    busy = activate(oprs->intention_graph);
-	       }
-	       SAFE_SL_LOOP_THROUGH_SLIST(previous_soak, opi2, Op_Instance *)
-		    free_op_instance(opi2);
-	       SAFE_SL_FREE_SLIST(previous_soak);
-	       previous_soak = soak;
-
+      if (meta_option[META_LEVEL]) { /* Note this is not a while, because we may hang the kernel for ever... */
+	if (!(SAFE_SL_SLIST_EMPTY(soak)) ) { 
+	  if (meta_option[META_LEVEL] && meta_option[SOAK_MF] &&
+	      (! oprs->critical_section)) {
+	    post_soak_meta_fact(soak, oprs);
+	    oprs->posted_meta_fact = TRUE;
 	  }
-	  if (oprs_run_mode == STEP) set_oprs_run_mode(STEP_HALT);
-	  if (! busy) {		/* Nothing to do... */
-	       check_and_sometimes_compact_list();
-	       deregister_main_loop(oprs);
-	       return TRUE;
+	  busy = TRUE;
+	} else {
+	  if (!(SAFE_SL_SLIST_EMPTY(previous_soak))) { /* soak empty but previous soak non empty */
+	    if (run_option[PAR_INTEND])  {
+	      previous_soak = reshuffle_randomly_soak_list(previous_soak);
+	      sl_loop_through_slist(previous_soak, opi1, Op_Instance *)
+		intend(oprs->intention_graph, opi1, empty_list,empty_list,0);
+	    } else
+	      intend(oprs->intention_graph, (Op_Instance *)select_randomly_c_list(previous_soak),
+		     empty_list,empty_list,0);
 	  }
-     }
-     return FALSE;		/* This is a work procedure.... Never deregister it */
+	  busy = activate(oprs->intention_graph);
+	}
+      } else {		/* no option[META_LEVEL] */
+	if (!(SAFE_SL_SLIST_EMPTY(soak))) {
+	  if (run_option[PAR_INTEND]) {
+	    soak = reshuffle_randomly_soak_list(soak);
+	    sl_loop_through_slist(soak, opi1, Op_Instance *)
+	      intend(oprs->intention_graph, opi1, empty_list,empty_list,0);
+	  } else
+	    intend(oprs->intention_graph, (Op_Instance *) select_randomly_c_list(soak),
+		   empty_list,empty_list,0);
+	}
+	busy = activate(oprs->intention_graph);
+      }
+      SAFE_SL_LOOP_THROUGH_SLIST(previous_soak, opi2, Op_Instance *)
+	free_op_instance(opi2);
+      SAFE_SL_FREE_SLIST(previous_soak);
+      previous_soak = soak;
+
+    }
+    if (oprs_run_mode == STEP) set_oprs_run_mode(STEP_HALT);
+    if (! busy) {		/* Nothing to do... */
+      check_and_sometimes_compact_list();
+      deregister_main_loop(oprs);
+      return FALSE;	/* This will deregister it, but we have a timer and a socket watcher... */
+    }
+  }
+  return TRUE;		/* In this case, we do not deregister it */
 }

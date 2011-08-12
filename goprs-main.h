@@ -41,5 +41,8 @@ extern Draw_Data *global_draw_data;
 extern Int_Draw_Data *global_int_draw_data;
 extern Widget textWindow;
 
+extern GtkToolItem *oprsIdleDButton, *oprsStoppedDButton, *oprsActiveDButton;
+extern GtkToolItem *oprsRunButton, *oprsHaltButton, *oprsResetButton, *oprsStepButton, *oprsStepNextButton;
+
 #endif /* INCLUDE_xp_main */
 

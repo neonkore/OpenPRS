@@ -48,6 +48,8 @@
 #include "xhelp.h"
 #include "xhelp_f.h"
 #include "oprs.h"
+#include "top-lev.h"
+#include "top-lev_f.h"
 #include "xoprs.h"
 #include "oprs-main.h"
 #include "goprs-main.h"
@@ -791,3 +793,115 @@ GtkWidget *goprs_create_menu_bar(GtkWidget *window, Draw_Data *dd, Int_Draw_Data
 
 }
 
+
+void set_oprs_active_mode(PBoolean mode)
+{
+     if (mode) {
+	  unset_button(oprsIdleDButton);
+	  set_button(oprsActiveDButton);
+     } else {
+	  set_button(oprsIdleDButton);
+	  unset_button(oprsActiveDButton);
+     }
+}
+
+void xset_oprs_run_mode(Oprs_Run_Type mode)
+{
+     switch(mode) {
+     case RUN:
+	  unset_button(oprsStoppedDButton);
+	  register_main_loop(current_oprs);
+	  break;
+     case STEP_NEXT:
+	  unset_button(oprsStoppedDButton);
+	  register_main_loop(current_oprs);
+	  break;
+     case STEP_HALT:
+	  set_button(oprsStoppedDButton);
+	  break;
+     case HALT:
+	  set_button(oprsStoppedDButton);
+	  break;
+     case STEP:
+	  unset_button(oprsStoppedDButton);
+	  break;
+     default:
+	  fprintf(stderr, LG_STR("xset_oprs_run_mode: unknown run_mode.\n",
+				 "xset_oprs_run_mode: unknown run_mode.\n"));
+     }
+}
+
+void OprsResetButton(Widget w, XtPointer oprs, XtPointer call_data)
+{ 
+/*     reset_oprs_kernel((Oprs *)oprs); */
+     resetQuestionManage();
+}
+
+void OprsHaltButton(Widget w, XtPointer client_data, XtPointer call_data)
+{ 
+     set_oprs_run_mode(HALT);
+}
+
+void OprsStepButton(Widget w, XtPointer client_data, XtPointer call_data)
+{ 
+     set_oprs_run_mode(STEP);
+}
+
+void OprsStepNextButton(Widget w, XtPointer client_data, XtPointer call_data)
+{ 
+     set_oprs_run_mode(STEP_NEXT);
+}
+
+void OprsRunButton(Widget w, XtPointer client_data, XtPointer call_data)
+{ 
+     set_oprs_run_mode(RUN);
+}
+
+GtkToolItem *oprsIdleDButton, *oprsStoppedDButton, *oprsActiveDButton;
+GtkToolItem *oprsRunButton, *oprsHaltButton, *oprsResetButton, *oprsStepButton, *oprsStepNextButton;
+
+GtkWidget *create_tool_bar(GtkWidget *parent, Draw_Data *dd)
+{
+  GtkWidget *toolbar;
+  
+  toolbar = gtk_toolbar_new();
+  gtk_toolbar_set_style(GTK_TOOLBAR(toolbar), GTK_TOOLBAR_ICONS);
+  gtk_toolbar_set_orientation(GTK_TOOLBAR(toolbar),GTK_ORIENTATION_VERTICAL);
+  gtk_container_set_border_width(GTK_CONTAINER(toolbar), 0);
+
+  oprsActiveDButton = gtk_tool_button_new(NULL, "Active");
+  gtk_toolbar_insert(GTK_TOOLBAR(toolbar),oprsActiveDButton, -1);
+
+  oprsIdleDButton = gtk_tool_button_new(NULL, "Idle");
+  gtk_toolbar_insert(GTK_TOOLBAR(toolbar),oprsIdleDButton, -1);
+
+  oprsStoppedDButton = gtk_tool_button_new(NULL, "Stopped");
+  gtk_toolbar_insert(GTK_TOOLBAR(toolbar),oprsStoppedDButton, -1);
+
+  gtk_toolbar_insert(GTK_TOOLBAR(toolbar),gtk_separator_tool_item_new(), -1);
+
+  oprsRunButton = gtk_tool_button_new(NULL, "Run");
+  gtk_toolbar_insert(GTK_TOOLBAR(toolbar), oprsRunButton, -1);
+  g_signal_connect(G_OBJECT(oprsRunButton),"clicked", G_CALLBACK(OprsRunButton),NULL);
+
+  oprsStepButton = gtk_tool_button_new(NULL, "Step");
+  gtk_toolbar_insert(GTK_TOOLBAR(toolbar), oprsStepButton, -1);
+  g_signal_connect(G_OBJECT(oprsStepButton),"clicked", G_CALLBACK(OprsStepButton), NULL);
+
+  oprsStepNextButton = gtk_tool_button_new(NULL, "Next");
+  gtk_toolbar_insert(GTK_TOOLBAR(toolbar), oprsStepNextButton, -1);
+  g_signal_connect(G_OBJECT(oprsStepNextButton),"clicked", G_CALLBACK(OprsStepNextButton), NULL);
+
+  oprsHaltButton = gtk_tool_button_new(NULL, "Halt");
+  gtk_toolbar_insert(GTK_TOOLBAR(toolbar), oprsHaltButton, -1);
+  g_signal_connect(G_OBJECT(oprsHaltButton),"clicked", G_CALLBACK(OprsHaltButton), NULL);
+
+  gtk_toolbar_insert(GTK_TOOLBAR(toolbar),gtk_separator_tool_item_new(), -1);
+
+  oprsResetButton = gtk_tool_button_new(NULL, "Reset");
+  gtk_toolbar_insert(GTK_TOOLBAR(toolbar), oprsResetButton, -1);
+  g_signal_connect(G_OBJECT(oprsResetButton),"clicked", G_CALLBACK(OprsResetButton), NULL);
+
+  return toolbar;
+
+}

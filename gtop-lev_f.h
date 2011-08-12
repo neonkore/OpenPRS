@@ -1,8 +1,8 @@
 /*                               -*- Mode: C -*- 
- * xoprs-menu_f.h -- 
+ * top-lev_f.h -- 
  * 
  * $Id$
- *
+ * 
  * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
@@ -32,6 +32,13 @@
  *
  */
 
-GtkWidget *goprs_create_menu_bar(GtkWidget *window, Draw_Data *dd, Int_Draw_Data *idd);
-GtkWidget *create_tool_bar(GtkWidget *parent, Draw_Data *dd);
-
+void let_the_good_time_roll(Oprs *oprs);
+void client_oprs_top_level_loop(Oprs *oprs);
+Op_Instance_List reshuffle_randomly_soak_list(Op_Instance_List l);
+void check_stdin(void);
+void post_soak_meta_fact(Op_Instance_List soak, Oprs *oprs);
+void set_oprs_run_mode(Oprs_Run_Type mode);
+void reset_oprs_kernel(Oprs *oprs);
+PBoolean safe_parse_one_or_more(void);
+void report_run_status(void);
+gboolean goprs_top_level_loop(gpointer data);

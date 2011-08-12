@@ -196,7 +196,7 @@ X_OBJ = xoprs-dialog.o xoprs-filesel.o xoprs-intention.o \
 	xoprs-op-graphic.o xoprs-rop.o
 
 G_OBJ = goprs-dialog.o goprs-filesel.o goprs-intention.o \
-	goprs-main.o goprs-menu.o g-util.o xtop-lev-loop.o \
+	goprs-main.o goprs-menu.o g-util.o gtop-lev-loop.o \
 	goprs-op-graphic.o goprs-rop.o
 
 #

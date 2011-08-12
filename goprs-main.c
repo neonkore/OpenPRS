@@ -70,7 +70,7 @@
 
 #include "gope-graphic_f.h"
 #include "goprs-intention_f.h"
-#include "top-lev_f.h"
+#include "gtop-lev_f.h"
 #include "goprs-menu_f.h"
 #include "oprs-type_f.h"
 #include "oprs-init_f.h"
@@ -78,7 +78,6 @@
 #include "xm2gtk_f.h"
 
 
-gboolean xoprs_top_level_loop(gpointer oprs);
 gboolean wait_other_events(gpointer oprs);
 void reset_oprs_kernel(Oprs *oprs);
 gint update_active_idle(gpointer oprs_par);
@@ -90,74 +89,95 @@ void unset_button(Widget w);
 
 Widget x_oprs_top_level_widget;
 
-Widget topLevelWindow, messageWindow,  oprsIdleDButton, oprsStoppedDButton, oprsActiveDButton;
+Widget topLevelWindow, messageWindow;
 
 extern PBoolean use_dialog_error;
 
 PBoolean main_loop_registered = FALSE;
+PBoolean socket_registered = FALSE;
 
-PBoolean other_events_registered = FALSE;
+#include <pthread.h>
 
-guint other_events_wp;
+pthread_mutex_t loop_registering_mutex = PTHREAD_MUTEX_INITIALIZER;
 
-void register_main_loop_from_other_events(Oprs *oprs)
+gint input_ps, input_mp;
+
+void register_main_loop_from_socket(gpointer data, gint ignore1, GdkInputCondition ignore2);
+
+void deregister_other_inputs(Oprs *oprs)
 {
-     if (! main_loop_registered) {
-	  g_idle_add(&xoprs_top_level_loop,oprs); /* this will register the main loop */
-	  main_loop_registered = TRUE;
-     }
+  fprintf(stderr, "deregister_other_inputs.\n");
+  if (register_to_server) {
+    gdk_input_remove(input_ps);
+  }
+  if (register_to_mp) {
+    gdk_input_remove(input_mp);
+  }
 }
 
-gboolean register_main_loop(gpointer data)
+void register_other_inputs(Oprs *oprs)
+{
+  fprintf(stderr, "register_other_inputs.\n");
+  if (register_to_server) {
+    input_ps = gdk_input_add(ps_socket, GDK_INPUT_READ, &register_main_loop_from_socket, oprs);
+  }
+  if (register_to_mp) {
+    input_mp = gdk_input_add(mp_socket, GDK_INPUT_READ, &register_main_loop_from_socket, oprs);
+  }
+}
+
+void register_main_loop(gpointer data, gboolean from_socket)
 {
   Oprs *oprs = data;
-  register_main_loop_from_other_events(oprs);
-  if (other_events_registered) {
-    g_source_remove(other_events_wp);
-    other_events_registered = FALSE;
+  if (pthread_mutex_lock(&loop_registering_mutex) < 0)
+    perror("goprs: register_main_loop: pthread_mutex_lock");
+  if (from_socket) {
+    deregister_other_inputs(oprs);
+    socket_registered = FALSE;
   }
-  return FALSE;
+  if (! main_loop_registered) {
+    fprintf(stderr, "registering_main_loop as idle.\n");
+    g_idle_add_full(G_PRIORITY_HIGH_IDLE, &goprs_top_level_loop,oprs, NULL); /* this will register the main loop */
+    main_loop_registered = TRUE;
+  }
+  if (pthread_mutex_unlock(&loop_registering_mutex) < 0)
+    perror("goprs: register_main_loop: pthread_mutex_unlock");
+
+  return;
+}
+
+gboolean register_main_loop_from_timer(gpointer data)
+{
+  //  fprintf(stderr, "register_main_loop_from_timer.\n");
+  register_main_loop(data, FALSE);
+  return FALSE; /* This will deregister this very timeout function. */
+}
+
+void register_main_loop_from_socket(gpointer data, gint ignore1, GdkInputCondition ignore2)
+{
+  //  fprintf(stderr, "register_main_loop_from_socket.\n");
+  register_main_loop(data, TRUE);
 }
 
 void deregister_main_loop(Oprs *oprs)
 {
-     main_loop_registered = FALSE;
-     other_events_wp = g_idle_add(&wait_other_events,oprs);
-     other_events_registered = TRUE;
-     g_timeout_add((main_loop_pool_sec * 1000) +  (main_loop_pool_usec / 1000),
-		   &register_main_loop, oprs); /* This guy will re register us. */
-}
-
-gboolean wait_other_events(gpointer oprs_par)
-{				/* This could probably be smarter and monitor the fds directly from gtk... */
-     fd_set readfds;
-     int nfound, max_fds;
-     struct timeval pool_tv;
-     Oprs *oprs = (Oprs *)oprs_par;
-
-     FD_ZERO(&readfds);
-     max_fds = 0;
-     if (register_to_server) {
-	  FD_SET(ps_socket, &readfds);
-	  max_fds = MAX(max_fds,ps_socket+1);
-     }
-     if (register_to_mp) {
-	  FD_SET(mp_socket, &readfds);
-	  max_fds = MAX(max_fds,mp_socket+1);
-     }
-
-     pool_tv.tv_sec = 0;
-     pool_tv.tv_usec = 1000;	/* we check the 2 sockets for new facts or goals. 1 mili second timeout.*/
-
-     if ((nfound = select(max_fds, &readfds, NULL, NULL, &pool_tv)) < 0)	
-	  if (errno != EINTR) {
-	       perror("wait_other_events: select NULL");
-	  }
-     if (nfound > 0 ){
-	  register_main_loop_from_other_events(oprs);
-	  other_events_registered = FALSE;
-	  return TRUE;
-     } else return FALSE;
+  if (main_loop_registered) {
+    //fprintf(stderr, "deregister_main_loop.\n");
+    if (pthread_mutex_lock(&loop_registering_mutex) < 0)
+      perror("goprs: deregister_main_loop: pthread_mutex_lock");
+    if (main_loop_registered) {
+      fprintf(stderr, "deregistering_main_loop.\n");
+      main_loop_registered = FALSE;
+      g_timeout_add((main_loop_pool_sec * 1000) +  (main_loop_pool_usec / 1000),
+		    &register_main_loop_from_timer, oprs); /* This guy will re register us. */
+      if (!socket_registered) {
+	socket_registered = TRUE;
+	register_other_inputs(oprs);
+      }
+    }
+    if (pthread_mutex_unlock(&loop_registering_mutex) < 0)
+      perror("goprs: deregister_main_loop: pthread_mutex_unlock");
+  } 
 }
 
 guint sb_cid;
@@ -168,69 +188,6 @@ void UpdateMessageWindow(char *string)
   gtk_statusbar_push(GTK_STATUSBAR(messageWindow), sb_cid, string);
 }
 
-
-void set_oprs_active_mode(PBoolean mode)
-{
-     if (mode) {
-	  unset_button(oprsIdleDButton);
-	  set_button(oprsActiveDButton);
-     } else {
-	  set_button(oprsIdleDButton);
-	  unset_button(oprsActiveDButton);
-     }
-}
-
-void xset_oprs_run_mode(Oprs_Run_Type mode)
-{
-     switch(mode) {
-     case RUN:
-	  unset_button(oprsStoppedDButton);
-	  register_main_loop(current_oprs);
-	  break;
-     case STEP_NEXT:
-	  unset_button(oprsStoppedDButton);
-	  register_main_loop(current_oprs);
-	  break;
-     case STEP_HALT:
-	  set_button(oprsStoppedDButton);
-	  break;
-     case HALT:
-	  set_button(oprsStoppedDButton);
-	  break;
-     case STEP:
-	  unset_button(oprsStoppedDButton);
-	  break;
-     default:
-	  fprintf(stderr, LG_STR("xset_oprs_run_mode: unknown run_mode.\n",
-				 "xset_oprs_run_mode: unknown run_mode.\n"));
-     }
-}
-
-void OprsResetButton(Widget w, XtPointer oprs, XtPointer call_data)
-{ 
-/*     reset_oprs_kernel((Oprs *)oprs); */
-     resetQuestionManage();
-}
-
-void OprsHaltButton(Widget w, XtPointer client_data, XtPointer call_data)
-{ 
-     set_oprs_run_mode(HALT);
-}
-
-void OprsStepButton(Widget w, XtPointer client_data, XtPointer call_data)
-{ 
-     set_oprs_run_mode(STEP);
-}
-
-void OprsStepNextButton(Widget w, XtPointer client_data, XtPointer call_data)
-{ 
-     set_oprs_run_mode(STEP_NEXT);
-}
-
-void OprsRunButton(Widget w, XtPointer client_data, XtPointer call_data)
-{ 
-     set_oprs_run_mode(RUN);
-}
 
 //XtAppContext app_context;
 
@@ -290,7 +247,8 @@ CairoGCs mainCGCs;		/* this will be the one for the main */
 CairoGCs *mainCGCsp;		/* this will be the one for the main */
 
 
-Widget textWindow;
+Widget textSWindow;
+Widget textview;
 int gtk = 1;
 
 #ifdef C_PLUS_PLUS_RELOCATABLE
@@ -323,12 +281,12 @@ int main(int argc, char **argv, char **envp)
   GtkWidget *vbox;
   GtkWidget *hbox;
   GtkWidget *menubar;
-  GtkWidget *toolbar;
+  //  GtkWidget *toolbar;
   GtkWidget *opeDrawWin;
   GtkWidget *intDrawWin;
 
      Widget topForm, oprsDrawWinFrame, oprsDrawWin, oprsIntDrawWinFrame, oprsIntDrawWin;
-     Widget oprsMenuFrame, oprsMenu, oprsRunButton, oprsHaltButton, oprsResetButton, oprsStepButton, oprsStepNextButton;
+     Widget oprsMenuFrame, oprsMenu;
 
      progname = argv[0];
 
@@ -408,22 +366,31 @@ int main(int argc, char **argv, char **envp)
   menubar = goprs_create_menu_bar(topLevelWindow, &dd, &idd);
   gtk_box_pack_start(GTK_BOX(vbox), menubar, FALSE, FALSE, 1); /* add a menubar to the main vbox */
 
+  
+  GtkWidget *vpaned = gtk_vpaned_new ();
+  gtk_box_pack_start(GTK_BOX(vbox), vpaned, TRUE, TRUE, 1); /* add a menubar to the main vbox */
+
+
   hbox = gtk_hbox_new(FALSE, 0);
-  gtk_container_add(GTK_CONTAINER(vbox), hbox); /* create a hbox below the menubar */
+  //gtk_widget_set_size_request (vpaned, 200 + GTK_PANED (vpaned)->gutter_size, -1);
+  gtk_paned_pack1 (GTK_PANED (vpaned), hbox, TRUE, FALSE);
+  //gtk_widget_set_size_request (frame1, 50, -1);
 
-  /* toolbar = create_tool_bar(topLevelWindow, &dd); */
-  /* gtk_toolbar_set_orientation((GTK_TOOLBAR)toolbar,GTK_ORIENTATION_VERTICAL); */
-  /* gtk_box_pack_start(GTK_BOX(hbox), toolbar, FALSE, FALSE, 1); /\* add a toolbar at the left  *\/ */
+  opeDrawWin = gtk_scrolled_window_new(NULL, NULL); /* create a large scrolled window in this vbox */
+  gtk_paned_pack2 (GTK_PANED (vpaned), opeDrawWin, TRUE, FALSE);
+  //gtk_widget_set_size_request (frame2, 50, -1);
 
-  textWindow = gtk_scrolled_window_new(NULL, NULL); /* create the text  window in this hbox */
-  gtk_box_pack_start(GTK_BOX(hbox), textWindow, TRUE, TRUE, 1);
+  oprsMenu = create_tool_bar(topLevelWindow, &dd);
+  gtk_box_pack_start(GTK_BOX(hbox), oprsMenu, FALSE, FALSE, 1); /* add a oprsMenu at the left  */
+
+  textSWindow = gtk_scrolled_window_new(NULL, NULL); /* create the text  window in this hbox */
+  gtk_box_pack_start(GTK_BOX(hbox), textSWindow, TRUE, TRUE, 1);
+  textview = gtk_text_view_new ();
+  gtk_container_add (GTK_CONTAINER (textSWindow), textview);
 
   intDrawWin = gtk_scrolled_window_new(NULL, NULL); /* create the int graph window in this hbox */
   gtk_box_pack_start(GTK_BOX(hbox), intDrawWin, TRUE, TRUE, 1);
 
-
-  opeDrawWin = gtk_scrolled_window_new(NULL, NULL); /* create a large scrolled window in this vbox */
-  gtk_box_pack_start(GTK_BOX(vbox), opeDrawWin, TRUE, TRUE, 1);
   
   messageWindow = gtk_statusbar_new ();
   gtk_box_pack_end(GTK_BOX(vbox), messageWindow, FALSE, FALSE, 1); /* add a  statusbar at the bottom. */
@@ -432,157 +399,29 @@ int main(int argc, char **argv, char **envp)
 			"Bienvenue dans le GTK OpenPRS %s %s"), package_version, COPYRIGHT_STRING);
   UpdateMessageWindow(title);
 
+  sprintf(welcome, LG_STR("\n\t\tThis is GTK-OpenPRS (%s).\n\t%s\n\n",
+			  "\n\t\tThis is GTK-OpenPRS (%s).\n\t%s\n\n"),
+	  package_version, COPYRIGHT_STRING);
+
+  AppendTextWindow(GTK_TEXT_VIEW(textview),welcome,FALSE);
+  AppendTextWindow(GTK_TEXT_VIEW(textview), "GTK-OpenPRS comes with ABSOLUTELY NO WARRANTY.\n\n",FALSE);
+
   gtk_widget_show_all(topLevelWindow);
+
+  call_oprs_cat(log_file,textview);
+  
+  start_kernel_user_hook(name);
+
+  run_initial_commands();
+
+  register_main_loop(oprs,FALSE);   /* this will register the main loop as an idle func.  */
 
   gtk_main();
 
   return 0;
 
 #ifdef IGNORE
-     /* XtVaSetValues(topLevel,  */
-     /* 		   XmNiconPixmap, icon_pixmap, */
-     /* 		   XmNtitle, title, */
-     /* 		   XmNiconName,name, */
-     /* 		   XmNborderWidth, 1, */
-     /* 		   NULL); */
-
-     //     create_help_info(topLevel);
-    
-     n = 0;
-     XtSetArg(args[n], XmNfractionBase, 5); n++;
-     topForm = XmCreateForm(topLevel, "topForm", args,n);
-     XtManageChild(topForm);
-    
-     menuBar = xp_create_menu_bar(topForm, &dd, &idd);
-
-     n = 0;
-     oprsMenuFrame = XmCreateFrame(topForm,"oprsMenuFrame",args,n);
-     XtManageChild(oprsMenuFrame);
-
-     n = 0;
-     XtSetArg(args[n], XmNbottomAttachment, XmATTACH_FORM); n++;
-     XtSetArg(args[n], XmNleftAttachment, XmATTACH_FORM); n++;
-     XtSetArg(args[n], XmNrightAttachment, XmATTACH_FORM); n++;
-     XtSetArg(args[n], XmNalignment, XmALIGNMENT_BEGINNING); n++;
-     XtSetArg(args[n], XmNlabelString, XmStringCreateLtoR("", XmSTRING_DEFAULT_CHARSET)); n++;
-     messageWindow = XtCreateManagedWidget("messageWindow", xmLabelWidgetClass, topForm, args, n);
-
-     n = 0;
-     XtSetArg(args[n], XmNisAligned, True); n++;
-     XtSetArg(args[n], XmNentryAlignment, XmALIGNMENT_CENTER); n++;
-     oprsMenu = XmCreateWorkArea(oprsMenuFrame,"oprsMenu",args,n);
-     XtManageChild(oprsMenu);
-
-
-     n = 0;
-     XtSetArg(args[n], XmNtraversalOn, False); n++;
-     XtSetArg(args[n], XmNalignment, XmALIGNMENT_CENTER); n++;
-     oprsActiveDButton = 
-#ifdef LESSTIF
-	  XmCreatePushButton
-#else
-	  XmCreateDrawnButton
-#endif
-	  (oprsMenu,"oprsActiveDButton", args, n);
-     XtManageChild(oprsActiveDButton);
-
-     oprsIdleDButton = 
-#ifdef LESSTIF
-	  XmCreatePushButton
-#else
-	  XmCreateDrawnButton
-#endif
-	  (oprsMenu,"oprsIdleDButton", args, n);
-     XtManageChild(oprsIdleDButton);
-
-     oprsStoppedDButton = 
-#ifdef LESSTIF
-	  XmCreatePushButton
-#else
-	  XmCreateDrawnButton
-#endif
-	  (oprsMenu,"oprsStoppedDButton", args, n);
-     XtManageChild(oprsStoppedDButton);
-
-
-     XtManageChild(XmCreateSeparator(oprsMenu,"oprsMenuSeparator",NULL,0));
-     XtManageChild(XmCreateSeparator(oprsMenu,"oprsMenuSeparator",NULL,0));
-
-     oprsRunButton = XmCreatePushButtonGadget(oprsMenu,"oprsRunButton", NULL, 0);
-     XtAddCallback(oprsRunButton, XmNarmCallback, OprsRunButton, &dd);
-     XtManageChild(oprsRunButton);
-
-     oprsStepButton = XmCreatePushButtonGadget(oprsMenu,"oprsStepButton", NULL, 0);
-     XtAddCallback(oprsStepButton, XmNarmCallback, OprsStepButton, &dd);
-     XtManageChild(oprsStepButton);
-
-     oprsStepNextButton = XmCreatePushButtonGadget(oprsMenu,"oprsStepNextButton", NULL, 0);
-     XtAddCallback(oprsStepNextButton, XmNarmCallback, OprsStepNextButton, &dd);
-     XtManageChild(oprsStepNextButton);
-
-     oprsHaltButton = XmCreatePushButtonGadget(oprsMenu,"oprsHaltButton", NULL, 0);
-     XtAddCallback(oprsHaltButton, XmNarmCallback, OprsHaltButton, &dd);
-     XtManageChild(oprsHaltButton);
-
-     XtManageChild(XmCreateSeparator(oprsMenu,"oprsMenuSeparator",NULL,0));
-
-     oprsResetButton = XmCreatePushButtonGadget(oprsMenu,"oprsResetButton", NULL, 0);
-     XtAddCallback(oprsResetButton, XmNactivateCallback, OprsResetButton, oprs);
-     XtManageChild(oprsResetButton);
-
-     n = 0;
-     XtSetArg(args[n], XmNtopAttachment, XmATTACH_WIDGET); n++;
-     XtSetArg(args[n], XmNtopWidget,oprsMenuFrame); n++;
-     XtSetArg(args[n], XmNbottomAttachment, XmATTACH_WIDGET); n++;
-     XtSetArg(args[n], XmNbottomWidget, messageWindow); n++;
-     XtSetArg(args[n], XmNleftAttachment, XmATTACH_FORM); n++;
-     XtSetArg(args[n], XmNrightAttachment, XmATTACH_FORM); n++;
-
-     oprsDrawWinFrame = XmCreateFrame(topForm, "oprsDrawWinFrame", args, n);
-     XtManageChild(oprsDrawWinFrame);
-
-     n = 0;
-     XtSetArg(args[n], XmNtopAttachment, XmATTACH_WIDGET); n++;
-     XtSetArg(args[n], XmNtopWidget, menuBar); n++;
-     XtSetArg(args[n], XmNbottomAttachment, XmATTACH_WIDGET); n++;
-     XtSetArg(args[n], XmNbottomWidget,oprsDrawWinFrame); n++;
-     XtSetArg(args[n], XmNleftAttachment, XmATTACH_WIDGET); n++;
-     XtSetArg(args[n], XmNleftWidget,oprsMenuFrame); n++;
-     XtSetArg(args[n], XmNrightAttachment, XmATTACH_POSITION); n++;
-     XtSetArg(args[n], XmNrightPosition, 3); n++;
-     XtSetArg(args[n], XmNeditMode,  XmMULTI_LINE_EDIT); n++;
-     XtSetArg(args[n], XmNautoShowCursorPosition, True); n++;
-     XtSetArg(args[n], XmNscrollingPolicy, XmAUTOMATIC); n++;
-#ifndef LESSTIF
-     XtSetArg(args[n], XmNscrollBarDisplayPolicy, XmSTATIC); n++;
-     XtSetArg(args[n], XmNscrollLeftSide, True); n++;
-#endif
-     XtSetArg(args[n], XmNwordWrap, True); n++;
-     XtSetArg(args[n], XmNhighlightOnEnter, True); n++;
-     XtSetArg(args[n], XmNeditable, False); n++;
-
-     textWindow = XmCreateScrolledText (topForm, "textWindow", args, n);
-     XtAddCallback (textWindow, XmNmodifyVerifyCallback, (XtCallbackProc)VerifySizeTextWindow, NULL);
-     XtManageChild (textWindow);
-
-     n = 0;
-     XtSetArg(args[n], XmNtopAttachment, XmATTACH_WIDGET); n++;
-     XtSetArg(args[n], XmNtopWidget, menuBar); n++;
-     XtSetArg(args[n], XmNleftAttachment, XmATTACH_WIDGET); n++;
-     XtSetArg(args[n], XmNleftWidget, XtParent(textWindow)); n++;
-     XtSetArg(args[n], XmNrightAttachment, XmATTACH_FORM); n++;
-     XtSetArg(args[n], XmNbottomAttachment, XmATTACH_WIDGET); n++;
-     XtSetArg(args[n], XmNbottomWidget,oprsDrawWinFrame); n++;
-
-     oprsIntDrawWinFrame = XmCreateFrame(topForm, "oprsIntDrawWinFrame", args, n);
-     XtManageChild(oprsIntDrawWinFrame);
-
-     oprsIntDrawWin = XmCreateScrolledWindow(oprsIntDrawWinFrame, "oprsIntDrawWin", NULL, 0);
-     XtManageChild(oprsIntDrawWin);
-
-     idd.canvas = XmCreateDrawingArea(oprsIntDrawWin, "oprsIntCanvas", NULL, 0);
-     XtManageChild(idd.canvas);
-
+ 
      XtSetArg(args[0], XmNheight, &idd.canvas_height);
      XtSetArg(args[1], XmNwidth, &idd.canvas_width);
      XtGetValues(idd.canvas, args, 2);
@@ -680,23 +519,9 @@ int main(int argc, char **argv, char **envp)
      create_gc(&dd);
 
      idd_create_gc(&idd);
-
-     sprintf(welcome, LG_STR("\n\t\tThis is X-OpenPRS (%s).\n\t%s\n\n",
-			     "\n\t\tThis is X-OpenPRS (%s).\n\t%s\n\n"),
-	     package_version, COPYRIGHT_STRING);
-
-     AppendTextWindow(textWindow,welcome,FALSE);
-     AppendTextWindow(textWindow, "X-OpenPRS comes with ABSOLUTELY NO WARRANTY.\n\n",FALSE);
-
-     sprintf(title, LG_STR("Welcome to X-OpenPRS %s %s",
-			   "Welcome to X-OpenPRS %s %s"), 
-	     package_version, COPYRIGHT_STRING);
      UpdateMessageWindow(title);
 
-     call_oprs_cat(log_file,textWindow);
-
      idd.ig = oprs->intention_graph;
-     register_main_loop(oprs);
 
      update_active_idle((XtPointer)oprs);
 

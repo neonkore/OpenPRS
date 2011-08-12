@@ -32,16 +32,6 @@
 
 #include "config.h"
 
-/*  xcalloprs.c
- *
- *    Set up communication between oprs and xoprs using pseudo terminal, and
- *    call oprs.
- *
- *    open_master():	Open the master side of pty.
- *    open_slave(): 	Open the slave side of pty.
- *    calloprs(): 	Invoke oprs.
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -56,8 +46,6 @@
 
 #include "constant.h"
 
-//#include "gope-graphic.h"
-//#include "goprs-main.h"
 #include "macro.h"
 #include "oprs-type.h"
 
@@ -96,7 +84,7 @@ void read_oprs(gpointer master, gint source, GdkInputCondition ignore)
 {
      char s[BUFSIZ];
      int res; 
-     Widget textWindow = (Widget)master;
+     Widget textview = (Widget)master;
 
      PROTECT_SYSCALL_FROM_EINTR(res,read(source,s,BUFSIZ-1));
      if (res == -1) {
@@ -105,11 +93,11 @@ void read_oprs(gpointer master, gint source, GdkInputCondition ignore)
 
      if (res > 0) {
 	    s[res] = '\0';
-	    AppendTextWindow(textWindow, s,FALSE);
+	    AppendTextWindow(textview, s,FALSE);
      }
 }
 
-void call_oprs_cat(char *log_file, Widget textWindow)
+void call_oprs_cat(char *log_file, Widget textview)
 {
      int pid, sp[2];
 
@@ -130,7 +118,7 @@ void call_oprs_cat(char *log_file, Widget textWindow)
 	  if (dup2(sp[1],1) < 0)
 	       perror("call_oprs_cat:dup2");	/* Get stdout plug on sp[1] */
 
-	  oprsInputId = gdk_input_add(sp[1],GDK_INPUT_READ, read_oprs, textWindow);
+	  oprsInputId = gdk_input_add(sp[1],GDK_INPUT_READ, read_oprs, textview);
      } else {			/* The child */
 	  char *argv[3];
 

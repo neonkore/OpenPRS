@@ -52,12 +52,42 @@
 static XmTextPosition  MaxTextSize = 200000; /* Max size (in characters) of the textwindow */
 #define MinTextSize 2000 /* minimum size */
 static XmTextPosition  ScrollTextSize = 50000; /* Number of characters to delete when we reach the maxsize */
-#define CLEARMESSAGE LG_STR("The previous part of the text has been cleaned up\n","The previous part of the text has been cleaned up\n")
+#define CLEARMESSAGE LG_STR("The previous part of the text has been cleaned up\n",\
+"The previous part of the text has been cleaned up\n")
 
 static PBoolean cleaning = FALSE;
 
-void AppendTextWindow(Widget textWindow, char *s,PBoolean big)
+void AppendTextWindow(GtkTextView *textview, char *s, PBoolean big)
 {
+  GtkTextBuffer *buffer;
+  GtkTextIter iter;
+  GtkTextMark *mark;
+
+  buffer = gtk_text_view_get_buffer (textview);
+  /* Get end iterator */
+  gtk_text_buffer_get_end_iter (buffer, &iter);
+
+  /* and insert some text at it, the iter will be revalidated
+   * after insertion to point to the end of inserted text
+   */
+  gtk_text_buffer_insert (buffer, &iter, s, -1);
+
+  /* Move the iterator to the beginning of line, so we don't scroll 
+   * in horizontal direction 
+   */
+  gtk_text_iter_set_line_offset (&iter, 0);
+  
+  /* and place the mark at iter. the mark will stay there after we
+   * insert some text at the end because it has right gravity.
+   */
+  mark = gtk_text_buffer_create_mark (buffer, NULL, &iter, TRUE);
+  gtk_text_buffer_move_mark (buffer, mark, &iter);
+  
+  /* Scroll the mark onscreen.
+   */
+  gtk_text_view_scroll_mark_onscreen (textview, mark);
+
+  return;
 }
 
 #ifdef IGNORE

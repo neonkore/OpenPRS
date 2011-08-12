@@ -32,8 +32,9 @@
  *
  */
 
+void AppendTextWindow(GtkTextView *textview, char *s, PBoolean big);
+
 void create_textWindow(Widget parent);
-void AppendTextWindow(Widget textWindow, char *s,PBoolean big);
 void ClearTextWindow(Widget textWindow);
 void VerifySizeTextWindow(Widget w, XtPointer client_data, XtPointer call_data);
 void create_output_textWindow(Widget parent);
