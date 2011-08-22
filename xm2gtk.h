@@ -30,4 +30,6 @@ typedef GtkPixmap *Pixmap;
 #define CoordModeOrigin NULL
 #define Convex NULL
 
+#define True TRUE
+
 #endif /* INCLUDE_xm2gtk */

@@ -202,8 +202,13 @@ void send_bytes()
      }
  
      if ((res = write(1,write_info->info + write_info->written,write_info->size)) == -1) {
-          perror("oprs-cat: send_bytes");
-          exit(1);
+       if (errno == EPIPE) 
+	 exit (EXIT_SUCCESS);
+       else {
+	 fprintf(stderr,"oprs-cat: send_bytes errno %d EPIPE %d.\n", errno, EPIPE);
+	 perror("oprs-cat: send_bytes");
+	 exit( EXIT_FAILURE);
+       }
      } else if (res == write_info->size)  {
           write_info = write_info->next;
           FREE(tmp->info);

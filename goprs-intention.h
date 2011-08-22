@@ -70,7 +70,7 @@ struct giedge {
 };
 
 struct int_draw_data {
-     Intention_Graph *ig;
+  Intention_Graph *ig;
   GtkWidget *topLevelWindow;
   GtkWidget *canvas;
   GdkDrawable *window;
@@ -80,17 +80,13 @@ struct int_draw_data {
   guint work_height;
   guint work_width;
   guint          start_x, start_y;
-  //     GC            gc;		/* default GC       */
-  //     GC            sgc;		/* reversed GC       */
-     Widget        vscrollbar;
-     Widget        hscrollbar;
+  Widget        vscrollbar;
+  Widget        hscrollbar;
   GdkRegion	*expose_region;
-     int           top;		/* top */
-     int           left;	/* left */
-  //     XFontStruct  	*font;	/* The font struct       */
-  //     XmFontList    fontlist;
-     Squeue *copy_area_index_queue;
-     PBoolean reposition_all;
+  int           top;		/* top */
+  int           left;	/* left */
+  Squeue *copy_area_index_queue;
+  PBoolean reposition_all;
 };
 
 #endif /* INCLUDE_xp_intention */

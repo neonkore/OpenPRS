@@ -65,7 +65,12 @@
 #include "intention_f.h"
 #include "conditions_f.h"
 #ifdef GRAPHIX
+#ifdef GTK
+#include "goprs-intention_f.h"
+#include "xm2gtk_f.h"
+#else
 #include "xoprs-intention_f.h"
+#endif
 #endif
 #include "op-structure_f.h"
 #include "oprs-profiling_f.h"

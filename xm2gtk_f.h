@@ -1,6 +1,7 @@
 
 #define XmStringFree(s) (FREE(s))
 
+
 static 
 char *XmStringCreate(char *s)
 {
@@ -36,10 +37,30 @@ char *XmStringSeparatorCreate()
 }
 
 static
+void XtDestroyWidget(void *x)
+{
+  fprintf(stderr,"XtDestroyWidget need to be defined\n");
+}
+
+static
 void XClearWindow(void *x, void *y)
 {
   fprintf(stderr,"XClearWindow need to be defined\n");
 }
+
+static
+void XFlush(void *y)
+{
+  fprintf(stderr,"XFlush need to be defined\n");
+}
+
+static
+gboolean XtIsSensitive(void *s)
+{
+  fprintf(stderr,"XtIsSensitive need to be defined\n");
+  return FALSE;
+}
+
 
 static
 void XmStringExtent(cairo_t *cr, XmString s, int *w, int *h)
@@ -49,6 +70,24 @@ void XmStringExtent(cairo_t *cr, XmString s, int *w, int *h)
   cairo_text_extents(cr, s, &extents);
   *w = extents.width;
   *h = extents.height;
+}
+
+static
+guint XmStringHeight(cairo_t *cr, XmString s)
+{
+  cairo_text_extents_t extents;
+ 
+  cairo_text_extents(cr, s, &extents);
+  return extents.height;
+}
+
+static
+guint XmStringWidth(cairo_t *cr, XmString s)
+{
+  cairo_text_extents_t extents;
+ 
+  cairo_text_extents(cr, s, &extents);
+  return extents.width;
 }
 
 static
@@ -134,6 +173,10 @@ int XFillPolygon(void *i1, void *i2, cairo_t *cr, XPoint *points, int npoints, v
   cairo_stroke_preserve(cr);
   cairo_fill(cr);
 }
+
+#define XtManageChild(s) 
+
+
 
 static
 void XmStringDraw(void* d, void *w, void *i1, XmString string, cairo_t *cr, gint x, Position y,  

@@ -106,7 +106,7 @@ void register_main_loop_from_socket(gpointer data, gint ignore1, GdkInputConditi
 
 void deregister_other_inputs(Oprs *oprs)
 {
-  fprintf(stderr, "deregister_other_inputs.\n");
+  // fprintf(stderr, "deregister_other_inputs.\n");
   if (register_to_server) {
     gdk_input_remove(input_ps);
   }
@@ -117,7 +117,7 @@ void deregister_other_inputs(Oprs *oprs)
 
 void register_other_inputs(Oprs *oprs)
 {
-  fprintf(stderr, "register_other_inputs.\n");
+  //  fprintf(stderr, "register_other_inputs.\n");
   if (register_to_server) {
     input_ps = gdk_input_add(ps_socket, GDK_INPUT_READ, &register_main_loop_from_socket, oprs);
   }
@@ -136,7 +136,7 @@ void register_main_loop(gpointer data, gboolean from_socket)
     socket_registered = FALSE;
   }
   if (! main_loop_registered) {
-    fprintf(stderr, "registering_main_loop as idle.\n");
+    //fprintf(stderr, "registering_main_loop as idle.\n");
     g_idle_add_full(G_PRIORITY_HIGH_IDLE, &goprs_top_level_loop,oprs, NULL); /* this will register the main loop */
     main_loop_registered = TRUE;
   }
@@ -166,7 +166,7 @@ void deregister_main_loop(Oprs *oprs)
     if (pthread_mutex_lock(&loop_registering_mutex) < 0)
       perror("goprs: deregister_main_loop: pthread_mutex_lock");
     if (main_loop_registered) {
-      fprintf(stderr, "deregistering_main_loop.\n");
+      //      fprintf(stderr, "deregistering_main_loop.\n");
       main_loop_registered = FALSE;
       g_timeout_add((main_loop_pool_sec * 1000) +  (main_loop_pool_usec / 1000),
 		    &register_main_loop_from_timer, oprs); /* This guy will re register us. */
@@ -206,6 +206,78 @@ GdkPixbuf *create_pixbuf(const gchar * filename)
    return pixbuf;
 }
 
+static gboolean
+on_expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer data)
+{
+  CairoGCs CGCs;
+
+  /* This will create graphic context specific to this expose thread. */
+  create_cgcs(&CGCs, global_draw_data->window);
+  
+
+  cairo_t *cr = CGCs.cr_basic;
+
+  cairo_move_to(cr, 800,  30);
+  cairo_show_text(CGCs.cr_basic, "CGCs.cr_basic");
+  cairo_move_to(CGCs.cr_title, 800, 60);
+  cairo_show_text(CGCs.cr_title, "CGCs.cr_title");
+
+  cairo_move_to(CGCs.cr_edge, 800, 120);
+  cairo_show_text(CGCs.cr_edge, "CGCs.cr_edge");
+
+  cairo_move_to(CGCs.cr_node, 800, 150);
+  cairo_show_text(CGCs.cr_node, "CGCs.cr_node");
+  cairo_move_to(CGCs.cr_text, 800, 180);
+  cairo_show_text(CGCs.cr_text, "CGCs.cr_text");
+
+  //  handle_exposures(widget, global_draw_data, event, &CGCs);
+
+  destroy_cgcs(&CGCs);
+
+  return FALSE;
+}
+
+gboolean motion(GtkWidget *widget, GdkEventMotion *event, gpointer user_data)
+{
+  CairoGCs CGCs;
+
+  /* This will create graphic context specific to this expose thread. */
+  create_cgcs(&CGCs, global_draw_data->window);
+
+  //canvas_mouse_motion(widget, global_draw_data, &CGCs, event);
+
+  destroy_cgcs(&CGCs);
+
+  return TRUE;
+}
+
+gboolean released(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
+{
+  CairoGCs CGCs;
+
+  /* This will create graphic context specific to this expose thread. */
+  create_cgcs(&CGCs, global_draw_data->window);
+
+  //canvas_mouse_release(widget, global_draw_data, &CGCs, event);
+
+  destroy_cgcs(&CGCs);
+
+  return TRUE;
+}
+
+gboolean clicked(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
+{
+  CairoGCs CGCs;
+
+  /* This will create graphic context specific to this expose thread. */
+  create_cgcs(&CGCs, global_draw_data->window);
+
+  //  canvas_mouse_press(widget, global_draw_data, &CGCs, event);
+
+  destroy_cgcs(&CGCs);
+
+  return TRUE;
+}
 
 void ReallyQuit()
 {
@@ -380,6 +452,34 @@ int main(int argc, char **argv, char **envp)
   gtk_paned_pack2 (GTK_PANED (vpaned), opeDrawWin, TRUE, FALSE);
   //gtk_widget_set_size_request (frame2, 50, -1);
 
+  dd.canvas = gtk_layout_new(NULL,NULL);
+  gtk_widget_set_app_paintable(dd.canvas, TRUE);
+  gtk_container_add(GTK_CONTAINER(opeDrawWin),dd.canvas);
+
+  gtk_layout_get_size(GTK_LAYOUT(dd.canvas),&dd.canvas_width, &dd.canvas_height);
+  dd.work_height = MAX(WORK_HEIGHT, dd.canvas_height);
+  dd.work_width = MAX(WORK_WIDTH, dd.canvas_width);
+  gtk_layout_set_size(GTK_LAYOUT(dd.canvas), dd.work_width, dd.work_height); 
+
+  dd.mode = MOVING_CANVAS;
+  dd.top = 0;
+  dd.left = 0;
+  // dd.copy_area_index_queue = make_queue();
+  dd.node_selected = NULL;
+  dd.sensitive_og = NULL;
+  dd.edge_selected = NULL;
+  dd.og_selected_on_press = NULL;
+  dd.og_align = NULL;
+  dd.og_aligning = NULL;
+  /* dd.font = XLoadQueryFont(XtDisplay(topLevel), WORK_FONT); */
+  /*     dd.fontlist = XmFontListCreate(dd.font,"opeCanvas_Charset"); */
+  // dd.fontlist = Resrcs.fontList;
+  dd.expose_region = NULL;
+  dd.just_compiling = FALSE;
+
+  //  init_draw_mode_help();
+
+
   oprsMenu = create_tool_bar(topLevelWindow, &dd);
   gtk_box_pack_start(GTK_BOX(hbox), oprsMenu, FALSE, FALSE, 1); /* add a oprsMenu at the left  */
 
@@ -390,6 +490,21 @@ int main(int argc, char **argv, char **envp)
 
   intDrawWin = gtk_scrolled_window_new(NULL, NULL); /* create the int graph window in this hbox */
   gtk_box_pack_start(GTK_BOX(hbox), intDrawWin, TRUE, TRUE, 1);
+
+  idd.canvas = gtk_layout_new(NULL,NULL);
+  gtk_widget_set_app_paintable(idd.canvas, TRUE);
+  gtk_container_add(GTK_CONTAINER(intDrawWin),idd.canvas);
+
+  gtk_layout_get_size(GTK_LAYOUT(idd.canvas),&idd.canvas_width, &idd.canvas_height);
+  idd.work_height = MAX(WORK_HEIGHT, idd.canvas_height);
+  idd.work_width = MAX(WORK_WIDTH, idd.canvas_width);
+  gtk_layout_set_size(GTK_LAYOUT(idd.canvas), idd.work_width, idd.work_height); 
+
+  idd.top = 0;
+  idd.left = 0;
+  idd.ig = NULL;
+  idd.expose_region = NULL;
+  idd.reposition_all = TRUE;
 
   
   messageWindow = gtk_statusbar_new ();
@@ -407,6 +522,28 @@ int main(int argc, char **argv, char **envp)
   AppendTextWindow(GTK_TEXT_VIEW(textview), "GTK-OpenPRS comes with ABSOLUTELY NO WARRANTY.\n\n",FALSE);
 
   gtk_widget_show_all(topLevelWindow);
+
+  dd.window = GTK_LAYOUT(dd.canvas)->bin_window;
+
+  mainCGCsp = &mainCGCs;
+  dd.cgcsp = mainCGCsp;
+  
+  create_cgcs(&mainCGCs, dd.window); /* this will create all the cairo context for the main loop... */
+   
+  gtk_widget_add_events (dd.canvas, GDK_BUTTON_PRESS_MASK);
+  gtk_widget_add_events (dd.canvas, GDK_BUTTON_RELEASE_MASK);
+  gtk_widget_add_events (dd.canvas, GDK_POINTER_MOTION_MASK);
+
+  g_signal_connect(dd.canvas, "expose-event",
+		   G_CALLBACK(on_expose_event), NULL);
+  g_signal_connect(dd.canvas, "button-press-event", 
+		   G_CALLBACK(clicked), NULL);
+  g_signal_connect(dd.canvas, "button-release-event", 
+		   G_CALLBACK(released), NULL);
+  g_signal_connect(dd.canvas, "motion-notify-event", 
+		   G_CALLBACK(motion), NULL);
+
+  idd.ig = oprs->intention_graph;
 
   call_oprs_cat(log_file,textview);
   

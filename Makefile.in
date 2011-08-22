@@ -182,21 +182,21 @@ MP_OBJ = mp.o
 OP_EDITOR_OBJ = ope-bboard.o ope-edit.o ope-filesel.o ope-op-opf.o ope-main.o \
 	ope-menu.o ope-parser.tab.o ope-parser.lex.o ope-print.o ope-pxmw.o \
 	ope-save.o ope-syntax.o \
-	ope-vsblf.o xt-util.o ope-rop.o ope-op-str.o ope-opaque.o
+	ope-vsblf.o ope-rop.o ope-op-str.o ope-opaque.o
 
 GOP_EDITOR_OBJ = gope-bboard.o gope-edit.o gope-filesel.o gope-op-opf.o gope-main.o \
 	gope-menu.o ope-parser.tab.o ope-parser.lex.o \
 	ope-save.o ope-syntax.o \
-	gope-vsblf.o xt-util.o ope-rop.o ope-op-str.o ope-opaque.o
+	gope-vsblf.o gope-rop.o ope-op-str.o ope-opaque.o
 
 OPC_OBJ = opc-main.o opc-parser.tab.o opc-parser.lex.o ope-opaque.o
 
 X_OBJ = xoprs-dialog.o xoprs-filesel.o xoprs-intention.o \
-	xoprs-main.o xoprs-menu.o xt-util.o xtop-lev-loop.o \
+	xoprs-main.o xoprs-menu.o xtop-lev-loop.o \
 	xoprs-op-graphic.o xoprs-rop.o
 
 G_OBJ = goprs-dialog.o goprs-filesel.o goprs-intention.o \
-	goprs-main.o goprs-menu.o g-util.o gtop-lev-loop.o \
+	goprs-main.o goprs-menu.o gtop-lev-loop.o \
 	goprs-op-graphic.o goprs-rop.o
 
 #
@@ -303,7 +303,7 @@ XOPRS_LIB_OBJ = xoprs-call.o xoprs-textwin.o
 XOPRS_LIB_SRC = $(XOPRS_LIB_OBJ:%.o=%.c)
 
 #
-# goprs kernel library (only used by xoprs)
+# goprs kernel library (only used by goprs)
 #
 
 GOPRS_LIB = libGOprs.a
@@ -329,7 +329,7 @@ OPAQUE_LIB_SRC = $(OPAQUE_LIB_OBJ:%.o=%.c)
 
 OPG_LIB = libOpG.a
 
-OPG_LIB_OBJ = ope-external.o ope-graphic.o xhelp.o oprs-pprint.o ope-report.o
+OPG_LIB_OBJ = ope-external.o ope-graphic.o xhelp.o oprs-pprint.o ope-report.o xt-util.o
 
 OPG_LIB_SRC = $(OPG_LIB_OBJ:%.o=%.c)
 
@@ -339,7 +339,7 @@ OPG_LIB_SRC = $(OPG_LIB_OBJ:%.o=%.c)
 
 GOPG_LIB = libGOpG.a
 
-GOPG_LIB_OBJ = gope-external.o gope-graphic.o xhelp.o oprs-pprint.o gope-report.o
+GOPG_LIB_OBJ = gope-external.o gope-graphic.o xhelp.o oprs-pprint.o gope-report.o g-util.o
 
 GOPG_LIB_SRC = $(GOPG_LIB_OBJ:%.o=%.c)
 
@@ -428,7 +428,7 @@ goprs: $(G_OBJ) $(USER_OBJ) $(C_TOOLKIT_LIB) $(CONTRIB_LIB) $(MP_LIB) $(BASIC_LI
 	$(MAKE) version
 	$(CC) $(LDFLAGS) -o goprs version.o user-trace-off.o $(G_OBJ) $(USER_OBJ) \
 		$(GGRAPHIC_KERNEL_LIB) $(KERNEL_LIB) $(BASIC_LIB) $(GGRAPHIC_OPRS_LIB) $(OPRS_LIB) \
-		$(MP_LIB) $(GGRAPHIC_OPE_OPRS_LIB) $(GOPRS_LIB) $(GOPG_LIB) $(GTK_LIB) $(X_LIB) \
+		$(MP_LIB) $(GGRAPHIC_OPE_OPRS_LIB) $(GOPRS_LIB) $(GOPG_LIB) $(GTK_LIB) \
 		$(LIST_LIB) $(CONTRIB_LIB) $(SYS_LIB) $(EXTRA_LIB)
 
 ope: $(OP_EDITOR_OBJ) $(C_TOOLKIT_LIB) $(MP_LIB) $(BASIC_LIB) $(OPRS_LIB) \
@@ -439,7 +439,7 @@ ope: $(OP_EDITOR_OBJ) $(C_TOOLKIT_LIB) $(MP_LIB) $(BASIC_LIB) $(OPRS_LIB) \
 gope: $(GOP_EDITOR_OBJ) $(C_TOOLKIT_LIB) $(MP_LIB) $(BASIC_LIB) $(OPRS_LIB) \
 		$(GGRAPHIC_OPE_OPRS_LIB) $(GGRAPHIC_OPRS_LIB) $(GOPG_LIB)
 	$(MAKE) version
-	$(CC) $(LDFLAGS) -o gope version.o $(GOP_EDITOR_OBJ) $(BASIC_LIB) $(GGRAPHIC_OPRS_LIB) $(OPRS_LIB) $(GGRAPHIC_OPE_OPRS_LIB) $(MP_LIB) $(GOPG_LIB) $(GTK_LIB) $(X_LIB) $(LIST_LIB) $(SYS_LIB) $(EXTRA_LIB)
+	$(CC) $(LDFLAGS) -o gope version.o $(GOP_EDITOR_OBJ) $(BASIC_LIB) $(GGRAPHIC_OPRS_LIB) $(OPRS_LIB) $(GGRAPHIC_OPE_OPRS_LIB) $(MP_LIB) $(GOPG_LIB) $(GTK_LIB) $(LIST_LIB) $(SYS_LIB) $(EXTRA_LIB)
 
 oprs-cat: $(OPRS_CAT_OBJ) $(C_TOOLKIT_LIB)
 	$(CC) $(LDFLAGS) -o oprs-cat $(OPRS_CAT_OBJ) $(LIST_LIB)
