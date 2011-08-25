@@ -62,3 +62,4 @@ OG *if_og_from_t_or_f_og(OG* og);
 
 void destroy_cgcs(CairoGCs *cgcs);
 void create_cgcs(CairoGCs *cgcs, GdkDrawable *window);
+void display_op_pos(Op_Structure * op, Draw_Data *dd, CairoGCs *cgcsp, int x, int y);

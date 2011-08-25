@@ -55,3 +55,4 @@ void position_then_else(OG *og, int x, int y);
 void position_edge(OG *og_edge);
 
 void position_og(Draw_Data *dd, OG *og, int x, int y);
+void clear_dd_window(Draw_Data *dd);

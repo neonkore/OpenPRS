@@ -1149,7 +1149,7 @@ void display_op_pos(Op_Structure * op, Draw_Data *dd, CairoGCs *cgcsp, int x, in
      if (dd->op != op) {
 	  current_op = op;
 	  dd->op = op;
-	  XClearWindow(XtDisplay(dd->canvas), dd->window);
+	  clear_dd_window(dd);
 	  set_canvas_view_no_redraw(dd, x, y);
 
 	  region = XCreateRegion();
@@ -1198,7 +1198,7 @@ void display_op_edge_internal(Op_Structure * op, Edge *edge, PBoolean selected)
 	       
 	  current_op = op;
 	  dd->op = op;
-	  XClearWindow(XtDisplay(dd->canvas), dd->window);
+	  clear_dd_window(dd);
 	  rect.x = 0;		/* This will be replaced with previous pos...
 				 * later */
 	  rect.y = 0;

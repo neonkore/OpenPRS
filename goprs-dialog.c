@@ -140,6 +140,51 @@ Widget make_xoprs_ut_window()
 {
 }
 
+
+void xpDisplayNextOp(Draw_Data *dd)
+{
+     PBoolean next = FALSE;
+     Op_Structure *op  = NULL;
+
+     sl_loop_through_slist(current_oprs->relevant_op->op_list, op, Op_Structure *) {
+	  if ((! dd->op) || next) {
+	       break;
+	  }
+	  
+	  next = (op == dd->op);
+     }
+     
+     if (op) display_op_pos(op, dd, dd->cgcsp, 0, 0);
+     else {
+       clear_dd_window(dd);
+	  dd->op = NULL;
+	  XBell(XtDisplay(dd->canvas), 50);
+     }
+}
+
+void xpDisplayPreviousOp(Draw_Data *dd)
+{
+     Op_Structure *pop  = NULL;
+     Op_Structure *op;
+
+     if (! dd->op) {
+	  pop = (Op_Structure *)sl_get_slist_tail(current_oprs->relevant_op->op_list);
+     } else {
+	  sl_loop_through_slist(current_oprs->relevant_op->op_list, op, Op_Structure *) {
+	       if (op == dd->op) break;
+	       pop = op;
+	  }
+     }
+     
+     if (pop) display_op_pos(pop, dd, dd->cgcsp, 0, 0);
+     else {
+       clear_dd_window(dd);
+	  XClearWindow(XtDisplay(dd->canvas), dd->window);
+	  dd->op = NULL;
+	  XBell(XtDisplay(dd->canvas), 50);
+     }
+}
+
 #ifdef IGNORE
 void changeMaxSizeDialogManage(void)
 {
@@ -258,49 +303,6 @@ void xpDisplaySelectOpDialogAccept(Widget w, Draw_Data *dd, XtPointer call_data)
 		    display_op_pos(op,dd, 0,0);
 		    break;
 	  }
-     }
-}
-
-void xpDisplayNextOp(Draw_Data *dd)
-{
-     PBoolean next = FALSE;
-     Op_Structure *op  = NULL;
-
-     sl_loop_through_slist(current_oprs->relevant_op->op_list, op, Op_Structure *) {
-	  if ((! dd->op) || next) {
-	       break;
-	  }
-	  
-	  next = (op == dd->op);
-     }
-     
-     if (op) display_op_pos(op, dd, 0, 0);
-     else {
-	  XClearWindow(XtDisplay(dd->canvas), dd->window);
-	  dd->op = NULL;
-	  XBell(XtDisplay(dd->canvas), 50);
-     }
-}
-
-void xpDisplayPreviousOp(Draw_Data *dd)
-{
-     Op_Structure *pop  = NULL;
-     Op_Structure *op;
-
-     if (! dd->op) {
-	  pop = (Op_Structure *)sl_get_slist_tail(current_oprs->relevant_op->op_list);
-     } else {
-	  sl_loop_through_slist(current_oprs->relevant_op->op_list, op, Op_Structure *) {
-	       if (op == dd->op) break;
-	       pop = op;
-	  }
-     }
-     
-     if (pop) display_op_pos(pop,dd, 0,0);
-     else {
-	  XClearWindow(XtDisplay(dd->canvas), dd->window);
-	  dd->op = NULL;
-	  XBell(XtDisplay(dd->canvas), 50);
      }
 }
 

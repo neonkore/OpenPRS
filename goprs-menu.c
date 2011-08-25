@@ -49,7 +49,7 @@
 #include "xhelp_f.h"
 #include "oprs.h"
 #include "top-lev.h"
-#include "top-lev_f.h"
+#include "gtop-lev_f.h"
 #include "xoprs.h"
 #include "oprs-main.h"
 #include "goprs-main.h"
@@ -391,7 +391,7 @@ void Changemaxtextsize(Widget w, XtPointer client_data, XtPointer call_data)
  */
 void Clearopdisplay(Widget w, Draw_Data *dd, XtPointer call_data)
 { 
-     XClearWindow(XtDisplay(dd->canvas), dd->window);
+     clear_dd_window(dd);
      dd->op = NULL;
 }
 
@@ -414,12 +414,12 @@ void Displayop(Widget w,  XtPointer ignore, XtPointer call_data)
 
 void DisplayNextOp(Widget w, Draw_Data *dd, XtPointer call_data)
 { 
-  //gtk xpDisplayNextOp(dd);
+  xpDisplayNextOp(dd);
 }
 
 void DisplayPreviousOp(Widget w, Draw_Data *dd, XtPointer call_data)
 { 
-  //gtk xpDisplayPreviousOp(dd);
+  xpDisplayPreviousOp(dd);
 }
 
 /*
@@ -764,26 +764,25 @@ GtkWidget *goprs_create_menu_bar(GtkWidget *window, Draw_Data *dd, Int_Draw_Data
 
      displayPreviousOp = gtk_menu_item_new_with_label("displayPreviousOp");
      gtk_menu_shell_append(GTK_MENU_SHELL(displayPDMenu),displayPreviousOp);
-     g_signal_connect(G_OBJECT(displayPreviousOp), "activate", G_CALLBACK(DisplayPreviousOp), NULL);
-
+     g_signal_connect(G_OBJECT(displayPreviousOp), "activate", G_CALLBACK(DisplayPreviousOp), dd);
      displayNextOp = gtk_menu_item_new_with_label("displayNextOp");
-     g_signal_connect(G_OBJECT(displayNextOp), "activate", G_CALLBACK(DisplayNextOp), NULL);
-
+     gtk_menu_shell_append(GTK_MENU_SHELL(displayPDMenu),displayNextOp);
+     g_signal_connect(G_OBJECT(displayNextOp), "activate", G_CALLBACK(DisplayNextOp), dd);
 
      cleartextdisplay = gtk_menu_item_new_with_label("cleartextdisplay");
+     gtk_menu_shell_append(GTK_MENU_SHELL(displayPDMenu),cleartextdisplay);
      g_signal_connect(G_OBJECT(cleartextdisplay), "activate", G_CALLBACK(Cleartextdisplay), NULL);
-
      clearopdisplay = gtk_menu_item_new_with_label("clearopdisplay");
+     gtk_menu_shell_append(GTK_MENU_SHELL(displayPDMenu),clearopdisplay);
      g_signal_connect(G_OBJECT(clearopdisplay), "activate", G_CALLBACK(Clearopdisplay), NULL);
 
      clearigdisplay = gtk_menu_item_new_with_label("clearigdisplay");
+     gtk_menu_shell_append(GTK_MENU_SHELL(displayPDMenu),clearigdisplay);
      g_signal_connect(G_OBJECT(clearigdisplay), "activate", G_CALLBACK(Clearigdisplay), NULL);
 
      changemaxtextsize = gtk_menu_item_new_with_label("changemaxtextsize");
      gtk_menu_shell_append(GTK_MENU_SHELL(displayPDMenu),changemaxtextsize);
      g_signal_connect(G_OBJECT(changemaxtextsize), "activate", G_CALLBACK(Changemaxtextsize), NULL);
-
-
      /* Help menu items */
      help = gtk_menu_item_new_with_label("help");
      gtk_menu_shell_append(GTK_MENU_SHELL(helpPDMenu),help);
@@ -797,11 +796,13 @@ GtkWidget *goprs_create_menu_bar(GtkWidget *window, Draw_Data *dd, Int_Draw_Data
 void set_oprs_active_mode(PBoolean mode)
 {
      if (mode) {
-	  unset_button(oprsIdleDButton);
-	  set_button(oprsActiveDButton);
+       gtk_tool_button_set_label(GTK_TOOL_BUTTON(oprsActiveDButton), "Active");
+       unset_button(oprsIdleDButton);
+       set_button(oprsActiveDButton);
      } else {
-	  set_button(oprsIdleDButton);
-	  unset_button(oprsActiveDButton);
+       gtk_tool_button_set_label(GTK_TOOL_BUTTON(oprsActiveDButton), "Idle");
+       set_button(oprsIdleDButton);
+       unset_button(oprsActiveDButton);
      }
 }
 
@@ -809,21 +810,25 @@ void xset_oprs_run_mode(Oprs_Run_Type mode)
 {
      switch(mode) {
      case RUN:
-	  unset_button(oprsStoppedDButton);
-	  register_main_loop(current_oprs);
+       gtk_tool_button_set_label(GTK_TOOL_BUTTON(oprsStoppedDButton), "Runnable");
+	  register_main_loop(current_oprs, FALSE);
 	  break;
      case STEP_NEXT:
-	  unset_button(oprsStoppedDButton);
-	  register_main_loop(current_oprs);
+       gtk_tool_button_set_label(GTK_TOOL_BUTTON(oprsStoppedDButton), "Runnable");
+       //	  unset_button(oprsStoppedDButton);
+	  register_main_loop(current_oprs, FALSE);
 	  break;
      case STEP_HALT:
-	  set_button(oprsStoppedDButton);
+       gtk_tool_button_set_label(GTK_TOOL_BUTTON(oprsStoppedDButton), "Stopped");
+       //	  set_button(oprsStoppedDButton);
 	  break;
      case HALT:
-	  set_button(oprsStoppedDButton);
+       gtk_tool_button_set_label(GTK_TOOL_BUTTON(oprsStoppedDButton), "Stopped");
+       //  set_button(oprsStoppedDButton);
 	  break;
      case STEP:
-	  unset_button(oprsStoppedDButton);
+       gtk_tool_button_set_label(GTK_TOOL_BUTTON(oprsStoppedDButton), "Runnable");
+       //	  unset_button(oprsStoppedDButton);
 	  break;
      default:
 	  fprintf(stderr, LG_STR("xset_oprs_run_mode: unknown run_mode.\n",
@@ -869,14 +874,14 @@ GtkWidget *create_tool_bar(GtkWidget *parent, Draw_Data *dd)
   gtk_toolbar_set_orientation(GTK_TOOLBAR(toolbar),GTK_ORIENTATION_VERTICAL);
   gtk_container_set_border_width(GTK_CONTAINER(toolbar), 0);
 
-  oprsActiveDButton = gtk_tool_button_new(NULL, "Active");
+  oprsActiveDButton = gtk_tool_button_new(NULL, "Idle");
   gtk_toolbar_insert(GTK_TOOLBAR(toolbar),oprsActiveDButton, -1);
 
-  oprsIdleDButton = gtk_tool_button_new(NULL, "Idle");
-  gtk_toolbar_insert(GTK_TOOLBAR(toolbar),oprsIdleDButton, -1);
+  /* oprsIdleDButton = gtk_tool_button_new(NULL, "Idle"); */
+  /* gtk_toolbar_insert(GTK_TOOLBAR(toolbar),oprsIdleDButton, -1); */
 
-  oprsStoppedDButton = gtk_tool_button_new(NULL, "Stopped");
-  gtk_toolbar_insert(GTK_TOOLBAR(toolbar),oprsStoppedDButton, -1);
+   oprsStoppedDButton = gtk_tool_button_new(NULL, "Runnable"); 
+   gtk_toolbar_insert(GTK_TOOLBAR(toolbar),oprsStoppedDButton, -1); 
 
   gtk_toolbar_insert(GTK_TOOLBAR(toolbar),gtk_separator_tool_item_new(), -1);
 

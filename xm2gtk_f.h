@@ -43,15 +43,24 @@ void XtDestroyWidget(void *x)
 }
 
 static
-void XClearWindow(void *x, void *y)
+void XClearWindow(void *ignore_display, void *window)
 {
-  fprintf(stderr,"XClearWindow need to be defined\n");
+  // gdk_window_clear(window);
+  //  gdk_window_clear_area_e(window, 0, 0 , 1000, 1000);
+  fprintf(stderr,"XClearWindow should not be called...\n");
+}
+
+static
+void XBell(void *x, int y)
+{
+  fprintf(stderr,"XBell need to be defined\n");
 }
 
 static
 void XFlush(void *y)
 {
-  fprintf(stderr,"XFlush need to be defined\n");
+  gdk_flush();
+  //fprintf(stderr,"XFlush need to be defined\n");
 }
 
 static

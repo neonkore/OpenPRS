@@ -230,7 +230,7 @@ on_expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer data)
   cairo_move_to(CGCs.cr_text, 800, 180);
   cairo_show_text(CGCs.cr_text, "CGCs.cr_text");
 
-  //  handle_exposures(widget, global_draw_data, event, &CGCs);
+  handle_exposures(widget, global_draw_data, event, &CGCs);
 
   destroy_cgcs(&CGCs);
 
@@ -461,6 +461,7 @@ int main(int argc, char **argv, char **envp)
   dd.work_width = MAX(WORK_WIDTH, dd.canvas_width);
   gtk_layout_set_size(GTK_LAYOUT(dd.canvas), dd.work_width, dd.work_height); 
 
+  dd.op = NULL;
   dd.mode = MOVING_CANVAS;
   dd.top = 0;
   dd.left = 0;

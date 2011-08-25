@@ -57,17 +57,22 @@
 
 ListLines pretty_print_body(int width, Body *bd);
 
+void clear_dd_window(Draw_Data *dd)
+{
+  gdk_window_clear_area_e(dd->window, dd->left, dd->top , dd->work_width, dd->work_height);
+}
+
 void clear_op_graphic(Draw_Data *dd)
 {
   if (!dd->just_compiling)
-    XClearWindow(XtDisplay(dd->canvas), dd->window);
+    clear_dd_window(dd);
   dd->op = NULL;
 }
 
 void clear_specified_op_graphic(Draw_Data *dd, Op_Structure *op)
 {
   if (dd->op == op) {
-    XClearWindow(XtDisplay(dd->canvas), dd->window);
+    clear_dd_window(dd);
     dd->op = NULL;
   }
 }

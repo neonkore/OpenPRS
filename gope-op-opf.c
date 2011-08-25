@@ -260,7 +260,7 @@ void unselect_current_op(Draw_Data *dd, PBoolean update_sensitivity)
      reset_draw_data_no_redraw(dd);
      reset_draw_mode(dd);
 
-     XClearWindow(XtDisplay(dd->canvas), dd->window);
+     clear_dd_window(dd);
 
      if (update_sensitivity) update_select_sensitivity(FALSE);
 }
