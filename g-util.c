@@ -52,6 +52,8 @@ extern PBoolean flushing_xt_events;
 
 void process_xt_events()
 {
+#ifdef GTK_IGNORE
+  /* This is not needed in GTK which is multithreaded... I believe. */
   PBoolean tmp = flushing_xt_events;
 
   flushing_xt_events = TRUE;
@@ -60,5 +62,6 @@ void process_xt_events()
     gtk_main_iteration ();
   
   flushing_xt_events = tmp;
+#endif
 }
 

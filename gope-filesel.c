@@ -37,23 +37,6 @@
 #include <cairo.h>
 #include <gtk/gtk.h>
 
-/*
- * Standard Toolkit include files
- */
-/* #include <X11/Intrinsic.h> */
-/* #include <Xm/Xm.h> */
-
-/* #include <Xm/FileSB.h> */
-/* #include <Xm/Text.h> */
-/* #include <Xm/TextF.h> */
-/* #include <Xm/SelectioB.h> */
-/* #include <Xm/MessageB.h> */
-/* #include <Xm/RowColumn.h> */
-/* #include <Xm/List.h> */
-/* #include <Xm/Label.h> */
-/* #include <Xm/ToggleB.h> */
-/* #include <X11/cursorfont.h> */
-
 #include "xm2gtk.h"
 
 #include "constant.h"
@@ -1069,38 +1052,29 @@ void ope_create_working_dialog(Widget parent)
 
 void ope_create_filesel(GtkWidget *parent, Draw_Data *dd)
 {
-
-  //  opeLoadFilesel = gtk_file_selection_new ("Load OP File");
-  GtkFileFilter *filter = gtk_file_filter_new ();
-  gtk_file_filter_add_pattern(filter, "*.opf"); 
-  gtk_file_filter_set_name(filter, "Opf files"); 
+  GtkFileFilter *filter_opf = gtk_file_filter_new ();
+  gtk_file_filter_add_pattern(filter_opf, "*.opf"); 
+  gtk_file_filter_set_name(filter_opf, "Opf files"); 
 
   opeLoadFilesel = gtk_file_chooser_dialog_new ("Load OP File", GTK_WINDOW(parent),
 						GTK_FILE_CHOOSER_ACTION_OPEN,
 						GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 						GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
 						NULL);
-  gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(opeLoadFilesel),filter);
+  gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(opeLoadFilesel),filter_opf);
 
-  /* g_signal_connect (GTK_FILE_SELECTION (opeLoadFilesel)->ok_button, */
-  /* 		    "clicked", G_CALLBACK (opeLoadFileselok), (gpointer) opeLoadFilesel); */
-  /* g_signal_connect_swapped(GTK_FILE_SELECTION(opeLoadFilesel)->ok_button,  */
-  /* 			   "clicked", G_CALLBACK(gtk_widget_hide), opeLoadFilesel); */
-  /* g_signal_connect_swapped(GTK_FILE_SELECTION(opeLoadFilesel)->cancel_button, */
-  /* 			   "clicked", G_CALLBACK(gtk_widget_destroy), opeLoadFilesel); */
+  g_object_ref_sink(filter_opf);
+
+  opeAppendFilesel = gtk_file_chooser_dialog_new ("Append OP File", GTK_WINDOW(parent),
+						GTK_FILE_CHOOSER_ACTION_OPEN,
+						GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+						GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+						NULL);
+  gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(opeAppendFilesel),filter_opf);
+
   
-
 #ifdef IGNOREX
-     Cardinal n;
-     Arg args[MAXARGS];
 
-     n = 0;
-     XtSetArg(args[n], XmNdialogStyle, XmDIALOG_APPLICATION_MODAL); n++;
-     XtSetArg(args[n], XmNautoUnmanage, True); n++;
-
-     opeLoadFilesel = (Widget) XmCreateFileSelectionDialog(parent, "opeLoadFilesel", args, n);
-     XtAddCallback(opeLoadFilesel, XmNokCallback, (XtCallbackProc)opeLoadFileselok, dd);
-     XtAddCallback(opeLoadFilesel, XmNhelpCallback, infoHelp, makeFileNode("oprs", "X-OPRS Load OP File"));
 
      opeAppendFilesel = (Widget) XmCreateFileSelectionDialog(parent, "opeAppendFilesel", args, n);
      XtAddCallback(opeAppendFilesel, XmNokCallback,  (XtCallbackProc)opeAppendFileselok, dd);

@@ -70,13 +70,11 @@ void Xp_resetdb(Widget w, XtPointer client_data, XtPointer call_data)
      send_command_to_parser("empty fact db\n");
 }
 
-void Xp_resetop(Widget w, XtPointer client_data, XtPointer call_data)
+void Xp_resetop(Widget w, Draw_Data *dd)
 { 
-/*
-     XClearWindow(XtDisplay(dd->canvas), dd->window);
-     dd->op = NULL;
-*/
-     send_command_to_parser("empty op db\n");
+  gdk_window_clear_area_e(dd->window, dd->left, dd->top , dd->work_width, dd->work_height);
+  dd->op = NULL;
+  send_command_to_parser("empty op db\n");
 }
 
 void Xp_addFactGoal(Widget w, XtPointer client_data, XtPointer call_data)
@@ -101,7 +99,7 @@ void Xp_deleteDB(Widget w, XtPointer client_data, XtPointer call_data)
 
 void Xp_showDB(Widget w, XtPointer client_data, XtPointer call_data)
 { 
-     /* send_command_to_parser("show db\n"); */
+  send_command_to_parser("show db\n");
   //gtk xpShowDBDialogManage();
 
 }
@@ -113,13 +111,13 @@ void Xp_showGV(Widget w, XtPointer client_data, XtPointer call_data)
 
 void Xp_showSI(Widget w, XtPointer client_data, XtPointer call_data)
 { 
-     /* send_command_to_parser("show intention\n"); */
+  send_command_to_parser("show intention\n");
   //gtk xpShowIGDialogManage();
 }
 
 void Xp_showSC(Widget w, XtPointer client_data, XtPointer call_data)
 { 
-     /* send_command_to_parser("show condition\n"); */
+  send_command_to_parser("show condition\n");
   //gtk xpShowCondDialogManage();
 }
 
@@ -230,7 +228,7 @@ void Xp_savedb(Widget w, XtPointer client_data, XtPointer call_data)
 
 void Xp_include(Widget w, XtPointer client_data, XtPointer call_data)
 { 
-  //gtk XtManageChild(xp_includeFilesel);
+  xp_includeFileselok(xp_includeFilesel);
 }
 
 void Xp_loadop(Widget w, XtPointer client_data, XtPointer call_data)
@@ -389,7 +387,7 @@ void Changemaxtextsize(Widget w, XtPointer client_data, XtPointer call_data)
 /*
  * Clearopdisplay button callback function
  */
-void Clearopdisplay(Widget w, Draw_Data *dd, XtPointer call_data)
+void Clearopdisplay(Widget w, Draw_Data *dd)
 { 
      clear_dd_window(dd);
      dd->op = NULL;
@@ -398,10 +396,9 @@ void Clearopdisplay(Widget w, Draw_Data *dd, XtPointer call_data)
 /*
  * Clearigdisplay button callback function
  */
-void Clearigdisplay(Widget w, Int_Draw_Data *idd, XtPointer call_data)
+void Clearigdisplay(Widget w, Int_Draw_Data *idd)
 { 
-  //gtk XClearWindow(XtDisplay(idd->canvas), XtWindow(idd->canvas));
-
+  gdk_window_clear_area_e(idd->window, idd->left, idd->top , idd->work_width, idd->work_height);
 }
 
 /*
@@ -508,90 +505,90 @@ GtkWidget *goprs_create_menu_bar(GtkWidget *window, Draw_Data *dd, Int_Draw_Data
   gtk_menu_shell_append(GTK_MENU_SHELL(menuBar), helpCButton);
 
      /* File menu items */
-     include = gtk_menu_item_new_with_label("include");
+     include = gtk_menu_item_new_with_label("Load Commands");
      gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu),include);
      g_signal_connect(G_OBJECT(include), "activate", G_CALLBACK(Xp_include), NULL);
 
-     loaddb = gtk_menu_item_new_with_label("loaddb");
+     loaddb = gtk_menu_item_new_with_label("load Database");
      gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu),loaddb);
      g_signal_connect(G_OBJECT(loaddb), "activate", G_CALLBACK(Xp_loaddb), NULL);
 
      if (dev_env) {
-	  loadop = gtk_menu_item_new_with_label("loadop");
+	  loadop = gtk_menu_item_new_with_label("Load OP File");
 	  gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu),loadop);
 	  g_signal_connect(G_OBJECT(loadop), "activate", G_CALLBACK(Xp_loadop), NULL);
      }
 
      gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu), gtk_separator_menu_item_new());
 
-     loadddb = gtk_menu_item_new_with_label("loadddb");
+     loadddb = gtk_menu_item_new_with_label("Load Dumped Database");
      gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu),loadddb);
      g_signal_connect(G_OBJECT(loadddb), "activate", G_CALLBACK(Xp_loadddb), NULL);
 
-     loaddop = gtk_menu_item_new_with_label("loaddop");
+     loaddop = gtk_menu_item_new_with_label("Load Dumped OP File");
      gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu),loaddop);
      g_signal_connect(G_OBJECT(loaddop), "activate", G_CALLBACK(Xp_loaddop), NULL);
 
-     loadkrn = gtk_menu_item_new_with_label("loadkrn");
+     loadkrn = gtk_menu_item_new_with_label("Load Dumped Kernel");
      gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu),loadkrn);
      g_signal_connect(G_OBJECT(loadkrn), "activate", G_CALLBACK(Xp_loadkrn), NULL);
 
      if (dev_env) {
 	  gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu), gtk_separator_menu_item_new());
 
-	  listopfs = gtk_menu_item_new_with_label("listopfs");
+	  listopfs = gtk_menu_item_new_with_label("List OP Files");
 	  gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu),listopfs);
 	  g_signal_connect(G_OBJECT(listopfs), "activate", G_CALLBACK(Xp_listopfs), NULL);
 
-	  reloadop = gtk_menu_item_new_with_label("reloadop");
+	  reloadop = gtk_menu_item_new_with_label("Reload OP File");
 	  gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu),reloadop);
 	  g_signal_connect(G_OBJECT(reloadop), "activate", G_CALLBACK(Xp_reloadop), NULL);
 
-	  unloadop = gtk_menu_item_new_with_label("unloadop");
+	  unloadop = gtk_menu_item_new_with_label("Unload OP File");
 	  gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu),unloadop);
 	  g_signal_connect(G_OBJECT(unloadop), "activate", G_CALLBACK(Xp_unloadop), NULL);
      }
 
      gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu), gtk_separator_menu_item_new());
 
-     savedb = gtk_menu_item_new_with_label("savedb");
+     savedb = gtk_menu_item_new_with_label("Save Database");
      gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu),savedb);
      g_signal_connect(G_OBJECT(savedb), "activate", G_CALLBACK(Xp_savedb), NULL);
 
      gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu), gtk_separator_menu_item_new());
 
      if (dev_env) {
-	  dumpdb = gtk_menu_item_new_with_label("dumpdb");
+	  dumpdb = gtk_menu_item_new_with_label("Dump Database");
 	  gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu),dumpdb);
 	  g_signal_connect(G_OBJECT(dumpdb), "activate", G_CALLBACK(Xp_dumpdb), NULL);
 
-	  dumpAllOpf = gtk_menu_item_new_with_label("dumpAllOpf");
+	  dumpAllOpf = gtk_menu_item_new_with_label("Dump All OPs");
 	  gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu),dumpAllOpf);
 	  g_signal_connect(G_OBJECT(dumpAllOpf), "activate", G_CALLBACK(Xp_dumpAllOpf), NULL);
 
-	  dumpop = gtk_menu_item_new_with_label("dumpop");
+	  dumpop = gtk_menu_item_new_with_label("Dump One OP File");
 	  gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu),dumpop);
 	  g_signal_connect(G_OBJECT(dumpop), "activate", G_CALLBACK(Xp_dumpop), NULL);
      }
 
-     dumpkrn = gtk_menu_item_new_with_label("dumpkrn");
+     dumpkrn = gtk_menu_item_new_with_label("Dump the Kernel");
      gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu),dumpkrn);
      g_signal_connect(G_OBJECT(dumpkrn), "activate", G_CALLBACK(Xp_dumpkrn), NULL);
 
      gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu), gtk_separator_menu_item_new());
 
-     quit = gtk_menu_item_new_with_label("quit");
+     quit = gtk_menu_item_new_with_label("Quit");
      gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu),quit);
      g_signal_connect(G_OBJECT(quit), "activate", G_CALLBACK(Quit), NULL);
 
      
      /* OPRS menu items */
 
-     addFactGoal = gtk_menu_item_new_with_label("addFactGoal");
+     addFactGoal = gtk_menu_item_new_with_label("Add a Fact or a Goal");
      gtk_menu_shell_append(GTK_MENU_SHELL(oprsPDMenu), addFactGoal);
      g_signal_connect(G_OBJECT(addFactGoal), "activate", G_CALLBACK(Xp_addFactGoal), NULL);
 
-     concludeDB = gtk_menu_item_new_with_label("concludeDB");
+     concludeDB = gtk_menu_item_new_with_label("Assert in the Database");
      gtk_menu_shell_append(GTK_MENU_SHELL(oprsPDMenu), concludeDB);
      g_signal_connect(G_OBJECT(concludeDB), "activate", G_CALLBACK(Xp_concludeDB), NULL);
 
@@ -611,7 +608,7 @@ GtkWidget *goprs_create_menu_bar(GtkWidget *window, Draw_Data *dd, Int_Draw_Data
 
      resetop = gtk_menu_item_new_with_label("resetop");
      gtk_menu_shell_append(GTK_MENU_SHELL(oprsPDMenu), resetop);
-     g_signal_connect(G_OBJECT(resetop), "activate", G_CALLBACK(Xp_resetop), NULL);
+     g_signal_connect(G_OBJECT(resetop), "activate", G_CALLBACK(Xp_resetop), dd);
 
      /* Inspect Menu Item */
 
@@ -771,14 +768,14 @@ GtkWidget *goprs_create_menu_bar(GtkWidget *window, Draw_Data *dd, Int_Draw_Data
 
      cleartextdisplay = gtk_menu_item_new_with_label("cleartextdisplay");
      gtk_menu_shell_append(GTK_MENU_SHELL(displayPDMenu),cleartextdisplay);
-     g_signal_connect(G_OBJECT(cleartextdisplay), "activate", G_CALLBACK(Cleartextdisplay), NULL);
+     g_signal_connect(G_OBJECT(cleartextdisplay), "activate", G_CALLBACK(Cleartextdisplay),NULL);
      clearopdisplay = gtk_menu_item_new_with_label("clearopdisplay");
      gtk_menu_shell_append(GTK_MENU_SHELL(displayPDMenu),clearopdisplay);
-     g_signal_connect(G_OBJECT(clearopdisplay), "activate", G_CALLBACK(Clearopdisplay), NULL);
+     g_signal_connect(G_OBJECT(clearopdisplay), "activate", G_CALLBACK(Clearopdisplay), dd);
 
      clearigdisplay = gtk_menu_item_new_with_label("clearigdisplay");
      gtk_menu_shell_append(GTK_MENU_SHELL(displayPDMenu),clearigdisplay);
-     g_signal_connect(G_OBJECT(clearigdisplay), "activate", G_CALLBACK(Clearigdisplay), NULL);
+     g_signal_connect(G_OBJECT(clearigdisplay), "activate", G_CALLBACK(Clearigdisplay), idd);
 
      changemaxtextsize = gtk_menu_item_new_with_label("changemaxtextsize");
      gtk_menu_shell_append(GTK_MENU_SHELL(displayPDMenu),changemaxtextsize);

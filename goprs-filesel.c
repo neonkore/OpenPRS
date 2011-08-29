@@ -53,22 +53,26 @@
 Widget xp_includeFilesel, xp_loaddbFilesel, xp_loadopFilesel, xp_loadkrnFilesel, xp_savedbFilesel;
 Widget xp_loadddbFilesel, xp_loaddopFilesel, xp_dumpdbFilesel, xp_dumpopFilesel, xp_dumpkrnFilesel;
 
-#ifdef IGNORE
-void xp_includeFileselok(Widget w, XtPointer client_data, XtPointer call_data)
+void xp_includeFileselok(GtkWidget *dialog)
 {
-     char * selected_file;
-     char s[LINSIZ];
-
-     XtUnmanageChild(w);
-     selected_file = XmTextGetString(XmSelectionBoxGetChild(xp_includeFilesel,XmDIALOG_TEXT));
+  if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
+    char *filename;
+    
+    char s[LINSIZ];
+    PBoolean res;
+        
+    filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
      
-     if (strcmp(selected_file,"") != 0) {
-	  sprintf(s,"include \"%s\"\n", selected_file);
-	  send_command_to_parser(s);
-     }
-     XtFree(selected_file);
+    if (strcmp(filename,"") != 0) {
+      sprintf(s,"include \"%s\"\n", filename);
+      send_command_to_parser(s);
+    }    
+    g_free (filename);
+  }
+  gtk_widget_hide(dialog);
 }
 
+#ifdef IGNORE
 void xp_loaddbFileselok(Widget w, XtPointer client_data, XtPointer call_data)
 {
      char * selected_file;
@@ -200,51 +204,60 @@ void xp_loadkrnFileselok(Widget w, XtPointer client_data, XtPointer call_data)
      }
      XtFree(selected_file);
 }
+#endif
 
 void xp_create_filesel(Widget parent)
 {
-     Cardinal n;
-     Arg args[MAXARGS];
+  GtkFileFilter *filter_inc = gtk_file_filter_new ();
+  gtk_file_filter_add_pattern(filter_inc, "*.inc"); 
+  gtk_file_filter_set_name(filter_inc, "Inc Commands Files"); 
+  
+  xp_includeFilesel = gtk_file_chooser_dialog_new ("Load Commands File", GTK_WINDOW(parent),
+						   GTK_FILE_CHOOSER_ACTION_OPEN,
+						   GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+						   GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+						   NULL);
+  gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(xp_includeFilesel),filter_inc);
 
-     n=0;
-     XtSetArg(args[n],  XmNdialogStyle,XmDIALOG_APPLICATION_MODAL); n++;
-     XtSetArg(args[n],  XmNautoUnmanage, True); n++;
+  GtkFileFilter *filter_opf = gtk_file_filter_new ();
+  gtk_file_filter_add_pattern(filter_opf, "*.opf"); 
+  gtk_file_filter_set_name(filter_opf, "OP Files"); 
+  
+  xp_loadopFilesel = gtk_file_chooser_dialog_new ("Load OP File", GTK_WINDOW(parent),
+						   GTK_FILE_CHOOSER_ACTION_OPEN,
+						   GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+						   GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+						   NULL);
+  gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(xp_loadopFilesel),filter_opf);
 
-     xp_includeFilesel = (Widget) XmCreateFileSelectionDialog(parent, "xp_includeFilesel",  args, n);
-     xp_loaddbFilesel = (Widget) XmCreateFileSelectionDialog(parent, "xp_loaddbFilesel",  args, n);
-     xp_loadopFilesel = (Widget) XmCreateFileSelectionDialog(parent, "xp_loadopFilesel",  args, n);
-     xp_savedbFilesel = (Widget) XmCreateFileSelectionDialog(parent, "xp_savedbFilesel",  args, n);
-     xp_loadddbFilesel = (Widget) XmCreateFileSelectionDialog(parent, "xp_loadddbFilesel",  args, n);
-     xp_loaddopFilesel = (Widget) XmCreateFileSelectionDialog(parent, "xp_loaddopFilesel",  args, n);
-     xp_loadkrnFilesel = (Widget) XmCreateFileSelectionDialog(parent, "xp_loadkrnFilesel",  args, n);
-     xp_dumpdbFilesel = (Widget) XmCreateFileSelectionDialog(parent, "xp_dumpdbFilesel",  args, n);
-     xp_dumpopFilesel = (Widget) XmCreateFileSelectionDialog(parent, "xp_dumpopFilesel",  args, n);
-     xp_dumpkrnFilesel = (Widget) XmCreateFileSelectionDialog(parent, "xp_dumpkrnFilesel",  args, n);
 
-     XtAddCallback(xp_includeFilesel, XmNokCallback, xp_includeFileselok, 0);
-     XtAddCallback(xp_includeFilesel, XmNhelpCallback, infoHelp, makeFileNode("oprs", "Include"));
-     XtAddCallback(xp_loaddbFilesel, XmNokCallback, xp_loaddbFileselok, 0);
-     XtAddCallback(xp_loaddbFilesel, XmNhelpCallback, infoHelp, makeFileNode("oprs", "Load Database"));
-     XtAddCallback(xp_loadopFilesel, XmNokCallback, xp_loadopFileselok, 0);
-     XtAddCallback(xp_loadopFilesel, XmNhelpCallback, infoHelp, makeFileNode("oprs", "Load OP"));
+  GtkFileFilter *filter_db = gtk_file_filter_new ();
+  gtk_file_filter_add_pattern(filter_db, "*.db"); 
+  gtk_file_filter_set_name(filter_db, "Database Files"); 
+  
+  xp_loaddbFilesel = gtk_file_chooser_dialog_new ("Load Database File", GTK_WINDOW(parent),
+						   GTK_FILE_CHOOSER_ACTION_OPEN,
+						   GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+						   GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+						   NULL);
+  gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(xp_loaddbFilesel),filter_db);
 
-     XtAddCallback(xp_dumpdbFilesel, XmNokCallback, xp_dumpdbFileselok, 0);
-     XtAddCallback(xp_dumpdbFilesel, XmNhelpCallback, infoHelp, makeFileNode("oprs", "Dump Database"));
-     XtAddCallback(xp_dumpopFilesel, XmNokCallback, xp_dumpopFileselok, 0);
-     XtAddCallback(xp_dumpopFilesel, XmNhelpCallback, infoHelp, makeFileNode("oprs", "Dump OP"));
-     XtAddCallback(xp_dumpkrnFilesel, XmNokCallback, xp_dumpkrnFileselok, 0);
-     XtAddCallback(xp_dumpkrnFilesel, XmNhelpCallback, infoHelp, makeFileNode("oprs", "Dump Kernel"));
+  g_object_ref_sink(filter_db);
+  
+  xp_savedbFilesel = gtk_file_chooser_dialog_new ("Save Database File", GTK_WINDOW(parent),
+						   GTK_FILE_CHOOSER_ACTION_SAVE,
+						   GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+						   GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+						   NULL);
+  gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(xp_savedbFilesel),filter_db);
 
-     XtAddCallback(xp_loadddbFilesel, XmNokCallback, xp_loadddbFileselok, 0);
-     XtAddCallback(xp_loadddbFilesel, XmNhelpCallback, infoHelp, makeFileNode("oprs", "Load Dump Database"));
-     XtAddCallback(xp_loaddopFilesel, XmNokCallback, xp_loaddopFileselok, 0);
-     XtAddCallback(xp_loaddopFilesel, XmNhelpCallback, infoHelp, makeFileNode("oprs", "Load Dump OP"));
 
-     XtAddCallback(xp_loadkrnFilesel, XmNokCallback, xp_loadkrnFileselok, 0);
-     XtAddCallback(xp_loadkrnFilesel, XmNhelpCallback, infoHelp, makeFileNode("oprs", "Load Dump Kernel"));
+     /* xp_savedbFilesel = (Widget) XmCreateFileSelectionDialog(parent, "xp_savedbFilesel",  args, n); */
+     /* xp_loadddbFilesel = (Widget) XmCreateFileSelectionDialog(parent, "xp_loadddbFilesel",  args, n); */
+     /* xp_loaddopFilesel = (Widget) XmCreateFileSelectionDialog(parent, "xp_loaddopFilesel",  args, n); */
+     /* xp_loadkrnFilesel = (Widget) XmCreateFileSelectionDialog(parent, "xp_loadkrnFilesel",  args, n); */
+     /* xp_dumpdbFilesel = (Widget) XmCreateFileSelectionDialog(parent, "xp_dumpdbFilesel",  args, n); */
+     /* xp_dumpopFilesel = (Widget) XmCreateFileSelectionDialog(parent, "xp_dumpopFilesel",  args, n); */
+     /* xp_dumpkrnFilesel = (Widget) XmCreateFileSelectionDialog(parent, "xp_dumpkrnFilesel",  args, n); */
 
-     XtAddCallback(xp_savedbFilesel, XmNokCallback, xp_savedbFileselok, 0);
-     XtAddCallback(xp_savedbFilesel, XmNhelpCallback, infoHelp, makeFileNode("oprs", "Save Database"));
 }
-
-#endif
