@@ -130,10 +130,14 @@ gboolean XPointInRegion(GdkRegion *region, int x, int y)
 static
 void XClearArea(void *canvas,  void *window, int x, int y, unsigned width, unsigned height, int exposures)
 {
-  GdkRectangle rect;
-
-  rect.x = x; rect.y = y; rect.width = width; rect.height = height;
-  gdk_window_invalidate_rect(window, &rect, TRUE); /* no children... but it should not hurt... */
+  if ( width == 0 && height == 0)
+    gdk_window_invalidate_rect(window, NULL, TRUE); /* no children... but it should not hurt... */
+  else {
+    GdkRectangle rect;
+    
+    rect.x = x; rect.y = y; rect.width = width; rect.height = height;
+    gdk_window_invalidate_rect(window, &rect, TRUE); /* no children... but it should not hurt... */
+  }
 }
 
 #define XtDisplay(s) (s)

@@ -58,33 +58,13 @@
 #include "int-graph.h"
 #include "int-graph_f.h"
 
-#include "ope-external_f.h"
+#include "gope-external_f.h"
 #include "oprs-print.h"
 #include "oprs-print_f.h"
 #include "oprs-pprint_f.h"
 #include "oprs-type_f-pub.h"
 
 #include "xm2gtk_f.h"
-
-void touch_intention_ginode(Intention *intention)
-{
-}
-
-void destroy_ginode(Int_Draw_Data *idd, IOG *iog)
-{
-}
-
-IOG *create_ginode(Int_Draw_Data *idd, Intention *intention)
-{
-}
-
-void draw_intention_graph(Int_Draw_Data *idd)
-{
-}
-
-IOG *create_giedge(Int_Draw_Data *idd, Intention *in, Intention *out)
-{
-}
 
 #ifdef IGNORE
 void idd_create_scrollbars(Widget parent, Int_Draw_Data *idd)
@@ -117,154 +97,53 @@ void idd_create_scrollbars(Widget parent, Int_Draw_Data *idd)
      XtAddCallback(idd->hscrollbar, XmNdragCallback, (XtCallbackProc)idd_hscroll_bar_moved, idd);
      XtManageChild(idd->hscrollbar);
 }
+#endif
 
-void idd_create_gc(Int_Draw_Data *idd)
+
+void idd_add_expose_region(Int_Draw_Data *dd, Region region)
 {
-     XGCValues gcv;
-     Display *dpy = XtDisplay(idd->canvas);
-     Window w = XtWindow(idd->canvas);
-     int mask = GCFont | GCForeground | GCBackground;
-     Arg args[10];
-     int n;
-
-     /*
-      * Create a GC using the colors of the canvas widget.
-      */
-
-     gcv.font = idd->font->fid;
-
-     n = 0;
-     XtSetArg(args[n], XmNforeground, &gcv.background); n++;
-     XtSetArg(args[n], XmNbackground, &gcv.foreground); n++;
-     XtGetValues(idd->canvas, args, n);
-
-     idd->sgc = XCreateGC(dpy, w, mask, &gcv);
-
-     n = 0;
-     XtSetArg(args[n], XmNforeground, &gcv.foreground); n++;
-     XtSetArg(args[n], XmNbackground, &gcv.background); n++;
-     XtGetValues(idd->canvas, args, n);
-
-     idd->gc = XCreateGC(dpy, w, mask, &gcv);
+  gdk_window_invalidate_region(dd->window,region, TRUE);
 }
 
-/*
- * Woropround for DrawingArea widget deficiency:
- *
- * If a GraphicsExpose is recieved, redraw the window by calling the
- * DrawingArea widget's XmNexposeCallback list.
- */
-
-void idd_handle_g_exposures(Widget w, Int_Draw_Data *idd, XEvent *event)
-{
-     /*
-      * This routine will be called for all non-masopble events. Make sure it's
-      * the type we want.
-      */
-     if (event->type == NoExpose) {
-	  Copy_Area_Index *cai;
-
-/*
-	  fprintf(stderr, "NoExpose\n");
-*/
-	  
-	  /* If we get a NoExpose... we do not need to do anything.. just dequeue one cai... */
-	  if ((cai = (Copy_Area_Index *)dequeue(idd->copy_area_index_queue)) == NULL) {
-	       fprintf(stderr, LG_STR("Empty copy_area_index_queue on NoExpose event.\n",
-				      "Empty copy_area_index_queue on NoExpose event.\n"));
-	       return;
-	  }
-	  FREE(cai);
-     }
-
-     if (event->type == GraphicsExpose) {
-
-	  Region region;
-	  XRectangle rect;
-	  Copy_Area_Index *cai;
-
-	  /* If we get a GraphicExpose... we need to redraw the area... and before this
-	     we need to shift it of the left and top difference between the moment where
-	     the event was created and now... */
-	  if ((cai = (Copy_Area_Index *)head_of_queue(idd->copy_area_index_queue)) == NULL) {
-	       fprintf(stderr, LG_STR("Empty copy_area_index_queue on GraphicExpose event.\n",
-				      "Empty copy_area_index_queue on GraphicExpose event.\n"));
-	       return;
-	  }
-	  
-	  rect.x = event->xgraphicsexpose.x - idd->left + cai->left;
-	  rect.y = event->xgraphicsexpose.y - idd->top + cai->top;
-	  rect.width = event->xgraphicsexpose.width;
-	  rect.height = event->xgraphicsexpose.height;
-
-	  /*
-	    fprintf(stderr, "GraphicExpose x %d %d %d y %d %d %d wh %d %d rect %d %d %d %d.\n",event->xgraphicsexpose.x, idd->left, cai->left,
-	    event->xgraphicsexpose.y, idd->top, cai->top, 
-	    event->xgraphicsexpose.width, event->xgraphicsexpose.height,
-	    rect.x,rect.y,rect.width,rect.height);
-	    */
-
-	  region = XCreateRegion();
-	  XUnionRectWithRegion(&rect, region, region);
-	  idd_redraw_all_in_region(idd->canvas, idd, region);
-	  XDestroyRegion(region);
-
-
-	  if (event->xgraphicsexpose.count == 0) {
-	       dequeue(idd->copy_area_index_queue);
-	       FREE(cai);
-	  }
-     }
-}
-
-void idd_add_expose_region(Int_Draw_Data *idd, Region region)
-{
-     XOffsetRegion(region, -idd->left, -idd->top);
-     if (!idd->expose_region) {
-	  idd->expose_region = XCreateRegion();
-     }
-     XUnionRegion(idd->expose_region, region, idd->expose_region);
-}
-
-void idd_redraw_all_in_region(Widget w, Int_Draw_Data *idd, Region region)
+void idd_redraw_all_in_region(GtkWidget *w,  Int_Draw_Data *idd, CairoGCs *cgcsp, GdkRegion *region)
 {
      IOG *iog;
-     Region inter = XCreateRegion();
+     Region inter; // = XCreateRegion();
 
      /*
       * Set the clip mask of the GC.
       */
      if (debug_trace[GRAPHIC_INTEND]) {
      
-	  if (idd->expose_region) {
-	       XUnionRegion(idd->expose_region, region, region);
-	       XDestroyRegion(idd->expose_region);
-	       idd->expose_region = NULL;
-	  }
+	  /* if (idd->expose_region) { */
+	  /*      XUnionRegion(idd->expose_region, region, region); */
+	  /*      XDestroyRegion(idd->expose_region); */
+	  /*      idd->expose_region = NULL; */
+	  /* } */
 
-	  XSetRegion(XtDisplay(w), idd->gc, region);
-	  XOffsetRegion(region, idd->left, idd->top);
+       //	  XSetRegion(XtDisplay(w), idd->gc, region);
+       // XOffsetRegion(region, idd->left, idd->top);
 
 	  sl_loop_through_slist(idd->ig->list_inode, iog, IOG *) {
-	       XIntersectRegion(region, iog->region, inter);
-	       if (!XEmptyRegion(inter))
-		    draw_ginode(idd, iog);
+	       inter = gdk_region_copy(iog->region);
+	       gdk_region_intersect(inter, region);
+	       if (!gdk_region_empty(inter))
+		 draw_ginode(idd, cgcsp, iog);
+	       gdk_region_destroy(inter);
 	  }
 
 	  sl_loop_through_slist(idd->ig->list_iedge, iog, IOG *) {
-	       XIntersectRegion(region, iog->region, inter);
-	       if (!XEmptyRegion(inter))
-		    draw_giedge(idd, iog);
+	    inter = gdk_region_copy(iog->region);
+	    gdk_region_intersect(inter, region);
+	    if (!gdk_region_empty(inter))
+	      draw_giedge(idd, cgcsp, iog);
+	    gdk_region_destroy(inter);
 	  }
-	  XSetClipMask(XtDisplay(w), idd->gc, None);
+	  //	  XSetClipMask(XtDisplay(w), idd->gc, None);
      }
-
-    XDestroyRegion(inter);
-
-
 }
 
-void idd_handle_exposures(Widget w, Int_Draw_Data *idd, XmDrawingAreaCallbackStruct *cb)
+void idd_handle_exposures(Widget w, Int_Draw_Data *idd,  GdkEventExpose *event, CairoGCs *cgcsp)
 {
      static Region region = NULL;
 
@@ -272,14 +151,14 @@ void idd_handle_exposures(Widget w, Int_Draw_Data *idd, XmDrawingAreaCallbackStr
       * Create a region and add the contents of the of the event
       */
      if (!region)
-	  region = XCreateRegion();
+       region = XCreateRegion();
+     
+     gdk_region_union(region, event->region);
+     
+     if (event->count != 0)
+       return;
 
-     XtAddExposureToRegion(cb->event, region);
-
-     if (cb->event->xexpose.count != 0)
-	  return;
-
-     idd_redraw_all_in_region(w, idd, region);
+     idd_redraw_all_in_region(w, idd, cgcsp, region);
      /*
       * Free the region.
       */
@@ -299,6 +178,7 @@ void idd_enqueue_index(Int_Draw_Data *idd,int top, int left)
 
 void idd_scroll_bars_moved(Display *disp, Int_Draw_Data *idd, int hsliderpos, int vsliderpos)
 {
+#ifdef GTK_IGNORE
      int xsrc, redraw_left;
      int ysrc, redraw_top;
      Dimension hdelta, vdelta;
@@ -386,21 +266,26 @@ void idd_scroll_bars_moved(Display *disp, Int_Draw_Data *idd, int hsliderpos, in
 
      idd_redraw_all_in_region(idd->canvas, idd, region);
      XDestroyRegion(region);
-
+#endif
 }
 
 void idd_hscroll_bar_moved(Widget w, Int_Draw_Data *idd, XmScrollBarCallbackStruct *call_data)
 {
+#ifdef GTK_IGNORE
      idd_scroll_bars_moved(XtDisplay(w), idd, call_data->value, -1);
+#endif
 }
 
 void idd_vscroll_bar_moved(Widget w, Int_Draw_Data *idd, XmScrollBarCallbackStruct *call_data)
 {
+#ifdef GTK_IGNORE
      idd_scroll_bars_moved(XtDisplay(w), idd, -1, call_data->value);
+#endif
 }
 
 void idd_resize(Widget w, Int_Draw_Data *idd, XtPointer call_data)
 {
+#ifdef GTK_IGNORE
      Arg args[10];
      int n;
 
@@ -423,17 +308,18 @@ void idd_resize(Widget w, Int_Draw_Data *idd, XtPointer call_data)
      XtSetArg(args[n], XmNsliderSize, MIN(idd->canvas_width, idd->work_width)); n++;
      XtSetArg(args[n], XmNpageIncrement, idd->canvas_width); n++;
      XtSetValues(idd->hscrollbar, args, n);
+#endif
 }
 
 
 PBoolean idd_moving = FALSE;
 
-void idd_canvas_mouse_motion(Widget w, Int_Draw_Data *idd, XEvent *event)
+void idd_canvas_mouse_motion(Widget w, Int_Draw_Data *idd, CairoGCs *cgcsp, GdkEventMotion *event)
 {
      if (idd_moving) {
 	  int dx, dy;
-	  int x = event->xbutton.x;
-	  int y = event->xbutton.y;
+	  int x = event->x;
+	  int y = event->y;
 
 	  dx = x - idd->start_x;
 	  dy = y - idd->start_y;
@@ -443,11 +329,11 @@ void idd_canvas_mouse_motion(Widget w, Int_Draw_Data *idd, XEvent *event)
      }
 }
 
-void idd_canvas_mouse_release(Widget w, Int_Draw_Data *idd, XEvent *event)
+void idd_canvas_mouse_release(Widget w, Int_Draw_Data *idd, CairoGCs *cgcsp,  GdkEventButton *event)
 {
-     if (event->xbutton.button == Button1 && idd_moving) {
-	  int x = event->xbutton.x;
-	  int y = event->xbutton.y;
+     if (event->button == 1 && idd_moving) {
+	  int x = event->x;
+	  int y = event->y;
 	  int dx = x - idd->start_x;
 	  int dy = y - idd->start_y;
 
@@ -456,24 +342,24 @@ void idd_canvas_mouse_release(Widget w, Int_Draw_Data *idd, XEvent *event)
      }
 }
 
-void idd_canvas_mouse_press(Widget w, Int_Draw_Data *idd, XEvent *event)
+void idd_canvas_mouse_press(Widget w, Int_Draw_Data *idd, CairoGCs *cgcsp, GdkEventButton *event)
 {
      IOG *iog;
-     int x = event->xbutton.x;
-     int y = event->xbutton.y;
+     int x = event->x;
+     int y = event->y;
 
-     switch (event->xbutton.button) {
-     case Button2:
+     switch (event->button) {
+     case 2:
 	  x = x + idd->left;
 	  y = y + idd->top;
 	  sl_loop_through_slist(idd->ig->list_inode, iog, IOG *) {
 	       if (XPointInRegion(iog->region, x, y)) {
-		    xpShowIDialogManage(iog->u.ginode->intention);
+		 // gtk xpShowIDialogManage(iog->u.ginode->intention);
 		    return;
 	       }
 	  }
 	  break;
-     case Button3:
+     case 3:
 	  x = x + idd->left;
 	  y = y + idd->top;
 	  sl_loop_through_slist(idd->ig->list_inode, iog, IOG *) {
@@ -485,13 +371,13 @@ void idd_canvas_mouse_press(Widget w, Int_Draw_Data *idd, XEvent *event)
 					      sprintf(f,LG_STR("Trace for <Intention %p> %s",
 							       "Trace for <Intention %p> %s"), 
 						      in, in->top_op->op->name));
-		    xp_create_trace_intention_dialog(w, in, SPRINTER_STRING(sp));
+		    // gtk xp_create_trace_intention_dialog(w, in, SPRINTER_STRING(sp));
 		    free_sprinter(sp);
 		    return;
 	       }
 	  }
 	  break;
-     case Button1:
+     case 1:
 	  idd_moving = TRUE;
 	  idd->start_x = x;
 	  idd->start_y = y;
@@ -503,6 +389,7 @@ void idd_canvas_mouse_press(Widget w, Int_Draw_Data *idd, XEvent *event)
 
 void set_int_canvas_view_rel(Int_Draw_Data *idd, int xv, int yv)
 {
+#ifdef GTK_IGNORE
      Arg args[1];
      int x, y;
 
@@ -527,10 +414,12 @@ void set_int_canvas_view_rel(Int_Draw_Data *idd, int xv, int yv)
      XmScrollBarSetValues(idd->hscrollbar, x, xss, 10, idd->canvas_width, False);
      XmScrollBarSetValues(idd->vscrollbar, y, yss, 10, idd->canvas_height, False);
      idd_scroll_bars_moved(XtDisplay(idd->vscrollbar),idd,x,y);
+#endif
 }
 
 void update_int_canvas_size(Int_Draw_Data *idd, int x, int y)
 {
+#ifdef GTK_IGNORE
      Arg args[1];
 
      if ((int)idd->work_height < y + 20) {
@@ -544,6 +433,7 @@ void update_int_canvas_size(Int_Draw_Data *idd, int x, int y)
 	  XtSetArg(args[0], XmNmaximum, idd->work_width);
 	  XtSetValues(idd->hscrollbar, args, 1);
      }
+#endif
 }
 
 #define IDD_VMARG 5
@@ -602,14 +492,15 @@ int position_list(Int_Draw_Data *idd, Intention_List list, int x, int y)
 
 void draw_intention_graph(Int_Draw_Data *idd)
 {
-     Widget w = idd->canvas;
-     Display *dpy = XtDisplay(w);
-     Window win = XtWindow(w);
-     IOG *iog;
+     /* Widget w = idd->canvas; */
+  Display *dpy = NULL;		/* not used in gtk */
+  Window win = idd->window;
+     IOG *iog; 
+     CairoGCs *cgcsp = idd->cgcsp;
 
      sl_loop_through_slist(idd->ig->list_inode, iog, IOG *) {
 	  if (iog->text_changed) {
-	       update_ginode_text(idd, iog);
+	    update_ginode_text(idd, cgcsp, iog);
 	       position_ginode(iog, iog->x, iog->y); /* Do not really move but changed size...*/
 	       XClearArea(dpy, win,
 			  iog->x - idd->left, iog->y - idd->top,
@@ -642,7 +533,7 @@ void draw_intention_graph(Int_Draw_Data *idd)
 }
 
 
-IOG *create_ginode(Int_Draw_Data *idd, Intention *intention)
+IOG *create_ginode(Int_Draw_Data *idd,  CairoGCs *cgcsp, Intention *intention)
 {
      Ginode *ginode = MAKE_OBJECT(Ginode);
      IOG *iog = MAKE_OBJECT(IOG);
@@ -658,7 +549,7 @@ IOG *create_ginode(Int_Draw_Data *idd, Intention *intention)
      ginode->lgt_string = NULL;
      ginode->connect = sl_make_slist();
 
-     update_ginode_text(idd,iog);
+     update_ginode_text(idd, cgcsp, iog);
 
      sl_add_to_head(idd->ig->list_inode,iog);
 
@@ -708,7 +599,7 @@ IOG *position_ginode(IOG *iog, int x, int y)
      return iog;
 }
 
-IOG *update_ginode_text(Int_Draw_Data *idd, IOG *iog)
+IOG *update_ginode_text(Int_Draw_Data *idd,  CairoGCs *cgcsp, IOG *iog)
 {
      char text[BUFSIZ];
      char *message = text;
@@ -794,14 +685,14 @@ IOG *update_ginode_text(Int_Draw_Data *idd, IOG *iog)
 
      if ((total_size = strlen(inv_string) + nb_printed) < BUFSIZ) {
 	  strcat(text, inv_string);
-	  ginode->lgt_string = ope_string_to_lgt_string(idd->fontlist, text, "edge_cs", TT_TEXT_NONE,
-					       &iog->width, &iog->height);
+	  ginode->lgt_string = ope_string_to_lgt_string(cgcsp->cr_text, text, TT_TEXT_NONE,
+							&iog->width, &iog->height);
 	  FREE(inv_string);
      } else {
 	  char *ns = (char *) MALLOC((total_size +1) * sizeof(char));
 
 	  sprintf(ns, "%s%s",text,inv_string);
-	  ginode->lgt_string = ope_string_to_lgt_string(idd->fontlist, ns, "edge_cs", TT_TEXT_NONE,
+	  ginode->lgt_string =  ope_string_to_lgt_string(cgcsp->cr_text, ns,TT_TEXT_NONE,
 					       &iog->width, &iog->height);
 	  FREE(inv_string);
 	  FREE(ns);
@@ -829,7 +720,7 @@ void touch_intention_ginode(Intention *intention)
 				 "Touching a deleted intention ginode .\n"));
 }
 
-void destroy_ginode(Int_Draw_Data *idd, IOG *iog)
+void destroy_ginode(Int_Draw_Data *idd, CairoGCs *cgcsp, IOG *iog)
 {
      IOG *ioge;
      Ginode *ginode = iog->u.ginode;
@@ -844,7 +735,7 @@ void destroy_ginode(Int_Draw_Data *idd, IOG *iog)
 	  } else {
 	       sl_delete_slist_node(ioge->u.giedge->out->iog->u.ginode->connect,ioge);
 	  }
-	  destroy_giedge(idd,ioge);
+	  destroy_giedge(idd, cgcsp, ioge);
      }
 
      XDestroyRegion(iog->region);
@@ -857,11 +748,11 @@ void destroy_ginode(Int_Draw_Data *idd, IOG *iog)
      FREE(iog);
 }
 
-void destroy_giedge(Int_Draw_Data *idd, IOG *iog)
+void destroy_giedge(Int_Draw_Data *idd,  CairoGCs *cgcsp, IOG *iog)
 {
      Giedge *giedge = iog->u.giedge;
 
-     erase_giedge(idd, iog);
+     erase_giedge(idd, cgcsp, iog);
 
      XDestroyRegion(iog->region);
 
@@ -945,11 +836,11 @@ void position_giedge(IOG *iog)
 }
 
 
-void draw_ginode(Int_Draw_Data *idd, IOG *iog)
+void draw_ginode(Int_Draw_Data *idd, CairoGCs *cgcsp, IOG *iog)
 {
      Widget w = idd->canvas;
      Display *dpy = XtDisplay(w);
-     Window win = XtWindow(w);
+     Window win = idd->window;
      Gtext_String *gt_str;
 
      int x = iog->x - idd->left;
@@ -957,12 +848,12 @@ void draw_ginode(Int_Draw_Data *idd, IOG *iog)
      int wi = iog->width;
      int h = iog->height;
 
-     XDrawRectangle(dpy, win, idd->gc,
+     XDrawRectangle(dpy, win,  cgcsp->cr_basic,
 		    x, y,
 		    wi, h);
 
      sl_loop_through_slist(iog->u.ginode->lgt_string, gt_str, Gtext_String *) { 
-	  XmStringDraw(dpy, win, idd->fontlist, gt_str->xmstring, idd->gc,
+	  XmStringDraw(dpy, win, NULL, gt_str->xmstring,  cgcsp->cr_text,
 			    x + gt_str->off_x +2,
 			    y + gt_str->off_y +2,
 			    wi - 2,
@@ -976,18 +867,18 @@ void erase_ginode(Int_Draw_Data *idd, IOG *iog)
 {
      Widget w = idd->canvas;
      Display *dpy = XtDisplay(w);
-     Window win = XtWindow(w);
+     Window win = idd->window;
 
      XClearArea(dpy, win,
 		iog->x - idd->left, iog->y - idd->top,
 		iog->width + 1, iog->height + 1, TRUE);
 }
 
-void erase_giedge(Int_Draw_Data *idd, IOG *iog)
+void erase_giedge(Int_Draw_Data *idd, CairoGCs *cgcsp, IOG *iog)
 {
      Widget w = idd->canvas;
      Display *dpy = XtDisplay(w);
-     Window win = XtWindow(w);
+     Window win = idd->window;
 
      Giedge *e= iog->u.giedge;
      XPoint arrows[3];
@@ -1001,7 +892,7 @@ void erase_giedge(Int_Draw_Data *idd, IOG *iog)
      lines[1].x = e->x2 - idd->left;
      lines[1].y = e->y2 - idd->top;
 
-     XDrawLines(dpy, win, idd->sgc, lines, 2, CoordModeOrigin);
+     XDrawLines(dpy, win,  cgcsp->cr_edge, lines, 2, CoordModeOrigin);
 
      arrows[0].x = e->x2 - idd->left;
      arrows[0].y = e->y2 - idd->top;
@@ -1010,16 +901,16 @@ void erase_giedge(Int_Draw_Data *idd, IOG *iog)
      arrows[2].x = e->fx2 - idd->left;
      arrows[2].y = e->fy2 - idd->top;
 
-     XFillPolygon(dpy, win, idd->sgc,
+     XFillPolygon(dpy, win,  cgcsp->cr_edge,
 		  arrows, 3, Convex, CoordModeOrigin);
 
 }
 
-void draw_giedge(Int_Draw_Data *idd, IOG *iog)
+void draw_giedge(Int_Draw_Data *idd, CairoGCs *cgcsp, IOG *iog)
 {
      Widget w = idd->canvas;
      Display *dpy = XtDisplay(w);
-     Window win = XtWindow(w);
+     Window win = idd->window;
 
      Giedge *e =iog->u.giedge;
 
@@ -1032,7 +923,7 @@ void draw_giedge(Int_Draw_Data *idd, IOG *iog)
      lines[1].x = e->x2 - idd->left;
      lines[1].y = e->y2 - idd->top;
 
-     XDrawLines(dpy, win, idd->gc, lines, 2, CoordModeOrigin);
+     XDrawLines(dpy, win, cgcsp->cr_edge, lines, 2, CoordModeOrigin);
 
      arrows[0].x = e->x2 - idd->left;
      arrows[0].y = e->y2 - idd->top;
@@ -1041,8 +932,6 @@ void draw_giedge(Int_Draw_Data *idd, IOG *iog)
      arrows[2].x = e->fx2 - idd->left;
      arrows[2].y = e->fy2 - idd->top;
 
-     XFillPolygon(dpy, win, idd->gc,
+     XFillPolygon(dpy, win, cgcsp->cr_edge,
 		  arrows, 3, Convex, CoordModeOrigin);
 }
-
-#endif

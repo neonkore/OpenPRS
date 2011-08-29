@@ -246,6 +246,6 @@ typedef Slist *ListLastSelectedOP;
 extern int node_x, node_y, visible , text_dx, text_dy, string_width, fill_lines;
 extern Slist *edge_location;
 extern Draw_Data *global_draw_data;
-extern CairoGCs *mainCGCsp;		/* this will be the one for the main */
+extern CairoGCs *opCGCsp;		/* this will be the one for the main */
 
 #endif

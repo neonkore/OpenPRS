@@ -43,7 +43,6 @@
 #include "oprs-type.h"
 #include "xoprs.h"
 #include "xhelp.h"
-#include "goprs-main.h"
 #include "parser-funct.h"
 
 #include "xhelp_f.h"

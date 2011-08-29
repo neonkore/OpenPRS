@@ -409,7 +409,7 @@ OG *make_op_title(Draw_Data *dd, char *name)
      text->visible = TRUE;
      text->text_type = TT_TITLE;
      text->list_og_inst = NULL;
-     text->lgt_string = ope_string_to_lgt_string(mainCGCsp->cr_title, text->string,
+     text->lgt_string = ope_string_to_lgt_string(opCGCsp->cr_title, text->string,
 						 TT_TITLE, &og->width, &og->height);
      og->x = OP_TITLE_X;
      rect.x = og->x - 1;
@@ -758,7 +758,7 @@ void build_edge_graphic(Edge *edge, Expression *expr, Draw_Data *dd)
      gedge_text->text_width = width;
      gedge_text->fill_lines = fill_lines;
      gedge_text->edge = og_edge;
-     gedge_text->lgt_log_string = ope_string_to_lgt_string(mainCGCsp->cr_edge, text_string,TT_TEXT_NONE,
+     gedge_text->lgt_log_string = ope_string_to_lgt_string(opCGCsp->cr_edge, text_string,TT_TEXT_NONE,
 						       &og_edge_text->width,&og_edge_text->height);
      position_edge(og_edge);
 
@@ -850,7 +850,7 @@ OG *make_og_text_field(Draw_Data *dd, Op_Structure *op, Field_Type ft, Text_Type
      text->text_type = tt;
      text->list_og_inst = NULL;
 
-     text->lgt_string = ope_string_to_lgt_string(mainCGCsp->cr_text,text_string,tt,
+     text->lgt_string = ope_string_to_lgt_string(opCGCsp->cr_text,text_string,tt,
 						 &og->width,&og->height);
      og->x =  MAX(1,x);
      og->y =  MAX(1,y);
@@ -1125,7 +1125,7 @@ OG *make_og_edge(Draw_Data *dd, Op_Structure *op,  Edge *edge, Node *in, Node *o
      gedge_text->text_width = width;
      gedge_text->fill_lines = pp_fill;
      gedge_text->edge = og_edge;
-     gedge_text->lgt_log_string = ope_string_to_lgt_string(mainCGCsp->cr_edge,text_string,TT_TEXT_NONE,
+     gedge_text->lgt_log_string = ope_string_to_lgt_string(opCGCsp->cr_edge,text_string,TT_TEXT_NONE,
 						       &og_edge_text->width,&og_edge_text->height);
      position_edge(og_edge);
 

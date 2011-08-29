@@ -34,6 +34,8 @@
 #ifndef INCLUDE_xp_intention
 #define INCLUDE_xp_intention
 
+extern CairoGCs *inCGCsp;
+
 #define IDD_WORK_HEIGHT 500
 #define IDD_WORK_WIDTH 1000
 

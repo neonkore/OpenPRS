@@ -114,117 +114,6 @@ void destroy_cgcs(CairoGCs *cgcs)
   cairo_destroy(cgcs->cr_text);
 }
 
-
-void create_gc(Draw_Data *dd)
-{
-     /* XGCValues gcv; */
-     /* Display *dpy = XtDisplay(dd->canvas); */
-     /* Window w = dd->window; */
-     /* int mask = GCFont | GCForeground | GCBackground; */
-     /* Arg args[10]; */
-     /* int n; */
-
-     /* /\* */
-     /*  * Create a GC using the colors of the canvas widget. */
-     /*  *\/ */
-
-     /* n = 0; */
-     /* XtSetArg(args[n], XmNforeground, &gcv.background); n++; */
-     /* XtSetArg(args[n], XmNbackground, &gcv.foreground); n++; */
-     /* XtGetValues(dd->canvas, args, n); */
-     /* gcv.font = dd->font->fid; */
-
-     /* dd->sgc = XCreateGC(dpy, w, mask, &gcv); */
-
-     /* n = 0; */
-     /* XtSetArg(args[n], XmNforeground, &gcv.foreground); n++; */
-     /* XtSetArg(args[n], XmNbackground, &gcv.background); n++; */
-     /* XtGetValues(dd->canvas, args, n); */
-
-     /* dd->gc = XCreateGC(dpy, w, mask, &gcv); */
-
-     /* n = 0; */
-     /* XtSetArg(args[n], XmNforeground, &gcv.foreground); n++; */
-     /* XtSetArg(args[n], XmNbackground, &gcv.background); n++; */
-     /* XtGetValues(dd->canvas, args, n); */
-
-     /* gcv.foreground = gcv.foreground ^ gcv.background; */
-     /* gcv.function = GXxor; */
-
-     /* dd->xorgc = XCreateGC(dpy, w, mask | GCFunction, &gcv); */
-}
-
-/*
- * Woropround for DrawingArea widget deficiency:
- *
- * If a GraphicsExpose is recieved, redraw the window by calling the
- * DrawingArea widget's XmNexposeCallback list.
- */
-
-void handle_g_exposures(GtkWidget *w, Draw_Data *dd, XEvent *event)
-{
-#ifdef GTK_IGNORE
-  /* There is no graphic exposure in gtk... no? */
-     /*
-      * This routine will be called for all non-masopble events. Make sure it's
-      * the type we want.
-      */
-     if (event->type == NoExpose) {
-	  Copy_Area_Index *cai;
-
-/*
-  fprintf(stderr, "NoExpose\n");
-  */
-
-	  /* If we get a NoExpose... we do not need to do anything.. just dequeue one cai... */
-	  if ((cai = (Copy_Area_Index *)dequeue(dd->copy_area_index_queue)) == NULL) {
-	       fprintf(stderr, LG_STR("Empty copy_area_index_queue on NoExpose event.\n",
-				      "Empty copy_area_index_queue on NoExpose event.\n"));
-	       return;
-	  }
-	  FREE(cai);
-     }
-
-     if (event->type == GraphicsExpose) {
-
-	  Region region;
-	  XRectangle rect;
-	  Copy_Area_Index *cai;
-
-	  /* If we get a GraphicExpose... we need to redraw the area... and before this
-	     we need to shift it of the left and top difference between the moment where
-	     the event was created and now... */
-	  if ((cai = (Copy_Area_Index *)head_of_queue(dd->copy_area_index_queue)) == NULL) {
-	       fprintf(stderr, LG_STR("Empty copy_area_index_queue on GraphicExpose event.\n",
-				      "Empty copy_area_index_queue on GraphicExpose event.\n"));
-	       return;
-	  }
-	  
-	  rect.x = event->xgraphicsexpose.x - dd->left + cai->left;
-	  rect.y = event->xgraphicsexpose.y - dd->top + cai->top;
-	  rect.width = event->xgraphicsexpose.width;
-	  rect.height = event->xgraphicsexpose.height;
-
-/*
-	  fprintf(stderr, "GraphicExpose x %d %d %d y %d %d %d wh %d %d rect %d %d %d %d.\n",event->xgraphicsexpose.x, dd->left, cai->left,
-		  event->xgraphicsexpose.y, dd->top, cai->top, 
-		  event->xgraphicsexpose.width, event->xgraphicsexpose.height,
-		   rect.x,rect.y,rect.width,rect.height);
-*/
-
-	  region = XCreateRegion();
-	  XUnionRectWithRegion(&rect, region, region);
-	  //	  redraw_all_in_region(dd->canvas, dd, region);
-	  XDestroyRegion(region);
-
-	  if (event->xgraphicsexpose.count == 0) {
-	       dequeue(dd->copy_area_index_queue);
-	       FREE(cai);
-	  }
-     }
-#endif
-}
-
 void add_expose_region(Draw_Data *dd, Region region)
 {
   gdk_window_invalidate_region(dd->window,region, TRUE);
@@ -501,7 +390,7 @@ void resize(GtkWidget *w, Draw_Data *dd, XtPointer call_data)
 
      n = 0;
      XtSetArg(args[n], XmNsliderSize, MIN(dd->canvas_width, dd->work_width)); n++;
-     XtSetArg(args[n], XmNpageIncrement, dd->canvas_width); n++;
+a     XtSetArg(args[n], XmNpageIncrement, dd->canvas_width); n++;
      XtSetValues(dd->hscrollbar, args, n);
 #endif
 }
@@ -1169,7 +1058,7 @@ void display_op_pos(Op_Structure * op, Draw_Data *dd, CairoGCs *cgcsp, int x, in
 
 void display_op_no_dd(Op_Structure * op)
 {
-  display_op_pos(op, global_draw_data, mainCGCsp, 0, 0);
+  display_op_pos(op, global_draw_data, opCGCsp, 0, 0);
 }
 
 void display_op_edge_internal(Op_Structure * op, Edge *edge, PBoolean selected)
@@ -1216,7 +1105,7 @@ void display_op_edge_internal(Op_Structure * op, Edge *edge, PBoolean selected)
 	       }
 	  }
 #endif
-	  redraw_all_in_region(dd->canvas, dd, mainCGCsp, region);	/* We want to
+	  redraw_all_in_region(dd->canvas, dd, opCGCsp, region);	/* We want to
 							 * synchronize... */
 	  XDestroyRegion(region);
 
@@ -1234,8 +1123,8 @@ void display_op_edge_internal(Op_Structure * op, Edge *edge, PBoolean selected)
 	  }
 #endif
 	  XDestroyRegion(region);
-	  if (! selected) erase_og(dd->canvas, dd, mainCGCsp, og);
-	  draw_og(dd->canvas, dd, mainCGCsp, og);
+	  if (! selected) erase_og(dd->canvas, dd, opCGCsp, og);
+	  draw_og(dd->canvas, dd, opCGCsp, og);
      }
 
      XFlush(XtDisplay(dd->canvas));

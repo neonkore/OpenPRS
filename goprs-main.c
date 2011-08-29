@@ -244,7 +244,7 @@ gboolean motion(GtkWidget *widget, GdkEventMotion *event, gpointer user_data)
   /* This will create graphic context specific to this expose thread. */
   create_cgcs(&CGCs, global_draw_data->window);
 
-  //canvas_mouse_motion(widget, global_draw_data, &CGCs, event);
+  goprs_canvas_mouse_motion(widget, global_draw_data, &CGCs, event);
 
   destroy_cgcs(&CGCs);
 
@@ -258,7 +258,7 @@ gboolean released(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
   /* This will create graphic context specific to this expose thread. */
   create_cgcs(&CGCs, global_draw_data->window);
 
-  //canvas_mouse_release(widget, global_draw_data, &CGCs, event);
+  goprs_canvas_mouse_release(widget, global_draw_data, &CGCs, event);
 
   destroy_cgcs(&CGCs);
 
@@ -272,7 +272,80 @@ gboolean clicked(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
   /* This will create graphic context specific to this expose thread. */
   create_cgcs(&CGCs, global_draw_data->window);
 
-  //  canvas_mouse_press(widget, global_draw_data, &CGCs, event);
+  goprs_canvas_mouse_press(widget, global_draw_data, &CGCs, event);
+
+  destroy_cgcs(&CGCs);
+
+  return TRUE;
+}
+
+static gboolean
+ion_expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer data)
+{
+  CairoGCs CGCs;
+
+  /* This will create graphic context specific to this expose thread. */
+  create_cgcs(&CGCs, global_int_draw_data->window);
+  
+
+  cairo_t *cr = CGCs.cr_basic;
+
+  cairo_move_to(cr, 300,  30);
+  cairo_show_text(CGCs.cr_basic, "CGCs.cr_basic");
+  cairo_move_to(CGCs.cr_title, 300, 60);
+  cairo_show_text(CGCs.cr_title, "CGCs.cr_title");
+
+  cairo_move_to(CGCs.cr_edge, 300, 120);
+  cairo_show_text(CGCs.cr_edge, "CGCs.cr_edge");
+
+  cairo_move_to(CGCs.cr_node, 300, 150);
+  cairo_show_text(CGCs.cr_node, "CGCs.cr_node");
+  cairo_move_to(CGCs.cr_text, 300, 180);
+  cairo_show_text(CGCs.cr_text, "CGCs.cr_text");
+
+  idd_handle_exposures(widget, global_int_draw_data, event, &CGCs);
+
+  destroy_cgcs(&CGCs);
+
+  return FALSE;
+}
+
+gboolean imotion(GtkWidget *widget, GdkEventMotion *event, gpointer user_data)
+{
+  CairoGCs CGCs;
+
+  /* This will create graphic context specific to this expose thread. */
+  create_cgcs(&CGCs, global_int_draw_data->window);
+
+  idd_canvas_mouse_motion(widget, global_int_draw_data, &CGCs, event);
+
+  destroy_cgcs(&CGCs);
+
+  return TRUE;
+}
+
+gboolean ireleased(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
+{
+  CairoGCs CGCs;
+
+  /* This will create graphic context specific to this expose thread. */
+  create_cgcs(&CGCs, global_int_draw_data->window);
+
+  idd_canvas_mouse_release(widget, global_int_draw_data, &CGCs, event);
+
+  destroy_cgcs(&CGCs);
+
+  return TRUE;
+}
+
+gboolean iclicked(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
+{
+  CairoGCs CGCs;
+
+  /* This will create graphic context specific to this expose thread. */
+  create_cgcs(&CGCs, global_int_draw_data->window);
+
+  idd_canvas_mouse_press(widget, global_int_draw_data, &CGCs, event);
 
   destroy_cgcs(&CGCs);
 
@@ -315,8 +388,15 @@ void quitQuestionManage(GtkWidget *w, gpointer window)
 
 Draw_Data *global_draw_data;
 Draw_Data dd;
-CairoGCs mainCGCs;		/* this will be the one for the main */
-CairoGCs *mainCGCsp;		/* this will be the one for the main */
+
+Int_Draw_Data idd;
+CairoGCs opCGCs;		/* this will be the one for the main */
+CairoGCs *opCGCsp;		/* this will be the one for the main */
+
+
+
+CairoGCs inCGCs;		/* this will be the one for the main */
+CairoGCs *inCGCsp;		/* this will be the one for the main */
 
 
 Widget textSWindow;
@@ -344,8 +424,6 @@ int main(int argc, char **argv, char **envp)
      char *name;
      char title[LINSIZ];
      char welcome[LINSIZ];
-     Draw_Data dd;
-     Int_Draw_Data idd;
      Oprs *oprs;
      char *log_file;
      char *language_str;
@@ -525,12 +603,13 @@ int main(int argc, char **argv, char **envp)
   gtk_widget_show_all(topLevelWindow);
 
   dd.window = GTK_LAYOUT(dd.canvas)->bin_window;
+  idd.window = GTK_LAYOUT(idd.canvas)->bin_window;
 
-  mainCGCsp = &mainCGCs;
-  dd.cgcsp = mainCGCsp;
+  opCGCsp = &opCGCs;
+  dd.cgcsp = opCGCsp;
   
-  create_cgcs(&mainCGCs, dd.window); /* this will create all the cairo context for the main loop... */
-   
+  create_cgcs(&opCGCs, dd.window); /* this will create all the cairo context for the main loop... */
+
   gtk_widget_add_events (dd.canvas, GDK_BUTTON_PRESS_MASK);
   gtk_widget_add_events (dd.canvas, GDK_BUTTON_RELEASE_MASK);
   gtk_widget_add_events (dd.canvas, GDK_POINTER_MOTION_MASK);
@@ -545,6 +624,23 @@ int main(int argc, char **argv, char **envp)
 		   G_CALLBACK(motion), NULL);
 
   idd.ig = oprs->intention_graph;
+
+  inCGCsp = &inCGCs;
+  idd.cgcsp = inCGCsp;
+  create_cgcs(&inCGCs, idd.window); /* this will create all the cairo context for the main loop... */
+   
+  gtk_widget_add_events (idd.canvas, GDK_BUTTON_PRESS_MASK);
+  gtk_widget_add_events (idd.canvas, GDK_BUTTON_RELEASE_MASK);
+  gtk_widget_add_events (idd.canvas, GDK_POINTER_MOTION_MASK);
+
+  g_signal_connect(idd.canvas, "expose-event",
+		   G_CALLBACK(ion_expose_event), NULL);
+  g_signal_connect(idd.canvas, "button-press-event", 
+		   G_CALLBACK(iclicked), NULL);
+  g_signal_connect(idd.canvas, "button-release-event", 
+		   G_CALLBACK(ireleased), NULL);
+  g_signal_connect(idd.canvas, "motion-notify-event", 
+		   G_CALLBACK(imotion), NULL);
 
   call_oprs_cat(log_file,textview);
   

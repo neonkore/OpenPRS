@@ -56,66 +56,12 @@
 
 #include "xm2gtk_f.h"
 
-#ifdef IGNORE
-void oprs_canvas_mouse_motion(Widget w, Draw_Data *dd, XEvent *event)
+void goprs_canvas_mouse_press(Widget w, Draw_Data *dd, CairoGCs *cgcsp, GdkEventButton *event)
 {
-     if (dd->mode == MOVING_CANVAS) {
-	  int dx, dy;
-	  int x = event->xbutton.x;
-	  int y = event->xbutton.y;
-
-	  dx = x - dd->start_x;
-	  dy = y - dd->start_y;
-	  dd->start_x = x;
-	  dd->start_y = y;
-	  set_canvas_view_rel(dd, dx, dy);
-     }
-}
-
-void oprs_canvas_mouse_release(Widget w, Draw_Data *dd, XEvent *event)
-{
-     int button = event->xbutton.button;
-     
-     if (button != Button3) {
-	  if (dd->mode == MOVING_CANVAS) {
-	       int x = event->xbutton.x;
-	       int y = event->xbutton.y;
-	       int dx = x - dd->start_x;
-	       int dy = y - dd->start_y;
-
-	       set_canvas_view_rel(dd, dx, dy);
-	  }
-     } else 
-	  if (dd->mode == DM_RELEVANT_OP) {
-	       int x = event->xbutton.x + dd->left;
-	       int y = event->xbutton.y + dd->top;
-
-	       if (dd->og_selected_on_press) {
-		    draw_clip_box(w, dd, dd->og_selected_on_press);
-		    if (XPointInRegion(dd->og_selected_on_press->region, x, y)) {
-			 if(dd->og_selected_on_press->type == DT_EDGE_TEXT)
-			      xp_find_rel_ops(dd->og_selected_on_press->u.gedge_text->edge->u.gedge->edge);
-			 else if (dd->og_selected_on_press->type == DT_INST)
-			      xp_find_rel_ops(dd->og_selected_on_press->u.ginst->edge);
-			 else if(dd->og_selected_on_press->type == DT_TEXT)
-			      if (dd->og_selected_on_press->u.gtext->text_type == TT_INVOCATION)
-				   xp_find_rel_ops_expr_except_me(current_op->invocation, current_op);
-/* 			      else if (dd->og_selected_on_press->u.gtext->text_type == TT_EFFECTS) */
-/* 				   xp_find_rel_ops_list_expr(current_op->effects); */
-			 else 
-			      fprintf(stderr, LG_STR("This graphic type has no gtexpr.\n",
-						     "This graphic type has no gtexpr.\n"));
-		    }
-		    dd->og_selected_on_press = NULL;
-	       }
-	  }
-}
-
-void oprs_canvas_mouse_press(Widget w, Draw_Data *dd, XEvent *event)
-{
-     int button = event->xbutton.button;
-
-     if (button == Button3) {
+  int button = event->button;
+  
+#ifdef GTK_IGNORE
+     if (button == 3) {
 	  OG *og;
 	  int x = event->xbutton.x + dd->left;
 	  int y = event->xbutton.y + dd->top;
@@ -147,10 +93,66 @@ void oprs_canvas_mouse_press(Widget w, Draw_Data *dd, XEvent *event)
 	       return;
 	  }
      } else {
-	  dd->start_x = event->xbutton.x;
-	  dd->start_y = event->xbutton.y;
+#endif
+	  dd->start_x = event->x;
+	  dd->start_y = event->y;
 	  dd->mode = MOVING_CANVAS;
+	  //     }
+}
+
+void goprs_canvas_mouse_motion(Widget w, Draw_Data *dd, CairoGCs *cgcsp, GdkEventMotion *event)
+{
+     if (dd->mode == MOVING_CANVAS) {
+	  int dx, dy;
+	  int x = event->x + dd->left;
+	  int y = event->y + dd->top;
+
+	  dx = x - dd->start_x;
+	  dy = y - dd->start_y;
+	  dd->start_x = x;
+	  dd->start_y = y;
+	  set_canvas_view_rel(dd, dx, dy);
      }
 }
 
+void goprs_canvas_mouse_release(Widget w, Draw_Data *dd, CairoGCs *cgcsp,  GdkEventButton *event)
+{
+     int button = event->button;
+     
+     // gtk     if (button != Button3) {
+	  if (dd->mode == MOVING_CANVAS) {
+	       int x = event->x;
+	       int y = event->y;
+	       int dx = x - dd->start_x;
+	       int dy = y - dd->start_y;
+
+	       set_canvas_view_rel(dd, dx, dy);
+	  }
+#ifdef IGNORE_GTK
+     } else 
+	  if (dd->mode == DM_RELEVANT_OP) {
+	       int x = event->xbutton.x + dd->left;
+	       int y = event->xbutton.y + dd->top;
+
+	       if (dd->og_selected_on_press) {
+		    draw_clip_box(w, dd, dd->og_selected_on_press);
+		    if (XPointInRegion(dd->og_selected_on_press->region, x, y)) {
+			 if(dd->og_selected_on_press->type == DT_EDGE_TEXT)
+			      xp_find_rel_ops(dd->og_selected_on_press->u.gedge_text->edge->u.gedge->edge);
+			 else if (dd->og_selected_on_press->type == DT_INST)
+			      xp_find_rel_ops(dd->og_selected_on_press->u.ginst->edge);
+			 else if(dd->og_selected_on_press->type == DT_TEXT)
+			      if (dd->og_selected_on_press->u.gtext->text_type == TT_INVOCATION)
+				   xp_find_rel_ops_expr_except_me(current_op->invocation, current_op);
+/* 			      else if (dd->og_selected_on_press->u.gtext->text_type == TT_EFFECTS) */
+/* 				   xp_find_rel_ops_list_expr(current_op->effects); */
+			 else 
+			      fprintf(stderr, LG_STR("This graphic type has no gtexpr.\n",
+						     "This graphic type has no gtexpr.\n"));
+		    }
+		    dd->og_selected_on_press = NULL;
+	       }
+	  }
 #endif
+}
+

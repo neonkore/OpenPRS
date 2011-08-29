@@ -422,8 +422,8 @@ void quitQuestionManage(GtkWidget *w, gpointer window)
 Draw_Data *global_draw_data;
 Int_Draw_Data *global_int_draw_data;
 Draw_Data dd;
-CairoGCs mainCGCs;		/* this will be the one for the main */
-CairoGCs *mainCGCsp;		/* this will be the one for the main */
+CairoGCs opCGCs;		/* this will be the one for the main */
+CairoGCs *opCGCsp;		/* this will be the one for the main */
 
 
 extern PBoolean use_dialog_error;
@@ -770,10 +770,10 @@ int main(int argc, char **argv, char **envp)
 
   dd.window = GTK_LAYOUT(dd.canvas)->bin_window;
 
-  mainCGCsp = &mainCGCs;
-  dd.cgcsp = mainCGCsp;
+  opCGCsp = &opCGCs;
+  dd.cgcsp = opCGCsp;
   
-  create_cgcs(&mainCGCs, dd.window); /* this will create all the cairo context for the main loop... */
+  create_cgcs(&opCGCs, dd.window); /* this will create all the cairo context for the main loop... */
    
   gtk_widget_add_events (dd.canvas, GDK_BUTTON_PRESS_MASK);
   gtk_widget_add_events (dd.canvas, GDK_BUTTON_RELEASE_MASK);
@@ -838,7 +838,7 @@ Date        : %s\n\
   add_op_file_name(current_opfile->name, relevant_op);
   
   
-  init_og = create_text(dd.canvas, 80, 20, &dd, mainCGCsp, TT_TEXT_NONE, welcome_message, 0, FALSE);
+  init_og = create_text(dd.canvas, 80, 20, &dd, opCGCsp, TT_TEXT_NONE, welcome_message, 0, FALSE);
   set_draw_mode(&dd, MOVE_OG); 
 
   strcpy (error_message,  "The following files have not been loaded:\n");

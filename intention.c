@@ -66,6 +66,8 @@
 #include "conditions_f.h"
 #ifdef GRAPHIX
 #ifdef GTK
+#include "gope-graphic.h"
+#include "goprs-intention.h"
 #include "goprs-intention_f.h"
 #include "xm2gtk_f.h"
 #else
@@ -321,7 +323,11 @@ Intention *make_intention(Op_Instance *op_inst,Intention_Graph *ig, int prio)
      in->failed_goal_sprinter = make_sprinter(0);
      in->failed_goal_stack = sl_make_slist();
 #ifdef GRAPHIX
-     //gtk in->iog =  (debug_trace[GRAPHIC_INTEND] && global_int_draw_data ? create_ginode(global_int_draw_data, in): NULL);
+#ifdef GTK
+     in->iog =  (debug_trace[GRAPHIC_INTEND] && global_int_draw_data ? create_ginode(global_int_draw_data, inCGCsp, in): NULL);
+#else
+     in->iog =  (debug_trace[GRAPHIC_INTEND] && global_int_draw_data ? create_ginode(global_int_draw_data, in): NULL);
+#endif
      in->trace_dialog = NULL;
      in->trace_scrl_txt = NULL;
 #endif
@@ -335,8 +341,12 @@ void delete_intention(Intention *in)
 
 #ifdef GRAPHIX
      if (global_int_draw_data && in->iog) {
-       //gtk destroy_ginode(global_int_draw_data, in->iog);
-	  in->iog = NULL;
+#ifdef GTK
+       destroy_ginode(global_int_draw_data, inCGCsp, in->iog);
+#else
+       destroy_ginode(global_int_draw_data, in->iog);
+#endif
+       in->iog = NULL;
      }
 #endif
 
@@ -382,8 +392,8 @@ void set_intention_id(Intention *in, PString id)
      in->id = id;
 #ifdef GRAPHIX
      if (debug_trace[GRAPHIC_INTEND] && global_int_draw_data) {
-       //gtk touch_intention_ginode(in);
-       //gtk draw_intention_graph(global_int_draw_data);
+       touch_intention_ginode(in);
+       draw_intention_graph(global_int_draw_data);
      }
 #endif
 }
@@ -393,8 +403,8 @@ void set_intention_priority(Intention *in, int priority)
      in->priority = priority;
 #ifdef GRAPHIX
      if (debug_trace[GRAPHIC_INTEND] && global_int_draw_data) {
-       //gtk	  touch_intention_ginode(in);
-       //gtk draw_intention_graph(global_int_draw_data);
+       touch_intention_ginode(in);
+       draw_intention_graph(global_int_draw_data);
      }
 #endif
 }
