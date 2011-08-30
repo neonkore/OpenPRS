@@ -76,7 +76,7 @@ INC = action.h activate.h config.h constant-pub.h constant.h database.h \
 	oprs-profiling.h oprs-type-pub.h oprs-type.h oprs.h relevant-op.h soak.h \
 	top-lev.h unification.h user-action.h user-trace.h user-ev-function.h \
 	user-ev-predicate.h user-external.h version.h xoprs.h xhelp.h \
-	xoprs-intention.h xoprs-main-pub.h xoprs-main.h xoprs.h xoprs-textwin.h ope-syntax.h \
+	xoprs-intention.h xoprs-main-pub.h xoprs-main.h goprs.h xoprs-textwin.h ope-syntax.h \
 	op-default.h oprs-sprint.h oprs-error.h oprs-rerror.h oprs-error-pub.h \
 	conditions.h lang.h oprs-dump.h opc.h type.h oprs-pred-func.h xm2gtk.h \
 	goprs-intention.h goprs-main-pub.h goprs-main.h

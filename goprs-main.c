@@ -601,6 +601,7 @@ int main(int argc, char **argv, char **envp)
   AppendTextWindow(GTK_TEXT_VIEW(textview), "GTK-OpenPRS comes with ABSOLUTELY NO WARRANTY.\n\n",FALSE);
 
   xp_create_filesel(topLevelWindow);
+  xp_create_dialogs(topLevelWindow);
 
   gtk_widget_show_all(topLevelWindow);
 

@@ -79,10 +79,12 @@
 #include "op-structure.h"
 #include "gope-graphic.h"
 #include "goprs-intention.h"
+#include "goprs-intention_f.h"
 #include "goprs-main.h"
 #else
 #include "xoprs-main.h"
 #include "xoprs-intention.h"
+#include "xoprs-intention_f.h"
 #endif
 #endif
 
@@ -170,13 +172,23 @@ void rebuilt_intention_graph_graphic(Intention_Graph *ig)
      Intention_Paire *ip;
 
      sl_loop_through_slist(ig->list_intentions,in,Intention *){
-	  if (! (in->iog))
-	       in->iog =  create_ginode(global_int_draw_data, in);
+       if (! (in->iog)) {
+#ifdef GTK
+	 in->iog =  create_ginode(global_int_draw_data, inCGCsp, in);
+#else
+	 in->iog =  create_ginode(global_int_draw_data, in);
+#endif
+       }
      }
      
      sl_loop_through_slist(ig->list_pairs, ip, Intention_Paire *) {
-	  if (! (ip->iog))
-	       ip->iog = create_giedge(global_int_draw_data, ip->first, ip->second);
+       if (! (ip->iog)) {
+#ifdef GTK
+	 ip->iog = create_giedge(global_int_draw_data, ip->first, ip->second);
+#else
+	 ip->iog = create_giedge(global_int_draw_data, ip->first, ip->second);
+#endif
+       }
      }
      global_int_draw_data->reposition_all = TRUE;
      draw_intention_graph(global_int_draw_data); /* We've got to do it... */

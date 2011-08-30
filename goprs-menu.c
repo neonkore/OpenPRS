@@ -79,7 +79,7 @@ void Xp_resetop(Widget w, Draw_Data *dd)
 
 void Xp_addFactGoal(Widget w, XtPointer client_data, XtPointer call_data)
 { 
-  //gtk XtManageChild(addFactGoalDialog);
+  addFactGoalDialogShow(addFactGoalDialog);
 }
 
 void Xp_consultDB(Widget w, XtPointer client_data, XtPointer call_data)
@@ -198,17 +198,17 @@ void Xp_consultAOP(Widget w, XtPointer client_data, XtPointer call_data)
 
 void Xp_loaddb(Widget w, XtPointer client_data, XtPointer call_data)
 { 
-  //gtk XtManageChild(xp_loaddbFilesel);
+  xp_loaddbFileselok(xp_loaddbFilesel);
 }
 
 void Xp_dumpdb(Widget w, XtPointer client_data, XtPointer call_data)
 { 
-  //gtk XtManageChild(xp_dumpdbFilesel);
+  xp_dumpdbFileselok(xp_dumpdbFilesel);
 }
 
 void Xp_dumpop(Widget w, XtPointer client_data, XtPointer call_data)
 { 
-  //gtk XtManageChild(xp_dumpopFilesel);
+  xp_dumpopFileselok(xp_dumpopFilesel);
 }
 
 void Xp_dumpAllOpf(Widget w, XtPointer client_data, XtPointer call_data)
@@ -218,12 +218,12 @@ void Xp_dumpAllOpf(Widget w, XtPointer client_data, XtPointer call_data)
 
 void Xp_dumpkrn(Widget w, XtPointer client_data, XtPointer call_data)
 { 
-  //gtk XtManageChild(xp_dumpkrnFilesel);
+  xp_dumpkrnFileselok(xp_dumpkrnFilesel);
 }
 
 void Xp_savedb(Widget w, XtPointer client_data, XtPointer call_data)
 { 
-  //gtk XtManageChild(xp_savedbFilesel);
+  xp_savedbFileselok(xp_savedbFilesel);
 }
 
 void Xp_include(Widget w, XtPointer client_data, XtPointer call_data)
@@ -233,22 +233,22 @@ void Xp_include(Widget w, XtPointer client_data, XtPointer call_data)
 
 void Xp_loadop(Widget w, XtPointer client_data, XtPointer call_data)
 { 
-  //gtk XtManageChild(xp_loadopFilesel);
+  xp_loadopFileselok(xp_loadopFilesel);
 }
 
 void Xp_loadkrn(Widget w, XtPointer client_data, XtPointer call_data)
 { 
-  //gtk XtManageChild(xp_loadkrnFilesel);
+  xp_loadkrnFileselok(xp_loadkrnFilesel);
 }
 
 void Xp_loaddop(Widget w, XtPointer client_data, XtPointer call_data)
 { 
-  //gtk XtManageChild(xp_loaddopFilesel);
+  xp_loaddopFileselok(xp_loaddopFilesel);
 }
 
 void Xp_loadddb(Widget w, XtPointer client_data, XtPointer call_data)
 { 
-  //gtk XtManageChild(xp_loadddbFilesel);
+  xp_loadddbFileselok(xp_loadddbFilesel);
 }
 
 void Xp_unloadop(Widget w, XtPointer client_data, XtPointer call_data)

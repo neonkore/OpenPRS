@@ -49,7 +49,7 @@
 #include "oprs.h"
 #include "relevant-op.h"
 #include "intention.h"
-#include "xoprs.h"
+#include "goprs.h"
 #include "gope-graphic.h"
 #include "goprs-main.h"
 #include "gope-graphic_f.h"
@@ -67,6 +67,7 @@
 #include "xm2gtk_f.h"
 
 Widget addFactGoalDialog;
+Widget addfactGoalEntry;
 Widget consultOPDialog;
 Widget consultAOPDialog;
 Widget consultDBDialog;
@@ -183,6 +184,54 @@ void xpDisplayPreviousOp(Draw_Data *dd)
 	  dd->op = NULL;
 	  XBell(XtDisplay(dd->canvas), 50);
      }
+}
+
+void xp_create_dialogs(Widget parent)
+{
+  addFactGoalDialog = 
+    gtk_dialog_new_with_buttons("Add fact or goal",
+				GTK_WINDOW(parent),
+				GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+				GTK_STOCK_OK,
+				GTK_RESPONSE_ACCEPT,
+				GTK_STOCK_CANCEL,
+				GTK_RESPONSE_REJECT,
+				NULL);
+
+  GtkWidget *content_area = gtk_dialog_get_content_area(GTK_DIALOG(addFactGoalDialog));
+  
+  GtkWidget *label = gtk_label_new("Add fact or goal");
+  gtk_container_add (GTK_CONTAINER (content_area), label);
+
+  addfactGoalEntry = gtk_combo_box_entry_new_text();
+  //  gtk_entry_set_text(GTK_ENTRY(entry), "");
+  
+  gtk_container_add(GTK_CONTAINER(content_area), addfactGoalEntry);
+}
+
+void addFactGoalDialogShow(Widget dialog)
+{  
+  gtk_widget_show_all (dialog);
+  gint result = gtk_dialog_run (GTK_DIALOG (dialog));
+  char *to_free, *s;
+  switch (result)
+    {
+    case GTK_RESPONSE_ACCEPT:
+      to_free = gtk_combo_box_get_active_text(GTK_COMBO_BOX(addfactGoalEntry));
+      if (to_free) {
+	gtk_combo_box_append_text(addfactGoalEntry,to_free);
+	s = (char *)MALLOC(strlen(to_free) + 20);
+	sprintf(s,"add %s\n", to_free);
+	send_command_to_parser(s);
+	FREE(s);
+	g_free(to_free);
+      }
+      break;
+    default:
+      break;
+    }
+     
+  gtk_widget_hide (dialog);
 }
 
 #ifdef IGNORE
@@ -1431,7 +1480,8 @@ void xp_information_report(char *message)
 
 void xpcreate_dialogs(Widget parent, Draw_Data *dd)
 {
-     int i;
+
+#ifdef IGNORE_GTK     int i;
      Cardinal n;
      Arg args[MAXARGS];
 
@@ -1736,6 +1786,7 @@ void xpcreate_dialogs(Widget parent, Draw_Data *dd)
      XtAddCallback(changeMaxSizeDialog, XmNhelpCallback, infoHelp, makeFileNode("oprs", "Change Size Text pane"));
      XtAddCallback(changeMaxSizeDialog, XmNokCallback, changeMaxSizeDialogAccept, 0);
 
+#endif
 }
 
 void XpShowUTDialogUpdate(Widget w, XtPointer client_data, XtPointer call_data)

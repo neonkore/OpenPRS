@@ -1,5 +1,5 @@
 /*                               -*- Mode: C -*- 
- * oprs-filesel.c -- 
+ * goprs-filesel.c -- 
  * 
  * Copyright (c) 1991-2011 Francois Felix Ingrand, LAAS/CNRS.
  * All rights reserved.
@@ -41,7 +41,7 @@
 
 #include "constant.h"
 #include "oprs-type.h"
-#include "xoprs.h"
+#include "goprs.h"
 #include "xhelp.h"
 #include "parser-funct.h"
 
@@ -53,7 +53,7 @@
 Widget xp_includeFilesel, xp_loaddbFilesel, xp_loadopFilesel, xp_loadkrnFilesel, xp_savedbFilesel;
 Widget xp_loadddbFilesel, xp_loaddopFilesel, xp_dumpdbFilesel, xp_dumpopFilesel, xp_dumpkrnFilesel;
 
-void xp_includeFileselok(GtkWidget *dialog)
+void gtk_Fileselok(GtkWidget *dialog, char* command)
 {
   if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
     char *filename;
@@ -64,7 +64,7 @@ void xp_includeFileselok(GtkWidget *dialog)
     filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
      
     if (strcmp(filename,"") != 0) {
-      sprintf(s,"include \"%s\"\n", filename);
+      sprintf(s,command, filename);
       send_command_to_parser(s);
     }    
     g_free (filename);
@@ -72,142 +72,61 @@ void xp_includeFileselok(GtkWidget *dialog)
   gtk_widget_hide(dialog);
 }
 
-#ifdef IGNORE
-void xp_loaddbFileselok(Widget w, XtPointer client_data, XtPointer call_data)
+void xp_includeFileselok(GtkWidget *dialog)
 {
-     char * selected_file;
-     char s[LINSIZ];
-
-     XtUnmanageChild(w);
-     selected_file = XmTextGetString(XmSelectionBoxGetChild(xp_loaddbFilesel,XmDIALOG_TEXT));
-     
-     if (strcmp(selected_file,"") != 0) {
-	  sprintf(s,"load db \"%s\"\n", selected_file);
-	  send_command_to_parser(s);
-     }
-     XtFree(selected_file);
+  gtk_Fileselok(dialog,"include \"%s\"\n");
 }
 
-void xp_loadopFileselok(Widget w, XtPointer client_data, XtPointer call_data)
+void xp_loadopFileselok(GtkWidget *dialog)
 {
-     char * selected_file;
-     char s[LINSIZ];
-
-     XtUnmanageChild(w);
-     selected_file = XmTextGetString(XmSelectionBoxGetChild(xp_loadopFilesel,XmDIALOG_TEXT));
-     if (strcmp(selected_file,"") != 0) {
-	  sprintf(s,"load opf \"%s\"\n", selected_file);
-	  send_command_to_parser(s);
-     XtFree(selected_file);
-     }
+  gtk_Fileselok(dialog, "load opf \"%s\"\n");
 }
 
-void xp_savedbFileselok(Widget w, XtPointer client_data, XtPointer call_data)
+void xp_savedbFileselok(GtkWidget *dialog)
 {
-     char * selected_file;
-     char s[LINSIZ];
-
-     XtUnmanageChild(w);
-     selected_file = XmTextGetString(XmSelectionBoxGetChild(xp_savedbFilesel,XmDIALOG_TEXT));
-     
-     if (strcmp(selected_file,"") != 0) {
-	  sprintf(s,"save db \"%s\"\n", selected_file);
-	  send_command_to_parser(s);
-     }
-     XtFree(selected_file);
+    gtk_Fileselok(dialog, "save db \"%s\"\n");
 }
 
-void xp_dumpdbFileselok(Widget w, XtPointer client_data, XtPointer call_data)
+void xp_loaddbFileselok(GtkWidget *dialog)
 {
-     char * selected_file;
-     char s[LINSIZ];
-
-     XtUnmanageChild(w);
-     selected_file = XmTextGetString(XmSelectionBoxGetChild(xp_dumpdbFilesel,XmDIALOG_TEXT));
-     
-     if (strcmp(selected_file,"") != 0) {
-	  sprintf(s,"dump db \"%s\"\n", selected_file);
-	  send_command_to_parser(s);
-     }
-     XtFree(selected_file);
+    gtk_Fileselok(dialog, "load db \"%s\"\n");
 }
 
-void xp_dumpopFileselok(Widget w, XtPointer client_data, XtPointer call_data)
+void xp_dumpdbFileselok(GtkWidget *dialog)
 {
-     char * selected_file;
-     char s[LINSIZ];
-
-     XtUnmanageChild(w);
-     selected_file = XmTextGetString(XmSelectionBoxGetChild(xp_dumpopFilesel,XmDIALOG_TEXT));
-     if (strcmp(selected_file,"") != 0) {
-	  sprintf(s,"dump op  \"%s\"\n", selected_file);
-	  send_command_to_parser(s);
-     }
-     XtFree(selected_file);
+  gtk_Fileselok(dialog, "dump db \"%s\"\n");
 }
 
-void xp_dumpkrnFileselok(Widget w, XtPointer client_data, XtPointer call_data)
+void xp_dumpopFileselok(GtkWidget *dialog)
 {
-     char * selected_file;
-     char s[LINSIZ];
-
-     XtUnmanageChild(w);
-     selected_file = XmTextGetString(XmSelectionBoxGetChild(xp_dumpkrnFilesel,XmDIALOG_TEXT));
-     if (strcmp(selected_file,"") != 0) {
-	  sprintf(s,"dump kernel \"%s\"\n", selected_file);
-	  send_command_to_parser(s);
-     }
-     XtFree(selected_file);
+  gtk_Fileselok(dialog, "dump op  \"%s\"\n");
 }
 
-void xp_loadddbFileselok(Widget w, XtPointer client_data, XtPointer call_data)
+void xp_dumpkrnFileselok(GtkWidget *dialog)
 {
-     char * selected_file;
-     char s[LINSIZ];
-
-     XtUnmanageChild(w);
-     selected_file = XmTextGetString(XmSelectionBoxGetChild(xp_loadddbFilesel,XmDIALOG_TEXT));
-     
-     if (strcmp(selected_file,"") != 0) {
-	  sprintf(s,"load dump db \"%s\"\n", selected_file);
-	  send_command_to_parser(s);
-     }
-     XtFree(selected_file);
+  gtk_Fileselok(dialog, "dump kernel \"%s\"\n");
 }
 
-void xp_loaddopFileselok(Widget w, XtPointer client_data, XtPointer call_data)
+void xp_loadddbFileselok(GtkWidget *dialog)
 {
-     char * selected_file;
-     char s[LINSIZ];
-
-     XtUnmanageChild(w);
-     selected_file = XmTextGetString(XmSelectionBoxGetChild(xp_loaddopFilesel,XmDIALOG_TEXT));
-     
-     if (strcmp(selected_file,"") != 0) {
-	  sprintf(s,"load dump op \"%s\"\n", selected_file);
-	  send_command_to_parser(s);
-     }
-     XtFree(selected_file);
+  gtk_Fileselok(dialog, "load dump db \"%s\"\n");
 }
 
-void xp_loadkrnFileselok(Widget w, XtPointer client_data, XtPointer call_data)
+void xp_loaddopFileselok(GtkWidget *dialog)
 {
-     char * selected_file;
-     char s[LINSIZ];
-
-     XtUnmanageChild(w);
-     selected_file = XmTextGetString(XmSelectionBoxGetChild(xp_loadkrnFilesel,XmDIALOG_TEXT));
-     
-     if (strcmp(selected_file,"") != 0) {
-	  sprintf(s,"load dump kernel \"%s\"\n", selected_file);
-	  send_command_to_parser(s);
-     }
-     XtFree(selected_file);
+  gtk_Fileselok(dialog, "load dump op \"%s\"\n");
 }
-#endif
+
+void xp_loadkrnFileselok(GtkWidget *dialog)
+{
+  gtk_Fileselok(dialog, "load dump kernel \"%s\"\n");
+}
 
 void xp_create_filesel(Widget parent)
 {
+  /* I am not sure this is the GTK best practice, but I create all file
+     chooser dialogs and then show them when needed. */
+
   GtkFileFilter *filter_inc = gtk_file_filter_new ();
   gtk_file_filter_add_pattern(filter_inc, "*.inc"); 
   gtk_file_filter_set_name(filter_inc, "Inc Commands Files"); 
@@ -252,12 +171,65 @@ void xp_create_filesel(Widget parent)
   gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(xp_savedbFilesel),filter_db);
 
 
-     /* xp_savedbFilesel = (Widget) XmCreateFileSelectionDialog(parent, "xp_savedbFilesel",  args, n); */
-     /* xp_loadddbFilesel = (Widget) XmCreateFileSelectionDialog(parent, "xp_loadddbFilesel",  args, n); */
-     /* xp_loaddopFilesel = (Widget) XmCreateFileSelectionDialog(parent, "xp_loaddopFilesel",  args, n); */
-     /* xp_loadkrnFilesel = (Widget) XmCreateFileSelectionDialog(parent, "xp_loadkrnFilesel",  args, n); */
-     /* xp_dumpdbFilesel = (Widget) XmCreateFileSelectionDialog(parent, "xp_dumpdbFilesel",  args, n); */
-     /* xp_dumpopFilesel = (Widget) XmCreateFileSelectionDialog(parent, "xp_dumpopFilesel",  args, n); */
-     /* xp_dumpkrnFilesel = (Widget) XmCreateFileSelectionDialog(parent, "xp_dumpkrnFilesel",  args, n); */
+  GtkFileFilter *filter_ddb = gtk_file_filter_new ();
+  gtk_file_filter_add_pattern(filter_ddb, "*.ddb"); 
+  gtk_file_filter_set_name(filter_ddb, "Dump Database Files"); 
+  
+  xp_loadddbFilesel = gtk_file_chooser_dialog_new ("Load Dumped Database File", GTK_WINDOW(parent),
+						   GTK_FILE_CHOOSER_ACTION_OPEN,
+						   GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+						   GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+						   NULL);
+  gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(xp_loadddbFilesel),filter_ddb);
 
+  g_object_ref_sink(filter_ddb);
+  
+  xp_dumpdbFilesel = gtk_file_chooser_dialog_new ("Dump Database File", GTK_WINDOW(parent),
+						   GTK_FILE_CHOOSER_ACTION_SAVE,
+						   GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+						   GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+						   NULL);
+  gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(xp_dumpdbFilesel),filter_ddb);
+
+
+  GtkFileFilter *filter_dop = gtk_file_filter_new ();
+  gtk_file_filter_add_pattern(filter_dop, "*.dop"); 
+  gtk_file_filter_set_name(filter_dop, "Dump OP Files"); 
+  
+  xp_loaddopFilesel = gtk_file_chooser_dialog_new ("Load Dumped OP File", GTK_WINDOW(parent),
+						   GTK_FILE_CHOOSER_ACTION_OPEN,
+						   GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+						   GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+						   NULL);
+  gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(xp_loaddopFilesel),filter_dop);
+
+  g_object_ref_sink(filter_dop);
+  
+  xp_dumpopFilesel = gtk_file_chooser_dialog_new ("Dump OP File", GTK_WINDOW(parent),
+						   GTK_FILE_CHOOSER_ACTION_SAVE,
+						   GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+						   GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+						   NULL);
+  gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(xp_dumpopFilesel),filter_dop);
+
+
+  GtkFileFilter *filter_krn = gtk_file_filter_new ();
+  gtk_file_filter_add_pattern(filter_krn, "*.krn"); 
+  gtk_file_filter_set_name(filter_krn, "OPrs Kenel Files"); 
+  
+  xp_loadkrnFilesel = gtk_file_chooser_dialog_new ("Load Kernel File", GTK_WINDOW(parent),
+						   GTK_FILE_CHOOSER_ACTION_OPEN,
+						   GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+						   GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+						   NULL);
+  gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(xp_loadkrnFilesel),filter_krn);
+
+  g_object_ref_sink(filter_krn);
+  
+  xp_dumpkrnFilesel = gtk_file_chooser_dialog_new ("Dump Kernel File", GTK_WINDOW(parent),
+						   GTK_FILE_CHOOSER_ACTION_SAVE,
+						   GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+						   GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+						   NULL);
+  gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(xp_dumpkrnFilesel),filter_krn);
 }
