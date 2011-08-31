@@ -67,12 +67,19 @@
 #include "xm2gtk_f.h"
 
 Widget addFactGoalDialog;
-Widget addfactGoalEntry;
 Widget consultOPDialog;
 Widget consultAOPDialog;
 Widget consultDBDialog;
 Widget concludeDBDialog;
 Widget deleteDBDialog;
+
+Widget addfactGoalEntry;
+Widget consultOPEntry;
+Widget consultAOPEntry;
+Widget consultDBEntry;
+Widget concludeDBEntry;
+Widget deleteDBEntry;
+
 Widget xp_quitQuestion;
 Widget xp_resetQuestion;
 Widget xpTraceDialog;
@@ -186,10 +193,30 @@ void xpDisplayPreviousOp(Draw_Data *dd)
      }
 }
 
-void xp_create_dialogs(Widget parent)
+/* gboolean  */
+/* on_combo_key_press (GtkWidget *widget, GdkEventKey *event, gpointer user_data) */
+/* { */
+/*     /\* user has pressed a key on/in the GtkComboBox *\/ */
+    
+/*     if (event->keyval == GDK_Return) */
+/*     { */
+/*         /\* user pressed the enter key *\/ */
+/*         gchar *str = gtk_combo_box_get_active_text (GTK_COMBO_BOX(widget)); */
+/*         g_print ("Value: %s\n", str); */
+/*         g_free (str); */
+        
+/*         return TRUE;    /\* don't let the box "drop down" *\/ */
+/*     } */
+/*     else */
+/*     { */
+/*         return FALSE; /\* propogate event *\/ */
+/*     } */
+/* } */
+
+Widget create_dialog(const gchar *title, GtkWindow *parent, Widget *Entry)
 {
-  addFactGoalDialog = 
-    gtk_dialog_new_with_buttons("Add fact or goal",
+  Widget dialog = 
+    gtk_dialog_new_with_buttons(title,
 				GTK_WINDOW(parent),
 				GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
 				GTK_STOCK_OK,
@@ -198,32 +225,39 @@ void xp_create_dialogs(Widget parent)
 				GTK_RESPONSE_REJECT,
 				NULL);
 
-  GtkWidget *content_area = gtk_dialog_get_content_area(GTK_DIALOG(addFactGoalDialog));
+  GtkWidget *content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
   
-  GtkWidget *label = gtk_label_new("Add fact or goal");
+  GtkWidget *label = gtk_label_new(title);
   gtk_container_add (GTK_CONTAINER (content_area), label);
 
-  addfactGoalEntry = gtk_combo_box_entry_new_text();
+  *Entry = gtk_combo_box_entry_new_text();
   //  gtk_entry_set_text(GTK_ENTRY(entry), "");
-  
-  gtk_container_add(GTK_CONTAINER(content_area), addfactGoalEntry);
+   /* g_signal_connect (G_OBJECT (*Entry), "key-press-event", */
+   /*          G_CALLBACK (on_combo_key_press), dialog); */
+   
+
+  gtk_container_add(GTK_CONTAINER(content_area), *Entry);
+  return dialog;
 }
 
-void addFactGoalDialogShow(Widget dialog)
+void dialog_show(Widget dialog, Widget entry, const gchar *command)
 {  
   gtk_widget_show_all (dialog);
   gint result = gtk_dialog_run (GTK_DIALOG (dialog));
-  char *to_free, *s;
+  char *to_free;
   switch (result)
     {
     case GTK_RESPONSE_ACCEPT:
-      to_free = gtk_combo_box_get_active_text(GTK_COMBO_BOX(addfactGoalEntry));
+      to_free = gtk_combo_box_get_active_text(GTK_COMBO_BOX(entry));
       if (to_free) {
-	gtk_combo_box_append_text(addfactGoalEntry,to_free);
-	s = (char *)MALLOC(strlen(to_free) + 20);
-	sprintf(s,"add %s\n", to_free);
-	send_command_to_parser(s);
-	FREE(s);
+	if (to_free[0] != '\0') {
+	  char *s;
+	  gtk_combo_box_append_text(GTK_COMBO_BOX(entry),to_free);
+	  s = (char *)MALLOC(strlen(to_free) + 20);
+	  sprintf(s, command, to_free);
+	  send_command_to_parser(s);
+	  FREE(s);
+	}
 	g_free(to_free);
       }
       break;
@@ -233,6 +267,17 @@ void addFactGoalDialogShow(Widget dialog)
      
   gtk_widget_hide (dialog);
 }
+
+void xp_create_dialogs(Widget parent)
+{
+  addFactGoalDialog = create_dialog("Add fact or goal",	GTK_WINDOW(parent), &addfactGoalEntry);
+  consultDBDialog = create_dialog("Consult Database", GTK_WINDOW(parent), &consultDBEntry);
+  concludeDBDialog = create_dialog("Assert in the Database", GTK_WINDOW(parent), &concludeDBEntry);
+  deleteDBDialog = create_dialog("Delete Fact(s) in the Database", GTK_WINDOW(parent), &deleteDBEntry);
+  consultOPDialog = create_dialog("Consult Relevant OP", GTK_WINDOW(parent), &consultOPEntry);
+  consultAOPDialog = create_dialog("Consult Applicable OP", GTK_WINDOW(parent), &consultAOPEntry);
+}
+
 
 #ifdef IGNORE
 void changeMaxSizeDialogManage(void)

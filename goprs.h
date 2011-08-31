@@ -44,6 +44,13 @@ extern Widget consultAOPDialog;
 extern Widget consultDBDialog;
 extern Widget concludeDBDialog;
 extern Widget deleteDBDialog;
+
+extern Widget addfactGoalEntry;
+extern Widget consultOPEntry;
+extern Widget consultAOPEntry;
+extern Widget consultDBEntry;
+extern Widget concludeDBEntry;
+extern Widget deleteDBEntry;
  
 extern Widget xp_includeFilesel, xp_loaddbFilesel, xp_loadopFilesel, xp_reloadopFilesel;
 extern Widget xp_unloadopFilesel, xp_savedbFilesel;

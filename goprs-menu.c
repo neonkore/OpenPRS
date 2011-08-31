@@ -50,7 +50,7 @@
 #include "oprs.h"
 #include "top-lev.h"
 #include "gtop-lev_f.h"
-#include "xoprs.h"
+#include "goprs.h"
 #include "oprs-main.h"
 #include "goprs-main.h"
 #include "goprs-intention.h"
@@ -79,22 +79,32 @@ void Xp_resetop(Widget w, Draw_Data *dd)
 
 void Xp_addFactGoal(Widget w, XtPointer client_data, XtPointer call_data)
 { 
-  addFactGoalDialogShow(addFactGoalDialog);
+  dialog_show(addFactGoalDialog, addfactGoalEntry, "add %s\n");
 }
 
 void Xp_consultDB(Widget w, XtPointer client_data, XtPointer call_data)
 { 
-  //gtk XtManageChild(consultDBDialog);
+  dialog_show(consultDBDialog, consultDBEntry, "consult %s\n");
 }
 
 void Xp_concludeDB(Widget w, XtPointer client_data, XtPointer call_data)
 { 
-  //gtk XtManageChild(concludeDBDialog);
+  dialog_show(concludeDBDialog, concludeDBEntry, "conclude %s\n");
 }
 
 void Xp_deleteDB(Widget w, XtPointer client_data, XtPointer call_data)
 { 
-  //gtk XtManageChild(deleteDBDialog);
+  dialog_show(deleteDBDialog, deleteDBEntry, "delete %s\n");
+}
+
+void Xp_consultOP(Widget w, XtPointer client_data, XtPointer call_data)
+{ 
+  dialog_show(consultOPDialog, consultOPEntry, "consult relevant op %s\n");
+}
+
+void Xp_consultAOP(Widget w, XtPointer client_data, XtPointer call_data)
+{ 
+  dialog_show(consultAOPDialog, consultAOPEntry, "consult applicable op %s\n");
 }
 
 void Xp_showDB(Widget w, XtPointer client_data, XtPointer call_data)
@@ -186,16 +196,6 @@ void Xp_statALL(Widget w, XtPointer client_data, XtPointer call_data)
      send_command_to_parser("stat all\n");
 }
 
-void Xp_consultOP(Widget w, XtPointer client_data, XtPointer call_data)
-{ 
-  //gtk XtManageChild(consultOPDialog);
-}
-
-void Xp_consultAOP(Widget w, XtPointer client_data, XtPointer call_data)
-{ 
-  //gtk XtManageChild(consultAOPDialog);
-}
-
 void Xp_loaddb(Widget w, XtPointer client_data, XtPointer call_data)
 { 
   xp_loaddbFileselok(xp_loaddbFilesel);
@@ -253,7 +253,7 @@ void Xp_loadddb(Widget w, XtPointer client_data, XtPointer call_data)
 
 void Xp_unloadop(Widget w, XtPointer client_data, XtPointer call_data)
 { 
-  //gtk xpUnloadOpDialogManage();     
+  //gtk xpUnloadOpaDialogManage();     
 }
 
 void Xp_reloadop(Widget w, XtPointer client_data, XtPointer call_data)
@@ -592,59 +592,59 @@ GtkWidget *goprs_create_menu_bar(GtkWidget *window, Draw_Data *dd, Int_Draw_Data
      gtk_menu_shell_append(GTK_MENU_SHELL(oprsPDMenu), concludeDB);
      g_signal_connect(G_OBJECT(concludeDB), "activate", G_CALLBACK(Xp_concludeDB), NULL);
 
-     deleteDB = gtk_menu_item_new_with_label("deleteDB");
+     deleteDB = gtk_menu_item_new_with_label("Delete Fact(s) in the Database");
      gtk_menu_shell_append(GTK_MENU_SHELL(oprsPDMenu), deleteDB);
      g_signal_connect(G_OBJECT(deleteDB), "activate", G_CALLBACK(Xp_deleteDB), NULL);
 
-     deleteOP = gtk_menu_item_new_with_label("deleteOP");
+     deleteOP = gtk_menu_item_new_with_label("Delete an OP");
      gtk_menu_shell_append(GTK_MENU_SHELL(oprsPDMenu), deleteOP);
      g_signal_connect(G_OBJECT(deleteOP), "activate", G_CALLBACK(DeleteOP), NULL);
 
      gtk_menu_shell_append(GTK_MENU_SHELL(oprsPDMenu), gtk_separator_menu_item_new());
 
-     resetdb = gtk_menu_item_new_with_label("resetdb");
+     resetdb = gtk_menu_item_new_with_label("Empty Fact Database");
      gtk_menu_shell_append(GTK_MENU_SHELL(oprsPDMenu), resetdb);
      g_signal_connect(G_OBJECT(resetdb), "activate", G_CALLBACK(Xp_resetdb), NULL);
 
-     resetop = gtk_menu_item_new_with_label("resetop");
+     resetop = gtk_menu_item_new_with_label("Empty OP Database");
      gtk_menu_shell_append(GTK_MENU_SHELL(oprsPDMenu), resetop);
      g_signal_connect(G_OBJECT(resetop), "activate", G_CALLBACK(Xp_resetop), dd);
 
      /* Inspect Menu Item */
 
-     showDB = gtk_menu_item_new_with_label("showDB");
+     showDB = gtk_menu_item_new_with_label("Show Database");
      gtk_menu_shell_append(GTK_MENU_SHELL(inspectPDMenu),showDB);
      g_signal_connect(G_OBJECT(showDB), "activate", G_CALLBACK(Xp_showDB), NULL);
 
-     showGV = gtk_menu_item_new_with_label("showGV");
+     showGV = gtk_menu_item_new_with_label("Show Global Varaibles");
      gtk_menu_shell_append(GTK_MENU_SHELL(inspectPDMenu),showGV);
      g_signal_connect(G_OBJECT(showGV), "activate", G_CALLBACK(Xp_showGV), NULL);
 
-     showSI = gtk_menu_item_new_with_label("showSI");
+     showSI = gtk_menu_item_new_with_label("Show Intention Graph");
      gtk_menu_shell_append(GTK_MENU_SHELL(inspectPDMenu),showSI);
      g_signal_connect(G_OBJECT(showSI), "activate", G_CALLBACK(Xp_showSI), NULL);
 
-     showSC = gtk_menu_item_new_with_label("showSC");
+     showSC = gtk_menu_item_new_with_label("Show Conditions");
      gtk_menu_shell_append(GTK_MENU_SHELL(inspectPDMenu),showSC);
      g_signal_connect(G_OBJECT(showSC), "activate", G_CALLBACK(Xp_showSC), NULL);
 
-     showMem = gtk_menu_item_new_with_label("showMem");
+     showMem = gtk_menu_item_new_with_label("Show Memory Usage");
      gtk_menu_shell_append(GTK_MENU_SHELL(inspectPDMenu),showMem);
      g_signal_connect(G_OBJECT(showMem), "activate", G_CALLBACK(Showmem), NULL);
 
-     consultDB = gtk_menu_item_new_with_label("consultDB");
+     consultDB = gtk_menu_item_new_with_label("Consult Database");
      gtk_menu_shell_append(GTK_MENU_SHELL(inspectPDMenu),consultDB);
      g_signal_connect(G_OBJECT(consultDB), "activate", G_CALLBACK(Xp_consultDB), NULL);
 
-     consultOP = gtk_menu_item_new_with_label("consultOP");
+     consultOP = gtk_menu_item_new_with_label("Consult Relevant OP");
      gtk_menu_shell_append(GTK_MENU_SHELL(inspectPDMenu),consultOP);
      g_signal_connect(G_OBJECT(consultOP), "activate", G_CALLBACK(Xp_consultOP), NULL);
 
-     consultAOP = gtk_menu_item_new_with_label("consultAOP");
+     consultAOP = gtk_menu_item_new_with_label("Consult Applicable OP");
      gtk_menu_shell_append(GTK_MENU_SHELL(inspectPDMenu),consultAOP);
      g_signal_connect(G_OBJECT(consultAOP), "activate", G_CALLBACK(Xp_consultAOP), NULL);
 
-     listALL = gtk_menu_item_new_with_label("listALL");
+     listALL = gtk_menu_item_new_with_label("List ALL");
      gtk_menu_shell_append(GTK_MENU_SHELL(inspectPDMenu),listALL);
      g_signal_connect(G_OBJECT(listALL), "activate", G_CALLBACK(Xp_listALL), NULL);
 
@@ -653,61 +653,61 @@ GtkWidget *goprs_create_menu_bar(GtkWidget *window, Draw_Data *dd, Int_Draw_Data
      gtk_menu_item_set_submenu(GTK_MENU_ITEM(listCButton), listPDMenu);
      gtk_menu_shell_append(GTK_MENU_SHELL(inspectPDMenu), listCButton);
      
-     listops = gtk_menu_item_new_with_label("listops");
+     listops = gtk_menu_item_new_with_label("List OPs");
      gtk_menu_shell_append(GTK_MENU_SHELL(inspectPDMenu),listops);
      g_signal_connect(G_OBJECT(listops), "activate", G_CALLBACK(Xp_listops), NULL);
 
-     listvops = gtk_menu_item_new_with_label("listvops");
+     listvops = gtk_menu_item_new_with_label("List Variable OPs");
      gtk_menu_shell_append(GTK_MENU_SHELL(inspectPDMenu),listvops);
      g_signal_connect(G_OBJECT(listvops), "activate", G_CALLBACK(Xp_listvops), NULL);
 
-     statDB = gtk_menu_item_new_with_label("statDB");
+     statDB = gtk_menu_item_new_with_label("Stat Database Hashtable");
      gtk_menu_shell_append(GTK_MENU_SHELL(inspectPDMenu),statDB);
      g_signal_connect(G_OBJECT(statDB), "activate", G_CALLBACK(Xp_statDB), NULL);
 
-     statID = gtk_menu_item_new_with_label("statID");
+     statID = gtk_menu_item_new_with_label("Stat Id Hashtable");
      gtk_menu_shell_append(GTK_MENU_SHELL(inspectPDMenu),statID);
      g_signal_connect(G_OBJECT(statID), "activate", G_CALLBACK(Xp_statID), NULL);
 
-     statALL = gtk_menu_item_new_with_label("statALL");
+     statALL = gtk_menu_item_new_with_label("Stat All Hashtables");
      gtk_menu_shell_append(GTK_MENU_SHELL(inspectPDMenu),statALL);
      g_signal_connect(G_OBJECT(statALL), "activate", G_CALLBACK(Xp_statALL), NULL);
 
      /* list submenus */
 
-     listPredicate = gtk_menu_item_new_with_label("listPredicate");
+     listPredicate = gtk_menu_item_new_with_label("List Predicate");
      gtk_menu_shell_append(GTK_MENU_SHELL(listPDMenu),listPredicate);
      g_signal_connect(G_OBJECT(listPredicate), "activate", G_CALLBACK(Xp_listPredicate), NULL);
 
-     listEvaluablePredicate = gtk_menu_item_new_with_label("listEvaluablePredicate");
+     listEvaluablePredicate = gtk_menu_item_new_with_label("List Evaluable Predicate");
      gtk_menu_shell_append(GTK_MENU_SHELL(listPDMenu),listEvaluablePredicate);
      g_signal_connect(G_OBJECT(listEvaluablePredicate), "activate", G_CALLBACK(Xp_listEvaluablePredicate), NULL);
 
-     listCWPredicate = gtk_menu_item_new_with_label("listCWPredicate");
+     listCWPredicate = gtk_menu_item_new_with_label("List Closed World Predicate");
      gtk_menu_shell_append(GTK_MENU_SHELL(listPDMenu),listCWPredicate);
      g_signal_connect(G_OBJECT(listCWPredicate), "activate", G_CALLBACK(Xp_listCWPredicate), NULL);
 
-     listFFPredicate = gtk_menu_item_new_with_label("listFFPredicate");
+     listFFPredicate = gtk_menu_item_new_with_label("List Functional Fact Predicate");
      gtk_menu_shell_append(GTK_MENU_SHELL(listPDMenu),listFFPredicate);
      g_signal_connect(G_OBJECT(listFFPredicate), "activate", G_CALLBACK(Xp_listFFPredicate), NULL);
 
-     listBEPredicate = gtk_menu_item_new_with_label("listBEPredicate");
+     listBEPredicate = gtk_menu_item_new_with_label("List Basic Event Predicate");
      gtk_menu_shell_append(GTK_MENU_SHELL(listPDMenu),listBEPredicate);
      g_signal_connect(G_OBJECT(listBEPredicate), "activate", G_CALLBACK(Xp_listBEPredicate), NULL);
 
-     listOPPredicate = gtk_menu_item_new_with_label("listOPPredicate");
+     listOPPredicate = gtk_menu_item_new_with_label("List OP Predicate");
      gtk_menu_shell_append(GTK_MENU_SHELL(listPDMenu),listOPPredicate);
      g_signal_connect(G_OBJECT(listOPPredicate), "activate", G_CALLBACK(Xp_listOPPredicate), NULL);
 
-     listFunction = gtk_menu_item_new_with_label("listFunction");
+     listFunction = gtk_menu_item_new_with_label("List Function");
      gtk_menu_shell_append(GTK_MENU_SHELL(listPDMenu),listFunction);
      g_signal_connect(G_OBJECT(listFunction), "activate", G_CALLBACK(Xp_listFunction), NULL);
 
-     listEvaluableFunction = gtk_menu_item_new_with_label("listEvaluableFunction");
+     listEvaluableFunction = gtk_menu_item_new_with_label("List Evaluable Function");
      gtk_menu_shell_append(GTK_MENU_SHELL(listPDMenu),listEvaluableFunction);
      g_signal_connect(G_OBJECT(listEvaluableFunction), "activate", G_CALLBACK(Xp_listEvaluableFunction), NULL);
 
-     listAction = gtk_menu_item_new_with_label("listAction");
+     listAction = gtk_menu_item_new_with_label("List Action");
      gtk_menu_shell_append(GTK_MENU_SHELL(listPDMenu),listAction);
      g_signal_connect(G_OBJECT(listAction), "activate", G_CALLBACK(Xp_listAction), NULL);
 
@@ -729,15 +729,15 @@ GtkWidget *goprs_create_menu_bar(GtkWidget *window, Draw_Data *dd, Int_Draw_Data
 
      /* Option menu items */
 
-     run_option = gtk_menu_item_new_with_label("run_option");
+     run_option = gtk_menu_item_new_with_label("Run Option");
      gtk_menu_shell_append(GTK_MENU_SHELL(optionPDMenu),run_option);
      g_signal_connect(G_OBJECT(run_option), "activate", G_CALLBACK(Run_option), NULL);
 
-     compiler_option = gtk_menu_item_new_with_label("compiler_option");
+     compiler_option = gtk_menu_item_new_with_label("Ompiler Option");
      gtk_menu_shell_append(GTK_MENU_SHELL(optionPDMenu),compiler_option);
      g_signal_connect(G_OBJECT(compiler_option), "activate", G_CALLBACK(Compiler_option), NULL);
 
-     meta_option = gtk_menu_item_new_with_label("meta_option");
+     meta_option = gtk_menu_item_new_with_label("Meta Option");
      gtk_menu_shell_append(GTK_MENU_SHELL(optionPDMenu),meta_option);
      g_signal_connect(G_OBJECT(meta_option), "activate", G_CALLBACK(Meta_option), NULL);
 
@@ -755,33 +755,35 @@ GtkWidget *goprs_create_menu_bar(GtkWidget *window, Draw_Data *dd, Int_Draw_Data
 */   
      /* Display menu items */
 
-     displayop = gtk_menu_item_new_with_label("displayop");
+     displayop = gtk_menu_item_new_with_label("Display OP");
      gtk_menu_shell_append(GTK_MENU_SHELL(displayPDMenu),displayop);
      g_signal_connect(G_OBJECT(displayop), "activate", G_CALLBACK(Displayop), NULL);
 
-     displayPreviousOp = gtk_menu_item_new_with_label("displayPreviousOp");
+     displayPreviousOp = gtk_menu_item_new_with_label("Display Previous OP");
      gtk_menu_shell_append(GTK_MENU_SHELL(displayPDMenu),displayPreviousOp);
      g_signal_connect(G_OBJECT(displayPreviousOp), "activate", G_CALLBACK(DisplayPreviousOp), dd);
-     displayNextOp = gtk_menu_item_new_with_label("displayNextOp");
+
+     displayNextOp = gtk_menu_item_new_with_label("Display Next OP");
      gtk_menu_shell_append(GTK_MENU_SHELL(displayPDMenu),displayNextOp);
      g_signal_connect(G_OBJECT(displayNextOp), "activate", G_CALLBACK(DisplayNextOp), dd);
 
-     cleartextdisplay = gtk_menu_item_new_with_label("cleartextdisplay");
+     cleartextdisplay = gtk_menu_item_new_with_label("Clear Text Display");
      gtk_menu_shell_append(GTK_MENU_SHELL(displayPDMenu),cleartextdisplay);
      g_signal_connect(G_OBJECT(cleartextdisplay), "activate", G_CALLBACK(Cleartextdisplay),NULL);
-     clearopdisplay = gtk_menu_item_new_with_label("clearopdisplay");
+
+     clearopdisplay = gtk_menu_item_new_with_label("Clear OP Display");
      gtk_menu_shell_append(GTK_MENU_SHELL(displayPDMenu),clearopdisplay);
      g_signal_connect(G_OBJECT(clearopdisplay), "activate", G_CALLBACK(Clearopdisplay), dd);
 
-     clearigdisplay = gtk_menu_item_new_with_label("clearigdisplay");
+     clearigdisplay = gtk_menu_item_new_with_label("Clear IG Display");
      gtk_menu_shell_append(GTK_MENU_SHELL(displayPDMenu),clearigdisplay);
      g_signal_connect(G_OBJECT(clearigdisplay), "activate", G_CALLBACK(Clearigdisplay), idd);
 
-     changemaxtextsize = gtk_menu_item_new_with_label("changemaxtextsize");
+     changemaxtextsize = gtk_menu_item_new_with_label("Change Max Text size");
      gtk_menu_shell_append(GTK_MENU_SHELL(displayPDMenu),changemaxtextsize);
      g_signal_connect(G_OBJECT(changemaxtextsize), "activate", G_CALLBACK(Changemaxtextsize), NULL);
      /* Help menu items */
-     help = gtk_menu_item_new_with_label("help");
+     help = gtk_menu_item_new_with_label("Help");
      gtk_menu_shell_append(GTK_MENU_SHELL(helpPDMenu),help);
      g_signal_connect(G_OBJECT(help), "activate", G_CALLBACK(infoHelp), NULL);
 
