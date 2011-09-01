@@ -149,6 +149,37 @@ Widget make_xoprs_ut_window()
 }
 
 
+Widget debug_trace_widget_array[MAX_DEBUG];
+
+char *debug_trace_widget_name_array [MAX_DEBUG];
+
+static void init_debug_trace_widget_name_array()
+{
+     debug_trace_widget_name_array[POST_GOAL] = "Post Goal";
+     debug_trace_widget_name_array[POST_FACT] = "Post Fact";
+     debug_trace_widget_name_array[RECEIVE_MESSAGE] = "Receive Message";
+     debug_trace_widget_name_array[SEND_MESSAGE] = "Send Message";
+     debug_trace_widget_name_array[DATABASE_FRAME] = "Database Frame";
+     debug_trace_widget_name_array[DATABASE] = "Database";
+     debug_trace_widget_name_array[CONCLUDE_FROM_PARSER] = "Conclude From Parser";
+     debug_trace_widget_name_array[SUC_FAIL] = "Success/Failure of OP";
+     debug_trace_widget_name_array[INTENTION_FAILURE] = "Intention Failure";
+     debug_trace_widget_name_array[INT_FAIL_BIND] = "Intention Failue with Binding";
+     debug_trace_widget_name_array[INTEND] = "Intend";
+     debug_trace_widget_name_array[OP_COMPILER] = "OP Compiler";
+     debug_trace_widget_name_array[RELEVANT_OP] = "Relevant OP";
+     debug_trace_widget_name_array[SOAK] = "Soak";
+     debug_trace_widget_name_array[GRAPHIC_OP] = "Graphic OP";
+     debug_trace_widget_name_array[TEXT_OP] = "Text OP";
+     debug_trace_widget_name_array[GRAPHIC_INTEND] = "Graphic Intention";
+     debug_trace_widget_name_array[THREADING] = "Threading";
+#ifdef OPRS_DEBUG
+     debug_trace_widget_name_array[DATABASE_KEY] = "Database Key";
+#else 
+     debug_trace_widget_name_array[DATABASE_KEY] = NULL;
+#endif
+}
+
 void xpDisplayNextOp(Draw_Data *dd)
 {
      PBoolean next = FALSE;
@@ -213,7 +244,7 @@ void xpDisplayPreviousOp(Draw_Data *dd)
 /*     } */
 /* } */
 
-Widget create_dialog(const gchar *title, GtkWindow *parent, Widget *Entry)
+Widget create_dialog_with_combo_box_entry(const gchar *title, GtkWindow *parent, Widget *Entry)
 {
   Widget dialog = 
     gtk_dialog_new_with_buttons(title,
@@ -240,7 +271,7 @@ Widget create_dialog(const gchar *title, GtkWindow *parent, Widget *Entry)
   return dialog;
 }
 
-void dialog_show(Widget dialog, Widget entry, const gchar *command)
+void show_dialog_with_combo_box_entry(Widget dialog, Widget entry, const gchar *command)
 {  
   gtk_widget_show_all (dialog);
   gint result = gtk_dialog_run (GTK_DIALOG (dialog));
@@ -270,12 +301,78 @@ void dialog_show(Widget dialog, Widget entry, const gchar *command)
 
 void xp_create_dialogs(Widget parent)
 {
-  addFactGoalDialog = create_dialog("Add fact or goal",	GTK_WINDOW(parent), &addfactGoalEntry);
-  consultDBDialog = create_dialog("Consult Database", GTK_WINDOW(parent), &consultDBEntry);
-  concludeDBDialog = create_dialog("Assert in the Database", GTK_WINDOW(parent), &concludeDBEntry);
-  deleteDBDialog = create_dialog("Delete Fact(s) in the Database", GTK_WINDOW(parent), &deleteDBEntry);
-  consultOPDialog = create_dialog("Consult Relevant OP", GTK_WINDOW(parent), &consultOPEntry);
-  consultAOPDialog = create_dialog("Consult Applicable OP", GTK_WINDOW(parent), &consultAOPEntry);
+  addFactGoalDialog = create_dialog_with_combo_box_entry("Add fact or goal",	GTK_WINDOW(parent), &addfactGoalEntry);
+  consultDBDialog = create_dialog_with_combo_box_entry("Consult Database", GTK_WINDOW(parent), &consultDBEntry);
+  concludeDBDialog = create_dialog_with_combo_box_entry("Assert in the Database", GTK_WINDOW(parent), &concludeDBEntry);
+  deleteDBDialog = create_dialog_with_combo_box_entry("Delete Fact(s) in the Database", GTK_WINDOW(parent), &deleteDBEntry);
+  consultOPDialog = create_dialog_with_combo_box_entry("Consult Relevant OP", GTK_WINDOW(parent), &consultOPEntry);
+  consultAOPDialog = create_dialog_with_combo_box_entry("Consult Applicable OP", GTK_WINDOW(parent), &consultAOPEntry);
+
+  xpTraceDialog = gtk_dialog_new_with_buttons("OpenPRS Trace",
+					      GTK_WINDOW(parent),
+					      GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+					      GTK_STOCK_OK,
+					      GTK_RESPONSE_ACCEPT,
+					      GTK_STOCK_CANCEL,
+					      GTK_RESPONSE_REJECT,
+					      NULL);
+  
+  GtkWidget *content_area = gtk_dialog_get_content_area(GTK_DIALOG(xpTraceDialog));
+  
+  GtkWidget *label = gtk_label_new("Open PRS Trace");
+  gtk_container_add (GTK_CONTAINER (content_area), label);
+
+  init_debug_trace_widget_name_array();
+  
+  int i;
+
+  for(i = 0; i < MAX_DEBUG; i++) {
+    if (debug_trace_widget_name_array[i] != NULL) { /* We only create  the "named" one */
+      debug_trace_widget_array[i] = gtk_check_button_new_with_label(debug_trace_widget_name_array[i]);
+      gtk_container_add (GTK_CONTAINER (content_area), debug_trace_widget_array[i]);
+    }
+  }
+  //  gtk_widget_show_all(xpTraceDialog);
+}
+
+
+void xpTraceDialogShow()
+{
+  int i;
+
+  for (i = 0; i < MAX_DEBUG; i++) {
+    if (debug_trace_widget_name_array[i])
+      gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(debug_trace_widget_array[i]),debug_trace[i]);
+  }
+
+  gtk_widget_show_all(xpTraceDialog);
+  
+  gint result = gtk_dialog_run (GTK_DIALOG (xpTraceDialog));
+  switch (result)
+    {
+    case GTK_RESPONSE_ACCEPT: {
+      if ((! debug_trace[GRAPHIC_INTEND])
+	  && gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(debug_trace_widget_array[GRAPHIC_INTEND]))
+	  && global_int_draw_data) {
+	rebuilt_intention_graph_graphic(global_int_draw_data->ig);
+      }
+      if (debug_trace[GRAPHIC_INTEND]
+	  && ( ! (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(debug_trace_widget_array[GRAPHIC_INTEND]))))
+	  && global_int_draw_data) {
+	// gtk XClearWindow(XtDisplay(global_int_draw_data->canvas), XtWindow(global_int_draw_data->canvas));
+      }
+
+      for (i = 0; i < MAX_DEBUG; i++) {
+	if (debug_trace_widget_name_array[i])
+	  debug_trace[i] = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(debug_trace_widget_array[i]));
+      }
+   }
+      break;
+    default:
+      break;
+    }
+  
+  gtk_widget_hide (xpTraceDialog);
 }
 
 
@@ -697,37 +794,6 @@ void quitQuestionManage()
 void ReallyReset(Widget w, XtPointer oprs, XtPointer call_data)
 {
      reset_oprs_kernel((Oprs *)oprs);
-}
-
-Widget debug_trace_widget_array[MAX_DEBUG];
-
-char *debug_trace_widget_name_array [MAX_DEBUG];
-
-static void init_debug_trace_widget_name_array()
-{
-     debug_trace_widget_name_array[POST_GOAL] = "tracePostGoal";
-     debug_trace_widget_name_array[POST_FACT] = "tracePostFact";
-     debug_trace_widget_name_array[RECEIVE_MESSAGE] = "traceReceiveMessage";
-     debug_trace_widget_name_array[SEND_MESSAGE] = "traceSendMessage";
-     debug_trace_widget_name_array[DATABASE_FRAME] = "traceDatabaseFrame";
-     debug_trace_widget_name_array[DATABASE] = "traceDatabase";
-     debug_trace_widget_name_array[CONCLUDE_FROM_PARSER] = "traceConcludeFromParser";
-     debug_trace_widget_name_array[SUC_FAIL] = "traceSucFail";
-     debug_trace_widget_name_array[INTENTION_FAILURE] = "traceInFail";
-     debug_trace_widget_name_array[INT_FAIL_BIND] = "traceInFailBind";
-     debug_trace_widget_name_array[INTEND] = "traceIntend";
-     debug_trace_widget_name_array[OP_COMPILER] = "traceOpCompiler";
-     debug_trace_widget_name_array[RELEVANT_OP] = "traceRelevantOp";
-     debug_trace_widget_name_array[SOAK] = "traceSoak";
-     debug_trace_widget_name_array[GRAPHIC_OP] = "traceGraphicOp";
-     debug_trace_widget_name_array[TEXT_OP] = "traceTextOp";
-     debug_trace_widget_name_array[GRAPHIC_INTEND] = "traceGraphicIntend";
-     debug_trace_widget_name_array[THREADING] = "traceThreading";
-#ifdef OPRS_DEBUG
-     debug_trace_widget_name_array[DATABASE_KEY] = "traceDatabaseKey";
-#else 
-     debug_trace_widget_name_array[DATABASE_KEY] = NULL;
-#endif
 }
 
 #ifdef OPRS_PROFILING
