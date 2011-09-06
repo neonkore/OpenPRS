@@ -254,12 +254,12 @@ void Xp_loadddb(Widget w, XtPointer client_data, XtPointer call_data)
 
 void Xp_unloadop(Widget w, XtPointer client_data, XtPointer call_data)
 { 
-  //gtk xpUnloadOpaDialogManage();     
+  xpOPFUnloadDialogShow();     
 }
 
 void Xp_reloadop(Widget w, XtPointer client_data, XtPointer call_data)
 { 
-  //gtk xpReloadOpDialogManage();     
+  xpOPFReloadDialogShow();     
 }
 
 void Xp_listopfs(Widget w, XtPointer client_data, XtPointer call_data)
@@ -306,7 +306,7 @@ void Optrace(Widget w, XtPointer client_data, XtPointer call_data)
  */
 void Meta_option(Widget w, XtPointer client_data, XtPointer call_data)
 { 
-  //gtk xpMetaOptionDialogManage();
+  xpMetaOptionDialogShow();
 }
 
 /*
@@ -332,7 +332,7 @@ void Profiling_option(Widget w, XtPointer client_data, XtPointer call_data)
  */
 void Compiler_option(Widget w, XtPointer client_data, XtPointer call_data)
 { 
-  //gtk xpCompilerOptionDialogManage();
+  xpCompilerOptionDialogShow();
 }
 
 /*
@@ -340,7 +340,7 @@ void Compiler_option(Widget w, XtPointer client_data, XtPointer call_data)
  */
 void Run_option(Widget w, XtPointer client_data, XtPointer call_data)
 { 
-  //gtk xpRunOptionDialogManage();
+  xpRunOptionDialogShow();
 }
 
 /*
@@ -717,11 +717,11 @@ GtkWidget *goprs_create_menu_bar(GtkWidget *window, Draw_Data *dd, Int_Draw_Data
 
   /* Trace menu items */
 
-  oprstrace = gtk_menu_item_new_with_label("oprstrace");
+  oprstrace = gtk_menu_item_new_with_label("Open PRS Trace");
   gtk_menu_shell_append(GTK_MENU_SHELL(tracePDMenu),oprstrace);
   g_signal_connect(G_OBJECT(oprstrace), "activate", G_CALLBACK(Oprstrace), NULL);
 
-  optrace = gtk_menu_item_new_with_label("optrace");
+  optrace = gtk_menu_item_new_with_label("OPs Trace");
   gtk_menu_shell_append(GTK_MENU_SHELL(tracePDMenu),optrace);
   g_signal_connect(G_OBJECT(optrace), "activate", G_CALLBACK(Optrace), NULL);
 
@@ -733,15 +733,15 @@ GtkWidget *goprs_create_menu_bar(GtkWidget *window, Draw_Data *dd, Int_Draw_Data
 
   /* Option menu items */
 
-  run_option = gtk_menu_item_new_with_label("Run Option");
+  run_option = gtk_menu_item_new_with_label("Run Options");
   gtk_menu_shell_append(GTK_MENU_SHELL(optionPDMenu),run_option);
   g_signal_connect(G_OBJECT(run_option), "activate", G_CALLBACK(Run_option), NULL);
 
-  compiler_option = gtk_menu_item_new_with_label("Ompiler Option");
+  compiler_option = gtk_menu_item_new_with_label("Compiler Options");
   gtk_menu_shell_append(GTK_MENU_SHELL(optionPDMenu),compiler_option);
   g_signal_connect(G_OBJECT(compiler_option), "activate", G_CALLBACK(Compiler_option), NULL);
 
-  meta_option = gtk_menu_item_new_with_label("Meta Option");
+  meta_option = gtk_menu_item_new_with_label("Meta Options");
   gtk_menu_shell_append(GTK_MENU_SHELL(optionPDMenu),meta_option);
   g_signal_connect(G_OBJECT(meta_option), "activate", G_CALLBACK(Meta_option), NULL);
 

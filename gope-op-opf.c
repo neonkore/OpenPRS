@@ -514,7 +514,7 @@ add_to_opflist(GtkWidget *list, const gchar *str, OPFile *opf)
   GtkTreeIter iter;
 
   opfStore = GTK_LIST_STORE(gtk_tree_view_get_model
-      (GTK_TREE_VIEW(list)));
+			    (GTK_TREE_VIEW(list)));
 
   gtk_list_store_append(opfStore, &iter);
   gtk_list_store_set(opfStore, &iter, LIST_ITEM, str, LIST_POINTER, (gpointer)opf, -1);

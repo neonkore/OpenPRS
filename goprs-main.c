@@ -653,6 +653,8 @@ int main(int argc, char **argv, char **envp)
 
   register_main_loop(oprs,FALSE);   /* this will register the main loop as an idle func.  */
 
+  // test10  do_list_store(topLevelWindow);
+
   gtk_main();
 
   return 0;

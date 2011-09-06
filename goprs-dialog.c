@@ -100,8 +100,8 @@ Widget xpGraphicOpScrollList;
 
 Widget xpDisplaySelectOpDialog;
 Widget xpDeleteSelectOpDialog;
-Widget xpUnloadOpDialog;
-Widget xpReloadOpDialog;
+Widget xpOPFUnloadDialog, OPFUnloadOPFList;
+Widget xpOPFReloadDialog, OPFReloadOPFList;
 Widget trace_radiobox, text_radiobutton, graphic_radiobutton, both_radiobutton, all_radiobutton, step_radiobutton;
 
 void updateSensitiveMetaOptionButtons(PBoolean meta_level_is_on);
@@ -178,6 +178,40 @@ static void init_debug_trace_widget_name_array()
 #else 
      debug_trace_widget_name_array[DATABASE_KEY] = NULL;
 #endif
+}
+
+char *meta_option_widget_name_array [MAX_META_OPTION];
+Widget meta_option_widget_array [MAX_META_OPTION];
+
+static void init_meta_option_widget_name_array()
+{
+     meta_option_widget_name_array[META_LEVEL] = "Meta Level";
+     meta_option_widget_name_array[SOAK_MF] = "Soak MF";
+     meta_option_widget_name_array[FACT_INV] = "Fact Inv";
+     meta_option_widget_name_array[GOAL_INV] = "Goal Inv";
+     meta_option_widget_name_array[APP_OPS_FACT] = "App OPs Fact";
+     meta_option_widget_name_array[APP_OPS_GOAL] = "App OPs Goal";
+}
+
+char *compiler_option_widget_name_array [MAX_COMPILER_OPTION];
+Widget compiler_option_widget_array [MAX_COMPILER_OPTION];
+
+static void init_compiler_option_widget_name_array()
+{
+     compiler_option_widget_name_array[CHECK_ACTION] = "Check Action";
+     compiler_option_widget_name_array[CHECK_PFR] = "Check Pred/Func";
+     compiler_option_widget_name_array[CHECK_SYMBOL] = "Check Symbol";
+}
+
+char *run_option_widget_name_array [MAX_RUN_OPTION];
+Widget run_option_widget_array [MAX_RUN_OPTION];
+
+static void init_run_option_widget_name_array()
+{
+     run_option_widget_name_array[EVAL_ON_POST] = "Eval On Post";
+     run_option_widget_name_array[PAR_POST] = "Parralel Post";
+     run_option_widget_name_array[PAR_INTEND] = "Parralel Intend";
+     run_option_widget_name_array[PAR_EXEC] = "Parralel Execution";
 }
 
 void xpDisplayNextOp(Draw_Data *dd)
@@ -299,6 +333,60 @@ void show_dialog_with_combo_box_entry(Widget dialog, Widget entry, const gchar *
   gtk_widget_hide (dialog);
 }
 
+
+enum
+{
+  LIST_OPF_NAME = 0
+};
+
+
+GtkWidget *init_opflist()
+{
+  GtkWidget *opfList;
+  GtkCellRenderer *renderer;
+  GtkTreeViewColumn *column;
+  GtkListStore *opfStore;
+
+  opfList = gtk_tree_view_new();
+  gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(opfList), FALSE);
+
+  // selectionf = gtk_tree_view_get_selection(GTK_TREE_VIEW(opfList));
+
+  /* g_signal_connect(selectionf, "changed",  */
+  /* 		   G_CALLBACK(on_changed_opflist), labelf); */
+
+  renderer = gtk_cell_renderer_text_new();
+  column = gtk_tree_view_column_new_with_attributes("OP File List",
+          renderer, "text", LIST_OPF_NAME, NULL);
+  gtk_tree_view_append_column(GTK_TREE_VIEW(opfList), column);
+
+  opfStore = gtk_list_store_new(1, G_TYPE_STRING);
+
+  gtk_tree_view_set_model(GTK_TREE_VIEW(opfList), 
+      GTK_TREE_MODEL(opfStore));
+
+  g_object_unref(opfStore);
+
+  return opfList;
+}
+
+void update_opflist(GtkWidget *opfList)
+{
+  GtkListStore *opfStore;
+  GtkTreeIter iter;
+  char *opf;
+
+  opfStore = GTK_LIST_STORE(gtk_tree_view_get_model
+			    (GTK_TREE_VIEW(opfList)));
+  gtk_list_store_clear(opfStore);
+
+  sl_loop_through_slist(current_oprs->relevant_op->opf_list, opf, char *) {
+    gtk_list_store_append(opfStore, &iter);
+    gtk_list_store_set(opfStore, &iter, LIST_OPF_NAME, opf, -1);
+  }
+}
+
+
 void xp_create_dialogs(Widget parent)
 {
   addFactGoalDialog = create_dialog_with_combo_box_entry("Add fact or goal",	GTK_WINDOW(parent), &addfactGoalEntry);
@@ -332,9 +420,182 @@ void xp_create_dialogs(Widget parent)
       gtk_container_add (GTK_CONTAINER (content_area), debug_trace_widget_array[i]);
     }
   }
-  //  gtk_widget_show_all(xpTraceDialog);
+   
+  xpMetaOptionDialog = gtk_dialog_new_with_buttons("Meta Level Options",
+						   GTK_WINDOW(parent),
+						   GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+						   GTK_STOCK_OK,
+						   GTK_RESPONSE_ACCEPT,
+						   GTK_STOCK_CANCEL,
+						   GTK_RESPONSE_REJECT,
+						   NULL);
+  
+  content_area = gtk_dialog_get_content_area(GTK_DIALOG(xpMetaOptionDialog));
+  
+  label = gtk_label_new("Meta Level Options");
+  gtk_container_add (GTK_CONTAINER (content_area), label);
+
+  init_meta_option_widget_name_array();
+  
+  for(i = 0; i < MAX_META_OPTION; i++) {
+    if (meta_option_widget_name_array[i] != NULL) { /* We only create  the "named" one */
+      meta_option_widget_array[i] = gtk_check_button_new_with_label(meta_option_widget_name_array[i]);
+      gtk_container_add (GTK_CONTAINER (content_area), meta_option_widget_array[i]);
+    }
+  }
+   
+  xpRunOptionDialog = gtk_dialog_new_with_buttons("Run Options",
+						  GTK_WINDOW(parent),
+						  GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+						  GTK_STOCK_OK,
+						  GTK_RESPONSE_ACCEPT,
+						  GTK_STOCK_CANCEL,
+						  GTK_RESPONSE_REJECT,
+						  NULL);
+  
+  content_area = gtk_dialog_get_content_area(GTK_DIALOG(xpRunOptionDialog));
+  
+  label = gtk_label_new("Run Options");
+  gtk_container_add (GTK_CONTAINER (content_area), label);
+
+  init_run_option_widget_name_array();
+  
+  for(i = 0; i < MAX_RUN_OPTION; i++) {
+    if (run_option_widget_name_array[i] != NULL) { /* We only create  the "named" one */
+      run_option_widget_array[i] = gtk_check_button_new_with_label(run_option_widget_name_array[i]);
+      gtk_container_add (GTK_CONTAINER (content_area), run_option_widget_array[i]);
+    }
+  }
+   
+  xpCompilerOptionDialog = gtk_dialog_new_with_buttons("Compiler Options",
+						       GTK_WINDOW(parent),
+						       GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+						       GTK_STOCK_OK,
+						       GTK_RESPONSE_ACCEPT,
+						       GTK_STOCK_CANCEL,
+						       GTK_RESPONSE_REJECT,
+						       NULL);
+  
+  content_area = gtk_dialog_get_content_area(GTK_DIALOG(xpCompilerOptionDialog));
+  
+  label = gtk_label_new("Compiler Options");
+  gtk_container_add (GTK_CONTAINER (content_area), label);
+
+  init_compiler_option_widget_name_array();
+
+  for(i = 0; i < MAX_COMPILER_OPTION; i++) {
+    if (compiler_option_widget_name_array[i] != NULL) { /* We only create  the "named" one */
+      compiler_option_widget_array[i] = gtk_check_button_new_with_label(compiler_option_widget_name_array[i]);
+      gtk_container_add (GTK_CONTAINER (content_area), compiler_option_widget_array[i]);
+    }
+  }
+
+
+  xpOPFUnloadDialog = gtk_dialog_new_with_buttons("Select OP File to unload",
+						  GTK_WINDOW(parent),
+						  GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+						  GTK_STOCK_OK,
+						  GTK_RESPONSE_ACCEPT,
+						  GTK_STOCK_CANCEL,
+						  GTK_RESPONSE_REJECT,
+						  NULL);
+  
+  content_area = gtk_dialog_get_content_area(GTK_DIALOG(xpOPFUnloadDialog));
+  
+  label = gtk_label_new("Select OP File to unload");
+  gtk_container_add (GTK_CONTAINER (content_area), label);
+
+  OPFUnloadOPFList =  init_opflist();
+  gtk_container_add (GTK_CONTAINER (content_area), OPFUnloadOPFList);
+
+  xpOPFReloadDialog = gtk_dialog_new_with_buttons("Select OP File to reload",
+						  GTK_WINDOW(parent),
+						  GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+						  GTK_STOCK_OK,
+						  GTK_RESPONSE_ACCEPT,
+						  GTK_STOCK_CANCEL,
+						  GTK_RESPONSE_REJECT,
+						  NULL);
+  
+  content_area = gtk_dialog_get_content_area(GTK_DIALOG(xpOPFReloadDialog));
+  
+  label = gtk_label_new("Select OP File to reload");
+  gtk_container_add (GTK_CONTAINER (content_area), label);
+
+  OPFReloadOPFList =  init_opflist();
+  gtk_container_add (GTK_CONTAINER (content_area), OPFReloadOPFList);
 }
 
+
+void xpOPFUnloadDialogShow()
+{
+  update_opflist(OPFUnloadOPFList);
+
+  gtk_widget_show_all(xpOPFUnloadDialog);
+  
+  gint result = gtk_dialog_run (GTK_DIALOG (xpOPFUnloadDialog));
+  switch (result)
+    {
+    case GTK_RESPONSE_ACCEPT: {
+      GtkTreeIter iter;
+      GtkTreeModel *model;
+      char *opf_name;
+      OPFile *opf;
+
+      if (gtk_tree_selection_get_selected(gtk_tree_view_get_selection(GTK_TREE_VIEW(OPFUnloadOPFList)), &model, &iter)) {
+	gtk_tree_model_get(model, &iter, LIST_OPF_NAME, &opf_name,  -1);
+	
+	if (strcmp(opf_name, "") != 0) {
+	  char *s = (char *)MALLOC(strlen(opf_name) + 20);
+	  sprintf(s,"delete opf \"%s\"\n", opf_name);
+	  send_command_to_parser(s);
+	  FREE(s);
+	}
+	g_free(opf_name);
+      }
+    }
+      break;
+    default:
+      break;
+    }
+  
+  gtk_widget_hide (xpOPFUnloadDialog);
+}
+
+void xpOPFReloadDialogShow()
+{
+  update_opflist(OPFReloadOPFList);
+
+  gtk_widget_show_all(xpOPFReloadDialog);
+  
+  gint result = gtk_dialog_run (GTK_DIALOG (xpOPFReloadDialog));
+  switch (result)
+    {
+    case GTK_RESPONSE_ACCEPT: {
+      GtkTreeIter iter;
+      GtkTreeModel *model;
+      char *opf_name;
+      OPFile *opf;
+
+      if (gtk_tree_selection_get_selected(gtk_tree_view_get_selection(GTK_TREE_VIEW(OPFReloadOPFList)), &model, &iter)) {
+	gtk_tree_model_get(model, &iter, LIST_OPF_NAME, &opf_name,  -1);
+	
+	if (strcmp(opf_name, "") != 0) {
+	  char *s = (char *)MALLOC(strlen(opf_name) + 20);
+	  sprintf(s,"reload opf \"%s\"\n", opf_name);
+	  send_command_to_parser(s);
+	  FREE(s);
+	}
+	g_free(opf_name);
+      }
+    }
+      break;
+    default:
+      break;
+    }
+  
+  gtk_widget_hide (xpOPFReloadDialog);
+}
 
 void xpTraceDialogShow()
 {
@@ -373,6 +634,92 @@ void xpTraceDialogShow()
     }
   
   gtk_widget_hide (xpTraceDialog);
+}
+
+void xpMetaOptionDialogShow()
+{
+  int i;
+
+  for (i = 0; i < MAX_META_OPTION; i++) {
+    if (meta_option_widget_name_array[i])
+      gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(meta_option_widget_array[i]),meta_option[i]);
+  }
+
+  gtk_widget_show_all(xpMetaOptionDialog);
+  
+  gint result = gtk_dialog_run (GTK_DIALOG (xpMetaOptionDialog));
+  switch (result)
+    {
+    case GTK_RESPONSE_ACCEPT: {
+      for (i = 0; i < MAX_META_OPTION; i++) {
+	if (meta_option_widget_name_array[i])
+	  meta_option[i] = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(meta_option_widget_array[i]));
+      }
+   }
+      break;
+    default:
+      break;
+    }
+  
+  gtk_widget_hide (xpMetaOptionDialog);
+}
+
+
+void xpRunOptionDialogShow()
+{
+  int i;
+
+  for (i = 0; i < MAX_RUN_OPTION; i++) {
+    if (run_option_widget_name_array[i])
+      gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(run_option_widget_array[i]),run_option[i]);
+  }
+
+  gtk_widget_show_all(xpRunOptionDialog);
+  
+  gint result = gtk_dialog_run (GTK_DIALOG (xpRunOptionDialog));
+  switch (result)
+    {
+    case GTK_RESPONSE_ACCEPT: {
+      for (i = 0; i < MAX_RUN_OPTION; i++) {
+	if (run_option_widget_name_array[i])
+	  run_option[i] = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(run_option_widget_array[i]));
+      }
+   }
+      break;
+    default:
+      break;
+    }
+  
+  gtk_widget_hide (xpRunOptionDialog);
+}
+
+
+void xpCompilerOptionDialogShow()
+{
+  int i;
+
+  for (i = 0; i < MAX_COMPILER_OPTION; i++) {
+    if (compiler_option_widget_name_array[i])
+      gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(compiler_option_widget_array[i]),compiler_option[i]);
+  }
+
+  gtk_widget_show_all(xpCompilerOptionDialog);
+  
+  gint result = gtk_dialog_run (GTK_DIALOG (xpCompilerOptionDialog));
+  switch (result)
+    {
+    case GTK_RESPONSE_ACCEPT: {
+      for (i = 0; i < MAX_COMPILER_OPTION; i++) {
+	if (compiler_option_widget_name_array[i])
+	  compiler_option[i] = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(compiler_option_widget_array[i]));
+      }
+   }
+      break;
+    default:
+      break;
+    }
+  
+  gtk_widget_hide (xpCompilerOptionDialog);
 }
 
 
@@ -812,19 +1159,6 @@ static void init_profiling_option_widget_name_array()
 }
 #endif
 
-char *meta_option_widget_name_array [MAX_META_OPTION];
-Widget meta_option_widget_array [MAX_META_OPTION];
-
-static void init_meta_option_widget_name_array()
-{
-     meta_option_widget_name_array[META_LEVEL] = "metaOptionMetaLevel";
-     meta_option_widget_name_array[SOAK_MF] = "metaOptionSoakMF";
-     meta_option_widget_name_array[FACT_INV] = "metaOptionFactInv";
-     meta_option_widget_name_array[GOAL_INV] = "metaOptionGoalInv";
-     meta_option_widget_name_array[APP_OPS_FACT] = "metaOptionAppOpsFact";
-     meta_option_widget_name_array[APP_OPS_GOAL] = "metaOptionAppOpsGoal";
-}
-
 char *user_trace_widget_name_array [MAX_USER_TRACE];
 Widget user_trace_widget_array [MAX_USER_TRACE];
 
@@ -843,27 +1177,6 @@ static void init_user_trace_widget_name_array()
      user_trace_widget_name_array[UT_SOAK] = "userTraceUtSoak";
      user_trace_widget_name_array[UT_OP] = "userTraceUtOp";
      user_trace_widget_name_array[UT_THREADING] = "userTraceUtThreading";
-}
-
-char *compiler_option_widget_name_array [MAX_COMPILER_OPTION];
-Widget compiler_option_widget_array [MAX_COMPILER_OPTION];
-
-static void init_compiler_option_widget_name_array()
-{
-     compiler_option_widget_name_array[CHECK_ACTION] = "compilerOptionCheckAction";
-     compiler_option_widget_name_array[CHECK_PFR] = "compilerOptionCheckPredFunc";
-     compiler_option_widget_name_array[CHECK_SYMBOL] = "compilerOptionCheckSymbol";
-}
-
-char *run_option_widget_name_array [MAX_RUN_OPTION];
-Widget run_option_widget_array [MAX_RUN_OPTION];
-
-static void init_run_option_widget_name_array()
-{
-     run_option_widget_name_array[EVAL_ON_POST] = "runOptionEvalOnPost";
-     run_option_widget_name_array[PAR_POST] = "runOptionParPost";
-     run_option_widget_name_array[PAR_INTEND] = "runOptionParIntend";
-     run_option_widget_name_array[PAR_EXEC] = "runOptionParExec";
 }
 
 void xpTraceDialogManage()
