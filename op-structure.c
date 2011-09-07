@@ -281,7 +281,7 @@ void print_op(Op_Structure *op)
 #ifdef GRAPHIX
      printf(LG_STR("Documentation: ",
 		   "Documentation: "));
-     printf("%s\n", op->documentation);
+     printf("%s\n", (op->documentation?op->documentation:""));
 #endif
      printf(LG_STR("Variables List: ",
 		   "Liste Variables: "));

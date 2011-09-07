@@ -72,11 +72,11 @@ TAGS
 *.rej
 *.orig
 .depend
-autom4te.cache
 config-ac.h.in
 stamp-h.in
 gope
 goprs
-aclocal.m4
 test*
 example-sw.c
+autom4te.cache
+aclocal.m4
