@@ -10,6 +10,14 @@ char *XmStringCreate(char *s)
   return res;
 }
 
+static 
+char *XmStringCreateSimple(char *s)
+{
+  char *res;
+  NEWSTR(s,res);
+  return res;
+}
+
 #define XmStringCreateLtoR(s,cs) XmStringCreate(s)
 
 #define XtMalloc(s) g_malloc(s)

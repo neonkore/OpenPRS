@@ -91,8 +91,7 @@ Widget xpProfilingOptionDialog;
 Widget xpCompilerOptionDialog;
 Widget xpRunOptionDialog;
 /* Widget xpTextOpMenu; */
-Widget xpTraceOpDialog;
-Widget xpTraceOpScrollList;
+Widget xpTraceOPDialog, xpTraceOPList;
 /*
 Widget xpGraphicOpDialog;
 Widget xpGraphicOpScrollList;
@@ -333,11 +332,227 @@ void show_dialog_with_combo_box_entry(Widget dialog, Widget entry, const gchar *
   gtk_widget_hide (dialog);
 }
 
+char *file_basename(char *file_name)
+{
+    char *index;
+
+    index = strrchr(file_name,'/'); /* search for / backward. */
+    if (!index) 
+	 index = file_name; /* Cannot find one... bad news... take the whole thing. */
+    else 
+	 index = index+1;	/* To remove the / */
+
+    return index;
+}
+
+PBoolean sort_op_opf(Op_Structure *op1, Op_Structure *op2)
+{
+     int file_cmp;
+     char *file_name1 = file_basename(op1->file_name);
+     char *file_name2 = file_basename(op2->file_name);
+
+     if ((file_cmp = strcmp(file_name1,file_name2)) == 0) 
+	  return (strcmp(op1->name,op2->name) < 0);
+     else
+	  return (file_cmp < 0);
+}
+
+void build_op_xms_name(Op_Structure *op) /* in xoprs xms contains the name of the file and the name of the OP */
+{
+    static Sprinter *sp = NULL;
+    char *index;
+    
+    if (!sp) sp = make_sprinter(0);
+    else reset_sprinter(sp);
+
+    
+    index = file_basename(op->file_name);
+    SPRINT(sp,strlen(index) + strlen(op->name) + 4, sprintf(f,"[%s] %s", index, op->name));
+    op->xms_name = XmStringCreateSimple(SPRINTER_STRING(sp));
+}
+
+
+enum
+{
+  COLUMN_OP_NAME,
+  COLUMN_OP_POINTER,
+  COLUMN_TEXT_TRACE,
+  COLUMN_GRAPHIC_TRACE,
+  COLUMN_STEP_TRACE,
+  NUM_COLUMNS
+};
 
 enum
 {
   LIST_OPF_NAME = 0
 };
+
+static void
+trace_toggled (GtkCellRendererToggle *cell, gchar *path_str, gpointer data, int trace)
+{
+  GtkTreeModel *model = (GtkTreeModel *)data;
+  GtkTreeIter  iter;
+  GtkTreePath *path = gtk_tree_path_new_from_string (path_str);
+  gboolean flag;
+  Op_Structure *op;
+
+  /* get toggled iter */
+  gtk_tree_model_get_iter (model, &iter, path);
+  gtk_tree_model_get(model, &iter, 
+		     trace, &flag,
+		     COLUMN_OP_POINTER, &op,
+		     -1);
+  /* Flip the value */
+  flag ^= 1;
+
+  switch (trace)
+    {
+    case COLUMN_TEXT_TRACE:
+      op->text_traced = flag; 
+      break;
+    case COLUMN_GRAPHIC_TRACE:
+      op->graphic_traced = flag; 
+      break;
+    case COLUMN_STEP_TRACE:
+      op->step_traced = flag; 
+      break;
+    default:
+      break;
+    }
+
+  /* set new value */
+  gtk_list_store_set (GTK_LIST_STORE (model), &iter, trace, flag, -1);
+
+  /* clean up */
+  gtk_tree_path_free (path);
+}
+
+
+static void
+text_trace_toggled (GtkCellRendererToggle *cell, gchar *path_str, gpointer data)
+{
+  trace_toggled (cell, path_str, data, COLUMN_TEXT_TRACE);
+}
+
+static void
+graphic_trace_toggled (GtkCellRendererToggle *cell, gchar *path_str, gpointer data)
+{
+  trace_toggled (cell, path_str, data, COLUMN_GRAPHIC_TRACE);
+}
+
+static void
+step_trace_toggled (GtkCellRendererToggle *cell, gchar *path_str, gpointer data)
+{
+  trace_toggled (cell, path_str, data, COLUMN_STEP_TRACE);
+}
+
+
+GtkWidget *init_oplist()
+{
+  GtkWidget *opList;
+  GtkCellRenderer *renderer;
+  GtkTreeViewColumn *column;
+  GtkListStore *opStore;
+
+  opList = gtk_tree_view_new();
+
+  opStore = gtk_list_store_new (NUM_COLUMNS,
+				G_TYPE_STRING,
+				G_TYPE_POINTER,
+				G_TYPE_BOOLEAN,
+				G_TYPE_BOOLEAN,
+				G_TYPE_BOOLEAN);
+
+  gtk_tree_view_set_model(GTK_TREE_VIEW(opList), 
+      GTK_TREE_MODEL(opStore));
+
+  g_object_unref(opStore);
+  gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(opList), TRUE);
+
+  //  selectionf = gtk_tree_view_get_selection(GTK_TREE_VIEW(opfList));
+
+  //  g_signal_connect(gtk_tree_view_get_selection(GTK_TREE_VIEW(opfList)), "changed", 
+  //		   G_CALLBACK(on_changed_opflist), labelf);
+
+  renderer = gtk_cell_renderer_text_new();
+  column = gtk_tree_view_column_new_with_attributes("OP List",
+						    renderer, "text", COLUMN_OP_NAME, NULL);
+  gtk_tree_view_column_set_sizing(GTK_TREE_VIEW_COLUMN (column),
+				   GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+  gtk_tree_view_column_set_sort_column_id (column, COLUMN_OP_NAME);
+  gtk_tree_view_append_column(GTK_TREE_VIEW(opList), column); 
+
+  renderer = gtk_cell_renderer_toggle_new ();
+  g_signal_connect (renderer, "toggled",
+                    G_CALLBACK (text_trace_toggled), opStore);
+
+  column = gtk_tree_view_column_new_with_attributes ("Text",
+                                                     renderer,
+                                                     "active", COLUMN_TEXT_TRACE,
+						     NULL);
+  gtk_tree_view_column_set_sizing (GTK_TREE_VIEW_COLUMN (column),
+				   GTK_TREE_VIEW_COLUMN_FIXED);
+  gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 50);
+  gtk_tree_view_append_column (GTK_TREE_VIEW(opList), column);
+
+
+  renderer = gtk_cell_renderer_toggle_new ();
+  g_signal_connect (renderer, "toggled",
+                    G_CALLBACK (graphic_trace_toggled), opStore);
+
+  column = gtk_tree_view_column_new_with_attributes ("Graphic",
+                                                     renderer,
+                                                     "active", COLUMN_GRAPHIC_TRACE,
+						     NULL);
+  gtk_tree_view_column_set_sizing (GTK_TREE_VIEW_COLUMN (column),
+				   GTK_TREE_VIEW_COLUMN_FIXED);
+  gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 50);
+  gtk_tree_view_append_column (GTK_TREE_VIEW(opList), column);
+
+
+  renderer = gtk_cell_renderer_toggle_new ();
+  g_signal_connect (renderer, "toggled",
+                    G_CALLBACK (step_trace_toggled), opStore);
+
+  column = gtk_tree_view_column_new_with_attributes ("Step",
+                                                     renderer,
+                                                     "active", COLUMN_STEP_TRACE,
+						     NULL);
+  gtk_tree_view_column_set_sizing (GTK_TREE_VIEW_COLUMN (column),
+				   GTK_TREE_VIEW_COLUMN_FIXED);
+  gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 50);
+  gtk_tree_view_append_column (GTK_TREE_VIEW(opList), column);
+
+  return opList;
+}
+
+
+void update_oplist(GtkWidget *opList)
+{
+  GtkListStore *opStore;
+  GtkTreeIter iter;
+  Op_Structure *op;
+
+  opStore = GTK_LIST_STORE(gtk_tree_view_get_model
+			    (GTK_TREE_VIEW(opList)));
+
+  gtk_list_store_clear(opStore);
+
+
+  sl_sort_slist_func(current_oprs->relevant_op->op_list,sort_op_opf);
+  
+  sl_loop_through_slist(current_oprs->relevant_op->op_list, op, Op_Structure *) {
+    if (!op->xms_name) build_op_xms_name(op);
+    gtk_list_store_append(opStore, &iter);
+    gtk_list_store_set(opStore, &iter, 
+		       COLUMN_OP_NAME, op->xms_name, 
+		       COLUMN_OP_POINTER, (gpointer)op,
+		       COLUMN_TEXT_TRACE, op->text_traced, 
+		       COLUMN_GRAPHIC_TRACE, op->graphic_traced, 
+		       COLUMN_STEP_TRACE, op->step_traced, 
+		       -1);
+  }
+}
 
 
 GtkWidget *init_opflist()
@@ -524,6 +739,35 @@ void xp_create_dialogs(Widget parent)
 
   OPFReloadOPFList =  init_opflist();
   gtk_container_add (GTK_CONTAINER (content_area), OPFReloadOPFList);
+
+  xpTraceOPDialog = gtk_dialog_new_with_buttons("Select OP Trace",
+						  GTK_WINDOW(parent),
+						  GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+						  GTK_STOCK_OK,
+						  GTK_RESPONSE_ACCEPT,
+						  NULL);
+  
+  content_area = gtk_dialog_get_content_area(GTK_DIALOG(xpTraceOPDialog));
+  
+  Widget vbox = gtk_vbox_new (FALSE, 8);
+  gtk_container_add (GTK_CONTAINER (content_area), vbox);
+
+  label = gtk_label_new("Select Trace for OP");
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+
+
+  Widget sw = gtk_scrolled_window_new (NULL, NULL);
+  gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw),
+				       GTK_SHADOW_ETCHED_IN);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
+				  GTK_POLICY_NEVER,
+				  GTK_POLICY_AUTOMATIC);
+  gtk_box_pack_start (GTK_BOX (vbox), sw, TRUE, TRUE, 0);
+
+  xpTraceOPList =  init_oplist();
+
+  gtk_container_add (GTK_CONTAINER (sw), xpTraceOPList);
+
 }
 
 
@@ -595,6 +839,16 @@ void xpOPFReloadDialogShow()
     }
   
   gtk_widget_hide (xpOPFReloadDialog);
+}
+void xpTraceOPDialogShow()
+{
+  update_oplist(xpTraceOPList);
+
+  gtk_widget_show_all(xpTraceOPDialog);
+  
+  gtk_dialog_run (GTK_DIALOG (xpTraceOPDialog));
+  
+  gtk_widget_hide (xpTraceOPDialog);
 }
 
 void xpTraceDialogShow()
@@ -748,45 +1002,6 @@ void changeMaxSizeDialogAccept(Widget w, XtPointer client_data, XtPointer call_d
        else
 	    setSizeTextWindow(newsize);
      XtFree (tmp_str);
-}
-
-char *file_basename(char *file_name)
-{
-    char *index;
-
-    index = strrchr(file_name,'/'); /* search for / backward. */
-    if (!index) 
-	 index = file_name; /* Cannot find one... bad news... take the whole thing. */
-    else 
-	 index = index+1;	/* To remove the / */
-
-    return index;
-}
-
-PBoolean sort_op_opf(Op_Structure *op1, Op_Structure *op2)
-{
-     int file_cmp;
-     char *file_name1 = file_basename(op1->file_name);
-     char *file_name2 = file_basename(op2->file_name);
-
-     if ((file_cmp = strcmp(file_name1,file_name2)) == 0) 
-	  return (strcmp(op1->name,op2->name) < 0);
-     else
-	  return (file_cmp < 0);
-}
-
-void build_op_xms_name(Op_Structure *op) /* in xoprs xms contains the name of the file and the name of the OP */
-{
-    static Sprinter *sp = NULL;
-    char *index;
-    
-    if (!sp) sp = make_sprinter(0);
-    else reset_sprinter(sp);
-
-    
-    index = file_basename(op->file_name);
-    SPRINT(sp,strlen(index) + strlen(op->name) + 4, sprintf(f,"[%s] %s", index, op->name));
-    op->xms_name = XmStringCreateSimple(SPRINTER_STRING(sp));
 }
 
 void xpDisplaySelectOpDialogManage(void)

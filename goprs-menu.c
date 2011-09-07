@@ -298,7 +298,7 @@ void Oprstrace(Widget w, XtPointer client_data, XtPointer call_data)
  */
 void Optrace(Widget w, XtPointer client_data, XtPointer call_data)
 { 
-  //gtk xpTraceOpDialogManage();
+  xpTraceOPDialogShow();
 }
 
 /*
@@ -724,6 +724,8 @@ GtkWidget *goprs_create_menu_bar(GtkWidget *window, Draw_Data *dd, Int_Draw_Data
   optrace = gtk_menu_item_new_with_label("OPs Trace");
   gtk_menu_shell_append(GTK_MENU_SHELL(tracePDMenu),optrace);
   g_signal_connect(G_OBJECT(optrace), "activate", G_CALLBACK(Optrace), NULL);
+  gtk_widget_add_accelerator (addFactGoal, "activate", accel_group,
+			      GDK_t, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
 
   if (install_user_trace) {
     user_trace = gtk_menu_item_new_with_label("user_trace");
