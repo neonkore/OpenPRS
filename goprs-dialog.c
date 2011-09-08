@@ -291,16 +291,19 @@ Widget create_dialog_with_combo_box_entry(const gchar *title, GtkWindow *parent,
 
   GtkWidget *content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
   
+  Widget vbox = gtk_vbox_new (FALSE, 8);
+  gtk_container_add (GTK_CONTAINER (content_area), vbox);
+
   GtkWidget *label = gtk_label_new(title);
-  gtk_container_add (GTK_CONTAINER (content_area), label);
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 
   *Entry = gtk_combo_box_entry_new_text();
   //  gtk_entry_set_text(GTK_ENTRY(entry), "");
    /* g_signal_connect (G_OBJECT (*Entry), "key-press-event", */
    /*          G_CALLBACK (on_combo_key_press), dialog); */
    
+  gtk_box_pack_start (GTK_BOX (vbox), *Entry, TRUE, TRUE, 0);
 
-  gtk_container_add(GTK_CONTAINER(content_area), *Entry);
   return dialog;
 }
 
@@ -716,12 +719,15 @@ void xp_create_dialogs(Widget parent)
 						  NULL);
   
   content_area = gtk_dialog_get_content_area(GTK_DIALOG(xpOPFUnloadDialog));
+
+  Widget vbox = gtk_vbox_new (FALSE, 8);
+  gtk_container_add (GTK_CONTAINER (content_area), vbox);
   
   label = gtk_label_new("Select OP File to unload");
-  gtk_container_add (GTK_CONTAINER (content_area), label);
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 
   OPFUnloadOPFList =  init_opflist();
-  gtk_container_add (GTK_CONTAINER (content_area), OPFUnloadOPFList);
+  gtk_box_pack_start (GTK_BOX (vbox), OPFUnloadOPFList, TRUE, TRUE, 0);
 
   xpOPFReloadDialog = gtk_dialog_new_with_buttons("Select OP File to reload",
 						  GTK_WINDOW(parent),
@@ -733,23 +739,26 @@ void xp_create_dialogs(Widget parent)
 						  NULL);
   
   content_area = gtk_dialog_get_content_area(GTK_DIALOG(xpOPFReloadDialog));
+
+  vbox = gtk_vbox_new (FALSE, 8);
+  gtk_container_add (GTK_CONTAINER (content_area), vbox);
   
   label = gtk_label_new("Select OP File to reload");
-  gtk_container_add (GTK_CONTAINER (content_area), label);
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 
   OPFReloadOPFList =  init_opflist();
   gtk_container_add (GTK_CONTAINER (content_area), OPFReloadOPFList);
 
   xpTraceOPDialog = gtk_dialog_new_with_buttons("Select OP Trace",
-						  GTK_WINDOW(parent),
-						  GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-						  GTK_STOCK_OK,
-						  GTK_RESPONSE_ACCEPT,
-						  NULL);
+						GTK_WINDOW(parent),
+						GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+						GTK_STOCK_OK,
+						GTK_RESPONSE_ACCEPT,
+						NULL);
   
   content_area = gtk_dialog_get_content_area(GTK_DIALOG(xpTraceOPDialog));
   
-  Widget vbox = gtk_vbox_new (FALSE, 8);
+  vbox = gtk_vbox_new (FALSE, 8);
   gtk_container_add (GTK_CONTAINER (content_area), vbox);
 
   label = gtk_label_new("Select Trace for OP");
@@ -762,7 +771,11 @@ void xp_create_dialogs(Widget parent)
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
 				  GTK_POLICY_NEVER,
 				  GTK_POLICY_AUTOMATIC);
+  gtk_widget_set_size_request(sw, -1 , 250);
+
   gtk_box_pack_start (GTK_BOX (vbox), sw, TRUE, TRUE, 0);
+
+  
 
   xpTraceOPList =  init_oplist();
 

@@ -724,7 +724,7 @@ GtkWidget *goprs_create_menu_bar(GtkWidget *window, Draw_Data *dd, Int_Draw_Data
   optrace = gtk_menu_item_new_with_label("OPs Trace");
   gtk_menu_shell_append(GTK_MENU_SHELL(tracePDMenu),optrace);
   g_signal_connect(G_OBJECT(optrace), "activate", G_CALLBACK(Optrace), NULL);
-  gtk_widget_add_accelerator (addFactGoal, "activate", accel_group,
+  gtk_widget_add_accelerator (optrace, "activate", accel_group,
 			      GDK_t, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
 
   if (install_user_trace) {

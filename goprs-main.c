@@ -518,7 +518,7 @@ int main(int argc, char **argv, char **envp)
 
   
   GtkWidget *vpaned = gtk_vpaned_new ();
-  gtk_box_pack_start(GTK_BOX(vbox), vpaned, TRUE, TRUE, 1); /* add a menubar to the main vbox */
+  gtk_box_pack_start(GTK_BOX(vbox), vpaned, TRUE, TRUE, 1); /* add a vertical paned to the main vbox */
 
 
   hbox = gtk_hbox_new(FALSE, 0);
@@ -562,13 +562,17 @@ int main(int argc, char **argv, char **envp)
   oprsMenu = create_tool_bar(topLevelWindow, &dd);
   gtk_box_pack_start(GTK_BOX(hbox), oprsMenu, FALSE, FALSE, 1); /* add a oprsMenu at the left  */
 
+  
+  GtkWidget *hpaned = gtk_hpaned_new ();
+  gtk_box_pack_start(GTK_BOX(hbox), hpaned, TRUE, TRUE, 1); /* add an vertical horizontal pane to the main hbox */
+
   textSWindow = gtk_scrolled_window_new(NULL, NULL); /* create the text  window in this hbox */
-  gtk_box_pack_start(GTK_BOX(hbox), textSWindow, TRUE, TRUE, 1);
+  gtk_paned_pack1 (GTK_PANED (hpaned), textSWindow, TRUE, FALSE);
   textview = gtk_text_view_new ();
   gtk_container_add (GTK_CONTAINER (textSWindow), textview);
 
   intDrawWin = gtk_scrolled_window_new(NULL, NULL); /* create the int graph window in this hbox */
-  gtk_box_pack_start(GTK_BOX(hbox), intDrawWin, TRUE, TRUE, 1);
+  gtk_paned_pack2 (GTK_PANED (hpaned), intDrawWin, TRUE, FALSE);
 
   idd.canvas = gtk_layout_new(NULL,NULL);
   gtk_widget_set_app_paintable(idd.canvas, TRUE);
