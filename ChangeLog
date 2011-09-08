@@ -1,3 +1,7 @@
+2011-07-18  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* configure.ac: Bump the patch level to 1.0b15
+
 2011-07-13  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* mp.c (add_buffered_message): Fixed again a 32/64 bits problem when using the message passer.
