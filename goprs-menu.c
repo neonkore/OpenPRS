@@ -753,12 +753,6 @@ GtkWidget *goprs_create_menu_bar(GtkWidget *window, Draw_Data *dd, Int_Draw_Data
   g_signal_connect(G_OBJECT(profiling), "activate", G_CALLBACK(Profiling_option), NULL);
 #endif
 
-  /*
-    XtSetArg(args[0],XmNsensitive, False);
-    opoption = XmCreatePushButtonGadget(optionPDMenu,"opoption", args, 1);
-    XtAddCallback(opoption, XmNactivateCallback, Opoption, 0);
-    XtManageChild(opoption);
-  */   
   /* Display menu items */
 
   displayop = gtk_menu_item_new_with_label("Display OP");
@@ -807,12 +801,8 @@ void set_oprs_active_mode(PBoolean mode)
 {
      if (mode) {
        gtk_tool_button_set_label(GTK_TOOL_BUTTON(oprsActiveDButton), "Active");
-       unset_button(oprsIdleDButton);
-       set_button(oprsActiveDButton);
      } else {
        gtk_tool_button_set_label(GTK_TOOL_BUTTON(oprsActiveDButton), "Idle");
-       set_button(oprsIdleDButton);
-       unset_button(oprsActiveDButton);
      }
 }
 
@@ -886,9 +876,6 @@ GtkWidget *create_tool_bar(GtkWidget *parent, Draw_Data *dd)
 
   oprsActiveDButton = gtk_tool_button_new(NULL, "Idle");
   gtk_toolbar_insert(GTK_TOOLBAR(toolbar),oprsActiveDButton, -1);
-
-  /* oprsIdleDButton = gtk_tool_button_new(NULL, "Idle"); */
-  /* gtk_toolbar_insert(GTK_TOOLBAR(toolbar),oprsIdleDButton, -1); */
 
    oprsStoppedDButton = gtk_tool_button_new(NULL, "Runnable"); 
    gtk_toolbar_insert(GTK_TOOLBAR(toolbar),oprsStoppedDButton, -1); 

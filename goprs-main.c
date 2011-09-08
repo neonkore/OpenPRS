@@ -652,7 +652,7 @@ gint update_active_idle(gpointer oprs_par)
 
   set_oprs_active_mode(! (sl_slist_empty(oprs->new_facts) &&
 			  sl_slist_empty(oprs->new_goals) && /* We could be more specific... here */
-sl_slist_empty(oprs->intention_graph->current_intentions)));
+			  sl_slist_empty(oprs->intention_graph->current_intentions)));
   g_timeout_add(100,update_active_idle,oprs);
      
   return FALSE;
