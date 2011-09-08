@@ -1,3 +1,7 @@
+2011-09-08  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* mallocPack.c: malloc.h has been moved on darwin 10.8? include stdlib.h instead.
+
 2009-11-16  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* mallocPack.c (is_small): should now deal with pointer, not int.
@@ -14,5 +18,5 @@
 2003-09-22  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* README: creation...
-	
+
 $Id$

@@ -1,3 +1,8 @@
+2011-09-08  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* xm2gtk_f.h (XmToggleButtonGetState): Darwin linker seems to be more touchy than Linux's . It complains for undefined function,
+		  even if they are dead code?
+
 2011-08-08  Felix Ingrand  <felix@cturtle>
 
 	* xoprs-main.c (deregister_main_loop): This should be 1000 not 100

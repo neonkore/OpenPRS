@@ -425,8 +425,8 @@ int main(int argc, char **argv, char **envp)
      char title[LINSIZ];
      char welcome[LINSIZ];
      Oprs *oprs;
-     char *log_file;
-     char *language_str;
+     char *log_file = NULL;
+     char *language_str = NULL;
 
   GtkWidget *vbox;
   GtkWidget *hbox;

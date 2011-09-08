@@ -1,7 +1,7 @@
 static const char* const rcsid = "$Id$";
 
 /*
- * Copyright (c) 1991-2009 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -134,7 +134,7 @@ void give_sem(SEM_ID sem)
 #include "stdlib.h"
 #else
 #ifndef GNUWIN32
-#include <malloc.h>
+#include <stdlib.h>
 #endif
 #endif
 

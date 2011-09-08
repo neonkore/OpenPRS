@@ -64,6 +64,12 @@ void XBell(void *x, int y)
   fprintf(stderr,"XBell need to be defined\n");
 }
 
+static 
+gboolean XmToggleButtonGetState(Widget w)
+{
+     gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(w));
+}
+
 static
 void XFlush(void *y)
 {
