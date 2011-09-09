@@ -73,7 +73,6 @@ TAGS
 *.orig
 .depend
 config-ac.h.in
-stamp-h.in
 gope
 goprs
 test*
