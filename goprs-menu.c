@@ -510,7 +510,7 @@ GtkWidget *goprs_create_menu_bar(GtkWidget *window, Draw_Data *dd, Int_Draw_Data
   gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu),include);
   g_signal_connect(G_OBJECT(include), "activate", G_CALLBACK(Xp_include), NULL);
 
-  loaddb = gtk_menu_item_new_with_label("load Database");
+  loaddb = gtk_menu_item_new_with_label("Load Database");
   gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu),loaddb);
   g_signal_connect(G_OBJECT(loaddb), "activate", G_CALLBACK(Xp_loaddb), NULL);
 
@@ -800,9 +800,9 @@ GtkWidget *goprs_create_menu_bar(GtkWidget *window, Draw_Data *dd, Int_Draw_Data
 void set_oprs_active_mode(PBoolean mode)
 {
      if (mode) {
-       gtk_tool_button_set_label(GTK_TOOL_BUTTON(oprsActiveDButton), "Active");
+       gtk_label_set_text(GTK_LABEL(oprsActiveDButton), "Active");
      } else {
-       gtk_tool_button_set_label(GTK_TOOL_BUTTON(oprsActiveDButton), "Idle");
+       gtk_label_set_text(GTK_LABEL(oprsActiveDButton), "Idle");
      }
 }
 
@@ -810,24 +810,24 @@ void xset_oprs_run_mode(Oprs_Run_Type mode)
 {
      switch(mode) {
      case RUN:
-       gtk_tool_button_set_label(GTK_TOOL_BUTTON(oprsStoppedDButton), "Runnable");
+        gtk_label_set_text(GTK_LABEL(oprsStoppedDButton), "Runnable");
 	  register_main_loop(current_oprs, FALSE);
 	  break;
      case STEP_NEXT:
-       gtk_tool_button_set_label(GTK_TOOL_BUTTON(oprsStoppedDButton), "Runnable");
+        gtk_label_set_text(GTK_LABEL(oprsStoppedDButton), "Runnable");
        //	  unset_button(oprsStoppedDButton);
 	  register_main_loop(current_oprs, FALSE);
 	  break;
      case STEP_HALT:
-       gtk_tool_button_set_label(GTK_TOOL_BUTTON(oprsStoppedDButton), "Stopped");
+        gtk_label_set_text(GTK_LABEL(oprsStoppedDButton), "Stopped");
        //	  set_button(oprsStoppedDButton);
 	  break;
      case HALT:
-       gtk_tool_button_set_label(GTK_TOOL_BUTTON(oprsStoppedDButton), "Stopped");
+        gtk_label_set_text(GTK_LABEL(oprsStoppedDButton), "Stopped");
        //  set_button(oprsStoppedDButton);
 	  break;
      case STEP:
-       gtk_tool_button_set_label(GTK_TOOL_BUTTON(oprsStoppedDButton), "Runnable");
+        gtk_label_set_text(GTK_LABEL(oprsStoppedDButton), "Runnable");
        //	  unset_button(oprsStoppedDButton);
 	  break;
      default:
@@ -838,32 +838,49 @@ void xset_oprs_run_mode(Oprs_Run_Type mode)
 
 void OprsResetButton(Widget w, XtPointer oprs, XtPointer call_data)
 { 
-/*     reset_oprs_kernel((Oprs *)oprs); */
-     resetQuestionManage();
+  reset_oprs_kernel(current_oprs);
 }
+
 
 void OprsHaltButton(Widget w, XtPointer client_data, XtPointer call_data)
 { 
+  /* gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(oprsHaltButton), TRUE); */
+  /* gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(oprsRunButton), FALSE); */
+  /* gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(oprsStepButton), FALSE); */
+  /* gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(oprsStepNextButton), FALSE); */
      set_oprs_run_mode(HALT);
 }
 
 void OprsStepButton(Widget w, XtPointer client_data, XtPointer call_data)
 { 
+  /* gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(oprsStepButton), TRUE); */
+  /* gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(oprsHaltButton), FALSE); */
+  /* gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(oprsRunButton), FALSE); */
+  /* gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(oprsStepNextButton), FALSE); */
      set_oprs_run_mode(STEP);
 }
 
 void OprsStepNextButton(Widget w, XtPointer client_data, XtPointer call_data)
 { 
+  /* gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(oprsStepNextButton), TRUE); */
+  /* gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(oprsHaltButton), FALSE); */
+  /* gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(oprsStepButton), FALSE); */
+  /* gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(oprsRunButton), FALSE); */
      set_oprs_run_mode(STEP_NEXT);
 }
 
 void OprsRunButton(Widget w, XtPointer client_data, XtPointer call_data)
 { 
-     set_oprs_run_mode(RUN);
+  /* gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(oprsRunButton), TRUE); */
+  /* gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(oprsHaltButton), FALSE); */
+  /* gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(oprsStepButton), FALSE); */
+  /* gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(oprsStepNextButton), FALSE); */
+    set_oprs_run_mode(RUN);
 }
 
-GtkToolItem *oprsIdleDButton, *oprsStoppedDButton, *oprsActiveDButton;
-GtkToolItem *oprsRunButton, *oprsHaltButton, *oprsResetButton, *oprsStepButton, *oprsStepNextButton;
+GtkWidget *oprsStoppedDButton, *oprsActiveDButton;
+GtkToolItem *oprsRunButton, *oprsHaltButton, *oprsStepButton, *oprsStepNextButton;
+GtkToolItem *oprsResetButton;
 
 GtkWidget *create_tool_bar(GtkWidget *parent, Draw_Data *dd)
 {
@@ -874,29 +891,61 @@ GtkWidget *create_tool_bar(GtkWidget *parent, Draw_Data *dd)
   gtk_toolbar_set_orientation(GTK_TOOLBAR(toolbar),GTK_ORIENTATION_VERTICAL);
   gtk_container_set_border_width(GTK_CONTAINER(toolbar), 0);
 
-  oprsActiveDButton = gtk_tool_button_new(NULL, "Idle");
-  gtk_toolbar_insert(GTK_TOOLBAR(toolbar),oprsActiveDButton, -1);
+  oprsActiveDButton = gtk_label_new("Idle");
 
-   oprsStoppedDButton = gtk_tool_button_new(NULL, "Runnable"); 
-   gtk_toolbar_insert(GTK_TOOLBAR(toolbar),oprsStoppedDButton, -1); 
+  GtkToolItem *oprsActiveDButtonTI = gtk_tool_item_new();
+
+  gtk_container_add(GTK_CONTAINER(oprsActiveDButtonTI), oprsActiveDButton)  ;
+
+    
+  // gtk_tool_button_new(NULL, "Idle");
+  //  gtk_toolbar_insert(GTK_TOOLBAR(toolbar),oprsActiveDButton, -1);
+  /* to pack a widget into toolbar, we only have to 
+   * create it and append it with an appropriate tooltip */
+  //entry = gtk_entry_new ();
+  gtk_toolbar_insert( GTK_TOOLBAR (toolbar), 
+		     oprsActiveDButtonTI, -1);
+
+  /* well, it isn't created within thetoolbar, so we must still show it */
+  //  gtk_widget_show (oprsActiveDButton);
+
+
+  oprsStoppedDButton = gtk_label_new("Runnable");
+
+   GtkToolItem *oprsStoppedDButtonTI = gtk_tool_item_new();
+
+  gtk_container_add(GTK_CONTAINER(oprsStoppedDButtonTI), oprsStoppedDButton)  ;
+
+  gtk_toolbar_insert(GTK_TOOLBAR(toolbar),oprsStoppedDButtonTI, -1); 
 
   gtk_toolbar_insert(GTK_TOOLBAR(toolbar),gtk_separator_tool_item_new(), -1);
 
-  oprsRunButton = gtk_tool_button_new(NULL, "Run");
-  gtk_toolbar_insert(GTK_TOOLBAR(toolbar), oprsRunButton, -1);
+  oprsRunButton = gtk_radio_tool_button_new(NULL);
+  GSList *group = gtk_radio_tool_button_get_group(GTK_RADIO_TOOL_BUTTON(oprsRunButton));
+  gtk_tool_button_set_label(GTK_TOOL_BUTTON(oprsRunButton), "Run");
+  gtk_toolbar_insert(GTK_TOOLBAR(toolbar), GTK_TOOL_ITEM(oprsRunButton), -1);
   g_signal_connect(G_OBJECT(oprsRunButton),"clicked", G_CALLBACK(OprsRunButton),NULL);
+  // gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(oprsRunButton), TRUE);
 
-  oprsStepButton = gtk_tool_button_new(NULL, "Step");
+  oprsStepButton = gtk_radio_tool_button_new(group);
+  group = gtk_radio_tool_button_get_group(GTK_RADIO_TOOL_BUTTON(oprsStepButton));
+  gtk_tool_button_set_label(GTK_TOOL_BUTTON(oprsStepButton), "Step");
   gtk_toolbar_insert(GTK_TOOLBAR(toolbar), oprsStepButton, -1);
   g_signal_connect(G_OBJECT(oprsStepButton),"clicked", G_CALLBACK(OprsStepButton), NULL);
+  //  gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(oprsStepButton), FALSE);
 
-  oprsStepNextButton = gtk_tool_button_new(NULL, "Next");
+  oprsStepNextButton = gtk_radio_tool_button_new(group);
+  group = gtk_radio_tool_button_get_group(GTK_RADIO_TOOL_BUTTON(oprsStepNextButton));
+  gtk_tool_button_set_label(GTK_TOOL_BUTTON(oprsStepNextButton), "Next");
   gtk_toolbar_insert(GTK_TOOLBAR(toolbar), oprsStepNextButton, -1);
   g_signal_connect(G_OBJECT(oprsStepNextButton),"clicked", G_CALLBACK(OprsStepNextButton), NULL);
+  //  gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(oprsStepNextButton), FALSE);
 
-  oprsHaltButton = gtk_tool_button_new(NULL, "Halt");
+  oprsHaltButton = gtk_radio_tool_button_new(group);
+  gtk_tool_button_set_label(GTK_TOOL_BUTTON(oprsHaltButton), "Halt");
   gtk_toolbar_insert(GTK_TOOLBAR(toolbar), oprsHaltButton, -1);
   g_signal_connect(G_OBJECT(oprsHaltButton),"clicked", G_CALLBACK(OprsHaltButton), NULL);
+  //  gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(oprsHaltButton), FALSE);
 
   gtk_toolbar_insert(GTK_TOOLBAR(toolbar),gtk_separator_tool_item_new(), -1);
 

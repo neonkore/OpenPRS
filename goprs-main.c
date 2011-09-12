@@ -382,6 +382,21 @@ void quitQuestionManage(GtkWidget *w, gpointer window)
   gtk_widget_destroy (dialog);
 }
 
+gint update_active_idle(gpointer oprs_par)
+{
+  Oprs *oprs = (Oprs *)oprs_par;
+
+  set_oprs_active_mode(! (sl_slist_empty(oprs->new_facts) &&
+			  sl_slist_empty(oprs->new_goals) && /* We could be more specific... here */
+			  sl_slist_empty(oprs->intention_graph->current_intentions)));
+  return TRUE;
+}
+
+gint register_update_active_idle(gpointer oprs)
+{
+  g_timeout_add(100,update_active_idle,oprs);
+}
+
 
 Draw_Data *global_draw_data;
 Draw_Data dd;
@@ -638,24 +653,13 @@ int oprs_main(int argc,char **argv, char ** envp)
   run_initial_commands();
 
   register_main_loop(oprs,FALSE);   /* this will register the main loop as an idle func.  */
+  
+  register_update_active_idle(oprs);
 
   gtk_main();
 
   return 0;
 
-}
-
-gint update_active_idle(gpointer oprs_par)
-{
- 
-  Oprs *oprs = (Oprs *)oprs_par;
-
-  set_oprs_active_mode(! (sl_slist_empty(oprs->new_facts) &&
-			  sl_slist_empty(oprs->new_goals) && /* We could be more specific... here */
-			  sl_slist_empty(oprs->intention_graph->current_intentions)));
-  g_timeout_add(100,update_active_idle,oprs);
-     
-  return FALSE;
 }
 
 #ifdef DLSYMOPENCLOSE_UNDEFINED
