@@ -63,7 +63,7 @@ void redraw_all_in_region(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, Region r
 void create_cgcs(CairoGCs *cgcs, GdkDrawable *window)
 {
   cgcs->cr_basic = gdk_cairo_create(window);
-  cairo_set_source_rgb(cgcs->cr_basic, 1, 0, 0);
+  cairo_set_source_rgb(cgcs->cr_basic, 0, 0, 0);
   cairo_set_line_width(cgcs->cr_basic, 1);
   cairo_select_font_face(cgcs->cr_basic, "fixed",
 			 CAIRO_FONT_SLANT_NORMAL,
@@ -71,7 +71,7 @@ void create_cgcs(CairoGCs *cgcs, GdkDrawable *window)
   cairo_set_font_size(cgcs->cr_basic, 18);
 
   cgcs->cr_title = gdk_cairo_create(window);
-  cairo_set_source_rgb(cgcs->cr_title, 0, 1, 0);
+  cairo_set_source_rgb(cgcs->cr_title, 0, 0, 0);
   cairo_set_line_width(cgcs->cr_title, 1);
   cairo_select_font_face(cgcs->cr_title, "Helvetica",
 			 CAIRO_FONT_SLANT_NORMAL,
@@ -79,7 +79,7 @@ void create_cgcs(CairoGCs *cgcs, GdkDrawable *window)
   cairo_set_font_size(cgcs->cr_title, 24);	
 
   cgcs->cr_edge = gdk_cairo_create(window);
-  cairo_set_source_rgb(cgcs->cr_edge, 0, 0, 1);
+  cairo_set_source_rgb(cgcs->cr_edge, 0, 0, 0);
   cairo_set_line_width(cgcs->cr_edge, 1);
   cairo_select_font_face(cgcs->cr_edge, "DejaVu Sans Mono",
 			 CAIRO_FONT_SLANT_NORMAL,
@@ -95,7 +95,7 @@ void create_cgcs(CairoGCs *cgcs, GdkDrawable *window)
   cairo_set_font_size(cgcs->cr_node, 14);
 
   cgcs->cr_text = gdk_cairo_create(window);
-  cairo_set_source_rgb(cgcs->cr_text, 1, 0, 1);
+  cairo_set_source_rgb(cgcs->cr_text, 0, 0, 0);
   cairo_set_line_width(cgcs->cr_text, 1);
   cairo_select_font_face(cgcs->cr_text, "DejaVu Sans Mono",
 			 CAIRO_FONT_SLANT_NORMAL,

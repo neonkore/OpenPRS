@@ -214,18 +214,18 @@ on_expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer data)
 
   cairo_t *cr = CGCs.cr_basic;
 
-  cairo_move_to(cr, 800,  30);
-  cairo_show_text(CGCs.cr_basic, "CGCs.cr_basic");
-  cairo_move_to(CGCs.cr_title, 800, 60);
-  cairo_show_text(CGCs.cr_title, "CGCs.cr_title");
+  /* cairo_move_to(cr, 800,  30); */
+  /* cairo_show_text(CGCs.cr_basic, "CGCs.cr_basic"); */
+  /* cairo_move_to(CGCs.cr_title, 800, 60); */
+  /* cairo_show_text(CGCs.cr_title, "CGCs.cr_title"); */
 
-  cairo_move_to(CGCs.cr_edge, 800, 120);
-  cairo_show_text(CGCs.cr_edge, "CGCs.cr_edge");
+  /* cairo_move_to(CGCs.cr_edge, 800, 120); */
+  /* cairo_show_text(CGCs.cr_edge, "CGCs.cr_edge"); */
 
-  cairo_move_to(CGCs.cr_node, 800, 150);
-  cairo_show_text(CGCs.cr_node, "CGCs.cr_node");
-  cairo_move_to(CGCs.cr_text, 800, 180);
-  cairo_show_text(CGCs.cr_text, "CGCs.cr_text");
+  /* cairo_move_to(CGCs.cr_node, 800, 150); */
+  /* cairo_show_text(CGCs.cr_node, "CGCs.cr_node"); */
+  /* cairo_move_to(CGCs.cr_text, 800, 180); */
+  /* cairo_show_text(CGCs.cr_text, "CGCs.cr_text"); */
 
   handle_exposures(widget, global_draw_data, event, &CGCs);
 
@@ -287,18 +287,18 @@ ion_expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer data)
 
   cairo_t *cr = CGCs.cr_basic;
 
-  cairo_move_to(cr, 300,  30);
-  cairo_show_text(CGCs.cr_basic, "CGCs.cr_basic");
-  cairo_move_to(CGCs.cr_title, 300, 60);
-  cairo_show_text(CGCs.cr_title, "CGCs.cr_title");
+  /* cairo_move_to(cr, 300,  30); */
+  /* cairo_show_text(CGCs.cr_basic, "CGCs.cr_basic"); */
+  /* cairo_move_to(CGCs.cr_title, 300, 60); */
+  /* cairo_show_text(CGCs.cr_title, "CGCs.cr_title"); */
 
-  cairo_move_to(CGCs.cr_edge, 300, 120);
-  cairo_show_text(CGCs.cr_edge, "CGCs.cr_edge");
+  /* cairo_move_to(CGCs.cr_edge, 300, 120); */
+  /* cairo_show_text(CGCs.cr_edge, "CGCs.cr_edge"); */
 
-  cairo_move_to(CGCs.cr_node, 300, 150);
-  cairo_show_text(CGCs.cr_node, "CGCs.cr_node");
-  cairo_move_to(CGCs.cr_text, 300, 180);
-  cairo_show_text(CGCs.cr_text, "CGCs.cr_text");
+  /* cairo_move_to(CGCs.cr_node, 300, 150); */
+  /* cairo_show_text(CGCs.cr_node, "CGCs.cr_node"); */
+  /* cairo_move_to(CGCs.cr_text, 300, 180); */
+  /* cairo_show_text(CGCs.cr_text, "CGCs.cr_text"); */
 
   idd_handle_exposures(widget, global_int_draw_data, event, &CGCs);
 
