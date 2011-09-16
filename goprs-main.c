@@ -134,7 +134,7 @@ void register_main_loop(gpointer data, gboolean from_socket)
   }
   if (! main_loop_registered) {
     //fprintf(stderr, "registering_main_loop as idle.\n");
-    g_idle_add_full(G_PRIORITY_HIGH_IDLE, &goprs_top_level_loop,oprs, NULL); /* this will register the main loop */
+    g_idle_add_full(G_PRIORITY_DEFAULT_IDLE, &goprs_top_level_loop,oprs, NULL); /* this will register the main loop */
     main_loop_registered = TRUE;
   }
   if (pthread_mutex_unlock(&loop_registering_mutex) < 0)
@@ -598,8 +598,10 @@ int oprs_main(int argc,char **argv, char ** envp)
 			  "\n\t\tThis is GTK-OpenPRS (%s).\n\t%s\n\n"),
 	  package_version, COPYRIGHT_STRING);
 
-  AppendTextWindow(GTK_TEXT_VIEW(textview),welcome,FALSE);
-  AppendTextWindow(GTK_TEXT_VIEW(textview), "GTK-OpenPRS comes with ABSOLUTELY NO WARRANTY.\n\n",FALSE);
+  char * warranty =  "GTK-OpenPRS comes with ABSOLUTELY NO WARRANTY.\n\n";
+
+  AppendTextWindow(GTK_TEXT_VIEW(textview),welcome,strlen(welcome));
+  AppendTextWindow(GTK_TEXT_VIEW(textview),warranty,strlen(warranty));
 
   xp_create_filesel(topLevelWindow);
   xp_create_dialogs(topLevelWindow);

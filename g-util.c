@@ -56,7 +56,7 @@ void process_xt_events()
 
   flushing_xt_events = TRUE;
 
-  // while (g_main_context_iteration(NULL, FALSE));
+  while (g_main_context_iteration(NULL, FALSE));
   /* while (gtk_events_pending ()) */
   /*   gtk_main_iteration (); */
   

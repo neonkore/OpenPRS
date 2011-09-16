@@ -62,6 +62,8 @@ void gtk_Fileselok(GtkWidget *dialog, char* command)
     PBoolean res;
         
     filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+
+    gtk_widget_hide(dialog);
      
     if (strcmp(filename,"") != 0) {
       sprintf(s,command, filename);
@@ -69,7 +71,6 @@ void gtk_Fileselok(GtkWidget *dialog, char* command)
     }    
     g_free (filename);
   }
-  gtk_widget_hide(dialog);
 }
 
 void xp_includeFileselok(GtkWidget *dialog)
