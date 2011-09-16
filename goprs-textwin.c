@@ -57,7 +57,7 @@ static XmTextPosition  ScrollTextSize = 50000; /* Number of characters to delete
 
 static PBoolean cleaning = FALSE;
 
-void AppendTextWindow(GtkTextView *textview, char *s, PBoolean big)
+void AppendTextWindow(GtkTextView *textview, char *s, size_t size)
 {
   GtkTextBuffer *buffer;
   GtkTextIter iter;
@@ -70,7 +70,7 @@ void AppendTextWindow(GtkTextView *textview, char *s, PBoolean big)
   /* and insert some text at it, the iter will be revalidated
    * after insertion to point to the end of inserted text
    */
-  gtk_text_buffer_insert (buffer, &iter, s, -1);
+  gtk_text_buffer_insert (buffer, &iter, s, size);
 
   /* Move the iterator to the beginning of line, so we don't scroll 
    * in horizontal direction 

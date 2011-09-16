@@ -428,6 +428,8 @@ void DeleteOP(Widget w,  XtPointer ignore, XtPointer call_data)
   //gtk xpDeleteSelectOpDialogManage();     
 }
 
+GtkAccelGroup *accel_group = NULL;
+
 GtkWidget *goprs_create_menu_bar(GtkWidget *window, Draw_Data *dd, Int_Draw_Data *idd)
 {
 
@@ -460,7 +462,6 @@ GtkWidget *goprs_create_menu_bar(GtkWidget *window, Draw_Data *dd, Int_Draw_Data
   Widget help, file_help, oprs_help, inspect_help, trace_help, option_help, display_help;
   Widget  changemaxtextsize;
      
-  GtkAccelGroup *accel_group = NULL;
      
   accel_group = gtk_accel_group_new();
   gtk_window_add_accel_group(GTK_WINDOW(window), accel_group);
@@ -889,7 +890,8 @@ GtkWidget *create_tool_bar(GtkWidget *parent, Draw_Data *dd)
   toolbar = gtk_toolbar_new();
   gtk_toolbar_set_style(GTK_TOOLBAR(toolbar), GTK_TOOLBAR_ICONS);
   gtk_toolbar_set_orientation(GTK_TOOLBAR(toolbar),GTK_ORIENTATION_VERTICAL);
-  gtk_container_set_border_width(GTK_CONTAINER(toolbar), 0);
+  //  gtk_container_set_border_width(GTK_CONTAINER(toolbar), 0);
+  gtk_widget_set_size_request(toolbar, 100 , -1);
 
   oprsActiveDButton = gtk_label_new("Idle");
 
@@ -939,7 +941,9 @@ GtkWidget *create_tool_bar(GtkWidget *parent, Draw_Data *dd)
   gtk_tool_button_set_label(GTK_TOOL_BUTTON(oprsStepNextButton), "Next");
   gtk_toolbar_insert(GTK_TOOLBAR(toolbar), oprsStepNextButton, -1);
   g_signal_connect(G_OBJECT(oprsStepNextButton),"clicked", G_CALLBACK(OprsStepNextButton), NULL);
-  //  gtk_toggle_tool_button_set_active(GTK_TOGGLE_TOOL_BUTTON(oprsStepNextButton), FALSE);
+  gtk_widget_add_accelerator (oprsStepNextButton, "clicked", accel_group,
+			      GDK_s, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
+
 
   oprsHaltButton = gtk_radio_tool_button_new(group);
   gtk_tool_button_set_label(GTK_TOOL_BUTTON(oprsHaltButton), "Halt");

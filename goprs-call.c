@@ -57,6 +57,9 @@ extern char	*oprsprompt;
 
 PBoolean debug_xoprs;
 
+static PBoolean log_to_file = FALSE;
+static int log_fd;
+
 void bell(int volume)
 {
 /*    XBell(XtDisplay(toplevel), volume); */
@@ -83,20 +86,50 @@ char *concat(char *s1, char *s2)
 void read_oprs(gpointer master, gint source, GdkInputCondition ignore)
 {
      char s[BUFSIZ];
-     int res; 
      Widget textview = (Widget)master;
 
-     PROTECT_SYSCALL_FROM_EINTR(res,read(source,s,BUFSIZ-1));
-     if (res == -1) {
-       perror("read-oprs: read");
-     }
-
-     if (res > 0) {
-	    s[res] = '\0';
-	    AppendTextWindow(textview, s,FALSE);
+     size_t chars_read = BUFSIZ;
+     
+     while (chars_read == BUFSIZ){
+       PROTECT_SYSCALL_FROM_EINTR(chars_read, read(source, s, BUFSIZ));
+       if (chars_read == -1) {
+	 perror("read-oprs: read");
+	 return;
+       }
+     
+       if (log_to_file) {
+	 if (write(log_fd,s,chars_read) == -1)
+	   perror("oprs-cat: log_file: write");
+       }
+       if (chars_read > 0) {
+	 AppendTextWindow(textview, s, chars_read, FALSE);
+       }
      }
 }
 
+void call_oprs_cat(char *log_file, Widget textview)
+{				/* This version is much simpler... no need for an external program */
+  int fds[2];
+  
+  if (pipe(fds) < 0)
+    perror("call_oprs_cat:pipe");
+
+  // Redirect fds[1] to be writed with the standard output.
+  if( dup2(fds[1], STDOUT_FILENO) < 0)
+    perror("call_oprs_cat:dup2");	/* Get stdout plug on sp[1] */
+  
+  if (log_file) {
+    if ((log_fd = open(log_file,O_WRONLY | O_CREAT | O_TRUNC,0664)) == -1) {
+      perror("call_oprs: open");
+    } else {
+      fprintf(stderr,"call_oprs: loging output in \"%s\".\n", log_file);
+      log_to_file = TRUE;
+    }
+  }
+  oprsInputId = gdk_input_add(fds[0], GDK_INPUT_READ, read_oprs, textview);
+}
+
+#ifdef IGNORE
 void call_oprs_cat(char *log_file, Widget textview)
 {
      int pid, sp[2];
@@ -140,3 +173,4 @@ void call_oprs_cat(char *log_file, Widget textview)
 	  exit(2);
      }
 }
+#endif

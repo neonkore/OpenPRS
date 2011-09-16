@@ -32,7 +32,7 @@
  *
  */
 
-void AppendTextWindow(GtkTextView *textview, char *s, PBoolean big);
+void AppendTextWindow(GtkTextView *textview, char *s, size_t size);
 
 void create_textWindow(Widget parent);
 void ClearTextWindow(Widget textWindow);
