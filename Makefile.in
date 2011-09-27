@@ -1,4 +1,4 @@
-########################### -*- Mode: Makefile -*- #########################
+########################## -*- Mode: Makefile -*- #########################
 # Makefile -- For the OPRS system
 #
 # $Id: Makefile.in,v 1.11 2008/03/26 09:43:21 hcao Exp $
@@ -374,7 +374,7 @@ PROG = oprs-server mp-oprs kill-mp oprs xoprs oprs-cat ope opc gope goprs
 
 # and the relocatable.
 
-RELOCATABLE = oprs-relocatable xoprs-relocatable c++-oprs-relocatable c++-xoprs-relocatable
+RELOCATABLE = oprs-relocatable xoprs-relocatable goprs-relocatable c++-oprs-relocatable c++-xoprs-relocatable c++-goprs-relocatable
 
 all: lib contrib_lib $(PROG)
 
@@ -489,8 +489,24 @@ c++-xoprs-relocatable:  $(filter-out xoprs-main.o, $(X_OBJ)) xoprs-main++.o $(C_
 	$(MAKE) version
 	$(LD) -r -o $@ version.o user-trace-on.o $(filter-out xoprs-main.o, $(X_OBJ)) xoprs-main++.o $(GRAPHIC_KERNEL_LIB) $(KERNEL_LIB) $(BASIC_LIB) $(XGRAPHIC_OPRS_LIB) $(OPRS_LIB) $(GRAPHIC_OPE_OPRS_LIB) $(XOPRS_LIB) $(MP_LIB) $(OPG_LIB) $(LIST_LIB) $(CONTRIB_LIB)
 
+goprs-relocatable: $(G_OBJ) $(C_TOOLKIT_LIB) $(CONTRIB_LIB) $(BASIC_LIB) $(OPRS_LIB) $(GGRAPHIC_OPE_OPRS_LIB) \
+		$(GGRAPHIC_OPRS_LIB) $(KERNEL_LIB) $(GGRAPHIC_KERNEL_LIB) $(MP_LIB) $(GOPRS_LIB)\
+		$(GOPG_LIB) user-trace-on.o
+	$(MAKE) version
+	$(LD) -r -o $@ version.o user-trace-on.o $(G_OBJ) $(GGRAPHIC_KERNEL_LIB) $(KERNEL_LIB) $(BASIC_LIB) $(GGRAPHIC_OPRS_LIB) $(OPRS_LIB) $(GGRAPHIC_OPE_OPRS_LIB) $(GOPRS_LIB) $(MP_LIB) $(GOPG_LIB) $(LIST_LIB) $(CONTRIB_LIB)
+
+c++-goprs-relocatable:  $(filter-out goprs-main.o, $(G_OBJ)) goprs-main++.o $(C_TOOLKIT_LIB) $(CONTRIB_LIB) \
+		$(BASIC_LIB) $(OPRS_LIB) $(GRAPHIC_OPE_OPRS_LIB) $(GGRAPHIC_OPRS_LIB) \
+		$(GRAPHIC_KERNEL_LIB) $(KERNEL_LIB) $(MP_LIB) $(GOPRS_LIB) $(OPG_LIB)\
+		user-trace-on.o
+	$(MAKE) version
+	$(LD) -r -o $@ version.o user-trace-on.o $(filter-out goprs-main.o, $(G_OBJ)) goprs-main++.o $(GRAPHIC_KERNEL_LIB) $(KERNEL_LIB) $(BASIC_LIB) $(GGRAPHIC_OPRS_LIB) $(OPRS_LIB) $(GRAPHIC_OPE_OPRS_LIB) $(GOPRS_LIB) $(MP_LIB) $(OPG_LIB) $(LIST_LIB) $(CONTRIB_LIB)
+
 xoprs-user: xoprs-relocatable $(USER_OBJ)
 	$(CC) -o $@ xoprs-relocatable $(USER_OBJ) $(SYS_LIB) $(X_LIB) $(EXTRA_LIB)
+
+goprs-user: goprs-relocatable $(USER_OBJ)
+	$(CC) -o $@ goprs-relocatable $(USER_OBJ) $(SYS_LIB) $(GTK_LIB) $(EXTRA_LIB)
 
 
 $(OP_EDITOR_OBJ): CPPFLAGS += -DGRAPHIX
@@ -752,6 +768,7 @@ very-clean: local-clean
 	$(XGRAPHIC_OPRS_LIB) $(KERNEL_LIB) $(TEXT_KERNEL_LIB) $(GRAPHIC_KERNEL_LIB) \
 	$(XOPRS_LIB) $(OPAQUE_LIB) $(GOPG_LIB) $(OPG_LIB) $(GRAPHIC_OPE_OPRS_LIB) $(TEXT_OPE_OPRS_LIB) $(MP_LIB) \
 	$(EXT_MP_LIB) oprs-relocatable xoprs-relocatable c++-oprs-relocatable c++-xoprs-relocatable \
+	goprs-relocatable c++-goprs-relocatable \
 	*-parser.lex.c *-parser.c *-parser.h *-parser.yy *.ad *.ad.h TAGS make.depend \
 	vxoprs vxoprs-relocatable vx-mp-oprs vx-kill-mp
 	-(cd doc ; $(MAKE) very-clean)

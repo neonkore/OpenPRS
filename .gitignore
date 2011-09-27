@@ -79,3 +79,6 @@ test*
 example-sw.c
 autom4te.cache
 aclocal.m4
+c++-goprs-relocatable
+goprs-relocatable
+goprs-user

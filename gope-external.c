@@ -77,24 +77,6 @@ void clear_specified_op_graphic(Draw_Data *dd, Op_Structure *op)
   }
 }
 
-#ifndef GTK
-int xmstrcmp(XmString xs1, XmString xs2)
-{
-     char s1[LINSIZ];
-     char s2[LINSIZ];
-
-     char *sp1, *sp2;
-     
-     sp1 = s1;			/* We need that for an implicit casting... */
-     sp2 = s2;
-	  
-     if ((XmStringGetLtoR(xs1,XmSTRING_DEFAULT_CHARSET,&sp1)) &&
-	 (XmStringGetLtoR(xs2,XmSTRING_DEFAULT_CHARSET,&sp2)))
-	  return (strcmp(s1, s2));
-     else
-	  return 0;
-}
-#endif
 
 XmString xs_str_array_to_xmstr_cs(char *string_array[], int n)
 {
@@ -877,7 +859,7 @@ OG *make_og_text_field(Draw_Data *dd, Op_Structure *op, Field_Type ft, Text_Type
 
 void update_list_og_inst(Draw_Data *dd, Op_Structure *op, OG *og_body)
 {
-  XmFontList fl;// = dd->fontlist;
+  //  XmFontList fl;// = dd->fontlist;
      char *cs = "text_cs";
      Dimension height, width;
      XRectangle rect; 
@@ -899,8 +881,7 @@ void update_list_og_inst(Draw_Data *dd, Op_Structure *op, OG *og_body)
 
      /* size of indent for this charset */
      xmstr = XmStringCreate(" ");
-     height = XmStringHeight(fl, xmstr);
-     width = XmStringWidth(fl, xmstr);
+     XmStringExtent(dd->cgcsp->cr_text,xmstr, &height, &width);
      XmStringFree(xmstr);
 	  
      sl_loop_through_slist(op->list_og_inst, og, OG *) {
@@ -1039,18 +1020,10 @@ OG *make_og_node(Draw_Data *dd, Op_Structure *op, Node *node, int x, int y)
      og->type =  dt;
      stripped_name = remove_vert_bar(name);
 
-#ifdef GTK
      gnode->xmstring = XmStringCreate(stripped_name);
-#else
-     gnode->xmstring = XmStringCreate(stripped_name, "node_cs");
-#endif
      FREE(stripped_name);
 
-#ifdef GTK
      XmStringExtent(dd->cgcsp->cr_node,gnode->xmstring,&gnode->swidth, &gnode->sheight);
-#else
-     XmStringExtent(dd->fontlist,gnode->xmstring,&gnode->swidth, &gnode->sheight);
-#endif
      gnode->swidth =  gnode->swidth  + PIX_AROUND_TEXT*2;
      gnode->sheight =  gnode->sheight + PIX_AROUND_TEXT*2;
      og->width = gnode->swidth;
