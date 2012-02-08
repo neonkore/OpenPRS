@@ -1,36 +1,6 @@
 %{
 static const char* const rcsid = "$Id$";
-/*                               -*- Mode: C -*- 
- * opc-parser.y -- 
- * 
- * Copyright (c) 1991-2005 Francois Felix Ingrand.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- *    - Redistributions of source code must retain the above copyright
- *      notice, this list of conditions and the following disclaimer.
- *    - Redistributions in binary form must reproduce the above
- *      copyright notice, this list of conditions and the following
- *      disclaimer in the documentation and/or other materials provided
- *      with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- * COPYRIGHT HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- *
- */
+
 
 
 #include "config.h"
@@ -106,12 +76,12 @@ long int read_check_sum;
 %}
 
 %union {
-    double    		real;        /* real value */
-    int    		integer;    /* integer value */
-    long long int	long_long;    /* integer value */
-    void    		*pointer;    /* pointer value */
-    char    		*string;    /* string buffer */
-    int    		cmd;        /* command value */
+    double    		real;        
+    int    		integer;    
+    long long int	long_long;    
+    void    		*pointer;    
+    char    		*string;    
+    int    		cmd;        
     PBoolean		bool;
     TermList 		list_term;
     ExprList 		list_expr;
@@ -171,7 +141,7 @@ long int read_check_sum;
 %type <expr>		expr call simple_action edge_expr invocation setting
 %type <action_field>	action action_expr
 %type <list_expr> 	list_expr context list_par_expr effects list_effects
-/* %type <add_del_list> 	 */
+
 %type <dn> 		body inst list_inst while_inst do_inst par_inst top_expr if_inst comment goto_inst
 %type <dn> 		label_inst break_inst if_part_inst
 %type <prop_list>       properties properties_list
@@ -181,12 +151,11 @@ long int read_check_sum;
 
 %%
 one_command_return: 				
-	command 			{YYACCEPT;} /* We have to return explicitly to free the memory
-								and get out of here*/
+	command 			{YYACCEPT;} 
 	;
 
 command:
-	EOF_TK 					{;} /* Just to swallow EOF in iclude files... */
+	EOF_TK 					{;} 
 	| LOAD_TK OPF_TK			{yy_begin_0();}
 		read_file_name 			{if (!be_quiet) printf(LG_STR("%sLoading/compiling OP File \"%s\".\n",
 									      "%sChargement/compilation fichier OP \"%s\".\n"),parser_indent, $4);
@@ -225,7 +194,7 @@ command:
 							provide_include_file($3);
 						} else  FREE($3);} 
  	| DECLARE_TK ID_TK			{yy_begin_0();}
-		SYMBOL_TK 			/* Nothing to do... it will register it. */
+		SYMBOL_TK 			
  	| DECLARE_TK PREDICATE_TK		{yy_begin_0(); check_pfr = FALSE;}
 		pred_func  			{check_pfr = TRUE;}
  	| DECLARE_TK FUNCTION_TK		{yy_begin_0(); check_pfr = FALSE;}
@@ -260,9 +229,9 @@ debug_flag:
 	|OFF_TK					{$$ = FALSE;}
 	   ;
 
-/**************/
-/* OP section */
-/**************/
+
+
+
 
 op_graph:					{yy_begin_OPF_VERSION();}
 	new_op_graph 				
@@ -275,11 +244,11 @@ op_graph:					{yy_begin_OPF_VERSION();}
 
 	;
 
-/*****************************************************/
-/* This is the new OP file grammar. Format Version 1 */
-/*****************************************************/
 
-new_op_graph: | /* empty  file... */
+
+
+
+new_op_graph: | 
         OPENP_TK OPF_VERSION1 			{yy_begin_0();}
 	nop_list CLOSEP_TK			      
         | OPENP_TK OPF_VERSION2 			{yy_begin_0();}
@@ -291,18 +260,18 @@ new_op_graph: | /* empty  file... */
 	;
 
 symbol_list: 	
-        /* empty */
+        
 	| symbol_list symbol			 
 	;
 
 nop_list: 	
-        /* empty */
+        
 	| nop_list nop
 	| nop_list top
 	;
 
 nop: 	
-	OPENP_TK op_name 				{init_make_op($2, compile_graphix);} /* Will initialize current_op. */
+	OPENP_TK op_name 				{init_make_op($2, compile_graphix);} 
 	OPENP_TK nlist_fields CLOSEP_TK
 	OPENP_TK nlist_nodes CLOSEP_TK
 	OPENP_TK nlist_edges CLOSEP_TK CLOSEP_TK		{finish_loading_op(current_op,  (compile_graphix?global_draw_data:NULL));
@@ -312,7 +281,7 @@ nop:
 	;
 
 nlist_nodes: 
-	/* empty */
+	
 	| nlist_nodes nnode  			
 	;
 
@@ -342,7 +311,7 @@ split: boolean		{$$ = $1;}
 	;
 
 nlist_fields: 
-	/* empty (bien que ca ne soit pas possible...) */
+	
 	| nlist_fields nfield
 	;
 
@@ -372,7 +341,121 @@ nfield_typed:
 		{build_action(current_op, $3, $4, $5, $6, $7, $8, $9,  (compile_graphix?global_draw_data:NULL));}
 	;
 
-include "yacc-graph-op.y"
+
+
+pos_x: INTEGER_TK		{$$ = $1;}
+	;
+
+pos_y: INTEGER_TK		{$$ = $1;}
+	;
+
+visible: boolean	{$$ = $1;}
+	;
+
+pp_width: INTEGER_TK	{$$ = $1;}
+	;
+
+pp_fill: boolean	{$$ = $1;}
+	;
+
+boolean: INTEGER_TK	{$$ = ($1 ? TRUE : FALSE);}
+	;
+
+invocation:                     {check_symbol = TRUE;}
+            expr		{$$ = $2;
+			        check_symbol = FALSE;}
+	    ;
+
+call: 				{$$ = NULL;}
+        | expr			{$$ = $1;}
+	;
+
+context: 			{$$ = NULL;}
+        | expr			{$$ = sl_make_slist();sl_add_to_tail($$,$1);}
+        | list_par_expr		{$$ = $1;}
+	;
+
+setting: 				{$$ = NULL;}
+	|                       {check_symbol = TRUE;}
+          expr			{$$ = $2;
+			         check_symbol = FALSE;}
+	;
+
+properties: 			{$$ = NULL;}
+	| OPENP_TK                   {check_symbol = TRUE;}
+           properties_list CLOSEP_TK  {check_symbol = FALSE; $$ = $3;}
+	;
+
+properties_list:			{$$ = sl_make_slist();}
+ 	| properties_list property	{if ($2) sl_add_to_tail($1,$2); $$=$1;}
+	;
+
+documentation:			{$$ = NULL;}
+	| QSTRING_TK		{$$ = $1;}
+	;
+
+
+
+effects:                       {check_symbol = TRUE;}
+          list_effects		{$$ = $2;
+			         check_symbol = FALSE;}
+	;
+
+action:                         {check_symbol = TRUE; yy_begin_ACTION_TYPE();}
+            action_expr		{$$ = $2; check_symbol = FALSE;}
+	;
+
+action_expr:
+	OPENP_TK SPEC_ACT_TK {yy_begin_0();} variable
+		simple_action CLOSEP_TK		{$$ = build_action_field($5, TRUE, FALSE, NULL, $4);}
+        | OPENP_TK SPEC_ACT_TK {yy_begin_0();} OPENP_TK var_list CLOSEP_TK
+		simple_action CLOSEP_TK		{$$ = build_action_field($7, TRUE, TRUE, $5, NULL);}
+	| simple_action				{$$ = build_action_field($1, FALSE, FALSE, NULL, NULL);}
+;
+
+simple_action:
+	OPENP_TK  {yy_begin_0();} pred_func 				
+		term_list CLOSEP_TK		 	 {$$=build_simple_action_cached($3,$4);}
+;
+
+nlist_edges: 
+	
+	| nlist_edges nedge  			
+	;
+
+nedge: 	
+	OPENP_TK {yy_begin_EDGE_TYPE();} nedge_typed CLOSEP_TK
+	| error RESET_DOT_TK 			{warning(LG_STR("Parsing error, badly formed edge",
+								"Erreur de parsing, arc mal formé"));}
+	;
+
+
+
+edge_expr:                    {check_symbol = TRUE;}
+         expr 		{$$ = $2;
+			         check_symbol = FALSE;}
+	;
+
+edge_knots:
+	OPENP_TK list_knots CLOSEP_TK			{$$ = $2;}
+	;
+
+list_knots:  			{$$ = sl_make_slist();}
+	| list_knots OPENP_TK INTEGER_TK INTEGER_TK CLOSEP_TK	{sl_add_to_tail($1,(void *)$3); sl_add_to_tail($1,(void *)$4); $$ = $1;}
+	;
+
+op_name:
+	SYMBOL_TK				{$$=$1;}
+	;
+
+edge_name: 
+	SYMBOL_TK				{$$=$1;}
+	;
+
+node_name: 
+	SYMBOL_TK				{$$=$1;}
+	;
+
 
 nedge_typed:
 	ET_GOAL_TK {yy_begin_0();} node_name edge_name node_name edge_expr edge_knots pos_x pos_y pp_width pp_fill
@@ -386,13 +469,13 @@ nedge_typed:
 	;
 
 top_list: 
-	/* empty */
+	
 	| top_list top
 	|  error RESET_DOT_TK 			{warning(LG_STR("Parsing error, expecting a Text OP list",
 								"Erreur de parsing, attendait une liste de OP textuel"));}
 	;
 
-top: OPENP_TK DEFOP_TK op_name 			{init_make_top($3, compile_graphix);} /* Will initialize current_op. */
+top: OPENP_TK DEFOP_TK op_name 			{init_make_top($3, compile_graphix);} 
 	       fields_list
 	CLOSEP_TK					{finish_loading_top(current_op, (compile_graphix?global_draw_data:NULL));
 						 add_op_to_relevant_op(current_op,relevant_op);
@@ -400,7 +483,188 @@ top: OPENP_TK DEFOP_TK op_name 			{init_make_top($3, compile_graphix);} /* Will 
 						 disable_variable_parsing();}
 ;
 
-include "yacc-text-op.y"
+
+
+fields_list: invocation_field other_fields_list
+;
+
+other_fields_list: field 
+	   | other_fields_list field
+;
+
+field: body_field
+     | action_field
+     | call_field
+     | context_field
+     | setting_field
+     | properties_field
+     | documentation_field
+     | effects_field
+;
+
+invocation_field: TFT_INVOCATION_TK invocation
+		{
+#ifdef NO_GRAPHIX
+		build_invocation(current_op, "INVOCATION", $2, 0, 0, TRUE, 0, TRUE, NULL);
+#else
+		build_invocation(current_op, "INVOCATION", $2, ip_x, ip_y, TRUE, ip_width, TRUE, global_draw_data);
+#endif
+				  }
+;
+
+call_field: TFT_CALL_TK call
+		{
+#ifdef NO_GRAPHIX
+		build_call(current_op, "CALL", $2, 0, 0, TRUE, 0, TRUE,NULL);
+#else
+		build_call(current_op, "CALL", $2, call_x, call_y, TRUE, call_width, TRUE,global_draw_data);
+#endif
+			       }
+;
+
+context_field: TFT_CONTEXT_TK context
+		{
+#ifdef NO_GRAPHIX
+		build_context(current_op, "CONTEXT", $2, 0, 0, TRUE, 0, TRUE,NULL);
+#else
+		build_context(current_op, "CONTEXT", $2, ctxt_x, ctxt_y, TRUE, ctxt_width, TRUE,global_draw_data);
+#endif
+			       }
+;
+
+setting_field: TFT_SETTING_TK setting
+		{
+#ifdef NO_GRAPHIX
+		build_setting(current_op, "SETTING", $2, 0, 0, TRUE, 0, TRUE,NULL);
+#else
+		build_setting(current_op, "SETTING", $2, set_x, set_y, TRUE, set_width, TRUE,global_draw_data);
+#endif
+			       }
+;
+
+properties_field: TFT_PROPERTIES_TK properties
+		{
+#ifdef NO_GRAPHIX
+		build_properties(current_op, "PROPERTIES", $2, 0, 0, TRUE, 0, TRUE,NULL);
+#else
+		build_properties(current_op, "PROPERTIES", $2, prop_x, prop_y, TRUE, prop_width, TRUE,global_draw_data);
+#endif
+			       }
+;
+
+documentation_field: TFT_DOCUMENTATION_TK documentation
+		{
+#ifdef NO_GRAPHIX
+                FREE($2);
+#else
+		build_documentation(current_op, "DOCUMENTATION", $2, doc_x, doc_y, TRUE, doc_width, TRUE,global_draw_data);
+#endif
+			       }
+;
+
+effects_field: TFT_EFFECTS_TK effects
+		{
+#ifdef NO_GRAPHIX
+		build_effects(current_op, "EFFECTS", $2, 0, 0, TRUE, 0, TRUE,NULL);
+#else
+		build_effects(current_op, "EFFECTS", $2, eff_x, eff_y, TRUE, eff_width, TRUE,global_draw_data);
+#endif
+			       }
+;
+
+action_field: TFT_ACTION_TK action
+{
+#ifdef NO_GRAPHIX
+		build_action(current_op, "ACTION", $2, 0, 0, TRUE, 0, TRUE,NULL);
+#else
+		build_action(current_op, "ACTION", $2, act_x, act_y, TRUE, act_width, TRUE,global_draw_data);
+#endif
+			       }
+;
+
+body_field: TFT_BODY_TK {yy_begin_COLLECT_COMMENT(); check_symbol = TRUE;} body
+		{Body *to_free;
+		 yy_begin_0(); check_symbol = FALSE;
+		 if ($3) {
+		      current_op->start_point = DN_HEAD($3);
+		} else {
+		     current_op->start_point = make_simple_node();
+		}
+		 
+#ifdef NO_GRAPHIX
+		build_body(current_op, "BODY", to_free = ($3?DN_BODY($3):make_body(NULL)), 0, 0, TRUE, 0, TRUE, NULL);
+#else
+		build_body(current_op, "BODY", to_free = ($3?DN_BODY($3):make_body(NULL)), bd_x, bd_y, TRUE, bd_width, TRUE, global_draw_data);
+#endif
+		free_double_node($3);
+#ifdef OPRS_KERNEL 
+#ifndef NO_GRAPHIX
+		clean_inst_sl_in_slist_og_inst(current_op->list_og_inst);
+		DUP_SLIST(current_op->list_og_inst);
+#endif
+		free_body(to_free);
+		current_op->body = NULL;		
+#endif
+		 if (really_build_node) current_op->start_point->type = NT_START;}
+;
+
+body: OPENP_TK list_inst CLOSEP_TK			{if ($2) {
+     						DN_BODY($2)=make_body(DN_LIST_INST($2));
+					   		}
+						 $$ = $2;}
+;
+
+list_inst:			{$$ = NULL;}
+	 | list_inst inst		{$$ = add_inst_to_list_inst($1,$2);}
+;
+
+inst: top_expr				{$$=$1;}
+    | if_inst					{$$=$1;}
+    | while_inst				{$$=$1;}
+    | do_inst					{$$=$1;}
+    | par_inst					{$$=$1;}
+    | comment					{$$=$1;}
+    | goto_inst					{$$=$1;}
+    | label_inst				{$$=$1;}
+    | break_inst				{$$=$1;}
+;
+
+top_expr: expr				{$$=build_inst($1);}
+;
+
+comment: COMMENT_TK				{$$=build_comment($1);}
+;
+
+goto_inst: GOTO_TK SYMBOL_TK 			{$$=build_goto_inst($2);}
+;
+
+break_inst: BREAK_TK	 			{$$=build_break_inst();}
+;
+
+label_inst: LABEL_TK SYMBOL_TK			{$$=build_label_inst($2);}
+;
+
+if_part_inst: expr list_inst 			{$$ = build_if($1,$2,NULL,FALSE);}
+	| expr list_inst ELSE_TK list_inst  	{$$ = build_if($1,$2,$4,FALSE);}
+	| expr list_inst ELSEIF_TK if_part_inst  	{$$ = build_if($1,$2,$4,TRUE);}
+;
+
+if_inst: OPENP_TK IF_TK if_part_inst CLOSEP_TK 			{$$ = $3;}
+;
+
+while_inst: OPENP_TK WHILE_TK expr list_inst CLOSEP_TK 	{$$ = build_while($3,$4); parse_break_list($$);}
+;
+
+do_inst: OPENP_TK DO_TK list_inst WHILE_TK expr CLOSEP_TK	{$$ = build_do_until($3,$5); parse_break_list($$);}
+;
+
+par_inst: OPENP_TK PAR_TK body_list CLOSEP_TK		{$$ = build_par_branch($3);}
+;
+
+body_list:			 	{$$=sl_make_slist();}
+	 | body_list body			{sl_add_to_tail($1,$2); $$ = $1;}
+;
+
 
 
 
@@ -417,8 +681,104 @@ symbol:  SYMBOL_TK				{$$=$1;}
 	| SYMBOL_TK TYPE_SEP_TK SYMBOL_TK 	{set_type_by_name($3,$1);$$=$1;}
 	;
 
-include "yacc-exp.y"
-include "yacc-file.y"
+
+
+list_effects:	 					{$$=NULL;}
+	| list_par_expr 		{$$=$1;}
+	;
+
+list_par_expr:
+	OPENP_TK list_expr CLOSEP_TK 		{$$=$2;}
+	| OPENP_TK CLOSEP_TK 			{$$=sl_make_slist();}
+	;
+
+list_expr:
+	expr 					{$$=sl_make_slist(); sl_add_to_tail($$,$1);}
+	| list_expr expr 			{sl_add_to_tail($1,$2);$$=$1;}
+	;
+
+expr:
+        OPENP_TK pred_func term_list CLOSEP_TK 	{$$=build_expr_pfr_terms($2,$3); 
+	                                         if (! $$) {warning(LG_STR("badly formed expression",
+									   "expression mal formée")); YYABORT;}}
+	|  OPENP_TK pred_func error CLOSEP_TK		{warning(LG_STR("badly formed expression",
+								"expression mal formée")); YYABORT;}
+	;
+
+pred_func: variable				{$$ = create_var_pred_func($1);}
+	| SYMBOL_TK				{$$ = find_or_create_pred_func($1);}
+	;
+        
+term_list:
+	 				{$$=(TermList)sl_make_slist();}
+	| term_list term 			{$$=build_term_list($1,$2);}
+	;
+
+file_name: QSTRING_TK				{$$=canonicalize_file_name($1);}
+	;
+
+term:
+	INTEGER_TK 				{$$=build_integer($1);}
+	| LONG_LONG_TK  			{$$=build_long_long($1);}
+	| POINTER_TK  				{$$=build_pointer($1);}
+	| REAL_TK  				{$$=build_float($1);}
+	| QSTRING_TK				{$$=build_qstring($1);}
+	| symbol 				{$$=build_id($1);}
+	| variable  				{$$=build_term_from_var($1);}
+	| expr	 				{$$=build_term_expr($1);}
+	| OP_LISP_TK term_list CP_LISP_TK 	{$$=build_term_l_list_from_c_list($2);}
+	| OP_ARRAY_TK term_list CP_ARRAY_TK	{$$=build_term_array_from_c_list($2);}
+	| OP_ARRAY_TK error CP_ARRAY_TK		{warning(LG_STR("badly formed ARRAY term",
+								"ARRAY term mal formée")); YYABORT;}
+	| OP_ARRAY_TK error CLOSEP_TK		{warning(LG_STR("badly formed composed term, bad matching [ )",
+								"composed term mal formée, mauvaise correspondance [ )")); YYABORT;}
+	| OP_ARRAY_TK error CP_LISP_TK		{warning(LG_STR("badly formed composed term, bad matching [ .)",
+								"composed term mal formée, mauvaise correspondance [ .)")); YYABORT;}
+	| OPENP_TK error CLOSEP_TK			{warning(LG_STR("badly formed composed term",
+								"composed term mal formée")); YYABORT;}
+	| OPENP_TK error CP_LISP_TK		{warning(LG_STR("badly formed composed term, bad matching ( .)",
+								"composed term mal formée, mauvaise correspondance ( .)")); YYABORT;}
+	| OPENP_TK error CP_ARRAY_TK		{warning(LG_STR("badly formed composed term, bad matching ( ]",
+								"composed term mal formée, mauvaise correspondance ( ]")); YYABORT;}
+	| OP_LISP_TK error CP_LISP_TK	 	{warning(LG_STR("badly formed LISP_LIST term",
+								"LISP_LIST term mal formée")); YYABORT;}
+	| OP_LISP_TK error CLOSEP_TK	 	{warning(LG_STR("badly formed composed term, bad matching (. )",
+								"composed term mal formée, mauvaise correspondance (. )")); YYABORT;}
+	| OP_LISP_TK error CP_ARRAY_TK	 	{warning(LG_STR("badly formed composed term, bad matching (. ]",
+								"composed term mal formée, mauvaise correspondance (. ]")); YYABORT;}
+	;
+
+var_list:
+	variable 				{$$=(VarList)sl_make_slist(); sl_add_to_head($$,$1);}
+	| var_list variable			{sl_add_to_tail($1,$2); $$=$1;}
+	;
+
+
+
+
+property:
+	OPENP_TK prop_name term CLOSEP_TK 		{$$=build_property($2,$3);}
+
+	| OPENP_TK prop_name error CLOSEP_TK		{warning(LG_STR("expecting a term after a property name",
+								"attendait un term aprés un nom de propriété")); YYABORT;}
+	| OPENP_TK error CLOSEP_TK	 		{warning(LG_STR("expecting a property name",
+								"attendait un mnom de propriété")); YYABORT;}
+	;
+
+prop_name:
+	SYMBOL_TK				{$$=$1;}
+	;
+
+
+
+
+
+read_file_name: QSTRING_TK			{$$=canonicalize_read_file_name($1);}
+	;
+
+write_file_name: QSTRING_TK			{$$=$1;}
+	;
+
 
 %%
 
@@ -433,8 +793,8 @@ PBoolean loaded_include_file(char *filename)
 
 void provide_include_file(char *filename)
 {
-/*      if (! current_oprs->included_file_name)  */
-/* 	  current_oprs->included_file_name = sl_make_slist(); */
+
+
 
      sl_add_to_tail(included_file_name,filename);
 }

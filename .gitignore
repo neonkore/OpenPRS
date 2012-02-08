@@ -45,6 +45,8 @@ doc/oprs-macros.tex
 # exclude patterns (uncomment them if you want to use them):
 *.ad.tmp
 *.[oa]
+*.lo
+*.la
 *.ll
 *.yy
 *.aux
@@ -57,6 +59,7 @@ doc/oprs-macros.tex
 *.lot
 *.blg
 *.toc
+Makefile.in
 Makefile
 configure
 make.depend
@@ -76,3 +79,15 @@ config-ac.h.in
 stamp-h.in
 autom4te.cache
 aclocal.m4
+.deps/
+.libs/
+config
+libtool
+old
+stamp-h1
+Makefile.in.old
+*-lex.c
+*-lex.l
+*-parser.c
+*-parser.h
+util/lex-includer.c

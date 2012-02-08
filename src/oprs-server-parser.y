@@ -1,37 +1,7 @@
 %{
 static const char* const rcsid = "$Id$";
 
-/*                               -*- Mode: C -*- 
- * oprs-server-parser.y -- yacc grammaire
- * 
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- *    - Redistributions of source code must retain the above copyright
- *      notice, this list of conditions and the following disclaimer.
- *    - Redistributions in binary form must reproduce the above
- *      copyright notice, this list of conditions and the following
- *      disclaimer in the documentation and/or other materials provided
- *      with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- * COPYRIGHT HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- *
- */
+
 
 #include "config.h"
 
@@ -39,7 +9,7 @@ static const char* const rcsid = "$Id$";
 #ifndef WIN95
 #include <sys/file.h>
 #endif
-/* #define	fileno(p)	((p)->_file) Required by bison.. */
+
 #include "macro.h"
 #include "constant.h"
 #include "opaque.h"
@@ -64,12 +34,12 @@ Oprs_Client *oprs_client = NULL;
 %}
 
 %union {
-    double    	real;        /* real value */
-    int    	integer;    /* integer value */
-    long long int    	long_long;    /* integer value */
-    void    		*pointer;    /* pointer value */
-    char    	*string;    /* string buffer */
-    int    	cmd;        /* command value */
+    double    	real;        
+    int    	integer;    
+    long long int    	long_long;    
+    void    		*pointer;    
+    char    	*string;    
+    int    	cmd;        
     PBoolean	bool;
     TermList 	list_term;
     PropertyList prop_list;
@@ -101,7 +71,7 @@ Oprs_Client *oprs_client = NULL;
 
 %%
 
-one_oprs_server_command: | server_command  {yy_begin_COMMAND(); YYACCEPT;} ;  /* We have to return explicitly to free the memory and get out of here*/
+one_oprs_server_command: | server_command  {yy_begin_COMMAND(); YYACCEPT;} ;  
 
 server_command: INCLUDE file_name {open_file_for_yyparse($2); FREE($2);} 
 	| TRANSMIT { yy_begin_0();} SYMBOL_TK string
@@ -151,7 +121,7 @@ server_command: INCLUDE file_name {open_file_for_yyparse($2); FREE($2);}
 	| add_frame error RESET_DOT_TK
 		{warning("Parsing error, expecting a expr after add");}
 	| HELP
-		{print_server_help_from_parser();} /* Dans le futur on aura un help par commande... */
+		{print_server_help_from_parser();} 
 	| QUIT
 		{quit = TRUE;}
 	|  error RESET_DOT_TK
@@ -182,7 +152,7 @@ predicate:
 	;
         
 term_list:
-	/*nothing*/ 				{$$=(TermList)sl_make_slist();}
+	 				{$$=(TermList)sl_make_slist();}
 	| term_list term 			{$$=build_term_list($1,$2);}
 	;
 

@@ -1,5 +1,15 @@
 AM_CPPFLAGS = -I$(top_srcdir)/c_toolkit 
 
+EXTERNAL_INCLUDE = action_f-pub.h constant-pub.h ev-function_f-pub.h ev-predicate_f-pub.h \
+	fact-goal_f-pub.h int-graph_f-pub.h intention_f-pub.h lang.h oprs-sprint-pub.h \
+	op-instance_f-pub.h op-structure_f-pub.h lisp-list_f-pub.h macro-pub.h \
+	mp-pub.h opaque-pub.h oprs-array_f-pub.h oprs-type-pub.h oprs-sprint_f-pub.h \
+	oprs-type_f-pub.h oprs_f-pub.h user-action.h user-ev-function.h \
+	user-ev-predicate.h user-external.h user-external_f.h xoprs-main-pub.h oprs-error-pub.h \
+	oprs-rerror_f-pub.h user-trace.h user-trace_f.h oprs-print_f-pub.h
+
+pkginclude_HEADERS = $(EXTERNAL_INCLUDE)
+
 #
 lib_LTLIBRARIES = libExtMP.la 
 noinst_LTLIBRARIES = libMP.la libBasic.la libOprs.la libTOpEOprs.la libGOpEOprs.la \
@@ -50,8 +60,8 @@ libGOprs_la_CPPFLAGS =  $(AM_CPPFLAGS) -UNO_GRAPHIX
 
 #
 BOTH_KERNEL_LIB_SOURCES = action.c activate.c ev-function.c shary-user-ev-function.c intend.c intention.c \
-	int-graph.c op-instance.c oprs-init.c tcl.c soak.c oprs-parser.tab.c \
-	oprs-parser.lex.c top-lev.c
+	int-graph.c op-instance.c oprs-init.c tcl.c soak.c oprs-parser.y \
+	top-lev.c
 
 libTKernel_la_SOURCES = $(BOTH_KERNEL_LIB_SOURCES)
 libTKernel_la_CPPFLAGS =  $(AM_CPPFLAGS) -I$(top_srcdir)/contrib/src -DNO_GRAPHIX
@@ -62,7 +72,7 @@ libGKernel_la_CPPFLAGS =  $(AM_CPPFLAGS) -I$(top_srcdir)/contrib/src -UNO_GRAPHI
 # This will soon disappear with dl mechanism...
 USER_SOURCES = user-action.c user-ev-function.c user-ev-predicate.c user-external.c user-trace.c
 
-CONTRIB_LIB = $(top_srcdir)/contrib/src/libpu.la
+CONTRIB_LIB = $(top_builddir)/contrib/src/libpu.la
 
 # Here is the list of program to build and install
 bin_PROGRAMS = mp-oprs kill-mp oprs-server oprs xoprs oprs-cat ope opc
@@ -73,16 +83,16 @@ mp_oprs_LDADD =  ../c_toolkit/libOPList.la libBasic.la libMP.la libVersion.a
 kill_mp_SOURCES = kill-mp.c
 kill_mp_LDADD =  ../c_toolkit/libOPList.la libBasic.la libMP.la libVersion.a
 
-oprs_server_SOURCES = opaque-ext.c oprs-client.c oprs-server-main.c oprs-server-opaque.c \
-	oprs-server-parser.tab.c oprs-server-parser.lex.c
+oprs_server_SOURCES = oprs-server-parser.y oprs-server-lex.l opaque-ext.c oprs-client.c \
+		oprs-server-main.c oprs-server-opaque.c
 oprs_server_LDADD = ../c_toolkit/libOPList.la libBasic.la libTOprs.la libOprs.la libMP.la \
 		 libVersion.a $(READLINE_LIBS)
 
-oprs_SOURCES = op-x-opaque.c oprs-main.c top-lev-loop.c $(USER_SOURCES)
+oprs_SOURCES = oprs-lex.l op-x-opaque.c oprs-main.c top-lev-loop.c $(USER_SOURCES)
 oprs_LDADD = libTKernel.la libKernel.la libBasic.la libTOprs.la  libOprs.la libTOpEOprs.la \
 		 libMP.la libVersion.a ../c_toolkit/libOPList.la $(CONTRIB_LIB)
 
-xoprs_SOURCES =  xoprs-call.c xoprs-textwin.c $(USER_SOURCES) \
+xoprs_SOURCES =  oprs-lex.l xoprs-call.c xoprs-textwin.c $(USER_SOURCES) \
 	xoprs-dialog.c xoprs-filesel.c xoprs-intention.c \
 	xoprs-main.c xoprs-menu.c xt-util.c xtop-lev-loop.c \
 	xoprs-op-graphic.c xoprs-rop.c
@@ -92,34 +102,38 @@ xoprs_LDADD =   libGKernel.la libKernel.la libBasic.la libGOprs.la libOprs.la li
 oprs_cat_SOURCES =  oprs-cat.c
 oprs_cat_LDADD = ../c_toolkit/libOPList.la
 
-ope_SOURCES = ope-bboard.c ope-edit.c ope-filesel.c ope-op-opf.c ope-main.c \
-	ope-menu.c ope-parser.tab.c ope-parser.lex.c ope-print.c ope-pxmw.c \
+ope_SOURCES = ope-lex.l ope-parser.y ope-bboard.c ope-edit.c ope-filesel.c ope-op-opf.c ope-main.c \
+	ope-menu.c ope-print.c ope-pxmw.c \
 	ope-save.c ope-syntax.c \
 	ope-vsblf.c xt-util.c ope-rop.c ope-op-str.c ope-opaque.c
 ope_LDADD = libBasic.la libGOprs.la libOprs.la libGOpEOprs.la \
 		libOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la $(MOTIF_LIBS) $(X_LIBS)
 
-opc_SOURCES = opc-main.c opc-parser.tab.c opc-parser.lex.c ope-opaque.c
+opc_SOURCES = opc-lex.l opc-parser.y opc-main.c ope-opaque.c
 opc_LDADD = libBasic.la libGOprs.la libOprs.la libGOpEOprs.la \
 	libOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la $(MOTIF_LIBS) $(X_LIBS)
+
+
+pkgconfigdir = $(libdir)/pkgconfig 
+pkgconfig_DATA = openprs.pc mp-openprs.pc
 
 # These specific rules are here to build the various grammars from
 # various files. This could probably be done with cpp... but 20 years
 # ago, I thought this was the smartest way...
 
 
-LEX_INCLUDER = $(top_srcdir)/util/lex-includer
-AD2C = $(top_srcdir)/util/ad2c
-ADLANG2AD = $(top_srcdir)/util/adlang2ad
+LEX_INCLUDER = $(top_builddir)/util/lex-includer
+AD2C = $(top_builddir)/util/ad2c
+ADLANG2AD = $(top_builddir)/util/adlang2ad
 
 #
-# This rule says that .yy files depends of the .y files
+# This rule says that .y files depends of the .y.part files
 #
 
-%.yy: %.y $(LEX_INCLUDER)
-	rm -f $*.yy
-	 $(LEX_INCLUDER) -p.:$(VPATH) < $< > $*.yy
-	chmod -w  $*.yy
+%.y: %.y.part $(LEX_INCLUDER)
+	rm -f $*.y
+	 $(LEX_INCLUDER) -p.:$(VPATH) < $< > $*.y
+	chmod -w  $*.y
 
 #
 # This rule says that some c and h depend of the yacc they come from.
@@ -128,20 +142,23 @@ ADLANG2AD = $(top_srcdir)/util/adlang2ad
 # For debuging the grammer, use:
 # $(YACC) $(YFLAGS) --debug --verbose -p oprs_yy -b $* $<
 
-%.tab.c %.tab.h: %.yy
-	$(YACC) -d -p oprs_yy -o $*.tab.c $<
+BUILT_SOURCES = oprs-parser.h oprs-server-parser.h ope-parser.h opc-parser.h
+AM_YFLAGS = -d -p oprs_yy
 
-oprs-parser.yy ope-parser.yy opc-parser.yy: yacc-file.y yacc-graph-op.y
-oprs-parser.yy ope-parser.yy opc-parser.yy: yacc-exp.y yacc-text-op.y
+# %.tab.c %.tab.h: %.y
+# 	$(YACC) -d -p oprs_yy -o $*.tab.c $<
+
+oprs-parser.y ope-parser.y opc-parser.y oprs-server-parser.y: yacc-file.y.part yacc-graph-op.y.part yacc-exp.y.part yacc-text-op.y.part
 
 # Same for .lex grammars which are built from components
-%.ll: %.l  $(LEX_INCLUDER)
-	rm -f $*.ll
-	 $(LEX_INCLUDER) -p.:$(VPATH) < $< > $*.ll
-	chmod -w  $*.ll
+%.l: %.l.part  $(LEX_INCLUDER)
+	rm -f $*.l
+	 $(LEX_INCLUDER) -p.:$(VPATH) < $< > $*.l
+	chmod -w  $*.l
 
-%.lex.c: %.ll
-	$(LEX) $(LEXFLAGS) -L -Poprs_yy -t $< > $@
+# I could not rely on the automake flex management,as ylwrap  does not properly handle renaming with -P
+%.c: %.l
+	$(LEX) $(LFLAGS) -Poprs_yy -o $@  $<
 
 
 #
