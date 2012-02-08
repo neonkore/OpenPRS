@@ -1,0 +1,330 @@
+%{
+
+/*                               -*- Mode: C -*- 
+ * oprs-parser.l -- Lex parser
+ * 
+ * $Id$
+ * 
+ * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ *    - Redistributions of source code must retain the above copyright
+ *      notice, this list of conditions and the following disclaimer.
+ *    - Redistributions in binary form must reproduce the above
+ *      copyright notice, this list of conditions and the following
+ *      disclaimer in the documentation and/or other materials provided
+ *      with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ */
+
+#include "config.h"
+#include <stdlib.h>
+#ifndef VXWORKS
+#include <sys/file.h>
+#endif
+
+
+#include "constant.h"
+#include "macro.h"
+#include "opaque.h"
+#include "oprs-type.h"
+#include "op-structure.h"
+#include "parser-funct.h"
+
+#include "soak_f.h"
+#include "oprs-type_f.h"
+#include "parser-funct_f.h"
+
+#include "oprs-parser.tab.h"
+
+include "lex-simple-def.l"
+
+include "lex-parser-def.l"
+
+%}
+
+include "lex-macro.l"
+
+id {typedid}
+
+     /* Pour montrer qu'on demarre dans cet etat, on l'initialise dans oprs-parser.y
+	Cet etat est necessaire de toutes facons pour accepter des id avec des pname de commandes...*/
+%s COMMAND OPF_VERSION NODE_TYPE FIELD_TYPE EDGE_TYPE ACTION_TYPE COLLECT_COMMENT EOFS
+
+%%
+{ws}		;
+<COMMAND>h	|
+<COMMAND>help	|
+<COMMAND>\?	{return HELP_TK;}
+
+<COMMAND>add		{return ADD_TK;}
+<COMMAND>conclude	{return CONCLUDE_TK;}
+<COMMAND>consult	{return CONSULT_TK;}
+<COMMAND>declare	{return DECLARE_TK;}
+<COMMAND>undeclare	{return UNDECLARE_TK;}
+<COMMAND>delete		{return DELETE_TK;}
+<COMMAND>echo		{return ECHO_TK;}
+<COMMAND>empty		{return EMPTY_TK;}
+<COMMAND>include	{return INCLUDE_TK;}
+<COMMAND>require	{return REQUIRE_TK;}
+<COMMAND>list		{return LIST_TK;}
+<COMMAND>load		{return LOAD_TK;}
+<COMMAND>reload		{return RELOAD_TK;}
+<COMMAND>receive 	{return RECEIVE_TK;}
+<COMMAND>reset	 	{return RESET_TK;}
+<COMMAND>send	 	{return SEND_TK;}
+<COMMAND>set		{return SET_TK;}
+<COMMAND>show		{return SHOW_TK;}
+<COMMAND>stat		{return STAT_TK;}
+<COMMAND>save		{return SAVE_TK;}
+<COMMAND>dump		{return DUMP_TK;}
+<COMMAND>trace		{return TRACE_TK;}
+<COMMAND>unify		{return UNIFY_TK;}
+<COMMAND>make		{return MAKE_TK;}
+<COMMAND>user		{return USER_TK;}
+<COMMAND>completion	{return COMPLETION_TK;}
+
+<COMMAND>variable	{return VARIABLE_TK;}
+<COMMAND>db		{return DB_TK;}
+<COMMAND>type		{return TYPE_TK;}
+<COMMAND>fact		{return FACT_TK;}
+<COMMAND>goal		{return GOAL_TK;}
+<COMMAND>intention	{return INTENTION_TK;}
+<COMMAND>condition	{return CONDITION_TK;}
+<COMMAND>op		|
+<COMMAND>ka		{return OP_TK;}
+<COMMAND>opf		|
+<COMMAND>kaf		{return OPF_TK;}
+<COMMAND>kernel		{return KERNEL_TK;}
+<COMMAND>soak		{return SOAK_TK;}
+
+<COMMAND>meta		{return META_TK;}
+<COMMAND>eval 		{return EVAL_TK;}
+<COMMAND>post		{return POST_TK;}
+<COMMAND>parallel	{return PARALLEL_TK;}
+<COMMAND>profiling	{return PROFILING_TK;}
+<COMMAND>silent 	{return SILENT_TK;}
+<COMMAND>frame		{return FRAME_TK;}
+<COMMAND>thread		{return THREADING_TK;}
+<COMMAND>intend		{return INTEND_TK;}
+<COMMAND>suc_fail	{return SUC_FAIL_TK;}
+<COMMAND>failure	{return FAILURE_TK;}
+<COMMAND>all		{return ALL_TK;}
+<COMMAND>oprs_data_path	{return OPRS_DATA_PATH_TK;}
+
+<COMMAND>on		{return ON_TK;}
+<COMMAND>off		{return OFF_TK;}
+
+<COMMAND>version	{return VERSION_TK;}
+<COMMAND>copyright	{return COPYRIGHT_TK;}
+<COMMAND>memory		{return MEMORY_TK;}
+
+<COMMAND>op_predicate	{return OP_PREDICATE_TK;}
+<COMMAND>predicate	{return PREDICATE_TK;}
+<COMMAND>function	{return FUNCTION_TK;}
+<COMMAND>action		{return AC_TK;}
+<COMMAND>symbol		{return SYM_TK;}
+<COMMAND>tsymbol		{return TSYM_TK;}
+<COMMAND>evaluable	{return EVALUABLE_TK;}
+<COMMAND>ff		{return FF_TK;}
+<COMMAND>be		{return BE_TK;}
+<COMMAND>cwp		{return CWP_TK;}
+<COMMAND>relevant	{return RELEVANT_TK;}
+<COMMAND>applicable 	{return APPLICABLE_TK;}
+
+<COMMAND>take_stdin	{return TAKE_STDIN_TK;}
+<COMMAND>disconnect	{return DISCONNECT_TK;}
+<COMMAND>step		{return STEP_TK;}
+<COMMAND>next		{return NEXT_TK;}
+<COMMAND>halt		{return HALT_TK;}
+<COMMAND>run		{return RUN_TK;}
+<COMMAND>status		{return STATUS_TK;}
+
+<COMMAND>quit		|
+<COMMAND>q		|
+<COMMAND>exit		{return QUIT_TK;}
+
+<COMMAND>text		{return TEXT_TK;}
+<COMMAND>graphic	{return GRAPHIC_TK;}
+
+<COMMAND>call_external	{return CALL_EXTERNAL_TK;}
+
+include "lex-graph-op.l"
+
+include "lex-text-op.l"
+
+include "lex-meta-exp.l"
+
+: 		{return TYPE_SEP_TK;}
+
+
+include "lex-exp.l"
+
+<EOFS><<EOF>>	 {yyterminate();} /* EOFS is an end of file state... sometimes, bison, keeps asking for
+				     a token while flex is stuck on an EOF... this will terminate flex and bison. */
+<<EOF>>		 {BEGIN EOFS; return EOF_TK;} /* set the EOF state. */
+
+%%
+#include "mp-pub.h"
+#include "yy-funct.c"
+
+YY_BUFFER_STATE yy_stdin, yy_ps, yy_mp;
+FILE *ps_file, *mp_file;
+
+void take_the_stdin(void)
+/* 
+ * take_the_stdin - will grab the "real" stdin (its value was saved when the process was young 
+ *                  and had the descriptor in its memory). We also set i_have_the_stdin so 
+ *                  we can prompt correctly...
+ */
+{
+     if (parser_index == MAX_OPEN_INCLUDE) {
+	  fprintf(stderr,LG_STR("Too many parser level opened.\n",
+				"Trop de niveaux de parsing ouverts.\n"));
+	  return;
+     }
+
+     i_have_the_stdin = TRUE;
+
+     parser_state_save[parser_index] = YY_CURRENT_BUFFER;
+     saved_parse_source[parser_index] = parse_source;
+
+     parser_index++;
+     parser_line_number[parser_index] = 1;
+     parser_file_name[parser_index] = "stdin"; /* */
+     FILE_save[parser_index] = NULL;
+
+     parse_source = PS_FILE;
+
+#ifdef HAS_TIMER
+     desarm_condition_timer();	/* May generate interrupt which make read on stdin return... */
+#endif
+     oprs_yy_switch_to_buffer(yy_stdin);
+     printf(LG_STR("Now parsing from stdin, the main loop is suspended.\n",
+		   "Parsing du stdin, la boucle principale est suspendue.\n"));
+}
+
+void leave_the_stdin(void)
+/* 
+ * leave_the_stdin - will leave the stdin alone... and will reconnect its stdin to its 
+ *                   socket (which value was saved in ps_socket). This is done by
+ *                   sending one char down the tube, which instruct the server to grab the 
+ *                   stdin again.
+ *                   Return void.
+ */
+{
+     if (!i_have_the_stdin) {
+	  fprintf(stderr,LG_STR("You do not parse from stdin.\n",
+				"Vous ne parsez pas de stdin.\n"));
+	  return;
+     }
+     
+     i_have_the_stdin = FALSE;
+     parser_file_name[parser_index] = NULL;
+     parser_line_number[parser_index] = 0;
+     parser_index--;
+
+     yy_switch_to_buffer(parser_state_save[parser_index]);
+     parse_source = saved_parse_source[parser_index];
+
+     printf(LG_STR("Quitting stdin parsing, the main loop is resumed.\n",
+		   "Arret du parsing du stdin, la boucle principale est reprise.\n"));
+
+#ifdef HAS_TIMER
+     arm_condition_timer();
+#endif
+}
+
+void create_yy_mp(void)
+{
+
+     PROTECT_NULL_SYSCALL_FROM_EINTR(mp_file,fdopen(mp_socket,"r"));
+
+     if (!mp_file) {
+	  perror("create_yy_mp: fdopen");
+     }
+
+     yy_mp = oprs_yy_create_buffer(mp_file,YY_BUF_SIZE);
+}
+
+void create_yy_stdin_and_ps(void)
+{
+     yy_stdin = oprs_yy_create_buffer(stdin,YY_BUF_SIZE);
+
+     PROTECT_NULL_SYSCALL_FROM_EINTR(ps_file,fdopen(ps_socket,"r"));
+
+     if (!ps_file) {
+	  perror("create_yy_stdin_and_ps: fdopen");
+     }
+
+     yy_ps = oprs_yy_create_buffer(ps_file,YY_BUF_SIZE);
+}
+
+void yy_switch_to_yy_ps(void)
+{
+     oprs_yy_switch_to_buffer(yy_ps);
+}
+
+void yy_switch_to_yy_mp(void)
+{
+     oprs_yy_switch_to_buffer(yy_mp);
+}
+
+
+void yy_begin_0(void)
+{
+     BEGIN 0;
+}
+
+void yy_begin_COMMAND()
+{
+     BEGIN COMMAND;
+}
+
+void yy_begin_OPF_VERSION(void)
+{
+     BEGIN OPF_VERSION;
+}
+
+void yy_begin_NODE_TYPE(void)
+{
+     BEGIN NODE_TYPE;
+}
+
+void yy_begin_FIELD_TYPE(void)
+{
+     BEGIN FIELD_TYPE;
+}
+
+void yy_begin_ACTION_TYPE(void)
+{
+     BEGIN ACTION_TYPE;
+}
+
+void yy_begin_EDGE_TYPE(void)
+{
+     BEGIN EDGE_TYPE;
+}
+
+void yy_begin_COLLECT_COMMENT(void)
+{
+     BEGIN COLLECT_COMMENT;
+}
+

@@ -1,0 +1,10 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@/openprs
+
+Name: mp-openprs
+Description: Message Passer of Open PRS
+Version: @OPENPRS_MAJOR@.@OPENPRS_MINOR@
+Libs: -L${libdir} -lMP @MP_EXTRA_LIBS@
+Cflags: -I${includedir}
