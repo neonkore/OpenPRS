@@ -137,6 +137,14 @@ oprs_SOURCES = oprs-lex.l op-x-opaque.c oprs-main.c top-lev-loop.c $(USER_SOURCE
 oprs_LDADD = libTKernel.la libKernel.la libBasic.la libTOprs.la libOprs.la libTOpEOprs.la \
 		 libMP.la libVersion.a ../c_toolkit/libOPList.la $(CONTRIB_LIB)
 
+#Some attemps to make relocatable work with libtool... no way...
+# liboprs-relocatable.a:  oprs-lex.o op-x-opaque.o oprs-main.o top-lev-loop.o
+# 	$(LIBTOOL) --mode=link $(LD) -r $(LDFLAGS) -o $@ $^  libTKernel.la libKernel.la libBasic.la libTOprs.la libOprs.la \
+# 		libMP.la libVersion.a
+
+# oprs-user: liboprs-relocatable.a  user-action.o user-ev-function.o user-ev-predicate.o user-external.o user-trace.o
+# 	$(LIBTOOL) --mode=link $(LD) -o $@ $(USER_OBJ) liboprs-relocatable.a ../c_toolkit/libOPList.la $(CONTRIB_LIB)
+
 xoprs_SOURCES = oprs-lex.l xoprs-call.c xoprs-textwin.c $(USER_SOURCES) \
 	xoprs-dialog.c xoprs-filesel.c xoprs-intention.c \
 	xoprs-main.c xoprs-menu.c xt-util.c xtop-lev-loop.c \
@@ -193,6 +201,7 @@ AM_YFLAGS = -d -p oprs_yy
 # %.tab.c %.tab.h: %.y
 # 	$(YACC) -d -p oprs_yy -o $*.tab.c $<
 
+# this could be smarter about which one depends of which...
 oprs-parser.y ope-parser.y opc-parser.y oprs-server-parser.y: yacc-file.y.part yacc-graph-op.y.part yacc-exp.y.part yacc-text-op.y.part
 
 # Same for .lex grammars which are built from components
@@ -206,6 +215,9 @@ oprs-parser.y ope-parser.y opc-parser.y oprs-server-parser.y: yacc-file.y.part y
 	$(LEX) $(LFLAGS) -Poprs_yy -o $@ $<
 
 BUILT_SOURCES += XOprs.ad.h Ope.ad.h
+
+xdefaultdir = $(libdir)/app-defaults
+xdefault_DATA = XOprs.ad Ope.ad
 
 #
 # This rule says that the .ad.h are obtained with the coresponding .ad
