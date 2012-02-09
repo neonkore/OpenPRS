@@ -134,7 +134,9 @@ void give_sem(SEM_ID sem)
 #include "stdlib.h"
 #else
 #ifndef GNUWIN32
+#ifdef HAVE_MALLOC_H
 #include <malloc.h>
+#endif
 #endif
 #endif
 

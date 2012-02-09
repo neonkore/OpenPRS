@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * oprs-main.c -- 
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -58,6 +58,8 @@ static const char* const rcsid = "$Id$";
 #include "oprs-init_f.h"
 #include "oprs-socket_f.h"
 #include "user-external_f.h"
+
+PBoolean install_user_trace;
 
 #ifdef VXWORKS
 #endif

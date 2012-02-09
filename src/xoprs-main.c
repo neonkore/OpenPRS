@@ -93,6 +93,8 @@ static const char* const rcsid = "$Id$";
 #include "oprs-type_f.h"
 #include "oprs-init_f.h"
 
+PBoolean install_user_trace;
+
 Boolean xoprs_top_level_loop(XtPointer oprs);
 Boolean wait_other_events(XtPointer oprs);
 void reset_oprs_kernel(Oprs *oprs);

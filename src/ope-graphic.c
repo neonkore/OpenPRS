@@ -3,7 +3,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*-
  * ope-graphic.c --
  *
- * Copyright (c) 1991-2005 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -56,6 +56,8 @@ static const char* const rcsid = "$Id$";
 #include "ope-graphic_f.h"
 #include "ope-external_f.h"
 #include "op-structure_f.h"
+
+PString mode_help[MAX_DRAW_MODE];
 
 void destroy_og(Draw_Data *dd, OG *og);
 void redraw_all_in_region(Widget w, Draw_Data *dd, Region region);

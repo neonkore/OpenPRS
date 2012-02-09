@@ -1,3 +1,7 @@
+2012-02-09  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* mallocPack.c: Darwin does not have malloc.h...?
+
 2009-11-16  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* mallocPack.c (is_small): should now deal with pointer, not int.

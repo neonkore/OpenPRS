@@ -98,3 +98,7 @@ m4/ltversion.m4
 m4/lt~obsolete.m4
 *.tar.gz
 build/
+src/opc-parser.y
+src/ope-parser.y
+src/oprs-parser.y
+src/oprs-server-parser.y
