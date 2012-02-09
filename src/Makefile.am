@@ -239,4 +239,33 @@ xdefault_DATA = XOprs.ad Ope.ad
 	chmod -w $@
 
 
-CLEANFILES =  XOprs.ad.h oprs-server-lex.l ope-lex.l ope-parser.y oprs-server-parser.c oprs-parser.y oprs-lex.l opc-parser.c oprs-server-lex.c oprs-parser.h opc-parser.h oprs-lex.c oprs-server-parser.y oprs-server-parser.h ope-parser.h oprs-parser.c Ope.ad.h opc-lex.l opc-parser.y ope-lex.c opc-lex.c ope-parser.c
+CLEANFILES =  XOprs.ad.h oprs-server-lex.l ope-lex.l ope-parser.y oprs-server-parser.c oprs-parser.y oprs-lex.l opc-parser.c oprs-server-lex.c oprs-parser.h opc-parser.h oprs-lex.c oprs-server-parser.y oprs-server-parser.h ope-parser.h oprs-parser.c Ope.ad.h opc-lex.l opc-parser.y ope-lex.c opc-lex.c ope-parser.c user-external.c user-external.h user-external_f.h Ope.ad XOprs.ad
+
+
+BUILT_SOURCES += user-external.c user-external.h user-external_f.h
+
+EXTRA_DIST += default-user-external.c default-user-external.h default-user-external_f.h
+
+user-external.c: $(top_srcdir)/src/default-user-external.c
+	@echo "*******************************"
+	@echo "*********** WARNING ***********"
+	@echo "*******************************"
+	@echo "You need to link your own my-user-external.c on user-external.c."
+	@echo "For now, I will link default-user-external.c for you with:"
+	$(LN_S) $< $@
+
+user-external.h: $(top_srcdir)/src/default-user-external.h
+	@echo "*******************************"
+	@echo "*********** WARNING ***********"
+	@echo "*******************************"
+	@echo "You need to link your own my-user-external.h on user-external.h."
+	@echo "For now, I will link default-user-external.h for you with:"
+	$(LN_S) $< $@
+
+user-external_f.h: $(top_srcdir)/src/default-user-external_f.h
+	@echo "*******************************"
+	@echo "*********** WARNING ***********"
+	@echo "*******************************"
+	@echo "You need to link your own my-user-external_f.h on user-external_f.h."
+	@echo "For now, I will link default-user-external_f.h for you with:"
+	$(LN_S) $< $@

@@ -30,6 +30,9 @@ index: $(INDEX)
 %.tex: $(top_srcdir)/data/test/%.opf
 	$(OP_EDITOR) -t $< $@
 
+%.tex: $(top_srcdir)/demo/truck-demo/oprs/data/%.opf
+	$(OP_EDITOR) -t $< $@
+
 %nd: %dx
 	 $(MAKEINDEX) $< -o  $@
 
