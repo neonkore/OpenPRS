@@ -21,4 +21,5 @@ INC_TEST_FILES = empty.inc database.inc all.inc \
 DB_TEST_FILES = bind.db maint.db ipp-test.db
 
 pkgdatatestdir = $(pkgdatadir)/data/test
-pkgdatatest_DATA =  $(INC_TEST_FILES) $(OPF_TEST_FILES) $(DB_TEST_FILES)
+dist_pkgdatatest_DATA =  $(INC_TEST_FILES) $(OPF_TEST_FILES) $(DB_TEST_FILES)
+

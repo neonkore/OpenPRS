@@ -12,7 +12,10 @@ INDEX = oprs.cpnd oprs.fnnd oprs.epnd oprs.efnd oprs.vrnd oprs.pgnd
 
 doc_DATA = oprs.pdf
 
-oprs.pdf: oprs.tex oprs-macros.tex oprs.bib $(OP_TEX) $(FIGURES) appendices.tex
+BIBINPUTS := .:$(top_srcdir)/doc:
+TEXINPUTS := .:$(top_srcdir)/doc:$(top_srcdir)/doc/fig:
+
+oprs.pdf: oprs.tex oprs-macros.tex oprs.bib $(OP_TEX) appendices.tex
 	$(LATEX) $<
 	$(MAKE) index
 	$(BIBTEX) oprs
@@ -21,11 +24,15 @@ oprs.pdf: oprs.tex oprs-macros.tex oprs.bib $(OP_TEX) $(FIGURES) appendices.tex
 
 index: $(INDEX)
 
-%.tex: ../data/%.opf
+%.tex: $(top_srcdir)/data/%.opf
 	$(OP_EDITOR) -t $< $@
 
-%.tex: ../data/test/%.opf
+%.tex: $(top_srcdir)/data/test/%.opf
 	$(OP_EDITOR) -t $< $@
 
 %nd: %dx
 	 $(MAKEINDEX) $< -o  $@
+
+EXTRA_DIST = oprs.tex oprs-macros.tex oprs.bib  appendices.tex fig truck-demo-plus.tex truck-demo.tex biblio.tex oprs-yacc.tex oprs-lex.tex copyright.tex license.tex overview.tex oprs-kernel.tex oprs-server.tex mp.tex xoprs-kernel.tex opc.tex ope.tex using-oprs.tex
+
+CLEANFILES =  oprs.cpdx oprs.aux fact-meta.tex oprs.pgdx oprs.out license.aux oprs.pgnd oprs.blg oprs.lot fib.tex mp.aux oprs.epnd oprs.fndx oprs.vrdx appendices.aux oprs.epdx oprs.ilg biblio.aux oprs.efdx copyright.aux oprs.vrnd ope.aux using-oprs.aux oprs.pdf oprs.fnnd wait.tex bar.tex oprs.log fib-par.tex semaphore.tex overview.aux meta-intended-goal.tex oprs-kernel.aux opc.aux oprs.bbl oprs.toc oprs.efnd oprs.lof oprs-server.aux oprs.cpnd new-default.tex fact-meta-if-par.tex example-cons.tex xoprs-kernel.aux new-meta-ops.tex

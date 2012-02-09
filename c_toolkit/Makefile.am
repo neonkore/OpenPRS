@@ -1,6 +1,6 @@
 #include ../site.make
 
-AM_CPPFLAGS = -I$(top_srcdir)/src 
+AM_CPPFLAGS = -I$(top_builddir)/src  -I$(top_srcdir)/src 
 
 C_TOOLKIT_LIB_SRC = mallocPack.c slistPack.c shashPack.c
 

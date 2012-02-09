@@ -28,4 +28,4 @@ SYM_FILES = meta-intended-goal.sym new-default.sym semaphore.sym \
 DB_FILES = include.db
 
 pkgdatadatadir = $(pkgdatadir)/data
-pkgdatadata_DATA = $(SYM_FILES) $(INC_FILES) $(OPF_FILES) $(DB_FILES)
+dist_pkgdatadata_DATA = $(SYM_FILES) $(INC_FILES) $(OPF_FILES) $(DB_FILES)
