@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*-
  * database.c -- Database management functions.
  *
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -48,8 +48,6 @@ static const char* const rcsid = "$Id$";
 #include "macro.h"
 
 #include "shashPack_f.h"
-
-#include "user-external.h"
 
 #ifdef OPRS_PROFILING
 #include "oprs-profiling.h"

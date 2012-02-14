@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * xoprs-main.c -- Top level file for the X/Motif interface for one OPRS.
  * 
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -748,7 +748,7 @@ int main(int argc, char **argv, char **envp)
 
      update_active_idle((XtPointer)oprs,(XtIntervalId)NULL);
 
-     start_kernel_user_hook(name);
+     start_kernel_hook(name);
 
      run_initial_commands();
 

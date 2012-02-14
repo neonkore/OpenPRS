@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * activate.c -- Executes the intentions in the intention graph.
  * 
- * Copyright (c) 1991-2010 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,6 @@ static const char* const rcsid = "$Id$";
 #include "constant.h"
 #include "macro.h"
 
-#include "user-external.h"
 #include "oprs-profiling.h"
 
 #include "oprs.h"

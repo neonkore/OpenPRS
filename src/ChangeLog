@@ -1,3 +1,14 @@
+2012-02-14  Felix Ingrand  <felix@cturtle>
+
+	* oprs-parser.y.part: Added commands to the parser to load actions, evaluable functions and predicates. ex:
+		load action "user-action-example"
+		load evaluable function "user-ev-function-example"
+		load evaluable predicate "user-ev-predicate-example"
+
+	* user-ev-function.c user-action.c user-ev-predicate.c: Example of dynamic loading of actions, functions and predicates.
+
+	* ev-function.c: Added ltdl code to load actions, evaluable functions and predicates.
+
 2011-07-13  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* mp.c (add_buffered_message): Fixed again a 32/64 bits problem when using the message passer.

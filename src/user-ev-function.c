@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * user-ev-function.c -- contains user defined evaluable functions.
  * 
- * Copyright (c) 1991-2010 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,15 +46,20 @@ static const char* const rcsid = "$Id$";
 #include "constant-pub.h"
 #include "oprs-type-pub.h"
 #include "user-ev-function.h"
+#include "user-ev-function.h"
 
 #include "oprs-type_f-pub.h"
 #include "ev-function_f-pub.h"
 #include "lisp-list_f-pub.h"
+#include "action_f-pub.h"
+#include "oprs_f-pub.h"
+
 #include "oprs-rerror_f-pub.h"
 #include "oprs-error.h"
 #include "oprs-rerror.h"
 #include "oprs-rerror_f.h"
 #include "oprs-error_f.h"
+
 Term *toto_eval_func(TermList terms)
 {
      Term *t1,*res;
@@ -227,7 +232,9 @@ Term *example3_l_list_eval_func(TermList terms)
 
 
 
-void declare_user_eval_funct()
+// #define declare_user_eval_funct user_ev_function_LTX_declare_user_eval_func
+
+void declare_user_eval_funct(void)
 {
      make_and_declare_eval_funct("TEST_UMEM",test_u_mem_eval_func, 0);
      make_and_declare_eval_funct("DO-NOT-CALL-ME-TOTO",toto_eval_func, 1);

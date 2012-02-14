@@ -1,14 +1,14 @@
 AM_CPPFLAGS = -I$(top_srcdir)/c_toolkit 
 
 INC = action.h activate.h config.h constant-pub.h constant.h database.h \
-	ev-function.h shary-user-ev-function.h ev-predicate.h fact-goal.h int-graph.h \
+	ev-function.h ev-predicate.h fact-goal.h int-graph.h \
 	intend.h intention.h op-compiler.h op-instance.h op-structure.h \
 	ope-global.h ope-graphic.h lisp-list.h macro-pub.h macro.h mp.h \
 	mp-pub.h mp-register.h opaque-ext.h opaque-pub.h opaque.h oprs-sprint-pub.h \
 	parser-funct.h oprs-client.h oprs-main.h oprs-print.h oprs-server.h \
 	oprs-profiling.h oprs-type-pub.h oprs-type.h oprs.h relevant-op.h soak.h \
 	top-lev.h unification.h user-action.h user-trace.h user-ev-function.h \
-	user-ev-predicate.h user-external.h version.h xoprs.h xhelp.h \
+	user-ev-predicate.h version.h xoprs.h xhelp.h \
 	xoprs-intention.h xoprs-main-pub.h xoprs-main.h xoprs.h xoprs-textwin.h ope-syntax.h \
 	op-default.h oprs-sprint.h oprs-error.h oprs-rerror.h oprs-error-pub.h \
 	conditions.h lang.h oprs-dump.h opc.h type.h oprs-pred-func.h tcl.h yy-funct.c
@@ -25,7 +25,7 @@ FINC = action_f.h activate_f.h database_f.h ev-function_f.h oprs-pred-func_f.h \
 	oprs-send-m_f.h oprs-socket_f.h oprs-profiling_f.h oprs-type_f-pub.h \
 	oprs-type_f.h oprs-util_f.h oprs_f-pub.h oprs_f.h relevant-op_f.h \
 	send-message_f.h soak_f.h socket_f.h xt-util_f.h\
-	top-lev_f.h unification_f.h usage_f.h user-external_f.h xhelp_f.h \
+	top-lev_f.h unification_f.h usage_f.h xhelp_f.h \
 	xoprs-intention_f.h xoprs-menu_f.h xoprs-textwin_f.h ope-rop_f.h ope-report_f.h \
 	oprs-pprint_f.h tcl_f.h oprs-init_f.h oprs-sprint_f.h oprs-error_f.h \
 	oprs-rerror_f-pub.h oprs-sprint_f-pub.h conditions_f.h oprs-rerror_f.h \
@@ -50,7 +50,7 @@ EXTERNAL_INCLUDE = action_f-pub.h constant-pub.h ev-function_f-pub.h ev-predicat
 	op-instance_f-pub.h op-structure_f-pub.h lisp-list_f-pub.h macro-pub.h \
 	mp-pub.h opaque-pub.h oprs-array_f-pub.h oprs-type-pub.h oprs-sprint_f-pub.h \
 	oprs-type_f-pub.h oprs_f-pub.h user-action.h user-ev-function.h \
-	user-ev-predicate.h user-external.h user-external_f.h xoprs-main-pub.h oprs-error-pub.h \
+	user-ev-predicate.h xoprs-main-pub.h oprs-error-pub.h \
 	oprs-rerror_f-pub.h user-trace.h user-trace_f.h oprs-print_f-pub.h
 
 pkginclude_HEADERS = $(EXTERNAL_INCLUDE)
@@ -104,9 +104,9 @@ libGOprs_la_SOURCES = $(BOTH_OPRS_LIB_SOURCES)
 libGOprs_la_CPPFLAGS = $(AM_CPPFLAGS) -UNO_GRAPHIX
 
 #
-BOTH_KERNEL_LIB_SOURCES = action.c activate.c ev-function.c shary-user-ev-function.c intend.c intention.c \
+BOTH_KERNEL_LIB_SOURCES = action.c activate.c ev-function.c intend.c intention.c \
 	int-graph.c op-instance.c oprs-init.c tcl.c soak.c oprs-parser.y \
-	top-lev.c
+	top-lev.c default-hook.c
 
 libTKernel_la_SOURCES = $(BOTH_KERNEL_LIB_SOURCES)
 libTKernel_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/contrib/src -DNO_GRAPHIX
@@ -115,9 +115,12 @@ libGKernel_la_SOURCES = $(BOTH_KERNEL_LIB_SOURCES)
 libGKernel_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/contrib/src -UNO_GRAPHIX
 
 # This will soon disappear with dl mechanism...
-USER_SOURCES = user-action.c user-ev-function.c user-ev-predicate.c user-external.c user-trace.c
+USER_MODULES_EXAMPLE = user-action.c user-ev-function.c user-ev-predicate.c
 
 CONTRIB_LIB = $(top_builddir)/contrib/src/libpu.la
+
+
+INCLUDES = @INCLTDL@
 
 # Here is the list of program to build and install
 bin_PROGRAMS = mp-oprs kill-mp oprs-server oprs xoprs oprs-cat ope opc
@@ -133,24 +136,18 @@ oprs_server_SOURCES = oprs-server-parser.y oprs-server-lex.l opaque-ext.c oprs-c
 oprs_server_LDADD = ../c_toolkit/libOPList.la libBasic.la libTOprs.la libOprs.la libMP.la \
 		 libVersion.a $(READLINE_LIBS)
 
-oprs_SOURCES = oprs-lex.l op-x-opaque.c oprs-main.c top-lev-loop.c $(USER_SOURCES)
+oprs_SOURCES = oprs-lex.l op-x-opaque.c oprs-main.c top-lev-loop.c user-trace.c
 oprs_LDADD = libTKernel.la libKernel.la libBasic.la libTOprs.la libOprs.la libTOpEOprs.la \
-		 libMP.la libVersion.a ../c_toolkit/libOPList.la $(CONTRIB_LIB)
+		 libMP.la libVersion.a ../c_toolkit/libOPList.la $(CONTRIB_LIB)\
+		 @LIBLTDL@ @LIBADD_DL@
 
-#Some attemps to make relocatable work with libtool... no way...
-# liboprs-relocatable.a:  oprs-lex.o op-x-opaque.o oprs-main.o top-lev-loop.o
-# 	$(LIBTOOL) --mode=link $(LD) -r $(LDFLAGS) -o $@ $^  libTKernel.la libKernel.la libBasic.la libTOprs.la libOprs.la \
-# 		libMP.la libVersion.a
-
-# oprs-user: liboprs-relocatable.a  user-action.o user-ev-function.o user-ev-predicate.o user-external.o user-trace.o
-# 	$(LIBTOOL) --mode=link $(LD) -o $@ $(USER_OBJ) liboprs-relocatable.a ../c_toolkit/libOPList.la $(CONTRIB_LIB)
-
-xoprs_SOURCES = oprs-lex.l xoprs-call.c xoprs-textwin.c $(USER_SOURCES) \
+xoprs_SOURCES = oprs-lex.l xoprs-call.c xoprs-textwin.c \
 	xoprs-dialog.c xoprs-filesel.c xoprs-intention.c \
 	xoprs-main.c xoprs-menu.c xt-util.c xtop-lev-loop.c \
-	xoprs-op-graphic.c xoprs-rop.c
+	xoprs-op-graphic.c xoprs-rop.c user-trace.c
 xoprs_LDADD = libGKernel.la libKernel.la libBasic.la libGOprs.la libOprs.la libGOpEOprs.la \
-		libOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la $(CONTRIB_LIB) $(MOTIF_LIBS) $(X_LIBS)
+	libOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la $(CONTRIB_LIB) \
+	@MOTIF_LIBS@ @X_LIBS@ @LIBLTDL@ @LIBADD_DL@
 
 oprs_cat_SOURCES = oprs-cat.c
 oprs_cat_LDADD = ../c_toolkit/libOPList.la
@@ -166,6 +163,20 @@ opc_SOURCES = opc-lex.l opc-parser.y opc-main.c ope-opaque.c
 opc_LDADD = libBasic.la libGOprs.la libOprs.la libGOpEOprs.la \
 	libOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la $(MOTIF_LIBS) $(X_LIBS)
 
+
+# This is what replace relocatable... dynamic loading of evaluable function, predicates and actions.
+
+lib_LTLIBRARIES += user-ev-function-example.la
+user_ev_function_example_la_SOURCES = user-ev-function.c
+user_ev_function_example_la_LDFLAGS = -module
+
+lib_LTLIBRARIES += user-ev-predicate-example.la
+user_ev_predicate_example_la_SOURCES = user-ev-predicate.c
+user_ev_predicate_example_la_LDFLAGS = -module
+
+lib_LTLIBRARIES += user-action-example.la
+user_action_example_la_SOURCES = user-action.c
+user_action_example_la_LDFLAGS = -module
 
 pkgconfigdir = $(libdir)/pkgconfig 
 pkgconfig_DATA = openprs.pc mp-openprs.pc
@@ -202,7 +213,13 @@ AM_YFLAGS = -d -p oprs_yy
 # 	$(YACC) -d -p oprs_yy -o $*.tab.c $<
 
 # this could be smarter about which one depends of which...
-oprs-parser.y ope-parser.y opc-parser.y oprs-server-parser.y: yacc-file.y.part yacc-graph-op.y.part yacc-exp.y.part yacc-text-op.y.part
+oprs-parser.y: oprs-parser.y.part yacc-file.y.part yacc-graph-op.y.part yacc-exp.y.part yacc-text-op.y.part
+
+ope-parser.y: ope-parser.y.part yacc-file.y.part yacc-graph-op.y.part yacc-exp.y.part yacc-text-op.y.part
+
+opc-parser.y: opc-parser.y.part yacc-file.y.part yacc-graph-op.y.part yacc-exp.y.part yacc-text-op.y.part
+
+oprs-server-parser.y: oprs-server-parser.y.part yacc-file.y.part yacc-graph-op.y.part yacc-exp.y.part yacc-text-op.y.part
 
 # Same for .lex grammars which are built from components
 %.l: %.l.part $(LEX_INCLUDER)
@@ -239,33 +256,9 @@ xdefault_DATA = XOprs.ad Ope.ad
 	chmod -w $@
 
 
-CLEANFILES =  XOprs.ad.h oprs-server-lex.l ope-lex.l ope-parser.y oprs-server-parser.c oprs-parser.y oprs-lex.l opc-parser.c oprs-server-lex.c oprs-parser.h opc-parser.h oprs-lex.c oprs-server-parser.y oprs-server-parser.h ope-parser.h oprs-parser.c Ope.ad.h opc-lex.l opc-parser.y ope-lex.c opc-lex.c ope-parser.c user-external.c user-external.h user-external_f.h Ope.ad XOprs.ad
+CLEANFILES =  XOprs.ad.h oprs-server-lex.l ope-lex.l ope-parser.y oprs-server-parser.c oprs-parser.y oprs-lex.l opc-parser.c oprs-server-lex.c oprs-parser.h opc-parser.h oprs-lex.c oprs-server-parser.y oprs-server-parser.h ope-parser.h oprs-parser.c Ope.ad.h opc-lex.l opc-parser.y ope-lex.c opc-lex.c ope-parser.c Ope.ad XOprs.ad
 
 
-BUILT_SOURCES += user-external.c user-external.h user-external_f.h
+#BUILT_SOURCES += user-external.c user-external.h user-external_f.h
 
 EXTRA_DIST += default-user-external.c default-user-external.h default-user-external_f.h
-
-user-external.c: $(top_srcdir)/src/default-user-external.c
-	@echo "*******************************"
-	@echo "*********** WARNING ***********"
-	@echo "*******************************"
-	@echo "You need to link your own my-user-external.c on user-external.c."
-	@echo "For now, I will link default-user-external.c for you with:"
-	$(LN_S) $< $@
-
-user-external.h: $(top_srcdir)/src/default-user-external.h
-	@echo "*******************************"
-	@echo "*********** WARNING ***********"
-	@echo "*******************************"
-	@echo "You need to link your own my-user-external.h on user-external.h."
-	@echo "For now, I will link default-user-external.h for you with:"
-	$(LN_S) $< $@
-
-user-external_f.h: $(top_srcdir)/src/default-user-external_f.h
-	@echo "*******************************"
-	@echo "*********** WARNING ***********"
-	@echo "*******************************"
-	@echo "You need to link your own my-user-external_f.h on user-external_f.h."
-	@echo "For now, I will link default-user-external_f.h for you with:"
-	$(LN_S) $< $@

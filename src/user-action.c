@@ -3,7 +3,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * user-action.c -- 
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,11 +46,19 @@ static const char* const rcsid = "$Id$";
 #include "constant-pub.h"
 #include "oprs-type-pub.h"
 #include "user-action.h"
-#include "oprs-type_f-pub.h"
+#include "user-ev-function.h"
 
+#include "oprs-type_f-pub.h"
+#include "ev-function_f-pub.h"
 #include "action_f-pub.h"
 #include "lisp-list_f-pub.h"
 #include "oprs_f-pub.h"
+
+#include "oprs-rerror_f-pub.h"
+#include "oprs-error.h"
+#include "oprs-rerror.h"
+#include "oprs-rerror_f.h"
+#include "oprs-error_f.h"
 
 
 Term *action_post_fact(TermList terms)
@@ -125,15 +133,16 @@ Term *action_bar_foo(TermList terms)
      return res;
 }
 
+//#define declare_user_action user_action_LTX_declare_user_action
 
 void declare_user_action(void)
 {
-     make_and_declare_action("BAR-FOO",action_bar_foo, 2);
+  fprintf(stderr,"declare_user_action.\n");
+  make_and_declare_eval_funct("FOO-BAR",action_bar_foo, 2);
+  make_and_declare_action("FOO-BAR",action_bar_foo, 2);
+#ifdef IGNORE
      make_and_declare_action("POST-FACT",action_post_fact, 1);
      make_and_declare_action("POST-FACT-DIRECT",action_post_direct_fact, 0);
-
-#ifdef TRUCK_DEMO
-     make_and_declare_action("INIT-OPRS-TIME",action_init_oprs_time, 1);
 #endif
-     return;
+      return; 
 }

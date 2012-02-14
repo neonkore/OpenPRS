@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * oprs-main.c -- 
  * 
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -57,9 +57,8 @@ static const char* const rcsid = "$Id$";
 #include "oprs-profiling_f.h"
 #include "oprs-init_f.h"
 #include "oprs-socket_f.h"
-#include "user-external_f.h"
 
-PBoolean install_user_trace;
+PBoolean install_user_trace = FALSE;
 
 #ifdef VXWORKS
 #endif
@@ -114,8 +113,8 @@ int main(int argc, char **argv, char ** envp)
      FREE(server_hostn);
 #endif
 
-     start_kernel_user_hook(name);
-
+     start_kernel_hook(name);
+     
      run_initial_commands();
 
      client_oprs_top_level_loop(current_oprs); /* Just execute the main loop for the child */

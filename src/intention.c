@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * intention.c -- Functions and utilities to manipulate intentions.
  * 
- * Copyright (c) 1991-2010 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -53,7 +53,6 @@ static const char* const rcsid = "$Id$";
 #include "fact-goal.h"
 #include "op-structure.h"
 #include "op-instance.h"
-#include "user-external.h"
 #include "oprs-profiling.h"
 #include "oprs-print.h"
 #include "oprs-sprint.h"

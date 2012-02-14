@@ -3,7 +3,7 @@
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2010 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -76,6 +76,9 @@ typedef TermPtr (*PFPT)(TermList); /* PFPT is pointer to a function taking a Ter
 
 typedef Slist *(*PFPL)(Slist *); /* PFPL is pointer to a function taking a Slist *and returning a
 				      pointer to Slist *.*/
+
+typedef void entrypoint(void);
+typedef void entrypoint_name(char *);
 
 typedef struct expression Expression;
 

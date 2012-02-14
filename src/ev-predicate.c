@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * ev-predicate.c -- Handle evaluable predicates.
  * 
- * Copyright (c) 1991-2010 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -689,7 +689,7 @@ void declare_eval_pred(void)
      make_and_declare_eval_pred_no_eval_var("=", set_ep, 2, TRUE);
      make_and_declare_eval_pred_no_eval_var("==", unify_ep, 2, TRUE);
 
-     declare_user_eval_pred();
+     /* declare_user_eval_pred(); */
 
      return;
 }

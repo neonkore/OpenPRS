@@ -1,6 +1,7 @@
-static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
- * default-user-external.c -- 
+ * default-user-external_f.h -- 
+ * 
+ * $Id$
  * 
  * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
@@ -30,43 +31,24 @@ static const char* const rcsid = "$Id$";
  * POSSIBILITY OF SUCH DAMAGE.
  *
  */
-#include "config.h"
-
-#ifdef VXWORKS
-#include "vxWorks.h"
-#include "stdioLib.h"
-#else
-#include <stdio.h>
-#endif
-
-#include "opaque-pub.h"
-#include "user-external.h"
-
-#include "intention_f-pub.h"
-#include "user-external_f.h"
-
-PBoolean my_intention_list_sort_example(Intention *i1, Intention *i2)
-{
-     return (intention_priority(i1) > intention_priority(i2));
-}
-
-void start_kernel_hook(char *name)
-{
-     intention_scheduler = &intention_scheduler_time_sharing; 
-     /* intention_scheduler = NULL; */
-     /* The next statement is useless, if the intention sheduler is not NULL
-	(as it has priotity over intention sorting.) */
-     intention_list_sort_predicate = &intention_list_sort_by_priority;
-     main_loop_pool_sec = 0L;
-     main_loop_pool_usec = 10000L;
-}
 
 
-void end_kernel_user_hook()
-{
-     printf("Bye, bye...\n");
-}
+/* 
+ * This file will contain the functions provided to the user and 
+ * called from the kernel. For example, if the user want to get 
+ * statistics on FACTS or GOALS, or database operation, we could put 
+ * in the kernel code a function call pointing to a function defined 
+ * here. By default this function would do nothing, but if the user 
+ * wish it would perform some operations.
+ */
 
-void user_call_from_parser (int code)
-{
-}
+PBoolean intention_list_sort_by_priority(Intention *i1, Intention *i2);
+PBoolean intention_list_sort_by_time(Intention *i1, Intention *i2);
+PBoolean intention_list_sort_by_priority_time(Intention *i1, Intention *i2);
+
+Intention_List intention_scheduler_time_sharing(Intention_List l);
+Intention_List intention_scheduler_time_sharing_with_sort_predicate(Intention_List l);
+
+void start_kernel_hook(char *name);
+
+void end_kernel_hook();

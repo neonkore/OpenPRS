@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * oprs-init.c -- 
  * 
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -95,7 +95,7 @@ static const char* const rcsid = "$Id$";
 #include "relevant-op_f.h"
 #include "soak_f.h"
 #include "top-lev_f.h"
-#include "user-external_f.h"
+
 #include "oprs-error_f.h"
 #include "oprs-sprint_f.h"
 #include "type_f.h"
@@ -145,7 +145,7 @@ void wrap_up(void)
 #ifdef HAS_TIMER
      kill_condition_timer();
 #endif
-     end_kernel_user_hook();
+     end_kernel_hook();
      free_oprs(current_oprs);
      current_oprs = NULL;
 

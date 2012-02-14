@@ -149,7 +149,7 @@ long int read_check_sum;
 %token <cmd>		VERSION_TK COPYRIGHT_TK MEMORY_TK FF_TK BE_TK CWP_TK RELEVANT_TK 
 %token <cmd>		APPLICABLE_TK TAKE_STDIN_TK DISCONNECT_TK QUIT_TK TEXT_TK 
 %token <cmd>		GRAPHIC_TK CALL_EXTERNAL_TK DUMMY_TK SAVE_TK UNDECLARE_TK TYPE_TK
-%token <cmd>		EVALUABLE_TK AC_TK PREDICATE_TK FUNCTION_TK REQUIRE_TK SYM_TK
+%token <cmd>		EVALUABLE_TK AC_TK EXTERNAL_TK PREDICATE_TK FUNCTION_TK REQUIRE_TK SYM_TK
 %token <cmd>		VARIABLE_TK OPRS_DATA_PATH_TK OP_PREDICATE_TK DUMP_TK MAKE_TK WORLD_TK
 %token <cmd>		STEP_TK  NEXT_TK HALT_TK RUN_TK STATUS_TK FAILURE_TK USER_TK
 
@@ -205,6 +205,7 @@ command:
 		expr 
 		expr 				{test_unify_expr($3,$4); disable_variable_parsing(); 
 						 free_expr($3); free_expr($4);}
+
 	| LOAD_TK DB_TK 			{yy_begin_0();}
 		read_file_name 			{printf(LG_STR("%sLoading DB \"%s\".\n",
 							       "%sChargement base de faits \"%s\".\n"),parser_indent, $4); 
@@ -458,6 +459,26 @@ command:
 		                                 load_kernel_from_parser(current_oprs, $5);
 						 printf(LG_STR("\n%sLoading kernel dump done.\n",
 							       "\n%sChargement noyau terminé.\n"),parser_indent);
+						 FREE($5);}
+	| LOAD_TK EXTERNAL_TK 			{yy_begin_0();} 
+		QSTRING_TK			{printf(LG_STR("%sLoading external code from dl: \"%s\".\n",
+							       "%sChargement de code externe de la dl: \"%s\".\n"),parser_indent,$4);
+						 load_function_from_dl($4, "start_kernel_user_hook");
+						 FREE($4);}
+	| LOAD_TK AC_TK 			{yy_begin_0();} 
+		QSTRING_TK			{printf(LG_STR("%sLoading action(s) from dl: \"%s\".\n",
+							       "%sChargement d'actions de la dl: \"%s\".\n"),parser_indent,$4);
+						 load_function_from_dl($4, "declare_user_action");
+						 FREE($4);}
+	| LOAD_TK EVALUABLE_TK FUNCTION_TK 	{yy_begin_0();} 
+		QSTRING_TK			{printf(LG_STR("%sLoading evaluable function(s) from dl: \"%s\".\n",
+							       "%sChargement de fonctions evaluables de la dl: \"%s\".\n"),parser_indent,$5);
+						 load_function_from_dl($5, "declare_user_eval_funct");
+						 FREE($5);}
+	| LOAD_TK EVALUABLE_TK PREDICATE_TK 	{yy_begin_0();} 
+		QSTRING_TK			{printf(LG_STR("%sLoading evaluable predicates from dl: \"%s\".\n",
+							       "%sChargement de predicats evaluables de la dl: \"%s\".\n"),parser_indent,$5);
+						 load_function_from_dl($5, "declare_user_eval_pred");
 						 FREE($5);}
 	| EMPTY_TK FACT_TK DB_TK		{clear_database(current_oprs->database);
 						 if (!be_quiet) printf(LG_STR("Database cleared.\n",

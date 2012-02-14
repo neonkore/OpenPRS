@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * action.c -- 
  * 
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -1786,7 +1786,7 @@ void declare_action(void)
 /*      make_and_declare_action("RESET-TRIED-OPS-FOR-GOAL", reset_tried_ops_for_goal_ac, 1); */
      make_and_declare_action("INTEND-AND-EXECUTE-AOP-FOR-GOAL", intend_aop_for_goal_ac, 2);
 
-     declare_user_action();
+     /* declare_user_action(); */
 
 }
 

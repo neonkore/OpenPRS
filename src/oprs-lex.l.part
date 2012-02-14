@@ -140,8 +140,9 @@ id {typedid}
 <COMMAND>predicate	{return PREDICATE_TK;}
 <COMMAND>function	{return FUNCTION_TK;}
 <COMMAND>action		{return AC_TK;}
+<COMMAND>external	{return EXTERNAL_TK;}
 <COMMAND>symbol		{return SYM_TK;}
-<COMMAND>tsymbol		{return TSYM_TK;}
+<COMMAND>tsymbol	{return TSYM_TK;}
 <COMMAND>evaluable	{return EVALUABLE_TK;}
 <COMMAND>ff		{return FF_TK;}
 <COMMAND>be		{return BE_TK;}

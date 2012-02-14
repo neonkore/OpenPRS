@@ -3,7 +3,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * oprs.c -- The big boss
  * 
- * Copyright (c) 1991-2005 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -77,7 +77,7 @@ static const char* const rcsid = "$Id$";
 #include "oprs-main.h"
 #include "mp.h"
 #include "oprs-pred-func.h"
-#include "user-external.h"
+
 #include "oprs-profiling.h"
 #include "top-lev.h"
 #include "type.h"

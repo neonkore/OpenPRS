@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * oprs-pred.c -- 
  * 
- * Copyright (c) 1991-2010 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,6 +51,8 @@ static const char* const rcsid = "$Id$";
 #include "oprs-print_f.h"
 #include "oprs-type_f.h"
 #include "oprs-pred-func_f.h"
+#include "ev-function_f-pub.h"
+#include "action_f-pub.h"
 
 Pred_Func_Rec *soak_pred;
 Pred_Func_Rec *app_ops_fact_pred;
@@ -559,6 +561,31 @@ void list_ac()
      list_pred_func(collect_hash_ac, print_hash_ac,"The actions declared are: \n");
 }
 
+void make_and_declare_action(char *name,  PFPT funct,  int ar)
+{
+     Symbol name_tmp2;
+     Pred_Func_Rec *pfr;
+     Action *ac;
+
+     DECLARE_TEXT_ID(name,name_tmp2);
+     check_pfr = FALSE;
+     pfr = find_or_create_pred_func(name_tmp2);
+     check_pfr = TRUE;
+
+    if ((ac = pfr->u.u.act)) {
+	 fprintf(stderr, LG_STR("WARNING: make_and_declare_action: You are redefining the action: %s.\n",
+				"ATTENTION: make_and_declare_action: Vous redéfinissez l'action: %s.\n"), pfr->name);
+    } else {
+	  ac = MAKE_OBJECT(Action);
+#ifdef OPRS_PROFILING
+     	  ac->time_active = zero_date;
+	  ac->nb_call = 0;
+#endif
+	  pfr->u.u.act = ac;
+    }
+    ac->arity = ar;
+    ac->function = funct;
+}
 
 void make_and_declare_eval_funct(char *name, PFPT funct, int ar)
 {
@@ -585,32 +612,6 @@ void make_and_declare_eval_funct(char *name, PFPT funct, int ar)
      }
      ef->arity = ar;
      ef->function = funct;
-}
-
-void make_and_declare_action(char *name,  PFPT funct,  int ar)
-{
-     Symbol name_tmp2;
-     Pred_Func_Rec *pfr;
-     Action *ac;
-
-     DECLARE_TEXT_ID(name,name_tmp2);
-     check_pfr = FALSE;
-     pfr = find_or_create_pred_func(name_tmp2);
-     check_pfr = TRUE;
-
-    if ((ac = pfr->u.u.act)) {
-	 fprintf(stderr, LG_STR("WARNING: make_and_declare_action: You are redefining the action: %s.\n",
-				"ATTENTION: make_and_declare_action: Vous redéfinissez l'action: %s.\n"), pfr->name);
-    } else {
-	  ac = MAKE_OBJECT(Action);
-#ifdef OPRS_PROFILING
-     	  ac->time_active = zero_date;
-	  ac->nb_call = 0;
-#endif
-	  pfr->u.u.act = ac;
-    }
-    ac->arity = ar;
-    ac->function = funct;
 }
 
 
