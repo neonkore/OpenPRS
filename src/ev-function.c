@@ -85,6 +85,7 @@ static const char* const rcsid = "$Id$";
 #include "intention_f.h"
 #include "int-graph_f.h"
 #include "ev-function_f.h"
+#include "action_f-pub.h"
 #include "fact-goal_f.h"
 #include "oprs-array_f.h"
 #include "oprs-pred-func_f.h"
@@ -2511,7 +2512,7 @@ Term *get_intended_decision_procedures_ef(TermList tl)
 
 Term *uclock_t_ef(TermList terms)
 {
-     static called = FALSE;
+     static int called = FALSE;
      Term *res;
 
      if (! called) {
@@ -3197,74 +3198,9 @@ void declare_ev_funct(void)
 
      make_and_declare_eval_funct("MAKE-GOAL-FROM-EXPR", make_goal_from_expr_ef, 1);
      make_and_declare_eval_funct("FIND-APPLICABLE-OPS-FOR-GOAL", find_applicable_ops_for_goal_ef, 1);
+     make_and_declare_action("TEST-FOR-LTDL", find_applicable_ops_for_goal_ef, 1);
 
      /* declare_user_eval_funct(); */
      /* declare_shary_user_eval_funct(); /\* why is this here???? (FFI) *\/ */
 
-}
-
-/* This code takes care of loading evaluable functions, predicates or actions */
-
-#include <ltdl.h>
-
-/* Save and return a copy of the dlerror() error  message,
-   since the next API call may overwrite the original. */
-static char *dlerrordup (char *errormsg);
-
-int load_function_from_dl(char *filename, char *entry_point_name)
-{
-  char *errormsg = NULL;
-  lt_dlhandle module = NULL;
-  entrypoint *user_function = NULL;
-  int errors = 0;
-  static int inited =0;
-
-  /* Initialise libltdl. */
-
-  if (! inited) {
-    // LTDL_SET_PRELOADED_SYMBOLS();
-    errors = lt_dlinit ();
-    inited = 1;
-  }
-  if (!errors) {
-        errors = lt_dlsetsearchpath("."); /* not needed I think... */
-    }
- 
-  /* Load the module. */
-  if (!errors)
-    module = lt_dlopenext (filename);
-
-  /* Find the entry point. */
-  if (!module) {
-	errormsg = dlerrordup (errormsg);
-	fprintf(stderr, "ERROR: %s Could not find module %s.\n", errormsg, filename);
-	return;
-  } else {
-      user_function = (entrypoint *) lt_dlsym (module, entry_point_name);
-
-      if (!user_function) {	/* I am not expecting NULL symbol... even if it is technically possible. */
-	errormsg = dlerrordup (errormsg);
-	fprintf(stderr, "ERROR: %s Could not find symbol %s in module %s.\n", errormsg, entry_point_name, filename);
-	return;
-      }
-      errormsg = dlerrordup (errormsg);
-      if (errormsg != NULL) {
-	errors = lt_dlclose (module);
-	module = NULL;
-      }
-  }
-
-  /* Call the entry point function. */
-  (*user_function)();
-}
-
-/* Be careful to save a copy of the error message,
-   since the  next API call may overwrite the original. */
-static char *
-dlerrordup (char *errormsg)
-{
-  char *error = (char *) lt_dlerror ();
-  if (error && !errormsg)
-    errormsg = strdup (error);
-  return errormsg;
 }

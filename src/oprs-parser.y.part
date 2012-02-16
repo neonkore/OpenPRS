@@ -95,6 +95,7 @@ static const char* const rcsid = "$Id$";
 #include "oprs-array_f.h"
 #include "top-lev_f.h"
 #include "oprs-profiling_f.h"
+#include "ltdl-loader_f.h"
 
 char *node_name;
 PString type_string;

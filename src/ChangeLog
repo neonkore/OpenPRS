@@ -1,4 +1,12 @@
-2012-02-14  Felix Ingrand  <felix@cturtle>
+2012-02-16  Felix Ingrand  <felix@cturtle>
+
+	* Makefile.am: added AM_LDFLAGS = -export-dynamic . This seems to solve my problem of symbols not properly found after
+	lt_dlsym had linked one of my user code loading function. This is still a mistery to me... and will need a dl expert to
+	explain me why this was working for some functions and not other (even if they were in the same file...).
+
+2012-02-15  Felix Ingrand  <felix@cturtle>
+
+	* ltdl-loader.c: Code to load external dl (from ev-function.c).
 
 	* oprs-parser.y.part: Added commands to the parser to load actions, evaluable functions and predicates. ex:
 		load action "user-action-example"

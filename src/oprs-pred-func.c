@@ -51,8 +51,10 @@ static const char* const rcsid = "$Id$";
 #include "oprs-print_f.h"
 #include "oprs-type_f.h"
 #include "oprs-pred-func_f.h"
-#include "ev-function_f-pub.h"
+
 #include "action_f-pub.h"
+#include "ev-function_f-pub.h"
+#include "ev-predicate_f-pub.h"
 
 Pred_Func_Rec *soak_pred;
 Pred_Func_Rec *app_ops_fact_pred;

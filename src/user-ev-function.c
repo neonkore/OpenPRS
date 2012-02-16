@@ -232,7 +232,7 @@ Term *example3_l_list_eval_func(TermList terms)
 
 
 
-// #define declare_user_eval_funct user_ev_function_LTX_declare_user_eval_func
+#define declare_user_eval_funct user_ev_function_LTX_declare_user_eval_funct
 
 void declare_user_eval_funct(void)
 {

@@ -81,7 +81,7 @@ PBoolean foo_bar_ep(TermList tl)
      else return FALSE;
 }
 
-//#define declare_user_eval_pred user_ev_predicate_LTX_declare_user_eval_pred
+#define declare_user_eval_pred user_ev_predicate_LTX_declare_user_eval_pred
 
 void declare_user_eval_pred(void)
 {

@@ -3,7 +3,7 @@
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@ void oprs_perror(const char *s, Oprs_Error error);
 
 #define WARN_OBSOLETE(string) \
 do { \
-static _reported = FALSE; \
+static int _reported = FALSE; \
 if (!_reported) { \
 	char *s1=LG_STR("WARNING (obsolete coding): %s\n\
 \tThis message will be printed once only.\n", \

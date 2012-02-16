@@ -1,4 +1,7 @@
 AM_CPPFLAGS = -I$(top_srcdir)/c_toolkit 
+AM_CFLAGS = -Wall
+AM_LDFLAGS = -export-dynamic
+
 
 INC = action.h activate.h config.h constant-pub.h constant.h database.h \
 	ev-function.h ev-predicate.h fact-goal.h int-graph.h \
@@ -79,7 +82,7 @@ libBasic_la_SOURCES = oprs-socket.c oprs-util.c
 
 libOprs_la_SOURCES = help.c lisp-list.c oprs-ll.c oprs-send-m.c oprs-sprint.c \
 		parser-funct.c oprs-array.c oprs-copy.c oprs-dup.c oprs-free.c oprs-print.c \
-		oprs-error.c op-compiler.c type.c oprs-pred-func.c
+		oprs-error.c op-compiler.c type.c oprs-pred-func.c ltdl-loader.c
 
 libKernel_la_SOURCES = database.c ev-predicate.c fact-goal.c oprs.c oprs-rerror.c unification.c oprs-profiling.c
 
@@ -166,17 +169,17 @@ opc_LDADD = libBasic.la libGOprs.la libOprs.la libGOpEOprs.la \
 
 # This is what replace relocatable... dynamic loading of evaluable function, predicates and actions.
 
-lib_LTLIBRARIES += user-ev-function-example.la
-user_ev_function_example_la_SOURCES = user-ev-function.c
-user_ev_function_example_la_LDFLAGS = -module
+lib_LTLIBRARIES += user-ev-function.la
+user_ev_function_la_SOURCES = user-ev-function.c
+user_ev_function_la_LDFLAGS = -module
 
-lib_LTLIBRARIES += user-ev-predicate-example.la
-user_ev_predicate_example_la_SOURCES = user-ev-predicate.c
-user_ev_predicate_example_la_LDFLAGS = -module
+lib_LTLIBRARIES += user-ev-predicate.la
+user_ev_predicate_la_SOURCES = user-ev-predicate.c
+user_ev_predicate_la_LDFLAGS = -module
 
-lib_LTLIBRARIES += user-action-example.la
-user_action_example_la_SOURCES = user-action.c
-user_action_example_la_LDFLAGS = -module
+lib_LTLIBRARIES += user-action.la
+user_action_la_SOURCES = user-action.c
+user_action_la_LDFLAGS = -module
 
 pkgconfigdir = $(libdir)/pkgconfig 
 pkgconfig_DATA = openprs.pc mp-openprs.pc
