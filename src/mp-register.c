@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*-
  * mp-register.c --
  *
- * Copyright (c) 1991-2010 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,39 +31,10 @@ static const char* const rcsid = "$Id$";
  *
  */
 
-#include "config.h"
-
-#ifdef VXWORKS
-#include "vxWorks.h"
-#include "ioLib.h"
-#include "sockLib.h"
-#include "hostLib.h"
-#include "taskVarLib.h"
-#else
-#ifdef WIN95
-#include "dos.h"
-#include "winsock.h"
-#else
 #include <unistd.h>
 #include <stdlib.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <signal.h>
-#endif
-#endif
-
-#ifndef WIN95
-#include <fcntl.h>
 #include <errno.h>
-
-#ifdef VXWORKS
-#include "in.h"
-#include "socket.h"
-#else
-#include <netinet/in.h>
 #include <netdb.h>
-#endif
-#endif
 
 #include "macro.h"
 #include "constant.h"
@@ -72,7 +43,6 @@ static const char* const rcsid = "$Id$";
 #include "mp.h"
 #include "mp-register.h"
 #include "mp-register_f.h"
-#include "oprs-socket_f.h"
 
 /* These are the only two globals of this lib... They are taskVar'ed under VxWorks. */
 int mp_socket = -1;
@@ -454,13 +424,14 @@ PBoolean start_mp_oprs(const char *mp_hostname, int mp_port)
 	  }
      } else {			/* Different host... */
 	  char buffer[BUFSIZ];
+	  int sys_ret;
 
 	  free(copy_name);
        
 	  fprintf(stderr, LG_STR("Starting message passer on remote host: %s, listening on port: %d.\n",
 				 "Lance le message passer sur la machine distante: %s, écoute sur le port: %d.\n"),mp_hostname, mp_port);
 	  sprintf(buffer,"rsh %s -n mp-oprs -j %d &", mp_hostname, mp_port);
-	  system(buffer);
+	  sys_ret = system(buffer);
 	       
 	  return TRUE;
      }

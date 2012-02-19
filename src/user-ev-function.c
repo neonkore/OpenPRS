@@ -32,33 +32,18 @@ static const char* const rcsid = "$Id$";
  */
 
 
-#include "config.h"
 
-#ifdef VXWORKS
-#include "vxWorks.h"
-#include "stdioLib.h"
-#else
 #include <stdio.h>
-#endif
 
-#include "macro-pub.h"
-#include "opaque-pub.h"
 #include "constant-pub.h"
 #include "oprs-type-pub.h"
-#include "user-ev-function.h"
-#include "user-ev-function.h"
+
+#include "oprs-error.h"
+#include "oprs-rerror.h"
 
 #include "oprs-type_f-pub.h"
 #include "ev-function_f-pub.h"
 #include "lisp-list_f-pub.h"
-#include "action_f-pub.h"
-#include "oprs_f-pub.h"
-
-#include "oprs-rerror_f-pub.h"
-#include "oprs-error.h"
-#include "oprs-rerror.h"
-#include "oprs-rerror_f.h"
-#include "oprs-error_f.h"
 
 Term *toto_eval_func(TermList terms)
 {

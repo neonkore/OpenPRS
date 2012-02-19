@@ -3,7 +3,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * send-message.c -- 
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,44 +32,15 @@ static const char* const rcsid = "$Id$";
  *
  */
 
-#include "config.h"
 
 
-#ifdef VXWORKS
-#include "vxWorks.h"
-#include "ioLib.h"
-#include "in.h"
-#include "socket.h"
-#else
-#ifdef WIN95
-#include "winsock.h"
-#else
-#include <unistd.h>
 #include <stdlib.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <signal.h>
-#include <netinet/in.h>
 #include <netdb.h>
-#endif
-#endif
-
-#include <errno.h>
-#include <string.h>
-
-#include "constant.h"
-#include "macro.h"
 
 #include "oprs-type.h"
 #include "mp-register.h"
-#include "oprs-profiling.h"
-
-#ifdef OPRS_PROFILING
-#include "user-external.h"
-#endif
 
 #include "send-message_f.h"
-#include "oprs-profiling_f.h"
 #include "mp-register_f.h"
 
 void send_message_string_socket(int socket, PString rec, PString message )

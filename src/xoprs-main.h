@@ -3,7 +3,7 @@
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,11 +35,7 @@
 #ifndef INCLUDE_xp_main
 #define INCLUDE_xp_main
 
-
-#include <X11/Intrinsic.h>
-#include <Xm/Xm.h>
 #include "xoprs-main-pub.h"
-#include "ope-graphic.h"
 
 extern XtAppContext app_context;
 extern Widget topLevel, mainWindow;

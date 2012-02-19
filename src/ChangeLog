@@ -1,3 +1,9 @@
+2012-02-17  Felix Ingrand  <felix@cturtle>
+
+	* send-message.c: .h include cleanup.
+
+	* mp-register.c: .h include cleanup.
+
 2012-02-16  Felix Ingrand  <felix@cturtle>
 
 	* Makefile.am: added AM_LDFLAGS = -export-dynamic . This seems to solve my problem of symbols not properly found after

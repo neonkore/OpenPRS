@@ -106,3 +106,4 @@ src/oprs-parser.y
 src/oprs-server-parser.y
 libltdl
 src/test.inc
+*.c.backup

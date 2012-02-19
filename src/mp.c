@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*-
  * mp-oprs.c -- Message passer.
  *
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,35 +31,15 @@ static const char* const rcsid = "$Id$";
  *
  */
 
-#include "config.h"
 
-#ifdef VXWORKS
-#include "vxWorks.h"
-#include "stdioLib.h"
-#include "ioLib.h"
-#include "selectLib.h"
-#include "sockLib.h"
-#include "inetLib.h"
 #include <stdlib.h>
-#include <time.h>
-#elif defined(WIN95)
-#include "winsock.h"
-#else
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <sys/ioctl.h>
 #include <sys/time.h>
 #include <time.h>
 #include <errno.h>
 #include <unistd.h>
-#include <netinet/in.h>
 #include <netdb.h>
-#endif
 
 #include "slistPack.h"
-#include "slistPack_f.h"
 
 #include "macro.h"
 #include "lang.h"
@@ -68,10 +48,7 @@ static const char* const rcsid = "$Id$";
 #include "mp.h"
 #include "mp-register.h"
 
-#include "mp-pub.h"
-
 #include "mp-register_f.h"
-#include "send-message_f.h"
 #include "oprs-socket_f.h"
 #include "oprs-util_f.h"
 

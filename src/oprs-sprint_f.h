@@ -3,7 +3,7 @@
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2009 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,8 +32,6 @@
  *
  */
 
-#include "opaque.h"
-#include "oprs-type.h"
 #include "oprs-sprint_f-pub.h"
 
 void sprint_int_array(Sprinter *sp, Int_array *ia);

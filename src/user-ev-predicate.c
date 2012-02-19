@@ -31,45 +31,10 @@ static const char* const rcsid = "$Id$";
  *
  */
 
-
-#include "config.h"
-
-#ifdef VXWORKS
-#include "vxWorks.h"
-#include "stdioLib.h"
-#else
-#include <stdio.h>
-#endif
-
-#include "opaque-pub.h"
 #include "constant-pub.h"
 #include "oprs-type-pub.h"
-#include "user-ev-predicate.h"
 
 #include "ev-predicate_f-pub.h"
-
-#ifdef TRUCK_DEMO
-int get_local_time();
-
-PBoolean elapsed_time_ep(TermList tl)
-{
-     Term *t1, *t2;
-     int time;
-
-     t1 = (Term *)sl_get_slist_pos(tl, 1);
-     t2 = (Term *)sl_get_slist_pos(tl, 2);
-     if ((t1->type != INTEGER) || (t2->type != INTEGER))
-	  fprintf(stderr,LG_STR("Expecting two integer in elapsed_time_ep\n",
-				"Expecting two integer in elapsed_time_ep\n"));
-
-     time = get_local_time();
-
-     printf ("elapsed time : %d %d %d  \n",t1->u.intval,t2->u.intval, time);
-
-     if ((t1->u.intval + t2->u.intval) <= time ) return TRUE;
-     else return FALSE;
-}
-#endif
 
 PBoolean foo_bar_ep(TermList tl)
 {
@@ -86,9 +51,6 @@ PBoolean foo_bar_ep(TermList tl)
 void declare_user_eval_pred(void)
 {
      make_and_declare_eval_pred("FOO_BAR",(PFB)foo_bar_ep, 1, FALSE);
-#ifdef TRUCK_DEMO
-     make_and_declare_eval_pred("ELAPSED-TIME",elapsed_time_ep, 2, FALSE);
-#endif
      return;
 }
 

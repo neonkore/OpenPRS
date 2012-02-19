@@ -32,14 +32,11 @@ static const char* const rcsid = "$Id$";
  *
  */
 
-#include "config.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "constant.h"
-#include "macro.h"
-#include "opaque.h"
 #include "oprs-type-pub.h"
 #include "lang.h"
 
@@ -66,8 +63,6 @@ PBoolean get_int_from_env(PString env, int *val)
 }
 
 #ifdef VXWORKS
-#include "taskLib.h"
-#include "sysLib.h"
 
 void sleep(int seconde)
 {

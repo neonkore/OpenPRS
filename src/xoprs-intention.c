@@ -3,7 +3,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * xoprs-intention.c -- 
  * 
- * Copyright (c) 1991-2010 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,18 +33,13 @@ static const char* const rcsid = "$Id$";
  */
 
 
-#include "config.h"
 
-#include <X11/Intrinsic.h>
-#include <Xm/Xm.h>
 #include <Xm/ScrollBar.h>
-#include <Xm/DrawingA.h>
 
 #include <math.h>
 
-#include "macro.h"
+#include "ope-graphic.h"
 #include "xoprs-main.h"
-#include "oprs-type.h"
 #include "oprs-sprint.h"
 #include "oprs-sprint_f.h"
 
@@ -52,18 +47,14 @@ static const char* const rcsid = "$Id$";
 #include "xoprs-intention.h"
 #include "xoprs-intention_f.h"
 
-#include "intention.h"
-#include "op-instance.h"
-#include "op-structure.h"
 #include "fact-goal.h"
 #include "int-graph.h"
 #include "int-graph_f.h"
 
 #include "ope-external_f.h"
 #include "oprs-print.h"
-#include "oprs-print_f.h"
 #include "oprs-pprint_f.h"
-#include "oprs-type_f-pub.h"
+#include "xoprs-dialog_f.h"
 
 void idd_create_scrollbars(Widget parent, Int_Draw_Data *idd)
 {

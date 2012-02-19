@@ -3,7 +3,7 @@
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2010 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,6 +35,8 @@
 
 #ifndef INCLUDE_oprs_sprint
 #define INCLUDE_oprs_sprint
+
+#include "oprs-sprint-pub.h"
 
 struct sprinter {
      char *str;

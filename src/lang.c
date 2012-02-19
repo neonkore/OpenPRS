@@ -34,8 +34,6 @@ static const char* const rcsid = "$Id$";
 #include "config.h"
 
 #include "stdio.h"
-#include <string.h>
-#include <locale.h>
 
 #include "macro.h"
 #include "constant-pub.h"

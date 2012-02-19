@@ -1,7 +1,6 @@
 AM_CPPFLAGS = -I$(top_srcdir)/c_toolkit 
-AM_CFLAGS = -Wall
+AM_CFLAGS = -Wall # -Wextra
 AM_LDFLAGS = -export-dynamic
-
 
 INC = action.h activate.h config.h constant-pub.h constant.h database.h \
 	ev-function.h ev-predicate.h fact-goal.h int-graph.h \
@@ -216,13 +215,13 @@ AM_YFLAGS = -d -p oprs_yy
 # 	$(YACC) -d -p oprs_yy -o $*.tab.c $<
 
 # this could be smarter about which one depends of which...
-oprs-parser.y: oprs-parser.y.part yacc-file.y.part yacc-graph-op.y.part yacc-exp.y.part yacc-text-op.y.part
+oprs-parser.y: yacc-file.y.part yacc-graph-op.y.part yacc-exp.y.part yacc-text-op.y.part
 
-ope-parser.y: ope-parser.y.part yacc-file.y.part yacc-graph-op.y.part yacc-exp.y.part yacc-text-op.y.part
+ope-parser.y: yacc-file.y.part yacc-graph-op.y.part yacc-exp.y.part yacc-text-op.y.part
 
-opc-parser.y: opc-parser.y.part yacc-file.y.part yacc-graph-op.y.part yacc-exp.y.part yacc-text-op.y.part
+opc-parser.y:  yacc-file.y.part yacc-graph-op.y.part yacc-exp.y.part yacc-text-op.y.part
 
-oprs-server-parser.y: oprs-server-parser.y.part yacc-file.y.part yacc-graph-op.y.part yacc-exp.y.part yacc-text-op.y.part
+oprs-server-parser.y: yacc-file.y.part yacc-graph-op.y.part yacc-exp.y.part yacc-text-op.y.part
 
 # Same for .lex grammars which are built from components
 %.l: %.l.part $(LEX_INCLUDER)
@@ -233,6 +232,11 @@ oprs-server-parser.y: oprs-server-parser.y.part yacc-file.y.part yacc-graph-op.y
 # I could not rely on the automake flex management,as ylwrap does not properly handle renaming with -P
 %.c: %.l
 	$(LEX) $(LFLAGS) -Poprs_yy -o $@ $<
+
+
+# idem, this could be smarter... I am probably over doing it too... 
+ope-lex.l oprs-server-lex.l opc-lex.l oprs-lex.l: lex-exp.l.part lex-macro.l.part lex-parser-def.l.part lex-text-op.l.part lex-graph-op.l.part lex-meta-exp.l.part lex-simple-def.l.part 
+
 
 BUILT_SOURCES += XOprs.ad.h Ope.ad.h
 

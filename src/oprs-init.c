@@ -57,6 +57,9 @@ static const char* const rcsid = "$Id$";
 #include "oprs-main.h"
 
 #ifndef NO_GRAPHIX
+#include <X11/Intrinsic.h>
+#include <Xm/Xm.h>
+#include "ope-graphic.h"
 #include "xoprs-main.h"
 #endif
 

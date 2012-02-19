@@ -31,30 +31,17 @@ static const char* const rcsid = "$Id$";
  *
  */
 
-#include "config.h"
 
-#ifdef VXWORKS
-#include "semLib.h"
-#endif
-
-#include <stdio.h>
-#include <shashPack.h>
 #include <shashPack_f.h>
+
 #include "constant.h"
-#include "macro.h"
-#include "opaque.h"
 #include "oprs-type.h"
 #include "oprs-pred-func.h"
 #include "ev-predicate.h"
 #include "ev-function.h"
 
-#include "oprs-print_f.h"
 #include "oprs-type_f.h"
 #include "oprs-pred-func_f.h"
-
-#include "action_f-pub.h"
-#include "ev-function_f-pub.h"
-#include "ev-predicate_f-pub.h"
 
 Pred_Func_Rec *soak_pred;
 Pred_Func_Rec *app_ops_fact_pred;
@@ -160,7 +147,7 @@ void free_pred_func_hash(void)
 {
      Pred_Func_Rec *pr;
 
-     sh_for_all_hashtable(pred_func_hash, NULL, free_pred_func_rec);
+     sh_for_all_hashtable(pred_func_hash, NULL, (SL_PFI)free_pred_func_rec);
      sh_free_hashtable(pred_func_hash);
 
      sl_loop_through_slist(var_pred_func_list, pr, Pred_Func_Rec *) {

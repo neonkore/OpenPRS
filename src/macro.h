@@ -3,7 +3,7 @@
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2010 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,7 +35,6 @@
 #ifndef INCLUDE_macro
 #define INCLUDE_macro
 
-#include <ctype.h>
 #include <string.h>
 
 #include "macro-pub.h"

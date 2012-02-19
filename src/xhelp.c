@@ -5,7 +5,7 @@ static const char* const rcsid = "$Id";
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2010 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,6 +45,9 @@ static const char* const rcsid = "$Id";
 #include <sys/wait.h>
 #include <unistd.h>
 #include <errno.h>
+
+#include "opaque.h"
+#include "oprs-type.h"
 
 #include "oprs-sprint.h"
 #include "oprs-sprint_f.h"

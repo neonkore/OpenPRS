@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * oprs-load.c -- 
  * 
- * Copyright (c) 1991-2010 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -345,7 +345,7 @@ void *load_ptr(void)
 
      load_read(buf, 8);
      ntohll(buf, &hi);
-     return (void *)hi;		/* This is goind to cause a warning on a 32 bits machine... */
+     return (void *)hi;		/* This is going to cause a warning on a 32 bits machine... */
 }
 
 #define SWAP(x,y,tmp) tmp=y;y=x;x=tmp
