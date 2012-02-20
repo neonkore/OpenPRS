@@ -43,6 +43,12 @@
 #include "macro.h"
 #include "opaque.h"
 #include "oprs-type.h"
+
+#ifdef GRAPHIX
+#include <X11/Intrinsic.h>
+#include <Xm/Xm.h>
+#endif
+
 #include "op-structure.h"
 #include "parser-funct.h"
 

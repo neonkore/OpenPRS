@@ -1,8 +1,7 @@
-static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * soak.c -- will find all the applicable ops (determine the famous soak "Set Of Applicable OPs")...
  * 
- * Copyright (c) 1991-2010 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -97,7 +96,7 @@ static const char* const rcsid = "$Id$";
 #include "soak_f.h"
 #include "oprs-pred-func_f.h"
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 #include "xt-util_f.h"
 #endif
 
@@ -1086,7 +1085,7 @@ Op_Instance_List find_soak(Oprs *oprs)
 	  Op_Instance_List tmp_soak;
 	  Slist *tmp_list;
 	  Relevant_Condition *rc;
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	  int i = 0;
 #endif
 
@@ -1106,7 +1105,7 @@ Op_Instance_List find_soak(Oprs *oprs)
 
 	  sl_loop_through_slist(oprs->facts, fact, Fact *) { /* For all the fact */
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	       if (i++ == 5) {
 		    i = 0;
 		    process_xt_events();
@@ -1164,7 +1163,7 @@ Op_Instance_List find_soak(Oprs *oprs)
 	   */
 	  sl_loop_through_slist(tmp_list, goal, Goal *) {
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	       if (i++ == 5) {
 		    i = 0;
 		    process_xt_events();

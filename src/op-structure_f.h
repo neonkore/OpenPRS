@@ -42,7 +42,7 @@ NodeList build_node_list(NodeList nl, Node *n);
 EdgeList build_edge_list(EdgeList el, Edge *e);
 
 Edge *make_edge(void);
-Node *make_cp(PString name, PBoolean graphic);
+Node *make_node(PString name, PBoolean graphic);
 Op_Structure *make_op();
 Op_Structure *dup_op(Op_Structure *op);
 void free_op(Op_Structure *op);
@@ -55,7 +55,7 @@ void free_knot_og(OG *og);
 void free_text_og(OG *og);
 void free_op_title(OG *og);
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 void sl_free_slist_og_inst(List_OG list_og_inst);
 #endif
 
@@ -75,14 +75,14 @@ void build_effects(Op_Structure *op, PString name, ExprList adl,
 		      int  x, int y, PBoolean visible, int pp_width, PBoolean pp_fill, Draw_Data *dd);
 void build_action(Op_Structure *op, PString name, Action_Field *action, 
 		      int  x, int y, PBoolean visible, int pp_width, PBoolean pp_fill, Draw_Data *dd);
-#ifndef NO_GRAPHIX
-OG *build_and_add_node(Op_Structure *op, PString name, Node_Type nt, PBoolean join, PBoolean split,
-			int  x, int y, Draw_Data *dd);
 
+#ifdef GRAPHIX
+OG *
 #else
-void build_and_add_node(Op_Structure *op, PString name, Node_Type nt, PBoolean join, PBoolean split,
-			int  x, int y, Draw_Data *dd);
+void
 #endif
+build_and_add_node(Op_Structure *op, PString name, Node_Type nt, PBoolean join, PBoolean split,
+			int  x, int y, Draw_Data *dd);
 
 void build_and_add_edge(Op_Structure *op,  PString in,  PString out,
 			Edge_Type et, Expression *expr, Slist *knots, int x, int y,
@@ -103,3 +103,5 @@ PString new_edge_name(Op_Structure *op);
 void new_then_else_node_name_from_if_name (PString if_name, PString *then_name_p, PString *else_name_p);
 void new_if_then_else_node_name(Op_Structure *op, PString *nif, PString *nthen, PString *nelse);
 PString new_end_node_name(Op_Structure *op);
+
+PBoolean sort_op(Op_Structure *op1, Op_Structure *op2);

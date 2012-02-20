@@ -1,8 +1,7 @@
-static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*-
  * oprs-main.c --
  *
- * Copyright (c) 1991-2010 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -56,13 +55,9 @@ static const char* const rcsid = "$Id$";
 #include <readline/history.h>
 #endif     
 
-#ifdef USE_MULTI_THREAD
 #include <pthread.h>
-
-
 pthread_mutex_t new_client = PTHREAD_MUTEX_INITIALIZER;
 pthread_t accept_thread;
-#endif
 
 #include "slistPack.h"
 #include "slistPack_f.h"
@@ -528,7 +523,6 @@ int main(int argc, char **argv, char **envp)
 
      external_register_to_the_mp_host_prot(OPRS_SERVER_MP_NAME,mp_hostname,mp_port,MESSAGES_PT);
 
-#ifdef USE_MULTI_THREAD
     if (use_thread) {
 	  if (pthread_create(&accept_thread,NULL,init_server_socket_and_accept,NULL)) {
 	       perror("oprs-server_main: pthread_thr_create");
@@ -536,22 +530,20 @@ int main(int argc, char **argv, char **envp)
 				      "ERREUR: impossible de démarrer un nouveau thread.\n"));
 	       exit(1);
 	  }
-    } else
-#endif    
-     init_server_socket();	/* Set up the socket for communication between the father and the childs. */
+    }
 
-     oprslist = sl_make_slist();
+//    init_server_socket();	/* Set up the socket for communication between the father and the childs. */
 
-     print_server_intro();	/* Welcome to the wonderful world of OPRS */
+    oprslist = sl_make_slist();
 
-#ifdef USE_MULTI_THREAD
+    print_server_intro();	/* Welcome to the wonderful world of OPRS */
+
      if (use_thread)
 	  printf(LG_STR("This oprs-server will auto accept new clients.\n",
-		   "Ce oprs-server accepte les nouveaux clients automatiquement.\n"));
+			"Ce oprs-server accepte les nouveaux clients automatiquement.\n"));
      else
-#endif
-     printf(LG_STR("This oprs-server does not auto accept new clients.\n",
-		   "Ce oprs-server n'accepte pas les nouveaux clients automatiquement.\n"));
+	  printf(LG_STR("This oprs-server does not auto accept new clients.\n",
+			"Ce oprs-server n'accepte pas les nouveaux clients automatiquement.\n"));
 
 #if defined(HAS_READLINE)
      using_history ();
@@ -599,13 +591,9 @@ int main(int argc, char **argv, char **envp)
      }
 #endif
 
-#ifdef USE_MULTI_THREAD
      if (use_thread) {
-#ifdef HAS_PTHREAD_KILL
 	  pthread_kill(accept_thread,SIGKILL); /* This will kill the accepting thread. */
-#endif
      }
-#endif
 
      oprslist2 = COPY_SLIST(oprslist);
 

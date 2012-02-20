@@ -1,4 +1,3 @@
-static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * int-graph.c -- fonctions lies a l'utilisation du graph des intentions.
  * 
@@ -40,12 +39,18 @@ static const char* const rcsid = "$Id$";
 #include <winsock.h>
 #endif
 
-#ifndef NO_GRAPHIX
+
+#ifdef GRAPHIX
+#ifdef GTK
+#include <gtk/gtk.h>
+#include "xm2gtk.h"
+#else
 #include <X11/Intrinsic.h>
 #include <Xm/Xm.h>
 #include "ope-graphic.h"
 #include "xoprs-main.h"
 #include "xoprs-intention.h"
+#endif
 #endif
 
 #include "macro.h"
@@ -71,9 +76,21 @@ static const char* const rcsid = "$Id$";
 #include "oprs.h"
 #include "intention_f.h"
 #include "intention_f-pub.h"
-#ifndef NO_GRAPHIX
+
+#ifdef GRAPHIX
+#ifdef GTK
+#include "op-structure.h"
+#include "gope-graphic.h"
+#include "goprs-intention.h"
+#include "goprs-intention_f.h"
+#include "goprs-main.h"
+#else
+#include "xoprs-main.h"
+#include "xoprs-intention.h"
 #include "xoprs-intention_f.h"
 #endif
+#endif
+
 #include "lisp-list_f.h"
 #include "oprs-print_f.h"
 #include "oprs-sprint_f.h"
@@ -90,7 +107,7 @@ void free_intention_graph(Intention_Graph *ig)
      FREE_SLIST(ig->current_intentions);
      FREE_SLIST(ig->sleeping);
      FREE_SLIST(ig->sleeping_on_cond);
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      FREE_SLIST(ig->list_inode);
      FREE_SLIST(ig->list_iedge);
 #endif     
@@ -110,7 +127,7 @@ Intention_Graph *make_intention_graph(void)
      ig->sleeping =  sl_make_slist();
      ig->sleeping_on_cond =  sl_make_slist();
      ig->sort_predicat = (PFB)NULL;
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      ig->list_inode =  sl_make_slist();
      ig->list_iedge =  sl_make_slist();
 #endif
@@ -153,18 +170,28 @@ Intention_List make_and_check_c_list_from_l_list_of_intentions (Intention_Graph 
 
 void rebuilt_intention_graph_graphic(Intention_Graph *ig)
 {
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      Intention *in;
      Intention_Paire *ip;
 
      sl_loop_through_slist(ig->list_intentions,in,Intention *){
-	  if (! (in->iog))
-	       in->iog =  create_ginode(global_int_draw_data, in);
+       if (! (in->iog)) {
+#ifdef GTK
+	 in->iog =  create_ginode(global_int_draw_data, inCGCsp, in);
+#else
+	 in->iog =  create_ginode(global_int_draw_data, in);
+#endif
+       }
      }
      
      sl_loop_through_slist(ig->list_pairs, ip, Intention_Paire *) {
-	  if (! (ip->iog))
-	       ip->iog = create_giedge(global_int_draw_data, ip->first, ip->second);
+       if (! (ip->iog)) {
+#ifdef GTK
+	 ip->iog = create_giedge(global_int_draw_data, ip->first, ip->second);
+#else
+	 ip->iog = create_giedge(global_int_draw_data, ip->first, ip->second);
+#endif
+       }
      }
      global_int_draw_data->reposition_all = TRUE;
      draw_intention_graph(global_int_draw_data); /* We've got to do it... */
@@ -183,7 +210,7 @@ Intention_Paire *make_pair(Intention *first, Intention *second)
 
      ip->first = first;
      ip->second = second;
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      ip->iog = (debug_trace[GRAPHIC_INTEND] && global_int_draw_data ? create_giedge(global_int_draw_data, first, second) : NULL);
 #endif
      return ip;
@@ -207,7 +234,7 @@ void insert_intention_in_ig(Intention *i, Intention_Graph *ig, Intention_List af
 	  sl_delete_slist_node(ig->list_first,itmp); /* Just in case itmp was a root. */
 	  sl_delete_slist_node(ig->list_runnable,itmp); /* Just in case itmp was a root. */
      }
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      if (debug_trace[GRAPHIC_INTEND] && global_int_draw_data) {
 	  global_int_draw_data->reposition_all = TRUE;
 	  draw_intention_graph(global_int_draw_data);
@@ -305,7 +332,7 @@ void delete_intention_from_ig(Intention *i, Intention_Graph *ig)
 
      delete_intention(i);
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      if (debug_trace[GRAPHIC_INTEND] && global_int_draw_data) {
 	  global_int_draw_data->reposition_all = TRUE;
 	  draw_intention_graph(global_int_draw_data);
@@ -400,7 +427,7 @@ void find_current_intentions(Intention_Graph *ig)
 {
      Intention *previous_current;
      Intention *intention;
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      Intention_List list_modified = NULL;
 #endif
 
@@ -420,7 +447,7 @@ void find_current_intentions(Intention_Graph *ig)
 
 	  list_new = apply_par_scheduler(list_new);
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	  if (global_int_draw_data && 
 	      debug_trace[GRAPHIC_INTEND]) {
 	       list_modified = list_in_modified(ig->current_intentions, list_new, ig->list_intentions);
@@ -432,7 +459,7 @@ void find_current_intentions(Intention_Graph *ig)
 	  FREE_SLIST(ig->current_intentions);
 	  ig->current_intentions = list_new;
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	  if (global_int_draw_data && 
 	      debug_trace[GRAPHIC_INTEND]) {
 	       if (! (SAFE_SL_SLIST_EMPTY(list_modified)))
@@ -444,7 +471,7 @@ void find_current_intentions(Intention_Graph *ig)
      } else {			/* Execution in mono intention mode. */
 	  previous_current = (Intention *)sl_get_slist_head(ig->current_intentions);
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	  if (previous_current && /* There is a current intention */
 	      (!(sl_in_slist(ig->list_runnable,previous_current)))) /* or it is not runnable */
 	       if (debug_trace[GRAPHIC_INTEND] && global_int_draw_data) touch_intention_ginode(previous_current);
@@ -465,7 +492,7 @@ void find_current_intentions(Intention_Graph *ig)
 	       if (! sl_slist_empty(runnable)) {
 		    intention = (Intention *)sl_get_slist_head(runnable);
 		    sl_add_to_head(ig->current_intentions, intention); /* H've got one. Get out of here. */
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 		    if (debug_trace[GRAPHIC_INTEND] && global_int_draw_data) touch_intention_ginode(intention);
 #endif
 	       }
@@ -473,7 +500,7 @@ void find_current_intentions(Intention_Graph *ig)
 	       FREE_SLIST(runnable);
 	  }
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	  if ((previous_current != (Intention *)sl_get_slist_head(ig->current_intentions)) && 
 	      global_int_draw_data && 
 	      debug_trace[GRAPHIC_INTEND]) { /* We change of current intention */
@@ -507,14 +534,14 @@ void wake_up_intention(Intention *in)
 	       sl_add_to_head(current_oprs->intention_graph->list_runnable, in);
 	  in->status = IS_ACTIVE;
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	  if (debug_trace[GRAPHIC_INTEND] && global_int_draw_data) touch_intention_ginode(in);
 #endif
      } else if (in->status == IS_SUSP_SLEEPING) {
 	  sl_delete_slist_node(current_oprs->intention_graph->sleeping_on_cond,in);
 	  in->status = IS_SUSP_ACTIVE;
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	  if (debug_trace[GRAPHIC_INTEND] && global_int_draw_data) touch_intention_ginode(in);
 #endif
      }
@@ -551,7 +578,7 @@ void force_asleep_intention(Intention_Graph *ig, Intention *in)
 				      "ERREUR: force_asleep_intention: Etat d'intention inconnu.\n"));
 	       break;
 	  }
-#ifndef NO_GRAPHIX	  
+#ifdef GRAPHIX	  
 	  if (debug_trace[GRAPHIC_INTEND] && global_int_draw_data) 
 	       touch_intention_ginode(in); /* Will check for draw_data. */
 #endif
@@ -581,7 +608,7 @@ void continue_intention(Intention *in)
 				      "ERREUR: continue_intention: Etat d'intention inconnu.\n"));
 	  break;
      }
-#ifndef NO_GRAPHIX	  
+#ifdef GRAPHIX	  
      if (debug_trace[GRAPHIC_INTEND] && global_int_draw_data) touch_intention_ginode(in);
 #endif
 }
@@ -615,7 +642,7 @@ void suspend_intention(Intention *in)
 				 "ERREUR: suspend_intention: Etat d'intention inconnu.\n"));
 	  break;
      }
-#ifndef NO_GRAPHIX	  
+#ifdef GRAPHIX	  
      if (debug_trace[GRAPHIC_INTEND] && global_int_draw_data) touch_intention_ginode(in);
 #endif
 }

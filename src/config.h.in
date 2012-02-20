@@ -102,11 +102,11 @@
 
 /* One of the following should be defined (or it default to OPRS_MALLOC). */
 /* Use standard malloc only. */
-#undef STD_MALLOC
+#define STD_MALLOC
 
 /* Use a mixe of OPRS malloc and standard one.
    This is the preferred option. */
-#define MIXED_MALLOC
+#undef MIXED_MALLOC
 
 /* Use OPRS malloc only.  Quite good too.*/
 #undef OPRS_MALLOC
@@ -157,7 +157,7 @@
 #undef HAS_IOCTL_TIOCNOTTY
 
 /* Self Explanatory... used by the oprs-server to have an accept thread... */
-#undef USE_MULTI_THREAD
+#define USE_MULTI_THREAD
 
 #define HAS_PTHREAD_KILL
 

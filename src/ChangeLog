@@ -23,6 +23,17 @@
 
 	* ev-function.c: Added ltdl code to load actions, evaluable functions and predicates.
 
+2011-09-08  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* goprs-main.c (oprs_main): log_file and language_str  not properly intialized breaks under Darwin.
+
+	* xm2gtk_f.h (XmToggleButtonGetState): Darwin linker seems to be more touchy than Linux's . It complains for undefined function,
+		  even if they are dead code?
+
+2011-08-08  Felix Ingrand  <felix@cturtle>
+
+	* xoprs-main.c (deregister_main_loop): This should be 1000 not 100
+
 2011-07-13  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* mp.c (add_buffered_message): Fixed again a 32/64 bits problem when using the message passer.

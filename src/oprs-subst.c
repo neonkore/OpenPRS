@@ -1,9 +1,8 @@
-static const char* const rcsid = "$Id$";
 
 /*                               -*- Mode: C -*- 
  * oprs-subst.c -- 
  * 
- * Copyright (c) 1991-2005 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

@@ -3,7 +3,7 @@
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2001 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,7 +51,7 @@ field: body_field
 
 invocation_field: TFT_INVOCATION_TK invocation
 		{
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 		build_invocation(current_op, "INVOCATION", $2, 0, 0, TRUE, 0, TRUE, NULL);
 #else
 		build_invocation(current_op, "INVOCATION", $2, ip_x, ip_y, TRUE, ip_width, TRUE, global_draw_data);
@@ -61,7 +61,7 @@ invocation_field: TFT_INVOCATION_TK invocation
 
 call_field: TFT_CALL_TK call
 		{
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 		build_call(current_op, "CALL", $2, 0, 0, TRUE, 0, TRUE,NULL);
 #else
 		build_call(current_op, "CALL", $2, call_x, call_y, TRUE, call_width, TRUE,global_draw_data);
@@ -71,7 +71,7 @@ call_field: TFT_CALL_TK call
 
 context_field: TFT_CONTEXT_TK context
 		{
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 		build_context(current_op, "CONTEXT", $2, 0, 0, TRUE, 0, TRUE,NULL);
 #else
 		build_context(current_op, "CONTEXT", $2, ctxt_x, ctxt_y, TRUE, ctxt_width, TRUE,global_draw_data);
@@ -81,7 +81,7 @@ context_field: TFT_CONTEXT_TK context
 
 setting_field: TFT_SETTING_TK setting
 		{
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 		build_setting(current_op, "SETTING", $2, 0, 0, TRUE, 0, TRUE,NULL);
 #else
 		build_setting(current_op, "SETTING", $2, set_x, set_y, TRUE, set_width, TRUE,global_draw_data);
@@ -91,7 +91,7 @@ setting_field: TFT_SETTING_TK setting
 
 properties_field: TFT_PROPERTIES_TK properties
 		{
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 		build_properties(current_op, "PROPERTIES", $2, 0, 0, TRUE, 0, TRUE,NULL);
 #else
 		build_properties(current_op, "PROPERTIES", $2, prop_x, prop_y, TRUE, prop_width, TRUE,global_draw_data);
@@ -101,7 +101,7 @@ properties_field: TFT_PROPERTIES_TK properties
 
 documentation_field: TFT_DOCUMENTATION_TK documentation
 		{
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
                 FREE($2);
 #else
 		build_documentation(current_op, "DOCUMENTATION", $2, doc_x, doc_y, TRUE, doc_width, TRUE,global_draw_data);
@@ -111,7 +111,7 @@ documentation_field: TFT_DOCUMENTATION_TK documentation
 
 effects_field: TFT_EFFECTS_TK effects
 		{
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 		build_effects(current_op, "EFFECTS", $2, 0, 0, TRUE, 0, TRUE,NULL);
 #else
 		build_effects(current_op, "EFFECTS", $2, eff_x, eff_y, TRUE, eff_width, TRUE,global_draw_data);
@@ -121,7 +121,7 @@ effects_field: TFT_EFFECTS_TK effects
 
 action_field: TFT_ACTION_TK action
 {
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 		build_action(current_op, "ACTION", $2, 0, 0, TRUE, 0, TRUE,NULL);
 #else
 		build_action(current_op, "ACTION", $2, act_x, act_y, TRUE, act_width, TRUE,global_draw_data);
@@ -138,14 +138,14 @@ body_field: TFT_BODY_TK {yy_begin_COLLECT_COMMENT(); check_symbol = TRUE;} body
 		     current_op->start_point = make_simple_node();
 		}
 		 
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 		build_body(current_op, "BODY", to_free = ($3?DN_BODY($3):make_body(NULL)), 0, 0, TRUE, 0, TRUE, NULL);
 #else
 		build_body(current_op, "BODY", to_free = ($3?DN_BODY($3):make_body(NULL)), bd_x, bd_y, TRUE, bd_width, TRUE, global_draw_data);
 #endif
 		free_double_node($3);
 #ifdef OPRS_KERNEL 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 		clean_inst_sl_in_slist_og_inst(current_op->list_og_inst);
 		DUP_SLIST(current_op->list_og_inst);
 #endif

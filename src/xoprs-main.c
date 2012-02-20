@@ -1,4 +1,3 @@
-static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * xoprs-main.c -- Top level file for the X/Motif interface for one OPRS.
  * 
@@ -93,7 +92,7 @@ static const char* const rcsid = "$Id$";
 #include "oprs-type_f.h"
 #include "oprs-init_f.h"
 
-PBoolean install_user_trace;
+PBoolean install_user_trace = FALSE;
 
 Boolean xoprs_top_level_loop(XtPointer oprs);
 Boolean wait_other_events(XtPointer oprs);
@@ -139,7 +138,7 @@ void deregister_main_loop(Oprs *oprs)
      main_loop_registered = FALSE;
      other_events_wp = XtAppAddWorkProc(app_context,&wait_other_events,oprs);
      other_events_registered = TRUE;
-     XtAppAddTimeOut(app_context, (main_loop_pool_sec * 100) +  (main_loop_pool_usec / 1000),
+     XtAppAddTimeOut(app_context, (main_loop_pool_sec * 1000) +  (main_loop_pool_usec / 1000),
 		     (XtTimerCallbackProc)register_main_loop, oprs); /* This guy will re register us. */
 }
 
@@ -382,6 +381,7 @@ NULL
 };
 
 Widget textWindow;
+int gtk = 0;
 
 #ifdef C_PLUS_PLUS_RELOCATABLE
 int oprs_main(int argc,char **argv, char ** envp)

@@ -1,5 +1,4 @@
-static const char* const rcsid = "$Id$";
-/*                               -*- Mode: C -*- 
+/*
  * default-user-external.c -- 
  * 
  * Copyright (c) 1991-2012 Francois Felix Ingrand.
@@ -58,7 +57,7 @@ void start_kernel_hook(char *name)
 	(as it has priotity over intention sorting.) */
      intention_list_sort_predicate = &intention_list_sort_by_priority;
      main_loop_pool_sec = 0L;
-     main_loop_pool_usec = 10000L;
+     main_loop_pool_usec = 100000L;
 }
 
 

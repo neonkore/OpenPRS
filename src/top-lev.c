@@ -1,9 +1,8 @@
-static const char* const rcsid = "$Id$";
 
 /*                               -*- Mode: C -*-
  * top-lev-loop.c -- Main loop of a OPRS agent
  *
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -329,7 +328,7 @@ void set_oprs_run_mode(Oprs_Run_Type mode)
 	  fprintf(stderr, LG_STR("set_oprs_run_mode: unknown run_mode.\n",
 				 "set_oprs_run_mode: unknown run_mode.\n"));
      }
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      xset_oprs_run_mode(mode);
 #endif
 }

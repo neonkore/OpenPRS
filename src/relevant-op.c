@@ -1,4 +1,3 @@
-static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * relevant_op.c -- Gestion de la table des procedures "relevants"
  * 
@@ -42,14 +41,13 @@ static const char* const rcsid = "$Id$";
 
 #include "oprs-profiling.h"
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 #include "opaque.h"
 #include <X11/Intrinsic.h>
 #include <Xm/Xm.h>
 #include "ope-graphic.h"
 #include "xoprs-main.h"
 #include "ope-external_f.h"
-
 #endif
 
 #include "op-structure.h"
@@ -463,7 +461,7 @@ void list_opfs(Relevant_Op *rk)
 
 void trace_graphic_op(PString name, Relevant_Op *rk, PBoolean state)
 {
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 
      Op_Structure *op;
      PBoolean found_one = FALSE;
@@ -488,7 +486,7 @@ void trace_graphic_op(PString name, Relevant_Op *rk, PBoolean state)
 
 void trace_graphic_opf(PString file_name, Relevant_Op *rk, PBoolean state)
 {
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      Op_Structure *op;
      PBoolean found_one = FALSE;
 
@@ -595,7 +593,7 @@ void store_trace_status(PString file_name, Relevant_Op *rk, Slist **text, Slist 
 
 	  sl_loop_through_slist(rk->op_list, op, Op_Structure *) {
 	       if (strcmp(file_name, op->file_name) == 0) {
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 		    if (op->graphic_traced)
 			 sl_add_to_head(*graphic, op->name);
 #endif
@@ -619,7 +617,7 @@ void restore_trace_status(PString file_name, Relevant_Op *rk, Slist *text, Slist
 	  Op_Structure *op;
 
 	  sl_loop_through_slist(rk->op_list, op, Op_Structure *) {
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	       if (sl_search_slist(graphic, op->name, equal_id))
 		    op->graphic_traced = TRUE;
 #endif
@@ -652,7 +650,7 @@ void delete_opf_from_rop(PString file_name, Relevant_Op *rk, PBoolean graphic, P
 	       if (verbose) printf(LG_STR("OP: %s deleted from the OP Database.\n",
 					  "OP: %s retiré de la base de OP.\n"), op->name);	  
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	       if (graphic) {
 		    clear_specified_op_graphic(global_draw_data, op);
 	       }
@@ -678,7 +676,7 @@ void delete_op_from_rop(Op_Structure *op, Relevant_Op *rk, PBoolean graphic, PBo
 	  delete_op_from_pfr(op, op->invocation);
 	  if (op->call) delete_op_call_from_pfr(op, op->call);
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	  if (graphic) {
 	       clear_specified_op_graphic(global_draw_data, op);
 	  }
@@ -708,7 +706,7 @@ void delete_op_name_from_rop(PString name, Relevant_Op *rk, PBoolean graphic)
 	  delete_op_from_pfr(op, op->invocation);
 	  if (op->call) delete_op_call_from_pfr(op, op->call);
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	  if (graphic) {
 	       clear_specified_op_graphic(global_draw_data, op);
 	  }

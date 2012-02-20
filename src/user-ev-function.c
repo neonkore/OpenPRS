@@ -1,4 +1,3 @@
-static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * user-ev-function.c -- contains user defined evaluable functions.
  * 

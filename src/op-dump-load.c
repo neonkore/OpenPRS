@@ -1,4 +1,3 @@
-static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * op-dump-load.c -- 
  * 
@@ -42,7 +41,7 @@ static const char* const rcsid = "$Id$";
 
 #include "oprs-profiling.h"
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 #include <X11/Intrinsic.h>
 #include <Xm/Xm.h>
 #include "ope-graphic.h"
@@ -71,7 +70,7 @@ static const char* const rcsid = "$Id$";
 
 void clear_op_database(Relevant_Op *rk, PBoolean graphic)
 {
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      if (graphic) {
 	  clear_op_graphic(global_draw_data);
      }

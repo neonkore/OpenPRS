@@ -1,4 +1,3 @@
-static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * oprs-init.c -- 
  * 
@@ -33,21 +32,23 @@ static const char* const rcsid = "$Id$";
 
 #include "config.h"
 
-#if defined(WINSOCK)
-#include <winsock.h>
-#elif defined(VXWORKS)
-#include "ioLib.h"
-#include <hostLib.h>
-#include <sys/ioctl.h>
-#else
 #include <fcntl.h>
 #include <netdb.h>
-#endif
 
 #include <stdio.h>
 #include <stdlib.h>
-#ifndef WIN95
 #include <unistd.h>
+
+#ifdef GRAPHIX
+#ifdef GTK
+#include <gtk/gtk.h>
+#include "xm2gtk.h"
+#else
+#include <X11/Intrinsic.h>
+#include <Xm/Xm.h>
+#include "ope-graphic.h"
+#include "xoprs-main.h"
+#endif
 #endif
 
 #include "constant.h"
@@ -55,14 +56,6 @@ static const char* const rcsid = "$Id$";
 #include "macro.h"
 
 #include "oprs-main.h"
-
-#ifndef NO_GRAPHIX
-#include <X11/Intrinsic.h>
-#include <Xm/Xm.h>
-#include "ope-graphic.h"
-#include "xoprs-main.h"
-#endif
-
 #include "oprs-type.h"
 #include "database.h"
 #include "relevant-op.h"
@@ -105,9 +98,16 @@ static const char* const rcsid = "$Id$";
 
 #include "tcl_f.h"
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
+#ifdef GTK
+#include "op-structure.h"
+#include "gope-graphic.h"
+#include "goprs-intention.h"
+#include "goprs-main.h"
+#else
+#include "xoprs-main.h"
 #include "xoprs-intention.h"
-#include "xoprs-intention_f.h"
+#endif
 #endif
 
 #define OPRS_HELP_MESSAGE LG_STR(\
@@ -408,7 +408,7 @@ void initialize_cst()
      goal_satisfied_in_db_op_ptr->nb_failure = 0;
 #endif
      goal_satisfied_in_db_op_ptr->text_traced = FALSE;
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      goal_satisfied_in_db_op_ptr->documentation = NULL;
      goal_satisfied_in_db_op_ptr->graphic_traced = FALSE;
 #endif
@@ -435,7 +435,7 @@ void initialize_cst()
 #endif
      goal_waiting_op_ptr->text_traced = FALSE;
      goal_waiting_op_ptr->step_traced = FALSE;
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      goal_waiting_op_ptr->documentation = NULL;
      goal_waiting_op_ptr->graphic_traced = FALSE;
 #endif
@@ -452,7 +452,7 @@ void initialize_cst()
      goal_for_intention_op_ptr->list_var = empty_list;
      goal_for_intention_op_ptr->properties = empty_list;
      goal_for_intention_op_ptr->text_traced = FALSE;
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      goal_for_intention_op_ptr->documentation = NULL;
      goal_for_intention_op_ptr->graphic_traced = FALSE;
 #endif
@@ -990,7 +990,7 @@ void load_kernel_from_parser(Oprs *oprs, PString file_name)
 	  current_tib = new_current_tib ;
 	  current_intention = new_current_intention;
      
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	  global_int_draw_data->ig = new_ig;
 
 	  if (graphix) {
@@ -1039,7 +1039,7 @@ void dump_kernel_from_parser(Oprs *oprs, PString file_name)
 	  WRITE_ADDR_AND_ADD_OBJECT_TO_DUMP(DPT_TIB, current_tib);
 	  WRITE_ADDR_AND_ADD_OBJECT_TO_DUMP(DPT_INTENTION, current_intention);
      
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 	  dump_boolean(0);		/* no graphic information */
 #else
 	  dump_boolean(1);		/* Will save graphic information */

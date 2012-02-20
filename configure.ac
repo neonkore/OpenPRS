@@ -5,7 +5,7 @@ AC_PREREQ(2.53)
 
 AC_INIT([Open PRS],[1.1b0],[felix@laas.fr],[openprs])
 AC_CONFIG_SRCDIR([src/oprs-main.c])
-AC_CONFIG_HEADERS([config-ac.h])
+AC_CONFIG_HEADERS([src/config-ac.h])
 AC_CONFIG_AUX_DIR([config])
 AC_CONFIG_MACRO_DIR([m4])
 
@@ -62,6 +62,10 @@ AC_SUBST(MP_EXTRA_LIBS)
 #check for Readline
 AC_CHECK_READLINE
 
+PKG_CHECK_MODULES(GTK, gtk+-2.0)
+AC_SUBST(GTK_CFLAGS)
+AC_SUBST(GTK_LIBS)
+
 # Checks for header files.
 AC_PATH_XTRA
 AC_FIND_MOTIF
@@ -79,6 +83,7 @@ AC_STRUCT_TM
 AC_TYPE_UID_T
 
 # Checks for library functions.
+AC_CHECK_LIB(pthread, pthread_create)
 AC_FUNC_FORK
 AC_PROG_GCC_TRADITIONAL
 AC_FUNC_MALLOC

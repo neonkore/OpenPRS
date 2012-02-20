@@ -1,8 +1,7 @@
-static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * op-instance.c -- Function dealing with op-instance.
  * 
- * Copyright (c) 1991-2010 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,6 +36,16 @@ static const char* const rcsid = "$Id$";
 #include "constant.h"
 
 #include "op-instance.h"
+
+
+#ifdef GRAPHIX
+#ifdef GTK
+#else
+#include <X11/Intrinsic.h>
+#include <Xm/Xm.h>
+#endif
+#endif
+
 #include "op-structure.h"
 #include "unification_f.h"
 #include "oprs-type_f.h"

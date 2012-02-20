@@ -1,4 +1,3 @@
-static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * ev-function.c -- Deal with evaluable functions in OPRS.
  * 

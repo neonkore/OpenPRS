@@ -1,4 +1,3 @@
-static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * ev-predicate.c -- Handle evaluable predicates.
  * 

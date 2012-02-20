@@ -1,8 +1,7 @@
-static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * oprs-pprint.c -- 
  * 
- * Copyright (c) 1991-2010 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -53,8 +52,13 @@ static const char* const rcsid = "$Id$";
 #include "lisp-list_f.h"
 #include "oprs-error_f.h"
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
+#ifdef GTK
+#include <gtk/gtk.h>
+#include "gope-graphic.h"
+#else
 #include "ope-graphic.h"
+#endif
 #endif
 
 /**
@@ -2134,7 +2138,7 @@ ListLines pretty_print_body(int width, Body *body)
 	       lline = sl_make_slist();
 	       first_line = create_line("()");
 	       sl_add_to_head(lline, first_line);
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	       current_body_line++;
 #endif
 	       return lline;
@@ -2146,19 +2150,19 @@ ListLines pretty_print_body(int width, Body *body)
 	  my_indent = first_line->width;
 	  width -= first_line->width + last_line->width;
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	  current_body_indent +=  my_indent;
 #endif
 	  lline = pretty_print_list_instruction(width,body->insts);
 	  update_indent(lline, my_indent);
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	  current_body_indent -=  my_indent;
 #endif
 	  sl_add_to_tail(lline,last_line);
 	  concat_lines(first_line, (Line *)sl_get_from_head(lline)); 
 	  sl_add_to_head(lline, first_line);
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	       current_body_line++;
 #endif
 	  return lline;
@@ -2173,7 +2177,7 @@ ListLines pretty_print_part_if_instruction(int width, If_Instruction *if_inst, P
 
      lline = pretty_print_expr(width - (elseif ? 8: 4), if_inst->condition);
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      if (if_inst->og != NULL) {
 	  Ginst *og_inst = if_inst->og->u.ginst;
 
@@ -2205,7 +2209,7 @@ ListLines pretty_print_part_if_instruction(int width, If_Instruction *if_inst, P
 	  if (if_inst->u.else_insts) {
 	       sl_add_to_tail(lline, create_line((lower_case_id ? " else" : " ELSE")));
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	  current_body_line++;
 #endif
 	       lline_else_ins = pretty_print_list_instruction(width - IF_INDENT,if_inst->u.else_insts);
@@ -2224,7 +2228,7 @@ ListLines pretty_print_if_instruction(int width, If_Instruction *if_inst)
      first_line = create_line((lower_case_id ? "(if " : "(IF "));
      last_line = create_line(")");
           
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      current_body_indent +=  IF_INDENT;
 #endif
 
@@ -2234,7 +2238,7 @@ ListLines pretty_print_if_instruction(int width, If_Instruction *if_inst)
      sl_add_to_head(lline,first_line); 
      sl_add_to_tail(lline, last_line);
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      current_body_indent -=  IF_INDENT;
      current_body_line++;
 #endif
@@ -2252,13 +2256,13 @@ ListLines pretty_print_while_instruction(int width, While_Instruction *while_ins
      first_line = create_line((lower_case_id ? "(while " : "(WHILE "));
      last_line = create_line(")");
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 /* test for strings in body, TO DELETE
      nb_cr_in_strings = 0;
      */
 #endif
      lline = pretty_print_expr(width - first_line->width,while_inst->condition);
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      if (while_inst->og != NULL) {
 	  Ginst *og_inst = while_inst->og->u.ginst;
 
@@ -2273,7 +2277,7 @@ ListLines pretty_print_while_instruction(int width, While_Instruction *while_ins
      update_indent(lline, 7);	/* Size of "(while ". */
      sl_add_to_head(lline, first_line); 
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      current_body_indent +=  WHILE_INDENT;
 #endif
 
@@ -2283,7 +2287,7 @@ ListLines pretty_print_while_instruction(int width, While_Instruction *while_ins
      sl_concat_slist(lline,lline_ins);
      sl_add_to_tail(lline, last_line);
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      current_body_indent -=  WHILE_INDENT;
      current_body_line++;
 #endif
@@ -2299,13 +2303,13 @@ ListLines pretty_print_do_instruction(int width, Do_Instruction *do_inst)
 
      first_line = create_line((lower_case_id ? "(do" : "(DO"));
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      current_body_line++;
      current_body_indent +=  DO_INDENT;
 #endif
      lline = pretty_print_list_instruction(width - DO_INDENT,do_inst->insts);
      update_indent(lline, DO_INDENT);
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      current_body_indent -=  DO_INDENT;
 #endif
 
@@ -2313,7 +2317,7 @@ ListLines pretty_print_do_instruction(int width, Do_Instruction *do_inst)
      
      until_line = create_line((lower_case_id ? " while " : " WHILE "));
      lline_tmp = pretty_print_expr(width - until_line->width - 1 ,do_inst->condition);
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      if (do_inst->og != NULL) {
 	  Ginst *og_inst = do_inst->og->u.ginst;
 
@@ -2351,7 +2355,7 @@ ListLines pretty_print_par_instruction(int width, Par_Instruction *par)
      my_indent = first_line->width;
      width -= first_line->width + last_line->width;
      
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      current_body_indent +=  my_indent;
 #endif
 
@@ -2365,7 +2369,7 @@ ListLines pretty_print_par_instruction(int width, Par_Instruction *par)
      concat_lines(first_line, (Line *)sl_get_from_head(lline)); 
      sl_add_to_head(lline, first_line);
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      current_body_indent -=  my_indent;
      current_body_line++; /* The last line */
 #endif
@@ -2376,7 +2380,7 @@ ListLines pretty_print_simple_instruction(int width, Simple_Instruction *simple)
 {
      ListLines lline = pretty_print_expr(width,simple->expr);
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      if (simple->og != NULL) {
 	  Ginst *og_inst = simple->og->u.ginst;
 
@@ -2400,7 +2404,7 @@ ListLines pretty_print_instruction(int width, Instruction *inst)
 	  ListLines lline = sl_make_slist();
 
 	  sl_add_to_tail(lline, create_line(inst->u.comment));
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	  current_body_line++;
 #endif
 	  return lline;
@@ -2410,7 +2414,7 @@ ListLines pretty_print_instruction(int width, Instruction *inst)
 	  ListLines lline = sl_make_slist();
 
 	  sl_add_to_tail(lline, create_line(lower_case_id ? "break" : "BREAK"));
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	  current_body_line++;
 #endif
 	  return lline;
@@ -2422,7 +2426,7 @@ ListLines pretty_print_instruction(int width, Instruction *inst)
 	  
 	  line = create_line(lower_case_id ? "goto " : "GOTO ");
 	  concat_lines(line,create_line(inst->u.goto_inst));
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	  current_body_line++;
 #endif
 	  sl_add_to_tail(lline, line);
@@ -2435,7 +2439,7 @@ ListLines pretty_print_instruction(int width, Instruction *inst)
 	  
 	  line = create_line(lower_case_id ? "label " : "LABEL ");
 	  concat_lines(line,create_line(inst->u.goto_inst));
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	  current_body_line++;
 #endif
 	  sl_add_to_tail(lline, line);

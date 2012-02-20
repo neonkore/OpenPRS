@@ -39,7 +39,7 @@
 #include "opaque.h"
 #include "oprs-profiling.h"
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 extern Draw_Data *global_draw_data;
 extern Int_Draw_Data *global_int_draw_data;
 #endif

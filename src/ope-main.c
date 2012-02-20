@@ -1,8 +1,7 @@
-static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*-
  * ope-main.c --
  *
- * Copyright (c) 1991-2010 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -559,6 +558,8 @@ extern PBoolean use_dialog_error;
 /* #ifdef YY_NO_CONST */
 /* extern FILE *oprs_yyin, *oprs_yyout; */
 /* #endif */
+
+int gtk = 0;
 
 int main(int argc, char **argv, char **envp)
 {

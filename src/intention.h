@@ -3,7 +3,7 @@
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,9 +39,14 @@
 #include "slistPack.h"
 #include "slistPack_f.h"
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
+#ifdef GTK
+#include <gtk/gtk.h>
+#include "xm2gtk.h"
+#else
 #include <X11/Intrinsic.h>
 #include <Xm/Xm.h>
+#endif
 #endif
 
 #include "opaque.h"
@@ -91,7 +96,7 @@ struct intention {
 #endif
      Sprinter *failed_goal_sprinter; 
      OPRS_LIST failed_goal_stack; 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      IOG *iog;
      Widget trace_dialog;
      Widget trace_scrl_txt;

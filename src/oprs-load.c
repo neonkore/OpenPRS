@@ -1,4 +1,3 @@
-static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * oprs-load.c -- 
  * 
@@ -49,6 +48,17 @@ static const char* const rcsid = "$Id$";
 #include <shashPack.h>
 #include <slistPack.h>
 
+
+#ifdef GRAPHIX
+#ifdef GTK
+#include <gtk/gtk.h>
+#include "xm2gtk.h"
+#else
+#include <X11/Intrinsic.h>
+#include <Xm/Xm.h>
+#endif
+#endif
+
 #include "string.h"
 #include "macro.h"
 #include "constant.h"
@@ -66,8 +76,22 @@ static const char* const rcsid = "$Id$";
 #include "oprs-sprint.h"
 #include "oprs.h"
 #include "type.h"
+#include <shashPack_f.h>
+#include <slistPack_f.h>
 
-#ifndef NO_GRAPHIX
+
+#ifdef GRAPHIX
+#ifdef GTK
+#include "gope-graphic.h"
+#include "goprs-intention.h"
+#else
+#include "ope-graphic.h"
+#include "xoprs-intention.h"
+#endif
+#include "xt-util_f.h"
+#endif
+
+#ifdef IGNORE
 #include "xoprs-main.h"
 #include "ope-graphic.h"
 #include "xoprs-intention.h"
@@ -75,8 +99,6 @@ static const char* const rcsid = "$Id$";
 #include "xt-util_f.h"
 #endif
 
-#include <shashPack_f.h>
-#include <slistPack_f.h>
 
 #include "oprs-error_f.h"
 #include "oprs-type_f.h"
@@ -500,7 +522,7 @@ int start_load_session(char *filename)
 int check_or_and_refcount_from_hash(Slist *not_loaded, Object_Reloc *or)
 {
      if (! or->loaded) {
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 	  if  (or->type == DPT_OG || /* These are the allowed UNUSED addr. */
 	       or->type == DPT_IOG) { 
 	       FREE_SLIST(or->u.addr_ref_list);
@@ -1239,7 +1261,7 @@ void report_graphix_mismatch()
 
      if (! reported) {
 	  fprintf(stderr,"%s",mess);
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	  printf("%s",mess);
 #endif
 	  reported = TRUE;
@@ -1268,7 +1290,7 @@ Intention *load_intention(void)
      intention->failed_goal_sprinter = load_sprinter();
      intention->failed_goal_stack = sl_make_slist();
      graphix = load_boolean();
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
      if (graphix) {
 	  report_graphix_mismatch();
 	  LOAD_UNUSED_ADDR(DPT_IOG);
@@ -1319,7 +1341,7 @@ void *load_intention_paire(void)
      LOAD_ADDR_AND_REF_LOC(DPT_INTENTION,ip->second);
 
      graphix = load_boolean();
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
      if (graphix) {
 	  report_graphix_mismatch();
 	  LOAD_UNUSED_ADDR(DPT_IOG);
@@ -1350,7 +1372,7 @@ Intention_Graph *load_ig(void)
      ig->sleeping_on_cond = load_list_reloc_elt(DPT_INTENTION);
      /* PFB sort_predicat; */
      graphix = load_boolean();
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
      if (graphix) {
 	  report_graphix_mismatch();
 	  load_unused_list_reloc_elt(DPT_IOG);
@@ -1369,7 +1391,7 @@ Intention_Graph *load_ig(void)
      return ig;
 }
 
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 void load_xmstring(void)
 {
      while (load_boolean()) {
@@ -1518,7 +1540,8 @@ void load_iog(void)
 XmString load_xmstring(void)
 {
      XmString res=NULL;
-     
+#ifdef GTK
+#else
      while (load_boolean()) {
 	  char *text;
 	  XmStringCharSet cs;
@@ -1545,7 +1568,7 @@ XmString load_xmstring(void)
 	  } else
 	       res = res2;
      }
-     
+#endif     
      return res;
 }
 
@@ -1761,7 +1784,7 @@ void *load_op(void)
      op->step_traced = load_boolean();
 
      graphix = load_boolean();
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
      if (graphix) {
 	  report_graphix_mismatch();
 	  load_boolean();
@@ -1867,7 +1890,7 @@ void *load_node(void)
 
      graphix = load_boolean();
 
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
      if (graphix) {
 	  report_graphix_mismatch();
 	  LOAD_UNUSED_ADDR(DPT_SYMBOL);
@@ -1898,7 +1921,7 @@ void *load_edge(void)
 
      graphix = load_boolean();
 
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
      if (graphix) {
 	  report_graphix_mismatch();
 	  LOAD_UNUSED_ADDR(DPT_NODE);
@@ -1939,7 +1962,7 @@ Simple_Instruction *load_simple_instruction(void)
 
      graphix = load_boolean();
 
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
      if (graphix) {
 	  report_graphix_mismatch();
 	  LOAD_UNUSED_ADDR(DPT_OG);
@@ -2083,7 +2106,7 @@ void *load_object(Dump_Type *return_type)
      if (!be_quiet) 
 	  if ((i++ << 24) == 0) {
 	       printf(".");
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	       process_xt_events();
 #endif	  
 	  }
@@ -2191,7 +2214,7 @@ void *load_object(Dump_Type *return_type)
 	  new_addr = load_list_symbol();
 	  break;
      case DPT_OG:
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 	  new_addr = NULL;
 	  load_og();
 #else
@@ -2208,7 +2231,7 @@ void *load_object(Dump_Type *return_type)
 	  new_addr = load_tib();
 	  break;
      case DPT_IOG:
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 	  new_addr = NULL;
 	  load_iog();
 #else
@@ -2229,7 +2252,7 @@ void *load_object(Dump_Type *return_type)
      if (new_addr)
 	  relocate_object(old_addr,new_addr,type);
      else {
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 	  if (type == DPT_OG || type == DPT_IOG)
 	       new_addr = DUMMY_ADDR;
 	  else

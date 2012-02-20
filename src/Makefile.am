@@ -1,37 +1,48 @@
-AM_CPPFLAGS = -I$(top_srcdir)/c_toolkit 
+AM_CPPFLAGS = -I$(top_srcdir)/c_toolkit
 AM_CFLAGS = -Wall # -Wextra
 AM_LDFLAGS = -export-dynamic
 
-INC = action.h activate.h config.h constant-pub.h constant.h database.h \
-	ev-function.h ev-predicate.h fact-goal.h int-graph.h \
-	intend.h intention.h op-compiler.h op-instance.h op-structure.h \
-	ope-global.h ope-graphic.h lisp-list.h macro-pub.h macro.h mp.h \
-	mp-pub.h mp-register.h opaque-ext.h opaque-pub.h opaque.h oprs-sprint-pub.h \
-	parser-funct.h oprs-client.h oprs-main.h oprs-print.h oprs-server.h \
-	oprs-profiling.h oprs-type-pub.h oprs-type.h oprs.h relevant-op.h soak.h \
-	top-lev.h unification.h user-action.h user-trace.h user-ev-function.h \
-	user-ev-predicate.h version.h xoprs.h xhelp.h \
-	xoprs-intention.h xoprs-main-pub.h xoprs-main.h xoprs.h xoprs-textwin.h ope-syntax.h \
-	op-default.h oprs-sprint.h oprs-error.h oprs-rerror.h oprs-error-pub.h \
-	conditions.h lang.h oprs-dump.h opc.h type.h oprs-pred-func.h tcl.h yy-funct.c
+INC = action.h activate.h conditions.h config.h constant-pub.h \
+	constant.h database.h default-hook.h ev-function.h ev-predicate.h \
+	fact-goal.h gope-global.h gope-graphic.h goprs-intention.h \
+	goprs-main-pub.h goprs-main.h goprs.h int-graph.h intend.h \
+	intention.h lang.h lisp-list.h macro-pub.h macro.h mp-pub.h \
+	mp-register.h mp.h op-compiler.h op-default.h op-instance.h \
+	op-structure.h opaque-ext.h opaque-pub.h opaque.h opc.h \
+	ope-global.h ope-gope.h ope-graphic.h ope-syntax.h oprs-client.h \
+	oprs-dump.h oprs-error-pub.h oprs-error.h oprs-main.h \
+	oprs-pred-func.h oprs-print.h oprs-profiling.h oprs-rerror.h \
+	oprs-server.h oprs-sprint-pub.h oprs-sprint.h oprs-type-pub.h \
+	oprs-type.h oprs.h parser-funct.h relevant-op.h soak.h tcl.h \
+	top-lev.h type.h unification.h user-action.h user-ev-function.h \
+	user-ev-predicate.h user-trace.h version.h xhelp.h xm2gtk.h \
+	xoprs-intention.h xoprs-main-pub.h xoprs-main.h xoprs-textwin.h \
+	xoprs.h xoprs.h yy-funct.c
 
-FINC = action_f.h activate_f.h database_f.h ev-function_f.h oprs-pred-func_f.h \
-	ev-predicate_f.h fact-goal_f-pub.h fact-goal_f.h \
-	help_f.h int-graph_f-pub.h int-graph_f.h intend_f.h intention_f-pub.h \
-	intention_f.h op-compiler_f.h op-instance_f-pub.h op-instance_f.h \
-	op-structure_f.h ope-bboard_f.h ope-edit_f.h ope-external_f.h \
-	ope-filesel_f.h ope-graphic_f.h ope-op-opf_f.h ope-menu_f.h \
-	ope-print_f.h ope-pxmw_f.h ope-save_f.h ope-syntax_f.h ope-vsblf_f.h \
-	lisp-list_f-pub.h lisp-list_f.h mp-register_f.h other_proto.h \
-	parser-funct_f.h oprs-array_f.h oprs-client_f.h oprs-print_f.h \
-	oprs-send-m_f.h oprs-socket_f.h oprs-profiling_f.h oprs-type_f-pub.h \
-	oprs-type_f.h oprs-util_f.h oprs_f-pub.h oprs_f.h relevant-op_f.h \
-	send-message_f.h soak_f.h socket_f.h xt-util_f.h\
-	top-lev_f.h unification_f.h usage_f.h xhelp_f.h \
-	xoprs-intention_f.h xoprs-menu_f.h xoprs-textwin_f.h ope-rop_f.h ope-report_f.h \
-	oprs-pprint_f.h tcl_f.h oprs-init_f.h oprs-sprint_f.h oprs-error_f.h \
-	oprs-rerror_f-pub.h oprs-sprint_f-pub.h conditions_f.h oprs-rerror_f.h \
-	oprs-dump_f.h oprs-print_f-pub.h type_f.h top-structure_f.h tcl_f.h
+FINC = action_f.h activate_f.h conditions_f.h database_f.h \
+	default-hook_f.h ev-function_f.h ev-predicate_f.h \
+	fact-goal_f-pub.h fact-goal_f.h gope-bboard_f.h gope-edit_f.h \
+	gope-external_f.h gope-filesel_f.h gope-graphic_f.h gope-main_f.h \
+	gope-menu_f.h gope-op-opf_f.h gope-report_f.h gope-vsblf_f.h \
+	goprs-intention_f.h goprs-menu_f.h goprs-textwin_f.h gtop-lev_f.h \
+	help_f.h int-graph_f-pub.h int-graph_f.h intend_f.h \
+	intention_f-pub.h intention_f.h lisp-list_f-pub.h lisp-list_f.h \
+	ltdl-loader_f.h mp-register_f.h op-compiler_f.h \
+	op-instance_f-pub.h op-instance_f.h op-structure_f.h \
+	ope-bboard_f.h ope-edit_f.h ope-external_f.h ope-filesel_f.h \
+	ope-graphic_f.h ope-menu_f.h ope-op-opf_f.h ope-print_f.h \
+	ope-pxmw_f.h ope-report_f.h ope-rop_f.h ope-save_f.h \
+	ope-syntax_f.h ope-vsblf_f.h oprs-array_f.h oprs-client_f.h \
+	oprs-dump_f.h oprs-error_f.h oprs-init_f.h oprs-pprint_f.h \
+	oprs-pred-func_f.h oprs-print_f-pub.h oprs-print_f.h \
+	oprs-profiling_f.h oprs-rerror_f-pub.h oprs-rerror_f.h \
+	oprs-send-m_f.h oprs-socket_f.h oprs-sprint_f-pub.h \
+	oprs-sprint_f.h oprs-type_f-pub.h oprs-type_f.h oprs-util_f.h \
+	oprs_f-pub.h oprs_f.h other_proto.h parser-funct_f.h \
+	relevant-op_f.h send-message_f.h soak_f.h socket_f.h tcl_f.h \
+	tcl_f.h top-lev_f.h top-structure_f.h type_f.h unification_f.h usage_f.h \
+	xhelp_f.h xm2gtk_f.h xoprs-dialog_f.h xoprs-intention_f.h \
+	xoprs-menu_f.h xoprs-textwin_f.h xt-util_f.h
 
 YACC_PART = opc-parser.y.part oprs-parser.y.part opt-parser.y.part yacc-file.y.part \
 	yacc-text-op.y.part ope-parser.y.part oprs-server-parser.y.part \
@@ -59,8 +70,11 @@ pkginclude_HEADERS = $(EXTERNAL_INCLUDE)
 
 #
 lib_LTLIBRARIES = libExtMP.la 
-noinst_LTLIBRARIES = libMP.la libBasic.la libOprs.la libTOpEOprs.la libGOpEOprs.la \
-		libTOprs.la libGOprs.la libKernel.la libTKernel.la libGKernel.la libOpG.la
+noinst_LTLIBRARIES = libMP.la libBasic.la libOprs.la \
+		libTOpEOprs.la libXGOpEOprs.la libGGOpEOprs.la \
+		libTOprs.la libXGOprs.la libGGOprs.la libKernel.la \
+		libTKernel.la libXGKernel.la libGGKernel.la \
+		libXOpG.la libGOpG.la
 
 noinst_LIBRARIES = libVersion.a
 
@@ -85,25 +99,37 @@ libOprs_la_SOURCES = help.c lisp-list.c oprs-ll.c oprs-send-m.c oprs-sprint.c \
 
 libKernel_la_SOURCES = database.c ev-predicate.c fact-goal.c oprs.c oprs-rerror.c unification.c oprs-profiling.c
 
-libOpG_la_SOURCES = ope-external.c ope-graphic.c xhelp.c oprs-pprint.c ope-report.c
+libXOpG_la_SOURCES = ope-external.c ope-graphic.c xhelp.c oprs-pprint.c ope-report.c xt-util.c
+libXOpG_la_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX
+
+
+libGOpG_la_SOURCES = gope-external.c gope-graphic.c xhelp.c oprs-pprint.c gope-report.c g-util.c
+libGOpG_la_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX -DGTK $(GTK_CFLAGS)
 
 #
 BOTH_OPE_OPRS_LIB_SOURCES = oprs-dump.c oprs-load.c
 
 libTOpEOprs_la_SOURCES = $(BOTH_OPE_OPRS_LIB_SOURCES)
-libTOpEOprs_la_CPPFLAGS = $(AM_CPPFLAGS) -DNO_GRAPHIX
+libTOpEOprs_la_CPPFLAGS = $(AM_CPPFLAGS) -UGRAPHIX
 
-libGOpEOprs_la_SOURCES = $(BOTH_OPE_OPRS_LIB_SOURCES)
-libGOpEOprs_la_CPPFLAGS = $(AM_CPPFLAGS) -UNO_GRAPHIX
+libXGOpEOprs_la_SOURCES = $(BOTH_OPE_OPRS_LIB_SOURCES)
+libXGOpEOprs_la_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX
+
+
+libGGOpEOprs_la_SOURCES = $(BOTH_OPE_OPRS_LIB_SOURCES)
+libGGOpEOprs_la_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX -DGTK $(GTK_CFLAGS)
 
 #
 BOTH_OPRS_LIB_SOURCES = op-structure.c oprs-subst.c oprs-type.c conditions.c top-structure.c consult-rop.c relevant-op.c op-dump-load.c
 
 libTOprs_la_SOURCES = $(BOTH_OPRS_LIB_SOURCES)
-libTOprs_la_CPPFLAGS = $(AM_CPPFLAGS) -DNO_GRAPHIX
+libTOprs_la_CPPFLAGS = $(AM_CPPFLAGS) -UGRAPHIX
 
-libGOprs_la_SOURCES = $(BOTH_OPRS_LIB_SOURCES)
-libGOprs_la_CPPFLAGS = $(AM_CPPFLAGS) -UNO_GRAPHIX
+libXGOprs_la_SOURCES = $(BOTH_OPRS_LIB_SOURCES)
+libXGOprs_la_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX
+
+libGGOprs_la_SOURCES = $(BOTH_OPRS_LIB_SOURCES)
+libGGOprs_la_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX -DGTK $(GTK_CFLAGS)
 
 #
 BOTH_KERNEL_LIB_SOURCES = action.c activate.c ev-function.c intend.c intention.c \
@@ -111,10 +137,13 @@ BOTH_KERNEL_LIB_SOURCES = action.c activate.c ev-function.c intend.c intention.c
 	top-lev.c default-hook.c
 
 libTKernel_la_SOURCES = $(BOTH_KERNEL_LIB_SOURCES)
-libTKernel_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/contrib/src -DNO_GRAPHIX
+libTKernel_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/contrib/src -UGRAPHIX
 
-libGKernel_la_SOURCES = $(BOTH_KERNEL_LIB_SOURCES)
-libGKernel_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/contrib/src -UNO_GRAPHIX
+libXGKernel_la_SOURCES = $(BOTH_KERNEL_LIB_SOURCES)
+libXGKernel_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/contrib/src -DGRAPHIX
+
+libGGKernel_la_SOURCES = $(BOTH_KERNEL_LIB_SOURCES)
+libGGKernel_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/contrib/src -DGRAPHIX -DGTK $(GTK_CFLAGS)
 
 # This will soon disappear with dl mechanism...
 USER_MODULES_EXAMPLE = user-action.c user-ev-function.c user-ev-predicate.c
@@ -125,7 +154,7 @@ CONTRIB_LIB = $(top_builddir)/contrib/src/libpu.la
 INCLUDES = @INCLTDL@
 
 # Here is the list of program to build and install
-bin_PROGRAMS = mp-oprs kill-mp oprs-server oprs xoprs oprs-cat ope opc
+bin_PROGRAMS = mp-oprs kill-mp oprs-server oprs xoprs oprs-cat ope opc goprs gope
 
 mp_oprs_SOURCES = mp.c
 mp_oprs_LDADD = ../c_toolkit/libOPList.la libBasic.la libMP.la libVersion.a
@@ -145,25 +174,42 @@ oprs_LDADD = libTKernel.la libKernel.la libBasic.la libTOprs.la libOprs.la libTO
 
 xoprs_SOURCES = oprs-lex.l xoprs-call.c xoprs-textwin.c \
 	xoprs-dialog.c xoprs-filesel.c xoprs-intention.c \
-	xoprs-main.c xoprs-menu.c xt-util.c xtop-lev-loop.c \
+	xoprs-main.c xoprs-menu.c xtop-lev-loop.c \
 	xoprs-op-graphic.c xoprs-rop.c user-trace.c
-xoprs_LDADD = libGKernel.la libKernel.la libBasic.la libGOprs.la libOprs.la libGOpEOprs.la \
-	libOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la $(CONTRIB_LIB) \
+xoprs_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX
+xoprs_LDADD = libXGKernel.la libKernel.la libBasic.la libXGOprs.la libOprs.la libXGOpEOprs.la \
+	libXOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la $(CONTRIB_LIB) \
 	@MOTIF_LIBS@ @X_LIBS@ @LIBLTDL@ @LIBADD_DL@
+
+goprs_SOURCES = oprs-lex.l goprs-call.c goprs-textwin.c \
+	goprs-dialog.c goprs-filesel.c goprs-intention.c \
+	goprs-main.c goprs-menu.c gtop-lev-loop.c \
+	goprs-op-graphic.c goprs-rop.c user-trace.c
+goprs_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX -DGTK $(GTK_CFLAGS)
+goprs_LDADD = libGGKernel.la libKernel.la libBasic.la libGGOprs.la libOprs.la libGGOpEOprs.la \
+	libGOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la $(CONTRIB_LIB) \
+	@GTK_LIBS@ @LIBLTDL@ @LIBADD_DL@
 
 oprs_cat_SOURCES = oprs-cat.c
 oprs_cat_LDADD = ../c_toolkit/libOPList.la
 
 ope_SOURCES = ope-lex.l ope-parser.y ope-bboard.c ope-edit.c ope-filesel.c ope-op-opf.c ope-main.c \
-	ope-menu.c ope-print.c ope-pxmw.c \
-	ope-save.c ope-syntax.c \
-	ope-vsblf.c xt-util.c ope-rop.c ope-op-str.c ope-opaque.c
-ope_LDADD = libBasic.la libGOprs.la libOprs.la libGOpEOprs.la \
-		libOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la $(MOTIF_LIBS) $(X_LIBS)
+	ope-menu.c ope-print.c ope-pxmw.c ope-save.c ope-syntax.c \
+	ope-vsblf.c ope-rop.c ope-op-str.c ope-opaque.c
+ope_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX
+ope_LDADD = libBasic.la libXGOprs.la libOprs.la libXGOpEOprs.la \
+		libXOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la $(MOTIF_LIBS) $(X_LIBS)
+
+gope_SOURCES = ope-lex.l ope-parser.y gope-bboard.c gope-edit.c gope-filesel.c gope-op-opf.c gope-main.c \
+	gope-menu.c ope-save.c ope-syntax.c gope-vsblf.c gope-rop.c ope-op-str.c ope-opaque.c
+gope_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX -DGTK $(GTK_CFLAGS)
+gope_LDADD = libBasic.la libGGOprs.la libOprs.la libGGOpEOprs.la \
+		libGOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la @GTK_LIBS@
 
 opc_SOURCES = opc-lex.l opc-parser.y opc-main.c ope-opaque.c
-opc_LDADD = libBasic.la libGOprs.la libOprs.la libGOpEOprs.la \
-	libOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la $(MOTIF_LIBS) $(X_LIBS)
+opc_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX
+opc_LDADD = libBasic.la libXGOprs.la libOprs.la libXGOpEOprs.la \
+	libXOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la $(MOTIF_LIBS) $(X_LIBS)
 
 
 # This is what replace relocatable... dynamic loading of evaluable function, predicates and actions.

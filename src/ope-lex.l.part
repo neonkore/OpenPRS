@@ -38,6 +38,11 @@
 #include <stdlib.h>
 #include <sys/file.h>
 
+#ifdef GRAPHIX
+#include <X11/Intrinsic.h>
+#include <Xm/Xm.h>
+#endif
+
 
 #include "constant.h"
 #include "macro.h"

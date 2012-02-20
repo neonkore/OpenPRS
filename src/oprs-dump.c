@@ -1,8 +1,7 @@
-static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * oprs-dump.c -- 
  * 
- * Copyright (c) 1991-2010 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,34 +32,32 @@ static const char* const rcsid = "$Id$";
 
 #include "config.h"
 
-#ifdef VXWORKS
-#include <vxWorks.h>
-#endif
-
 #include <sys/types.h>
-#ifndef WIN95
 #include <netinet/in.h>
 #include <unistd.h>
-#endif
 #include <sys/stat.h>
 #include <fcntl.h>
 
 #include <shashPack.h>
 #include <slistPack.h>
 
-#include "string.h"
-
-
-#ifndef NO_GRAPHIX
-#include "ope-graphic.h"
-#include "xoprs-intention.h"
-#include "xt-util_f.h"
+#ifdef GRAPHIX
+#ifdef GTK
+#include <gtk/gtk.h>
+#include "xm2gtk.h"
+#else
+#include <X11/Intrinsic.h>
+#include <Xm/Xm.h>
+#endif
 #endif
 
+#include "string.h"
 #include "macro.h"
 #include "constant.h"
-#include "oprs.h"
 #include "oprs-type.h"
+
+
+#include "oprs.h"
 #include "oprs-pred-func.h"
 #include "database.h"
 #include "relevant-op.h"
@@ -75,6 +72,18 @@ static const char* const rcsid = "$Id$";
 #include "conditions.h"
 #include "type.h"
 #include "oprs-sprint.h"
+
+#ifdef GRAPHIX
+#ifdef GTK
+#include "gope-graphic.h"
+#include "goprs-intention.h"
+#else
+#include "ope-graphic.h"
+#include "xoprs-intention.h"
+#endif
+#include "xt-util_f.h"
+#endif
+
 
 
 #include <shashPack_f.h>
@@ -692,7 +701,7 @@ void dump_intention(Intention *intention)
 #endif
      dump_sprinter(intention->failed_goal_sprinter);
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      if (compile_graphix) {
 	  dump_boolean(1);		/* Will save graphic information */
 	  WRITE_ADDR_AND_ADD_OBJECT_TO_DUMP(DPT_IOG,intention->iog);
@@ -727,7 +736,7 @@ void dump_intention_paire(Intention_Paire *ip)
 {
      WRITE_ADDR_AND_ADD_OBJECT_TO_DUMP(DPT_INTENTION,ip->first);
      WRITE_ADDR_AND_ADD_OBJECT_TO_DUMP(DPT_INTENTION,ip->second);
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      if (compile_graphix) {
 	  dump_boolean(1);		/* Will save graphic information */
 	  WRITE_ADDR_AND_ADD_OBJECT_TO_DUMP(DPT_IOG,ip->iog);
@@ -749,7 +758,7 @@ void dump_ig(Intention_Graph *ig)
      DUMP_LIST_RELOC_ELT(ig->sleeping, Intention *, DPT_INTENTION);
      DUMP_LIST_RELOC_ELT(ig->sleeping_on_cond, Intention *, DPT_INTENTION);
      /* PFB sort_predicat; */
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      if (compile_graphix) {
 	  dump_boolean(1);		/* Will save graphic information */
 	  DUMP_LIST_RELOC_ELT(ig->list_inode, IOG *, DPT_IOG);
@@ -761,7 +770,7 @@ void dump_ig(Intention_Graph *ig)
      return;
 }
 
-#ifdef NO_GRAPHIX
+#ifndef GRAPHIX
 void dump_og(OG *og)
 {
      fprintf(stderr, "dump_og: this kernel does not know how to handle OG dump.");
@@ -776,6 +785,8 @@ void dump_iog(IOG *iog)
 #else
 void dump_xmstring(XmString xm)
 {
+#ifdef GTK
+#else
      if (xm) {
 	  XmStringContext xmsc;
 	  char *text;
@@ -803,6 +814,7 @@ void dump_xmstring(XmString xm)
 	  dump_boolean(FALSE);
      } else
 	  dump_boolean(FALSE);
+#endif
      
      return;
 }
@@ -979,7 +991,7 @@ void dump_op(Op_Structure *op)
      dump_boolean(op->step_traced);
 
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      if (compile_graphix) {
 	  dump_boolean(1);		/* Will save graphic information */
 	  dump_boolean(op->graphic);
@@ -1030,7 +1042,7 @@ void dump_node(Node *node)
      dump_boolean(node->join);
      dump_boolean(node->split);
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      if (compile_graphix) {
 	  dump_boolean(1);		/* Will save graphic information */
 	  WRITE_ADDR_AND_ADD_OBJECT_TO_DUMP(DPT_SYMBOL,node->name);
@@ -1048,7 +1060,7 @@ void dump_edge(Edge *edge)
      WRITE_ADDR_AND_ADD_OBJECT_TO_DUMP(DPT_NODE, edge->out);
      dump_char(edge->type);
 
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      if (compile_graphix) {
 	  dump_boolean(1);		/* Will save graphic information */
 	  WRITE_ADDR_AND_ADD_OBJECT_TO_DUMP(DPT_NODE, edge->in);
@@ -1074,7 +1086,7 @@ void dump_body(Body *body)
 void dump_simple_instruction(Simple_Instruction *simple)
 {
      WRITE_ADDR_AND_ADD_OBJECT_TO_DUMP(DPT_EXPR,simple->expr);
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
      if (compile_graphix) {
 	  dump_boolean(1);
 	  WRITE_ADDR_AND_ADD_OBJECT_TO_DUMP(DPT_OG,simple->og);
@@ -1183,7 +1195,7 @@ void dump_object(Object_Dump *od)
      if (!be_quiet) 
 	  if ((i++ << 24) == 0) {
 	       printf(".");
-#ifndef NO_GRAPHIX
+#ifdef GRAPHIX
 	       process_xt_events();
 #endif	  
 	  }
@@ -1320,7 +1332,7 @@ int dump_object_list(void)
 	  Slist *copy=object_to_dump_list;
 
 	  object_to_dump_list = sl_make_slist();
-
+	  
 	  sl_loop_through_slist(copy, od, Object_Dump *) {
 	       dump_object(od);
 	       i++;

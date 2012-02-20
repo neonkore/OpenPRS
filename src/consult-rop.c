@@ -1,8 +1,7 @@
-static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * relevant_op.c -- Gestion de la table des procedures "relevants"
  * 
- * Copyright (c) 1991-2010 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -47,6 +46,11 @@ static const char* const rcsid = "$Id$";
 #endif
 
 #include "oprs-profiling.h"
+
+#ifdef GRAPHIX
+#include <X11/Intrinsic.h>
+#include <Xm/Xm.h>
+#endif
 
 #include "op-structure.h"
 #include "relevant-op.h"

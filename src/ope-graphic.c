@@ -1,4 +1,3 @@
-static const char* const rcsid = "$Id$";
 
 /*                               -*- Mode: C -*-
  * ope-graphic.c --
@@ -1194,8 +1193,4 @@ void undisplay_op_edge(Op_Structure * op, Edge *edge)
      display_op_edge_internal(op, edge, FALSE);
 }
 
-PBoolean sort_op(Op_Structure *op1, Op_Structure *op2)
-{
-     return (strcmp(op1->name,op2->name) < 0);
-}
 

@@ -1,4 +1,3 @@
-static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * action.c -- 
  * 
@@ -34,6 +33,15 @@ static const char* const rcsid = "$Id$";
 #include "config.h"
 
 #include "oprs-profiling.h"
+
+
+#ifdef GRAPHIX
+#ifdef GTK
+#else
+#include <X11/Intrinsic.h>
+#include <Xm/Xm.h>
+#endif
+#endif
 
 #include "op-structure.h"
 #include "relevant-op.h"

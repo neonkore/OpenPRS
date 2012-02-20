@@ -1,8 +1,7 @@
-static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * conditions.c -- Conditions management.
  * 
- * Copyright (c) 1991-2009 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,11 +32,6 @@ static const char* const rcsid = "$Id$";
 
 #include "config.h"
 #include <stdio.h>
-
-/*	For timeval definition. */
-#ifdef WIN95
-#include <winsock.h>
-#endif
 
 #include "constant.h"
 #include "macro.h"
