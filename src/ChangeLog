@@ -2,8 +2,7 @@
 
 	* goprs-main.c (oprs_main): replace start_kernel_user_hook with start_kernel_hook.
 
-	* gope-main.c (main): 
-	* Makefile.am : now put the icons inline in the code for gope and goprs.
+	* goprs-main.c (oprs_main) gope-main.c (main) Makefile.am : now put the icons inline in the code for gope and goprs.
 
 	* goprs-main.c: Make the icon intern to the program.
 
