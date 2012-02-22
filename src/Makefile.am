@@ -97,6 +97,7 @@ LEX_PART = lex-exp.l.part lex-macro.l.part lex-parser-def.l.part lex-text-op.l.p
 DIST_ANNEX_FILES = ope-icon.bit xoprs-icon.bit \
 	ope-icon.png xoprs-icon.png		 
 
+
 # X Default files for X/Motif
 XDEFAULT = XOprs.adlang Ope.adlang
 
@@ -367,3 +368,8 @@ CLEANFILES =  XOprs.ad.h oprs-server-lex.l ope-lex.l ope-parser.y oprs-server-pa
 #BUILT_SOURCES += user-external.c user-external.h user-external_f.h
 
 EXTRA_DIST += default-user-external.c default-user-external.h default-user-external_f.h
+
+%.h: %.png
+	gdk-pixbuf-csource --name "my_icon" $< > $@
+
+BUILT_SOURCES += goprs-icon.h gope-icon.h

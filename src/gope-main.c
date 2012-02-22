@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*-
  * gope-main.c -- GTK version of ope-main.c
  *
- * Copyright (c) 2011 LAAS/CNRS
+ * Copyright (c) 2011-2012 LAAS/CNRS
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -70,7 +70,7 @@
 
 #include "xm2gtk_f.h"
 
-#include "ope-icon.bit"
+#include "gope-icon.h"
 
 #define OPE_ARG_ERR_MESSAGE LG_STR("Usage: ope [-l upper|lower|none ] [-F opfile]\n\
 \t[-D files-directory] [opfile]*\n","Usage: ope [-l upper|lower|none ] [-F opfile]\n\
@@ -559,7 +559,6 @@ int main(int argc, char **argv, char **envp)
   char title[LINSIZ];
 
   OG *init_og;
-  Pixmap icon_pixmap;
   char *language_str;
   
   Slist *list_of_commands;
@@ -666,7 +665,8 @@ int main(int argc, char **argv, char **envp)
   gtk_window_set_title(GTK_WINDOW(topLevelWindow), title);
   gtk_window_set_default_size(GTK_WINDOW(topLevelWindow), 1400, 800);
   gtk_window_set_position(GTK_WINDOW(topLevelWindow), GTK_WIN_POS_CENTER);
-  gtk_window_set_icon(GTK_WINDOW(topLevelWindow), create_pixbuf("ope-icon.png"));
+  gtk_window_set_icon(GTK_WINDOW(topLevelWindow), gdk_pixbuf_new_from_inline (-1, my_icon, FALSE, NULL));
+//  gtk_window_set_icon(GTK_WINDOW(topLevelWindow), create_pixbuf("ope-icon.png"));
   g_signal_connect(G_OBJECT(topLevelWindow), "destroy",
 		   G_CALLBACK(quitQuestionManage), topLevelWindow);
 

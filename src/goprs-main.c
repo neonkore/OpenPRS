@@ -190,8 +190,6 @@ void UpdateMessageWindow(char *string)
 
 //XtAppContext app_context;
 
-#include "xoprs-icon.bit"
-
 /* This should go in a library as it is shared with gope */
 GdkPixbuf *create_pixbuf(const gchar * filename)
 {
@@ -417,6 +415,8 @@ Widget textSWindow;
 Widget textview;
 int gtk = 1;
 
+#include "goprs-icon.h"
+
 #ifdef C_PLUS_PLUS_RELOCATABLE
 int oprs_main(int argc,char **argv, char ** envp)
 #else
@@ -429,7 +429,6 @@ int oprs_main(int argc,char **argv, char ** envp)
   char *mp_hostn;
   int mp_port;
 
-  Pixmap icon_pixmap;
   Cardinal n;
   char *name;
   char title[LINSIZ];
@@ -512,7 +511,8 @@ int oprs_main(int argc,char **argv, char ** envp)
   gtk_window_set_title(GTK_WINDOW(topLevelWindow), title);
   gtk_window_set_default_size(GTK_WINDOW(topLevelWindow), 1400, 800);
   gtk_window_set_position(GTK_WINDOW(topLevelWindow), GTK_WIN_POS_CENTER);
-  gtk_window_set_icon(GTK_WINDOW(topLevelWindow), create_pixbuf("xoprs-icon.png"));
+  gtk_window_set_icon(GTK_WINDOW(topLevelWindow), gdk_pixbuf_new_from_inline (-1, my_icon, FALSE, NULL));
+  // create_pixbuf("xoprs-icon.png"));
   g_signal_connect(G_OBJECT(topLevelWindow), "destroy",
   		   G_CALLBACK(quitQuestionManage), topLevelWindow);
 
@@ -652,7 +652,7 @@ int oprs_main(int argc,char **argv, char ** envp)
 
   call_oprs_cat(log_file,textview);
   
-  start_kernel_user_hook(name);
+  start_kernel_hook(name);
 
   run_initial_commands();
 

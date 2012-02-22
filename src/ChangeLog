@@ -1,3 +1,12 @@
+2012-02-22  Felix Ingrand  <felix@cturtle>
+
+	* goprs-main.c (oprs_main): replace start_kernel_user_hook with start_kernel_hook.
+
+	* gope-main.c (main): 
+	* Makefile.am : now put the icons inline in the code for gope and goprs.
+
+	* goprs-main.c: Make the icon intern to the program.
+
 2012-02-21  Felix Ingrand  <felix@cturtle>
 
 	* openprs-util.pc.in (prefix): Separate openprs.pc and openprs-util.pc

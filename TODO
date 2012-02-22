@@ -1,5 +1,8 @@
+- update the doc to explain how to use the new code dynamic loading of ep ef and action... as well as start/end hooks.
 
-- Put the right button type for the goprs run menu... (this is not really a toolbar afer all fact...)
+- finish the dynamic loading code for start and end user kernel hook.
+
+DONE (I think)- Put the right button type for the goprs run menu... (this is not really a toolbar afer all fact...)
 
 - Change configure to handle French/english flag and compilation.
 
