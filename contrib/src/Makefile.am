@@ -11,3 +11,7 @@ PU_LIB_INC = $(PU_LIB_SRC:%.c=%_f.h) pu-enum.h
 libpu_la_SOURCES =  $(PU_LIB_SRC)
 
 pkginclude_HEADERS = $(PU_LIB_INC)
+
+
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = openprs-util.pc

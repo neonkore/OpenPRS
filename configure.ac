@@ -100,6 +100,7 @@ AC_CONFIG_FILES([
                  contrib/Makefile
                  contrib/data/Makefile
                  contrib/src/Makefile
+		 contrib/src/openprs-util.pc
                  data/Makefile
                  data/test/Makefile
                  doc/Makefile

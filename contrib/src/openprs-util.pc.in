@@ -6,5 +6,5 @@ includedir=@includedir@/openprs
 Name: openprs
 Description: Open PRS
 Version: @PACKAGE_VERSION@
-Libs: -L${libdir} -lOPList
+Libs: -L${libdir} -lpu
 Cflags: -I${includedir}

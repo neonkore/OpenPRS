@@ -1,3 +1,9 @@
+2012-02-21  Felix Ingrand  <felix@cturtle>
+
+	* openprs-util.pc.in (prefix): Separate openprs.pc and openprs-util.pc
+
+	* Makefile.am (oprs_LDADD): -export-dynamic is only needed for oprs and xoprs... a priori.
+
 2012-02-17  Felix Ingrand  <felix@cturtle>
 
 	* send-message.c: .h include cleanup.

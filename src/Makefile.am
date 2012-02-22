@@ -1,7 +1,37 @@
+#
+# Copyright (c) 2012 LAAS/CNRS
+# All rights reserved.
+#
+# Redistribution  and  use in source   and binary forms,  with or without
+# modification, are permitted provided that  the following conditions are
+# met:
+#
+#   1. Redistributions  of  source code must  retain  the above copyright
+#      notice, this list of conditions and the following disclaimer.
+#   2. Redistributions in binary form must  reproduce the above copyright
+#      notice,  this list of  conditions and  the following disclaimer in
+#      the  documentation   and/or  other  materials   provided with  the
+#      distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY THE  AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+# ANY  EXPRESS OR IMPLIED WARRANTIES, INCLUDING,  BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES   OF MERCHANTABILITY AND  FITNESS  FOR  A PARTICULAR
+# PURPOSE ARE DISCLAIMED.  IN NO  EVENT SHALL THE AUTHOR OR  CONTRIBUTORS
+# BE LIABLE FOR ANY DIRECT, INDIRECT,  INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# CONSEQUENTIAL DAMAGES (INCLUDING,  BUT  NOT LIMITED TO, PROCUREMENT  OF
+# SUBSTITUTE  GOODS OR SERVICES;  LOSS   OF  USE,  DATA, OR PROFITS;   OR
+# BUSINESS  INTERRUPTION) HOWEVER CAUSED AND  ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE  USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+
 AM_CPPFLAGS = -I$(top_srcdir)/c_toolkit
 AM_CFLAGS = -Wall # -Wextra
-AM_LDFLAGS = -export-dynamic
 
+#
+# I am too lazy to add these in the various automake SOURCES... sorry.
+#
 INC = action.h activate.h conditions.h config.h constant-pub.h \
 	constant.h database.h default-hook.h ev-function.h ev-predicate.h \
 	fact-goal.h gope-global.h gope-graphic.h goprs-intention.h \
@@ -44,16 +74,30 @@ FINC = action_f.h activate_f.h conditions_f.h database_f.h \
 	xhelp_f.h xm2gtk_f.h xoprs-dialog_f.h xoprs-intention_f.h \
 	xoprs-menu_f.h xoprs-textwin_f.h xt-util_f.h
 
+#
+# These are the parts to make the various yacc/bison grammars needed by the various programs.
+# See below how they are built with lex-includer.
+#
 YACC_PART = opc-parser.y.part oprs-parser.y.part opt-parser.y.part yacc-file.y.part \
 	yacc-text-op.y.part ope-parser.y.part oprs-server-parser.y.part \
 	yacc-exp.y.part yacc-graph-op.y.part
 
+
+#
+# These are the parts to make the various lex/flex grammars needed by the various programs.
+# See below how they are built with lex-includer.
+#
 LEX_PART = lex-exp.l.part lex-macro.l.part lex-parser-def.l.part lex-text-op.l.part \
 	ope-lex.l.part oprs-server-lex.l.part lex-graph-op.l.part lex-meta-exp.l.part \
 	lex-simple-def.l.part opc-lex.l.part oprs-lex.l.part
 
-DIST_ANNEX_FILES = ope-icon.bit xoprs-icon.bit
+# Icon files
+# for X/Motif (.bit)
+# for GTK (.png)
+DIST_ANNEX_FILES = ope-icon.bit xoprs-icon.bit \
+	ope-icon.png xoprs-icon.png		 
 
+# X Default files for X/Motif
 XDEFAULT = XOprs.adlang Ope.adlang
 
 EXTRA_DIST = $(INC) $(FINC) $(YACC_PART) $(LEX_PART) $(XDEFAULT) $(DIST_ANNEX_FILES)
@@ -145,15 +189,18 @@ libXGKernel_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/contrib/src -DGRAPHIX
 libGGKernel_la_SOURCES = $(BOTH_KERNEL_LIB_SOURCES)
 libGGKernel_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/contrib/src -DGRAPHIX -DGTK $(GTK_CFLAGS)
 
-# This will soon disappear with dl mechanism...
+#
+# We know use ltdl to load these.
+#
 USER_MODULES_EXAMPLE = user-action.c user-ev-function.c user-ev-predicate.c
 
 CONTRIB_LIB = $(top_builddir)/contrib/src/libpu.la
 
-
 INCLUDES = @INCLTDL@
 
+#
 # Here is the list of program to build and install
+#
 bin_PROGRAMS = mp-oprs kill-mp oprs-server oprs xoprs oprs-cat ope opc goprs gope
 
 mp_oprs_SOURCES = mp.c
@@ -168,6 +215,7 @@ oprs_server_LDADD = ../c_toolkit/libOPList.la libBasic.la libTOprs.la libOprs.la
 		 libVersion.a $(READLINE_LIBS)
 
 oprs_SOURCES = oprs-lex.l op-x-opaque.c oprs-main.c top-lev-loop.c user-trace.c
+oprs_LDFLAGS = -export-dynamic
 oprs_LDADD = libTKernel.la libKernel.la libBasic.la libTOprs.la libOprs.la libTOpEOprs.la \
 		 libMP.la libVersion.a ../c_toolkit/libOPList.la $(CONTRIB_LIB)\
 		 @LIBLTDL@ @LIBADD_DL@
@@ -177,6 +225,7 @@ xoprs_SOURCES = oprs-lex.l xoprs-call.c xoprs-textwin.c \
 	xoprs-main.c xoprs-menu.c xtop-lev-loop.c \
 	xoprs-op-graphic.c xoprs-rop.c user-trace.c
 xoprs_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX
+xoprs_LDFLAGS = -export-dynamic
 xoprs_LDADD = libXGKernel.la libKernel.la libBasic.la libXGOprs.la libOprs.la libXGOpEOprs.la \
 	libXOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la $(CONTRIB_LIB) \
 	@MOTIF_LIBS@ @X_LIBS@ @LIBLTDL@ @LIBADD_DL@
@@ -226,7 +275,7 @@ lib_LTLIBRARIES += user-action.la
 user_action_la_SOURCES = user-action.c
 user_action_la_LDFLAGS = -module
 
-pkgconfigdir = $(libdir)/pkgconfig 
+pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = openprs.pc mp-openprs.pc
 
 # These specific rules are here to build the various grammars from
@@ -309,7 +358,10 @@ xdefault_DATA = XOprs.ad Ope.ad
 	chmod -w $@
 
 
-CLEANFILES =  XOprs.ad.h oprs-server-lex.l ope-lex.l ope-parser.y oprs-server-parser.c oprs-parser.y oprs-lex.l opc-parser.c oprs-server-lex.c oprs-parser.h opc-parser.h oprs-lex.c oprs-server-parser.y oprs-server-parser.h ope-parser.h oprs-parser.c Ope.ad.h opc-lex.l opc-parser.y ope-lex.c opc-lex.c ope-parser.c Ope.ad XOprs.ad
+CLEANFILES =  XOprs.ad.h oprs-server-lex.l ope-lex.l ope-parser.y oprs-server-parser.c \
+	oprs-parser.y oprs-lex.l opc-parser.c oprs-server-lex.c oprs-parser.h opc-parser.h \
+	oprs-lex.c oprs-server-parser.y oprs-server-parser.h ope-parser.h oprs-parser.c \
+	Ope.ad.h opc-lex.l opc-parser.y ope-lex.c opc-lex.c ope-parser.c Ope.ad XOprs.ad
 
 
 #BUILT_SOURCES += user-external.c user-external.h user-external_f.h
