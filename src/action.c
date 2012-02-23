@@ -158,10 +158,11 @@ Term *action_log_init(TermList terms){
 
 Term *action_log_end (TermList terms){
 
-  Term *t_file_name, *t_file_nb, *res;
-  PString s_file_name;
-  int file_nb;
-  int ret_close;
+//  Term *t_file_name,
+     Term *t_file_nb, *res;
+//  PString s_file_name;
+     int file_nb;
+     int ret_close;
   
   res       = MAKE_OBJECT(Term);
   res->type = TT_ATOM;

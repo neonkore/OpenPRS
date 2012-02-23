@@ -3,7 +3,7 @@
  * 
  * $Id$
  *
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -73,6 +73,7 @@ void un_declare_be(Pred_Func_Rec *pr);
 void check_or_set_pred_arity(Pred_Func_Rec *pr, int arity);
 void check_or_set_pred_func_arity(Pred_Func_Rec *pfr, int arity);
 void free_pred_hash(void);
+void free_pred_func_hash(void);
 
 void list_cwp(void);
 void list_ff(void);

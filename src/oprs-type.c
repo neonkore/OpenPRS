@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*-
  * oprs-type.c -- Fonction de construction et de print pour les types...
  *
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -757,7 +757,7 @@ void free_symbol(void *ignore, Symbol sym)
 
 void free_id_hash(void)
 {
-     sh_for_all_hashtable(id_hash, NULL, free_symbol);
+     sh_for_all_hashtable(id_hash, NULL, (SL_PFI)free_symbol);
      sh_free_hashtable(id_hash);
      
      id_hash = NULL;

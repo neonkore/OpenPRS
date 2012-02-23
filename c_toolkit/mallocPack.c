@@ -31,7 +31,6 @@ static const char* const rcsid = "$Id$";
  */
 
 #include "config.h"
-#include "mallocPack_f.h"
 
 #if !defined(OPRS_MALLOC) && !defined(STD_MALLOC)
 #define MIXED_MALLOC
@@ -47,6 +46,8 @@ static const char* const rcsid = "$Id$";
 #include <stdlib.h>
 #include <string.h>
 #endif
+
+#include "mallocPack_f.h"
 
 #ifndef HAS_BCOPY
 #define BCOPY(from, to, nbytes) memcpy(to, from, nbytes)

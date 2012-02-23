@@ -328,7 +328,7 @@ oprs-server-parser.y: yacc-file.y.part yacc-graph-op.y.part yacc-exp.y.part yacc
 	chmod -w $*.l
 
 # I could not rely on the automake flex management,as ylwrap does not properly handle renaming with -P
-%.c %.h: %.l
+%.c: %.l
 	$(LEX) $(LFLAGS) --header-file=$(basename $<).h -Poprs_yy -o $@ $<
 
 
@@ -364,8 +364,8 @@ xdefault_DATA = XOprs.ad Ope.ad
 CLEANFILES =  XOprs.ad.h oprs-server-lex.l ope-lex.l ope-parser.y oprs-server-parser.c \
 	oprs-parser.y oprs-lex.l opc-parser.c oprs-server-lex.c oprs-parser.h opc-parser.h \
 	oprs-lex.c oprs-server-parser.y oprs-server-parser.h ope-parser.h oprs-parser.c \
-	Ope.ad.h opc-lex.l opc-parser.y ope-lex.c opc-lex.c ope-parser.c Ope.ad XOprs.ad
-
+	Ope.ad.h opc-lex.l opc-parser.y ope-lex.c opc-lex.c ope-parser.c Ope.ad XOprs.ad \
+	opc-lex.h  ope-lex.h  oprs-lex.h  oprs-server-lex.h
 
 #BUILT_SOURCES += user-external.c user-external.h user-external_f.h
 

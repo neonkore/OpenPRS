@@ -3,7 +3,7 @@
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,3 +46,5 @@ void get_message(Expression *expr, Oprs *oprs, PString sender);
 
 void create_yy_stdin_and_ps(void);
 void create_yy_mp(void);
+void declare_predicat(void);
+void declare_be_pred(void);

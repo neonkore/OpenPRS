@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * type.c -- 
  *
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -208,7 +208,7 @@ void free_type_symbol_from_hash(void *ignore, Type_Symbol *ts)
 
 void free_type_hash(void)
 {
-     sh_for_all_hashtable(type_hash, NULL, free_type_symbol_from_hash);
+     sh_for_all_hashtable(type_hash, NULL, (SL_PFI)free_type_symbol_from_hash);
      sh_free_hashtable(type_hash);
 }
 

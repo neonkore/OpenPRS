@@ -556,6 +556,10 @@ void add_goal(Goal *goal, Oprs *oprs)
 #endif /* OPRS_PROFILING */
 	       break;
 	       }
+	  case DB_COND_CONC:
+	  case DB_COND_RET:
+	  default:
+	       break;
 	  }
      } else if (tope) {
 	  switch(tope) {
@@ -594,6 +598,10 @@ void add_goal(Goal *goal, Oprs *oprs)
 			      break;
 			 case DB_RET:
 			      conc_or_retract = TRUE;
+			      break;
+			 case DB_COND_CONC:
+			 case DB_COND_RET:
+			 default:
 			      break;
 			 }
 		    }else if (tope) {

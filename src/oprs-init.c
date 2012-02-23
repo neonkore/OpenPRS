@@ -71,6 +71,7 @@
 #include "oprs-error.h"
 #include "oprs-sprint.h"
 #include "type.h"
+#include "oprs-lex.h"
 
 #include "action_f.h"
 #include "database_f.h"
@@ -95,6 +96,7 @@
 #include "oprs-error_f.h"
 #include "oprs-sprint_f.h"
 #include "type_f.h"
+#include "default-hook_f.h"
 
 #include "tcl_f.h"
 

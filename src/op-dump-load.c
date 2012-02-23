@@ -67,6 +67,10 @@
 #include "oprs-error_f.h"
 #include "parser-funct_f.h"
 
+#ifdef GRAPHIX
+#include "ope-external_f.h"
+#endif
+
 
 void clear_op_database(Relevant_Op *rk, PBoolean graphic)
 {
