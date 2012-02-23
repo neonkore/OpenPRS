@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * goprs-filesel.c -- 
  * 
- * Copyright (c) 1991-2011 Francois Felix Ingrand, LAAS/CNRS.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand, LAAS/CNRS.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -47,6 +47,7 @@
 
 #include "xhelp_f.h"
 #include "oprs-init_f.h"
+#include "goprs-filesel_f.h"
 
 #include "xm2gtk_f.h"
 

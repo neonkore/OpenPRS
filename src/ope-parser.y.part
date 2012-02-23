@@ -40,11 +40,13 @@ static const char* const rcsid = "$Id$";
 #include <X11/Intrinsic.h>
 #include <Xm/Xm.h>
 
-/* #define	fileno(p)	((p)->_file) Required by bison.. */
 #include "macro.h"
 
 #include "slistPack.h"
 #include "slistPack_f.h"
+
+#include "ope-lex.h"
+#include "yy-funct_f.h"
 
 #include "oprs-type.h"
 #include "op-structure.h"
@@ -55,9 +57,13 @@ static const char* const rcsid = "$Id$";
 #include <gtk/gtk.h>
 #include "gope-graphic.h"
 #include "gope-global.h"
+#include "gope-op-opf_f.h"
+#include "ope-save_f.h"
 #else
 #include "ope-graphic.h"
 #include "ope-global.h"
+#include "ope-op-opf_f.h"
+#include "ope-save_f.h"
 #endif
 #include "ope-syntax.h"
 #include "oprs-print.h"

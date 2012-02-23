@@ -9,7 +9,8 @@ C_TOOLKIT_LIB_INC =  slistPack.h shashPack.h listPack.h hashPack.h
 
 C_TOOLKIT_LIB_PUB_INC =  slistPack-pub.h shashPack-pub.h 
 
-C_TOOLKIT_LIB_FINC = slistPack_f.h shashPack_f.h
+C_TOOLKIT_LIB_FINC = slistPack_f.h shashPack_f.h mallocPack_f.h
+
 
 lib_LTLIBRARIES = libOPList.la
 

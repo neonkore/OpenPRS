@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * parser-funct.c -- 
  * 
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -66,6 +66,7 @@
 #include <string.h>
 #include <errno.h>
 
+
 #include "opaque.h"
 #include "constant.h"
 #include "macro.h"
@@ -74,7 +75,9 @@
 #include "oprs.h"
 #include "parser-funct.h"
 
+#include "mallocPack_f.h"
 #include "parser-funct_f.h"
+#include "oprs-lex.h"
 #include "oprs-type_f.h"
 #include "fact-goal_f.h"
 #include "op-instance_f.h"
@@ -550,7 +553,7 @@ PString replace_env_string(PString s)
      if (!sp) sp = make_sprinter(0);
      else reset_sprinter(sp);
 
-     while (index = strchr(s,'$')) {
+     while ((index = strchr(s,'$'))) {
 	  char *findex;
 
  	  if (index[1] == '{' && (findex = strchr(index+1,'}'))) {

@@ -31,6 +31,7 @@ static const char* const rcsid = "$Id$";
  */
 
 #include "config.h"
+#include "mallocPack_f.h"
 
 #if !defined(OPRS_MALLOC) && !defined(STD_MALLOC)
 #define MIXED_MALLOC

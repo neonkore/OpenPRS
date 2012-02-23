@@ -3,7 +3,7 @@
  *
  * $Id$
  *
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,3 +34,4 @@
 
 int write_opfile(char *file_name, OPFile *opfile);
 void copy_op (Op_Structure *op, char *new_name);
+int write_opfile_tex(char *file_name, OPFile *opfile);

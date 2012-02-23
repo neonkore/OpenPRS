@@ -3,7 +3,7 @@
  * 
  * $Id$
  *
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,3 +35,4 @@
 GtkWidget *goprs_create_menu_bar(GtkWidget *window, Draw_Data *dd, Int_Draw_Data *idd);
 GtkWidget *create_tool_bar(GtkWidget *parent, Draw_Data *dd);
 
+void set_oprs_active_mode(PBoolean mode);

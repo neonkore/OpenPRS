@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * goprs-call.c -- 
  * 
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -48,6 +48,7 @@
 
 #include "macro.h"
 #include "oprs-type.h"
+#include "goprs-call_f.h"
 
 #include "xm2gtk_f.h"
 

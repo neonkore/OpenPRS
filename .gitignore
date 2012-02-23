@@ -115,3 +115,4 @@ goprs-relocatable
 goprs-user
 src/gope-icon.h
 src/goprs-icon.h
+src/*-lex.h

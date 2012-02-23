@@ -6,7 +6,7 @@
  */
 
 /*
- * Copyright (c) 1991-2010 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -73,6 +73,7 @@
 #include "oprs.h"
 #include "parser-funct.h"
 
+#include "yy-funct_f.h"
 #include "parser-funct_f.h"
 #include "oprs-type_f.h"
 #include "op-instance_f.h"

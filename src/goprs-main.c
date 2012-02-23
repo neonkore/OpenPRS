@@ -64,6 +64,10 @@
 #include "gope-graphic.h"
 #include "goprs-intention.h"
 #include "goprs-textwin_f.h"
+#include "goprs-filesel_f.h"
+#include "goprs-dialog_f.h"
+#include "goprs-call_f.h"
+#include "default-hook_f.h"
 
 #include "mp-register.h"
 #include "goprs-main.h"
@@ -212,7 +216,7 @@ on_expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer data)
   create_cgcs(&CGCs, global_draw_data->window);
   
 
-  cairo_t *cr = CGCs.cr_basic;
+//  cairo_t *cr = CGCs.cr_basic;
 
   /* cairo_move_to(cr, 800,  30); */
   /* cairo_show_text(CGCs.cr_basic, "CGCs.cr_basic"); */
@@ -285,7 +289,7 @@ ion_expose_event(GtkWidget *widget, GdkEventExpose *event, gpointer data)
   create_cgcs(&CGCs, global_int_draw_data->window);
   
 
-  cairo_t *cr = CGCs.cr_basic;
+  // cairo_t *cr = CGCs.cr_basic;
 
   /* cairo_move_to(cr, 300,  30); */
   /* cairo_show_text(CGCs.cr_basic, "CGCs.cr_basic"); */
@@ -392,7 +396,7 @@ gint update_active_idle(gpointer oprs_par)
   return TRUE;
 }
 
-gint register_update_active_idle(gpointer oprs)
+void register_update_active_idle(gpointer oprs)
 {
   g_timeout_add(100,update_active_idle,oprs);
 }
@@ -429,7 +433,6 @@ int oprs_main(int argc,char **argv, char ** envp)
   char *mp_hostn;
   int mp_port;
 
-  Cardinal n;
   char *name;
   char title[LINSIZ];
   char welcome[LINSIZ];
@@ -444,8 +447,8 @@ int oprs_main(int argc,char **argv, char ** envp)
   GtkWidget *opeDrawWin;
   GtkWidget *intDrawWin;
 
-  Widget topForm, oprsDrawWinFrame, oprsDrawWin, oprsIntDrawWinFrame, oprsIntDrawWin;
-  Widget oprsMenuFrame, oprsMenu;
+  Widget topForm;
+  Widget oprsMenu;
 
   progname = argv[0];
 

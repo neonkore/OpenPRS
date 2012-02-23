@@ -2,7 +2,7 @@
 /*                               -*- Mode: C -*-
  * ope-filesel.c --
  *
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,6 +34,8 @@
 #include "config.h"
 
 #include <stdio.h>
+
+#include "shashPack_f.h"
 
 /*
  * Standard Toolkit include files

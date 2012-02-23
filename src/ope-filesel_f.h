@@ -3,7 +3,7 @@
  *
  * $Id$
  *
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,3 +39,4 @@ PBoolean check_duplicated_names(Draw_Data *dd);
 PBoolean AskUser(Widget parent, char *question);
 PBoolean check_exist_access(char *selected_file);
 PBoolean check_write_access(char *selected_file);
+void TimeoutCursorsOK(Widget w, XtPointer client_data, XtPointer call_data);

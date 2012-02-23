@@ -72,7 +72,9 @@ FINC = action_f.h activate_f.h conditions_f.h database_f.h \
 	relevant-op_f.h send-message_f.h soak_f.h socket_f.h tcl_f.h \
 	tcl_f.h top-lev_f.h top-structure_f.h type_f.h unification_f.h usage_f.h \
 	xhelp_f.h xm2gtk_f.h xoprs-dialog_f.h xoprs-intention_f.h \
-	xoprs-menu_f.h xoprs-textwin_f.h xt-util_f.h
+	xoprs-menu_f.h xoprs-textwin_f.h xt-util_f.h yy-funct_f.h goprs-call_f.h \
+	goprs-dialog_f.h goprs-filesel_f.h
+
 
 #
 # These are the parts to make the various yacc/bison grammars needed by the various programs.
@@ -231,7 +233,7 @@ xoprs_LDADD = libXGKernel.la libKernel.la libBasic.la libXGOprs.la libOprs.la li
 	libXOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la $(CONTRIB_LIB) \
 	@MOTIF_LIBS@ @X_LIBS@ @LIBLTDL@ @LIBADD_DL@
 
-goprs_SOURCES = oprs-lex.l goprs-call.c goprs-textwin.c \
+goprs_SOURCES = xm2gtk.c oprs-lex.l goprs-call.c goprs-textwin.c \
 	goprs-dialog.c goprs-filesel.c goprs-intention.c \
 	goprs-main.c goprs-menu.c gtop-lev-loop.c \
 	goprs-op-graphic.c goprs-rop.c user-trace.c
@@ -250,7 +252,7 @@ ope_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX
 ope_LDADD = libBasic.la libXGOprs.la libOprs.la libXGOpEOprs.la \
 		libXOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la $(MOTIF_LIBS) $(X_LIBS)
 
-gope_SOURCES = ope-lex.l ope-parser.y gope-bboard.c gope-edit.c gope-filesel.c gope-op-opf.c gope-main.c \
+gope_SOURCES = xm2gtk.c ope-lex.l ope-parser.y gope-bboard.c gope-edit.c gope-filesel.c gope-op-opf.c gope-main.c \
 	gope-menu.c ope-save.c ope-syntax.c gope-vsblf.c gope-rop.c ope-op-str.c ope-opaque.c
 gope_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX -DGTK $(GTK_CFLAGS)
 gope_LDADD = libBasic.la libGGOprs.la libOprs.la libGGOpEOprs.la \
@@ -326,8 +328,8 @@ oprs-server-parser.y: yacc-file.y.part yacc-graph-op.y.part yacc-exp.y.part yacc
 	chmod -w $*.l
 
 # I could not rely on the automake flex management,as ylwrap does not properly handle renaming with -P
-%.c: %.l
-	$(LEX) $(LFLAGS) -Poprs_yy -o $@ $<
+%.c %.h: %.l
+	$(LEX) $(LFLAGS) --header-file=$(basename $<).h -Poprs_yy -o $@ $<
 
 
 # idem, this could be smarter... I am probably over doing it too... 

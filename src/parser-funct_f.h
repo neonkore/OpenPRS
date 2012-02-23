@@ -3,7 +3,7 @@
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -64,3 +64,4 @@ void yy_begin_FIELD_TYPE(void);
 void yy_begin_ACTION_TYPE(void);
 void yy_begin_EDGE_TYPE(void);
 void yy_begin_COLLECT_COMMENT(void);
+

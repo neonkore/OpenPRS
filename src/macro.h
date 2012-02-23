@@ -36,6 +36,7 @@
 #define INCLUDE_macro
 
 #include <string.h>
+#include <ctype.h>
 
 #include "macro-pub.h"
 
