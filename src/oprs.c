@@ -31,82 +31,51 @@
  *
  */
 
-#include "config.h"
 
 #ifdef VXWORKS
-#include "vxWorks.h"
-#include "ioLib.h"
 #endif
 
 #include <stdarg.h>
 #include <stdlib.h>
-#include <stdio.h>
 #include <unistd.h>
 
 #ifdef WIN95
-#include <winsock.h>
 #else
 #include <unistd.h>
 #ifdef VXWORKS
-#include "ioLib.h"
-#include "sockLib.h"
-#include "hostLib.h"
-#include "semLib.h"
 #else
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <signal.h>
-#include <netinet/in.h>
 #include <netdb.h>
 #endif
-#include <fcntl.h>
 #endif
 
-#include <errno.h>
 
-#include "macro.h"
-#include "constant.h"
-#include "parser-funct.h"
-#include "opaque.h"
-#include "oprs-type.h"
-#include "relevant-op.h"
 #include "fact-goal.h"
 #include "oprs.h"
 #include "soak.h"
 #include "oprs-main.h"
-#include "mp.h"
 #include "oprs-pred-func.h"
 
-#include "oprs-profiling.h"
 #include "top-lev.h"
-#include "type.h"
 
 
-#include "send-message_f.h"
 #include "mp-register_f.h"
 #include "int-graph_f.h"
 #include "relevant-op_f.h"
 #include "fact-goal_f.h"
 #include "unification_f.h"
 #include "oprs_f.h"
-#include "oprs_f-pub.h"
 #include "database_f.h"
 #include "oprs-type_f.h"
-#include "oprs-print.h"
 #include "oprs-print_f.h"
 #include "oprs-sprint.h"
 #include "oprs-sprint_f.h"
 #ifndef WINSOCK
-#include "socket_f.h"
 #endif
 #include "oprs-send-m_f.h"
-#include "mp-pub.h"
 #include "oprs-pred-func_f.h"
 #include "lisp-list_f.h"
-#include "oprs-profiling_f.h"
 #include "top-lev_f.h"
 #include "int-graph_f.h"
-#include "soak_f.h"
 #include "conditions_f.h"
 #include "user-trace_f.h"
 #include "type_f.h"

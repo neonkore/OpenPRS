@@ -32,24 +32,16 @@
  */
 
 
-#include "config.h"
 
 
-#include <stdio.h>
 
 #ifdef WIN95
-#include <winsock.h>
 #else
 #ifdef VXWORKS
-#include <systime.h>
 #else
-#include <sys/time.h>
-#include <sys/types.h>
-#include <sys/resource.h>
 #endif
 #endif
 
-#include "macro.h"
 
 #include "oprs-profiling.h"
 #include "oprs-type.h"
@@ -71,7 +63,6 @@ void time_stamp(PDate *pd)
 }
 
 #ifdef VXWORKS 
-#include "time.h"
 
 int oprs_gettimeofday(struct timeval *tp)
 {

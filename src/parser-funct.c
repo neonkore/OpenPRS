@@ -30,58 +30,18 @@
  *
  */
 
-#include "config.h"
 
-#ifdef WIN95
-#include "winsock.h"
-#endif
-
-#ifdef VXWORKS
-#include "vxWorks.h"
-#include "ioLib.h"
-#include "stdioLib.h"
-#include "nfsLib.h"
-#include "netDrv.h"
-#else
-#include <stdio.h>
-#include <stdlib.h>
-#include <limits.h>
 #include <sys/param.h>
-#include <sys/uio.h>
-#include <fcntl.h>
-#ifdef WIN95
-#include <io.h>
-#define R_OK 04
-#define MAXPATHLEN 1024
-#else
-#include <unistd.h>
-#include <errno.h>
-#include <sys/param.h>
-#endif
-#endif
-
-#include <sys/types.h>
 #include <sys/stat.h>
-#include <sys/socket.h>
-#include <string.h>
-#include <errno.h>
 
-
-#include "opaque.h"
 #include "constant.h"
-#include "macro.h"
 #include "oprs-type.h"
 #include "oprs-sprint.h"
-#include "oprs.h"
 #include "parser-funct.h"
 
 #include "mallocPack_f.h"
 #include "parser-funct_f.h"
 #include "oprs-lex.h"
-#include "oprs-type_f.h"
-#include "fact-goal_f.h"
-#include "op-instance_f.h"
-#include "intention_f.h"
 #include "oprs-sprint_f.h"
 
 PString oprs_data_path = NULL;

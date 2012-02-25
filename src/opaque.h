@@ -3,7 +3,7 @@
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,6 +46,10 @@ typedef Slist *FrameList;
 typedef Slist *TermTypeList;
 
 typedef struct draw_data Draw_Data;
+/* typedef struct gnode Gnode; */
+/* typedef struct gedge Gedge; */
+/* typedef struct gedge_text Gedge_text; */
+/* typedef struct gtext Gtext; */
 typedef struct int_draw_data Int_Draw_Data;
 typedef struct og OG;
 typedef Slist *List_OG;

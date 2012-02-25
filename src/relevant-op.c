@@ -30,42 +30,30 @@
  *
  */
 
-#include "config.h"
 
 #include "constant.h"
-#include "macro.h"
 
 #ifdef OPRS_PROFILING
-#include "user-external.h"
 #endif
 
-#include "oprs-profiling.h"
 
 #ifdef GRAPHIX
-#include "opaque.h"
-#include <X11/Intrinsic.h>
 #include <Xm/Xm.h>
 #include "ope-graphic.h"
-#include "xoprs-main.h"
 #include "ope-external_f.h"
 #endif
 
 #include "op-structure.h"
 #include "relevant-op.h"
-#include "oprs.h"
 #include "oprs-pred-func.h"
-#include "database.h"
 #include "oprs-error.h"
 
 #include "op-structure_f.h"
 #include "op-compiler_f.h"
 #include "relevant-op_f.h"
 #include "oprs-type_f.h"
-#include "oprs-print.h"
 #include "oprs-print_f.h"
-#include "oprs-profiling_f.h"
 #include "oprs-error_f.h"
-#include "parser-funct_f.h"
 #include "oprs-pred-func_f.h"
 
 void add_op_call_to_relevant_op(Op_Structure *op, Expression *expr);

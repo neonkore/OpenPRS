@@ -31,27 +31,16 @@
  *
  */
 
-#include "config.h"
 
 #ifdef VXWORKS
-#include "vxWorks.h"
-#include "stdioLib.h"
 #else
-#include "stdio.h"
 #endif
 
 #include "slistPack.h"
-#include "slistPack_f.h"
-#include "shashPack.h"
-#include "shashPack_f.h"
-#include "macro.h"
 
 #include "constant.h"
-#include "oprs-type.h"
 
 #ifdef GRAPHIX
-#include <X11/Intrinsic.h>
-#include <X11/StringDefs.h>
 #include <Xm/Xm.h>
 #include "op-structure.h"
 #ifdef GTK

@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*-
  * ope-graphic_f.h --
  *
- * Copyright (c) 1991-2011 Francois Felix Ingrand, LAAS/CNRS.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand, LAAS/CNRS.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -63,3 +63,6 @@ OG *if_og_from_t_or_f_og(OG* og);
 void destroy_cgcs(CairoGCs *cgcs);
 void create_cgcs(CairoGCs *cgcs, GdkDrawable *window);
 void display_op_pos(Op_Structure * op, Draw_Data *dd, CairoGCs *cgcsp, int x, int y);
+void display_op_no_dd(Op_Structure * op);
+void display_op_edge(Op_Structure * op, Edge *edge);
+void undisplay_op_edge(Op_Structure * op, Edge *edge);

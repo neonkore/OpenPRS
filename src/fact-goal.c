@@ -30,31 +30,24 @@
  *
  */
 
-#include "config.h"
 
 /*	For timeval definition. */
 #ifdef WIN95
-#include <winsock.h>
 #endif
 
 
-#include "macro.h"
 #include "constant.h"
 
 
 #include "fact-goal.h"
 
 #include "fact-goal_f.h"
-#include "fact-goal_f-pub.h"
 #include "op-instance_f.h"
 #include "oprs-print.h"
 #include "oprs-print_f.h"
 #include "oprs-sprint.h"
 #include "oprs-sprint_f.h"
-#include "oprs-pprint_f.h"
-#include "oprs-profiling_f.h"
 #include "oprs-type_f.h"
-#include "unification_f.h"
 #include "op-instance_f.h"
 
 /*

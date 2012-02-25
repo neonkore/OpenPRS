@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * xoprs-dialog.c -- 
  * 
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -70,6 +70,7 @@
 #include "oprs-main.h"
 #include "oprs-sprint.h"
 #include "oprs-sprint_f.h"
+#include "xoprs-dialog_f.h"
 
 #include "database.h"
 #include "database_f.h"

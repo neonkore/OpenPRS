@@ -32,15 +32,11 @@
  *
  */
 
-#include "config.h"
 
-#include <stdio.h>
 #include <stdlib.h>
 #include "ope-gope.h"
 
 #include <X11/IntrinsicP.h>
-#include <X11/Intrinsic.h>
-#include <X11/StringDefs.h>
 #include <Xm/Xm.h>
 
 #include "opaque.h"

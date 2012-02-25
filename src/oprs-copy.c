@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*-
  * oprs-copy.c -- Functions to copy oprs structures.
  *
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,18 +30,11 @@
  *
  */
 
-#include "config.h"
 
-#include "macro.h"
-#include "constant.h"
 #include "oprs-type.h"
-
-#include "slistPack.h"
-#include "slistPack_f.h"
 #include "oprs-error.h"
 
 #include "oprs-type_f.h"
-#include "unification_f.h"
 #include "lisp-list_f.h"
 #include "fact-goal_f.h"
 #include "op-instance_f.h"

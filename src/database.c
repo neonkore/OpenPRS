@@ -42,20 +42,16 @@
  * never... (FFI 1/22/92)
  */
 
-#include "config.h"
-#include "constant.h"
 #include "macro.h"
 
 #include "shashPack_f.h"
 
 #ifdef OPRS_PROFILING
-#include "oprs-profiling.h"
 #endif
 
 #include "database.h"
 #include "oprs-type.h"
 #include "oprs.h"
-#include "oprs-print.h"
 #include "oprs-sprint.h"
 #include "oprs-dump.h"
 #include "oprs-error.h"
@@ -65,7 +61,6 @@
 #include "oprs-main.h"
 #include "ev-predicate.h"
 
-#include "mp-pub.h"
 
 #include "database_f.h"
 #include "oprs-type_f.h"
@@ -78,7 +73,6 @@
 #include "unification_f.h"
 #include "ev-predicate_f.h"
 #include "lisp-list_f.h"
-#include "oprs-profiling_f.h"
 
 #define DATABASE_HASHTABLE_MINSIZE 64
 #define DATABASE_HASHTABLE_DEFAULTSIZE 1024 /* has to be a power of 2 for the bitwise modulo */

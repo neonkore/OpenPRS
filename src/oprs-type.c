@@ -29,31 +29,21 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  */
-#include "config.h"
 
 #ifdef VXWORKS
-#include "semLib.h"
 #endif
 
-#include <string.h>
 #include <stdlib.h>
 
 #include "shashPack_f.h"
 
-#include "macro.h"
 #include "constant.h"
 #include "oprs-type.h"
-#include "lisp-list.h"
-#include "oprs-pred-func.h"
 #include "ev-function.h"
-#include "ev-predicate.h"
 
 #include "oprs-type_f.h"
 #include "oprs-print.h"
-#include "oprs-sprint.h"
 #include "oprs-print_f.h"
-#include "oprs-sprint_f.h"
-#include "oprs-pprint_f.h"
 #include "lisp-list_f.h"
 #include "oprs-pred-func_f.h"
 

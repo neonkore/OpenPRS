@@ -30,31 +30,21 @@
  *
  */
 
-#include "config.h"
 
-#include "string.h"
-#include "macro.h"
 #include "constant.h"
-#include "oprs-type.h"
 #include "intention.h"
-#include "op-instance.h"
 #include "op-structure.h"
-#include "fact-goal.h"
 #include "oprs-print.h"
-#include "oprs-pred-func.h"
 #include "oprs-error.h"
 
-#include "oprs-print_f.h"
 #include "oprs-sprint.h"
 #include "oprs-sprint_f.h"
 #include "oprs-pprint_f.h"
-#include "oprs-type_f-pub.h"
 #include "lisp-list_f.h"
 #include "oprs-error_f.h"
 
 #ifdef GRAPHIX
 #ifdef GTK
-#include <gtk/gtk.h>
 #include "gope-graphic.h"
 #else
 #include "ope-graphic.h"

@@ -73,7 +73,7 @@ FINC = action_f.h activate_f.h conditions_f.h database_f.h \
 	tcl_f.h top-lev_f.h top-structure_f.h type_f.h unification_f.h usage_f.h \
 	xhelp_f.h xm2gtk_f.h xoprs-dialog_f.h xoprs-intention_f.h \
 	xoprs-menu_f.h xoprs-textwin_f.h xt-util_f.h yy-funct_f.h goprs-call_f.h \
-	goprs-dialog_f.h goprs-filesel_f.h
+	goprs-dialog_f.h goprs-filesel_f.h op-x-opaque_f.h
 
 
 #
@@ -97,7 +97,7 @@ LEX_PART = lex-exp.l.part lex-macro.l.part lex-parser-def.l.part lex-text-op.l.p
 # for X/Motif (.bit)
 # for GTK (.png)
 DIST_ANNEX_FILES = ope-icon.bit xoprs-icon.bit \
-	ope-icon.png xoprs-icon.png		 
+	gope-icon.png goprs-icon.png		 
 
 
 # X Default files for X/Motif
@@ -328,7 +328,14 @@ oprs-server-parser.y: yacc-file.y.part yacc-graph-op.y.part yacc-exp.y.part yacc
 	chmod -w $*.l
 
 # I could not rely on the automake flex management,as ylwrap does not properly handle renaming with -P
-%.c: %.l
+
+BUILT_SOURCES += oprs-lex.h oprs-server-lex.h opc-lex.h ope-lex.h
+
+# These two rules are equivalent... it depends which one is requested first... the .h or the .c ...
+%-lex.h: %-lex.l
+	$(LEX) $(LFLAGS) --header-file=$@ -Poprs_yy -o $(basename $<).c $<
+
+%-lex.c: %-lex.l
 	$(LEX) $(LFLAGS) --header-file=$(basename $<).h -Poprs_yy -o $@ $<
 
 
@@ -343,7 +350,7 @@ xdefault_DATA = XOprs.ad Ope.ad
 
 #
 # This rule says that the .ad.h are obtained with the coresponding .ad
-# I add util/ad2c in case it is not there... to avoid emptying the file.
+# I add ad2c in case it is not there... to avoid emptying the file.
 #
 %.ad.h: %.ad $(AD2C)
 	$(AD2C) $< > $@
@@ -365,7 +372,7 @@ CLEANFILES =  XOprs.ad.h oprs-server-lex.l ope-lex.l ope-parser.y oprs-server-pa
 	oprs-parser.y oprs-lex.l opc-parser.c oprs-server-lex.c oprs-parser.h opc-parser.h \
 	oprs-lex.c oprs-server-parser.y oprs-server-parser.h ope-parser.h oprs-parser.c \
 	Ope.ad.h opc-lex.l opc-parser.y ope-lex.c opc-lex.c ope-parser.c Ope.ad XOprs.ad \
-	opc-lex.h  ope-lex.h  oprs-lex.h  oprs-server-lex.h
+	opc-lex.h  ope-lex.h  oprs-lex.h  oprs-server-lex.h gope-icon.h goprs-icon.h
 
 #BUILT_SOURCES += user-external.c user-external.h user-external_f.h
 

@@ -31,26 +31,20 @@
  *
  */
 
-#include "config.h"
 
-#include <stdio.h>
 
 /*
  * Standard Toolkit include files
  */
-#include <X11/Intrinsic.h>
-#include <Xm/Xm.h>
 
 #include <Xm/MessageB.h>
 
 #include "constant.h"
 #include "macro.h"
-#include "opaque.h"
 #include "parser-funct.h"
 #include "ope-report_f.h"
 
 #include "xhelp.h"
-#include "xhelp_f.h"
 
 Widget ope_information;
 

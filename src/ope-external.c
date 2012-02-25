@@ -31,23 +31,15 @@
  *
  */
 
-#include "config.h"
 
-#include <stdio.h>
 #include <math.h>
-#include <string.h>
 
-#include <X11/Intrinsic.h>
 #include <Xm/Xm.h>
 
-#include "macro.h"
 
-#include "oprs-type.h"
-#include "op-structure.h"
 #include "ope-graphic.h"
 #include "ope-global.h"
 #include "oprs-print.h"
-#include "oprs-print_f.h"
 #include "oprs-pprint_f.h"
 #include "ope-graphic_f.h"
 #include "ope-external_f.h"

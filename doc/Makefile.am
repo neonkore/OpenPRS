@@ -12,8 +12,8 @@ INDEX = oprs.cpnd oprs.fnnd oprs.epnd oprs.efnd oprs.vrnd oprs.pgnd
 
 doc_DATA = oprs.pdf
 
-BIBINPUTS := .:$(top_srcdir)/doc:
-TEXINPUTS := .:$(top_srcdir)/doc:$(top_srcdir)/doc/fig:
+export BIBINPUTS = .:$(top_srcdir)/doc:
+export TEXINPUTS = .:$(top_srcdir)/doc:$(top_srcdir)/doc/fig:
 
 oprs.pdf: oprs.tex oprs-macros.tex oprs.bib $(OP_TEX) appendices.tex
 	$(LATEX) $<

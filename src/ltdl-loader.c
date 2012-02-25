@@ -1,7 +1,6 @@
 
 /* This code takes care of loading evaluable functions, predicates or actions */
 
-#include "config.h"
 #include <ltdl.h>
 #include <stdio.h>
 #include <string.h>

@@ -30,7 +30,6 @@
  *
  */
 
-#include "config.h"
 
 /*
  * I must admit that most of the code for the OP compiler is currently in op-structure. After the compilation is
@@ -41,18 +40,11 @@
 #include "constant.h"
 
 #ifdef GRAPHIX
-#include <X11/Intrinsic.h>
-#include <Xm/Xm.h>
 #endif
 
 
 #include "op-structure.h"
-#include "relevant-op.h"
 #include "op-compiler.h"
-#include "action.h"
-#include "oprs.h"
-#include "lang.h"
-#include "database.h"
 #include "oprs-pred-func.h"
 
 #include "op-structure_f.h"

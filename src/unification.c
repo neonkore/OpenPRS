@@ -31,19 +31,14 @@
  *
  */
 
-#include "config.h"
 
 #include "constant.h"
-#include "macro.h"
 #include "oprs-type.h"
 #include "unification.h"
 #include "oprs-error.h"
-#include "oprs-rerror.h"
-#include "lisp-list.h"
 
 #include "lisp-list_f.h"
 #include "oprs-type_f.h"
-#include "oprs-print.h"
 #include "oprs-print_f.h"
 #include "oprs-array_f.h"
 #include "oprs-pred-func_f.h"

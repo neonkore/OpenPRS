@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * op-x-opaque.c -- Contains opaque functions to prevent the link with X libraries.
  * 
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,6 +36,8 @@
 #include "config.h"
 #include "oprs-type.h"
 #include <stdio.h>
+
+#include "op-x-opaque_f.h"
 
 int XmStringCreate()
 {
@@ -142,15 +144,15 @@ void *make_xoprs_ut_window(void)
      return NULL;
 }
 
-void manage_ut_window(void)
+void manage_ut_window(void *ignore)
 {
 }
 
-void unmanage_ut_window(void)
+void unmanage_ut_window(void *ignore)
 {
 }
 
-void delete_ut_window(void)
+void delete_ut_window(void *ignore)
 {
 }
 

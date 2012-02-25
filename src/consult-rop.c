@@ -35,20 +35,14 @@
  *
  */
 
-#include "config.h"
 #include "constant.h"
-#include "macro.h"
-#include "oprs-type-pub.h"
 
 
 #ifdef OPRS_PROFILING
-#include "user-external.h"
 #endif
 
-#include "oprs-profiling.h"
 
 #ifdef GRAPHIX
-#include <X11/Intrinsic.h>
 #include <Xm/Xm.h>
 #endif
 
@@ -56,10 +50,7 @@
 #include "relevant-op.h"
 #include "relevant-op_f.h"
 #include "oprs-type_f.h"
-#include "oprs-print.h"
 #include "oprs-print_f.h"
-#include "oprs.h"
-#include "database.h"
 
 void parser_consult_expr_relevant_op(Expression *expr, Relevant_Op *rk)
 {

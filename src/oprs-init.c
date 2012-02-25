@@ -73,6 +73,7 @@
 #include "type.h"
 #include "oprs-lex.h"
 
+#include "yy-funct_f.h"
 #include "action_f.h"
 #include "database_f.h"
 #include "ev-function_f.h"

@@ -76,6 +76,18 @@
 #include "op-instance_f.h"
 #include "user-trace_f.h"
 
+
+#ifdef GRAPHIX
+#ifdef GTK
+#else
+#include "ope-graphic.h"
+#include "ope-graphic_f.h"
+#include "xoprs-dialog_f.h"
+#include "xt-util_f.h"
+#endif
+#endif
+
+
 Thread_Execution_Result execute_intention(Intention *in);
 Thread_Execution_Result execute_intention_body(Thread_Intention_Block *t_in_bl);
 Thread_Execution_Result execute_thread(Thread_Intention_Block *t_in_bl);

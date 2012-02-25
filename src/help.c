@@ -30,14 +30,9 @@
  *
  */
 
-#include "config.h"
 
 #include <stdio.h>
 #include "constant.h"
-#include "macro.h"
-#include "lang.h"
-#include "other_proto.h"
-#include "version.h"
 
 #include "help_f.h"
 

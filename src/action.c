@@ -30,58 +30,38 @@
  *
  */
 
-#include "config.h"
 
-#include "oprs-profiling.h"
 
 
 #ifdef GRAPHIX
 #ifdef GTK
 #else
-#include <X11/Intrinsic.h>
 #include <Xm/Xm.h>
 #endif
 #endif
 
-#include "op-structure.h"
 #include "relevant-op.h"
-#include "relevant-op_f.h"
 
-#include <string.h>
-#include <ctype.h>
 
 #ifdef VXWORKS
-#include <taskLib.h>
 #else
-#include <pthread.h>
 #endif
 
-#include <assert.h>
 
-#include "shashPack.h"
 #include "shashPack_f.h"
 
 #include "constant.h"
-#include "opaque.h"
-#include "macro.h"
 
 #include "action.h"
-#include "oprs-type.h"
 #include "oprs-sprint.h"
-#include "type.h"
 #include "oprs.h"
-#include "op-instance.h"
-#include "intention.h"
 #include "fact-goal.h"
 #include "int-graph.h"
 #include "oprs-pred-func.h"
-#include "oprs-profiling.h"
 #include "oprs-error.h"
 #include "oprs-rerror.h"
-#include "database.h"
 
 #include "conditions_f.h"
-#include "oprs_f-pub.h"
 #include "oprs-print_f.h"
 #include "oprs-sprint_f.h"
 #include "lisp-list_f.h"
@@ -89,24 +69,31 @@
 #include "intend_f.h"
 #include "oprs-type_f.h"
 #include "oprs_f.h"
-#include "op-instance_f.h"
 #include "intention_f.h"
 #include "int-graph_f.h"
 #include "action_f.h"
 #include "fact-goal_f.h"
 #include "oprs-rerror_f.h"
 #include "oprs-error_f.h"
-#include "oprs-pred-func_f.h"
-#include "activate_f.h"
-#include "oprs-profiling_f.h"
 #include "parser-funct_f.h"
 #include "oprs-send-m_f.h"
 #include "oprs-sprint_f.h"
 
-#include "pu-parse-tl_f.h"
 
 #include "tcl_f.h"
 
+
+#ifdef GRAPHIX
+#ifdef GTK
+#include "goprs-dialog_f.h"
+#include "goprs-textwin_f.h"
+#else
+#include "xoprs-dialog_f.h"
+#include "xoprs-textwin_f.h"
+#endif
+#else
+#include "op-x-opaque_f.h"
+#endif
 
 
 /*********Log function and variables*************/

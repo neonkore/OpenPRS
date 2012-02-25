@@ -30,19 +30,13 @@
  *
  */
 
-#include "config.h"
 
 #include "slistPack.h"
-#include "slistPack_f.h"
 
-#include "macro.h"
 #include "constant.h"
-#include "lisp-list.h"
 #include "oprs-type.h"
-#include "oprs-print.h"
 
 #include "oprs-type_f.h"
-#include "oprs-print_f.h"
 #include "unification_f.h"
 #include "lisp-list_f.h"
 

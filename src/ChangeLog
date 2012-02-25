@@ -1,3 +1,11 @@
+2012-02-25  Felix Ingrand  <felix@cturtle>
+
+	* Makefile.am (DIST_ANNEX_FILES): renamed the gtk icon files.
+	(%-lex.h): added a rule to also make the .h for lex parsers.
+
+	* many files: cleanup include not really needed. Added declaration
+	to remove compiler warnings.
+
 2012-02-22  Felix Ingrand  <felix@cturtle>
 
 	* goprs-main.c (oprs_main): replace start_kernel_user_hook with start_kernel_hook.

@@ -30,9 +30,7 @@
  *
  */
 
-#include "config.h"
 
-#include <stdio.h>
 
 #include "oprs-type.h"
 #include "oprs-error.h"

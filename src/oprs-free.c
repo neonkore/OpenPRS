@@ -30,15 +30,11 @@
  *
  */
 
-#include "config.h"
 
-#include "macro.h"
-#include "constant.h"
 #include "oprs-type.h"
 #include "oprs-error.h"
 
 #include "oprs-type_f.h"
-#include "unification_f.h"
 #include "lisp-list_f.h"
 #include "oprs-array_f.h"
 #include "fact-goal_f.h"

@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * intend.c -- creation of intentions...
  * 
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -55,6 +55,14 @@
 #include "lisp-list.h"
 #include "oprs-sprint.h"
 #include "oprs-error.h"
+
+
+#ifdef GRAPHIX
+#ifdef GTK
+#else
+#include "xoprs-dialog_f.h"
+#endif
+#endif
 
 #include "oprs-type_f.h"
 #include "oprs-sprint_f.h"

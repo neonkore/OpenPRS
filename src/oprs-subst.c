@@ -31,12 +31,9 @@
  *
  */
 
-#include "config.h"
 
-#include "macro.h"
 #include "constant.h"
 #include "oprs-type.h"
-#include "oprs-pred-func.h"
 #include "oprs-error.h"
 #include "oprs-rerror.h"
 

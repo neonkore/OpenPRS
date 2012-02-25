@@ -30,25 +30,16 @@
  *
  */
 
-#include "config.h"
-#include "ctype.h"
 
-#include "shashPack.h"
-#include "shashPack_f.h"
 
 #include "constant.h"
-#include "macro.h"
 
-#include "oprs-type.h"
 #include "ev-predicate.h"
 #include "soak.h"
 #include "op-instance.h"
-#include "oprs-pred-func.h"
 #include "oprs-error.h"
 #include "oprs-rerror.h"
-#include "oprs-profiling.h"
 
-#include "oprs-type_f.h"
 #include "op-instance_f.h"
 #include "ev-predicate_f.h"
 #include "unification_f.h"
@@ -56,7 +47,6 @@
 #include "oprs-pred-func_f.h"
 #include "oprs-error_f.h"
 #include "oprs-rerror_f.h"
-#include "oprs-profiling_f.h"
 #include "type_f.h"
 
 PBoolean boundp_ep(TermList tl)

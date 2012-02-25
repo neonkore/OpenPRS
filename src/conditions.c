@@ -30,17 +30,12 @@
  *
  */
 
-#include "config.h"
-#include <stdio.h>
 
 #include "constant.h"
-#include "macro.h"
-#include "opaque.h"
 #include "oprs-type.h"
 #include "oprs-pred-func.h"
 #include "conditions.h"
 #include "fact-goal.h"
-#include "intention.h"
 #include "oprs.h"
 #include "oprs-sprint.h"
 #include "soak.h"

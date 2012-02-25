@@ -29,19 +29,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  */
-#include "config.h"
 
-#include <stdio.h>
 
 #include "shashPack_f.h"
 
-#include "macro.h"
-#include "constant-pub.h" /* enzo */
-#include "lang.h"
 #include "type.h"
 #include "oprs-type.h"
 #include "oprs.h"
-#include "oprs-type-pub.h"
 
 #include "oprs-type_f.h"
 #include "type_f.h"

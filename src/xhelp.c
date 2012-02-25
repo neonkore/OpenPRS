@@ -33,19 +33,15 @@
  *
  */
 
-#include "config.h"
 
 #define URL_DOC
 
-#include <stdio.h>
 #include <stdlib.h>
 
-#include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
 #include <errno.h>
 
-#include "opaque.h"
 #include "oprs-type.h"
 
 #include "oprs-sprint.h"
@@ -54,15 +50,12 @@
 /*
  * Standard Toolkit include files
  */
-#include <X11/Intrinsic.h>
-#include <Xm/Xm.h>
 #include <Xm/Form.h>
 
-#include "macro.h"
-#include "opaque.h"
 
 /* #include "xinfo/Info.h" */
 
+#include "soak_f.h"
 #include "xhelp.h"
 #include "xhelp_f.h"
 

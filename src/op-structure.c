@@ -30,9 +30,7 @@
  *
  */
 
-#include "config.h"
 
-#include "stdio.h"
 
 
 #ifdef GRAPHIX
@@ -40,27 +38,21 @@
 #include <gtk/gtk.h>
 #include "xm2gtk.h"
 #else
-#include <X11/Intrinsic.h>
 #include <Xm/Xm.h>
 #endif
 #endif
 
 #include "slistPack.h"
-#include "slistPack_f.h"
-#include "shashPack.h"
 #include "shashPack_f.h"
-#include "macro.h"
 #include "constant.h"
 #include "op-structure.h"
 
 #ifdef GRAPHIX
 #ifdef GTK
 #include "gope-graphic.h"
-#include "gope-global.h"
 #include "gope-external_f.h"
 #else
 #include "ope-graphic.h"
-#include "ope-global.h"
 #include "ope-external_f.h"
 #endif
 #endif
@@ -68,7 +60,6 @@
 #include "top-structure_f.h"
 #include "op-structure_f.h"
 #include "oprs-type_f.h"
-#include "oprs-print.h"
 #include "oprs-print_f.h"
 
 #ifdef GRAPHIX

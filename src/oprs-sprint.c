@@ -31,15 +31,11 @@
  *
  */
 
-#include "config.h"
 
-#include "string.h"
-#include "macro.h"
 #include "constant.h"
 #include "oprs-type.h"
 #include "oprs-error.h"
 #include "oprs-rerror.h"
-#include "oprs-pred-func.h"
 #include "oprs-sprint.h"
 #include "type.h"
 
@@ -49,7 +45,6 @@
 #include "fact-goal_f.h"
 #include "lisp-list_f.h"
 #include "oprs-error_f.h"
-#include "oprs-rerror_f.h"
 
 Sprinter *make_sprinter(int size)
 {
