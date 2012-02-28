@@ -1,3 +1,8 @@
+2012-02-28  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* gope-graphic.c: Darwin seems to be more touchy about symbol multiply defined... moved the definition in a .c and leave the
+		  declaration in the .h.
+
 2012-02-25  Felix Ingrand  <felix@cturtle>
 
 	* Makefile.am (DIST_ANNEX_FILES): renamed the gtk icon files.

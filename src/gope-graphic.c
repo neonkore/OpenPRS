@@ -57,6 +57,8 @@
 
 #include "xm2gtk_f.h"
 
+PString mode_help[MAX_DRAW_MODE];
+
 void destroy_og(Draw_Data *dd, CairoGCs *cgcsp, OG *og);
 void redraw_all_in_region(GtkWidget *w, Draw_Data *dd, CairoGCs *cgcsp, Region region);
 
