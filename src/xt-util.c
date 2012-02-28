@@ -34,6 +34,7 @@
 
 
 #include <stdlib.h>
+#include <stdio.h>
 #include "ope-gope.h"
 
 #include <X11/IntrinsicP.h>
