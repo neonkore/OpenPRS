@@ -614,7 +614,7 @@ IOG *update_ginode_text(Int_Draw_Data *idd,  CairoGCs *cgcsp, IOG *iog)
      int save_print_length, pp_width;
      PBoolean save_pp, save_pvn, save_pvv, save_fl;
 
-     if (!XEmptyRegion(iog->region))
+     if (!gdk_region_empty(iog->region))
 	  erase_ginode(idd,iog);
 
      if (ginode->lgt_string)  free_lgt_string(ginode->lgt_string);

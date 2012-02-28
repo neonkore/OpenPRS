@@ -147,7 +147,7 @@ libOprs_la_SOURCES = help.c lisp-list.c oprs-ll.c oprs-send-m.c oprs-sprint.c \
 libKernel_la_SOURCES = database.c ev-predicate.c fact-goal.c oprs.c oprs-rerror.c unification.c oprs-profiling.c
 
 libXOpG_la_SOURCES = ope-external.c ope-graphic.c xhelp.c oprs-pprint.c ope-report.c xt-util.c
-libXOpG_la_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX
+libXOpG_la_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX $(XT_FLAGS)
 
 
 libGOpG_la_SOURCES = gope-external.c gope-graphic.c xhelp.c oprs-pprint.c gope-report.c g-util.c
@@ -160,7 +160,7 @@ libTOpEOprs_la_SOURCES = $(BOTH_OPE_OPRS_LIB_SOURCES)
 libTOpEOprs_la_CPPFLAGS = $(AM_CPPFLAGS) -UGRAPHIX
 
 libXGOpEOprs_la_SOURCES = $(BOTH_OPE_OPRS_LIB_SOURCES)
-libXGOpEOprs_la_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX
+libXGOpEOprs_la_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX $(XT_FLAGS)
 
 
 libGGOpEOprs_la_SOURCES = $(BOTH_OPE_OPRS_LIB_SOURCES)
@@ -173,7 +173,7 @@ libTOprs_la_SOURCES = $(BOTH_OPRS_LIB_SOURCES)
 libTOprs_la_CPPFLAGS = $(AM_CPPFLAGS) -UGRAPHIX
 
 libXGOprs_la_SOURCES = $(BOTH_OPRS_LIB_SOURCES)
-libXGOprs_la_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX
+libXGOprs_la_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX $(XT_FLAGS)
 
 libGGOprs_la_SOURCES = $(BOTH_OPRS_LIB_SOURCES)
 libGGOprs_la_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX -DGTK $(GTK_CFLAGS)
@@ -187,7 +187,7 @@ libTKernel_la_SOURCES = $(BOTH_KERNEL_LIB_SOURCES)
 libTKernel_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/contrib/src -UGRAPHIX
 
 libXGKernel_la_SOURCES = $(BOTH_KERNEL_LIB_SOURCES)
-libXGKernel_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/contrib/src -DGRAPHIX
+libXGKernel_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/contrib/src -DGRAPHIX $(XT_FLAGS)
 
 libGGKernel_la_SOURCES = $(BOTH_KERNEL_LIB_SOURCES)
 libGGKernel_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/contrib/src -DGRAPHIX -DGTK $(GTK_CFLAGS)
@@ -227,11 +227,11 @@ xoprs_SOURCES = oprs-lex.l xoprs-call.c xoprs-textwin.c \
 	xoprs-dialog.c xoprs-filesel.c xoprs-intention.c \
 	xoprs-main.c xoprs-menu.c xtop-lev-loop.c \
 	xoprs-op-graphic.c xoprs-rop.c user-trace.c
-xoprs_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX
+xoprs_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX $(XT_FLAGS)
 xoprs_LDFLAGS = -export-dynamic
 xoprs_LDADD = libXGKernel.la libKernel.la libBasic.la libXGOprs.la libOprs.la libXGOpEOprs.la \
 	libXOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la $(CONTRIB_LIB) \
-	@MOTIF_LIBS@ @X_LIBS@ @LIBLTDL@ @LIBADD_DL@
+	$(MOTIF_LIBS) $(XT_LIBS) @LIBLTDL@ @LIBADD_DL@
 
 goprs_SOURCES = xm2gtk.c oprs-lex.l goprs-call.c goprs-textwin.c \
 	goprs-dialog.c goprs-filesel.c goprs-intention.c \
@@ -248,9 +248,9 @@ oprs_cat_LDADD = ../c_toolkit/libOPList.la
 ope_SOURCES = ope-lex.l ope-parser.y ope-bboard.c ope-edit.c ope-filesel.c ope-op-opf.c ope-main.c \
 	ope-menu.c ope-print.c ope-pxmw.c ope-save.c ope-syntax.c \
 	ope-vsblf.c ope-rop.c ope-op-str.c ope-opaque.c
-ope_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX
+ope_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX $(XT_FLAGS)
 ope_LDADD = libBasic.la libXGOprs.la libOprs.la libXGOpEOprs.la \
-		libXOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la $(MOTIF_LIBS) $(X_LIBS)
+		libXOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la $(MOTIF_LIBS) $(XT_LIBS)
 
 gope_SOURCES = xm2gtk.c ope-lex.l ope-parser.y gope-bboard.c gope-edit.c gope-filesel.c gope-op-opf.c gope-main.c \
 	gope-menu.c ope-save.c ope-syntax.c gope-vsblf.c gope-rop.c ope-op-str.c ope-opaque.c
@@ -259,9 +259,9 @@ gope_LDADD = libBasic.la libGGOprs.la libOprs.la libGGOpEOprs.la \
 		libGOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la @GTK_LIBS@
 
 opc_SOURCES = opc-lex.l opc-parser.y opc-main.c ope-opaque.c
-opc_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX
+opc_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX $(XT_FLAGS)
 opc_LDADD = libBasic.la libXGOprs.la libOprs.la libXGOpEOprs.la \
-	libXOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la $(MOTIF_LIBS) $(X_LIBS)
+	libXOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la $(MOTIF_LIBS) $(XT_LIBS)
 
 
 # This is what replace relocatable... dynamic loading of evaluable function, predicates and actions.
