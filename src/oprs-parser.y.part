@@ -110,6 +110,7 @@ int node_x, node_y, visible, text_dx, text_dy, string_width, fill_lines;
 Slist *text, *graphic, *step_list;
 Slist *edge_location;
 long int read_check_sum;
+PBoolean load_ok;
 
 
 %}
@@ -468,10 +469,13 @@ command:
 							       "\n%sChargement noyau terminé.\n"),parser_indent);
 						 FREE($5);}
 	| LOAD_TK EXTERNAL_TK 			{yy_begin_0();} 
-		QSTRING_TK			{printf(LG_STR("%sLoading external code from dl: \"%s\".\n",
-							       "%sChargement de code externe de la dl: \"%s\".\n"),parser_indent,$4);
-						 load_function_from_dl($4, "start_kernel_user_hook");
-						 FREE($4);}
+		QSTRING_TK QSTRING_TK		{printf(LG_STR("%sLoading external code from dl: \"%s\", sym: %s.\n",
+							       "%sChargement de code externe de la dl: \"%s\", sym: %s.\n"),parser_indent,$4,$5);
+						 load_ok = load_function_from_dl($4, $5);
+						 printf(LG_STR("%sFinish loading external code: %s.\n",
+							       "%sFin chargement code externe: %s.\n"), 
+							       (load_ok?"SUCCESS":"FAILURE"));
+						 FREE($4); FREE($5);}
 	| LOAD_TK AC_TK 			{yy_begin_0();} 
 		QSTRING_TK			{printf(LG_STR("%sLoading action(s) from dl: \"%s\".\n",
 							       "%sChargement d'actions de la dl: \"%s\".\n"),parser_indent,$4);
