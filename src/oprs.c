@@ -172,6 +172,11 @@ void free_oprs(Oprs *oprs)
      FREE_OBJECT(oprs);
 }
 
+char *kernel_name()
+{
+     return current_oprs->name;
+}
+
 Oprs *make_oprs(PString name)
 {
 /* 
