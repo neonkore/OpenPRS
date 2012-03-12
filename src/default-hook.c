@@ -50,8 +50,8 @@ PBoolean my_intention_list_sort_example(Intention *i1, Intention *i2)
      return (intention_priority(i1) > intention_priority(i2));
 }
 
-entrypoint_name *start_kernel_user_hook = NULL;
-entrypoint *end_kernel_user_hook = NULL;
+/* entrypoint_name *start_kernel_user_hook = NULL; */
+/* entrypoint *end_kernel_user_hook = NULL; */
 
 void start_kernel_hook(char *name)
 {
@@ -62,15 +62,15 @@ void start_kernel_hook(char *name)
      intention_list_sort_predicate = &intention_list_sort_by_priority;
      main_loop_pool_sec = 0L;
      main_loop_pool_usec = 10000L;
-     if (start_kernel_user_hook) 
-       (*start_kernel_user_hook)(name);
+     /* if (start_kernel_user_hook)  */
+     /*   (*start_kernel_user_hook)(name); */
 }
 
 
 void end_kernel_hook()
 {
-     if (end_kernel_user_hook) 
-       (*end_kernel_user_hook)();
+     /* if (end_kernel_user_hook)  */
+     /*   (*end_kernel_user_hook)(); */
      printf("Bye, bye...\n");
 }
 
