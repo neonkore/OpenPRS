@@ -474,7 +474,7 @@ command:
 						 load_ok = load_function_from_dl($4, $5);
 						 printf(LG_STR("%sFinish loading external code: %s.\n",
 							       "%sFin chargement code externe: %s.\n"), 
-							       (load_ok?"SUCCESS":"FAILURE"));
+							       parser_indent,(load_ok?"SUCCESS":"FAILURE"));
 						 FREE($4); FREE($5);}
 	| LOAD_TK AC_TK 			{yy_begin_0();} 
 		QSTRING_TK			{printf(LG_STR("%sLoading action(s) from dl: \"%s\".\n",
