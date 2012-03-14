@@ -1,3 +1,8 @@
+2012-03-14  Felix Ingrand  <felix@cturtle>
+
+	* openprs.pc.in (oprsdatadir): Add the path to the data in the .pc
+	file so transgen can grab it to set its openprs_data_path.
+
 2012-03-09  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* ltdl-loader.c (load_function_from_dl): remove the lt_dlsetseachpath for now. Users will have to set it externally which propably
