@@ -77,6 +77,9 @@ typedef TermPtr (*PFPT)(TermList); /* PFPT is pointer to a function taking a Ter
 typedef Slist *(*PFPL)(Slist *); /* PFPL is pointer to a function taking a Slist *and returning a
 				      pointer to Slist *.*/
 
+/* Pointer on function returning void... */
+typedef void (*PFV)();		
+
 typedef void entrypoint(void);
 typedef void entrypoint_name(char *);
 

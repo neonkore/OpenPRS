@@ -95,9 +95,6 @@ typedef Slist *Intention_Paire_List;	/* List de paire d'intentions */
 /* Pointer on function returning int... */
 typedef int (*PFI)();		
 
-/* Pointer on function returning void... */
-typedef void (*PFV)();		
-
 /* Pointer on function returning pointer on void... */
 typedef void * (*PFPV)();		
 
