@@ -71,7 +71,7 @@ FINC = action_f.h activate_f.h conditions_f.h database_f.h \
 	oprs_f-pub.h oprs_f.h other_proto.h parser-funct_f.h \
 	relevant-op_f.h send-message_f.h soak_f.h socket_f.h tcl_f.h \
 	tcl_f.h top-lev_f.h top-structure_f.h type_f.h unification_f.h usage_f.h \
-	xhelp_f.h xm2gtk_f.h xoprs-dialog_f.h xoprs-intention_f.h \
+	user-end-hook_f.h xhelp_f.h xm2gtk_f.h xoprs-dialog_f.h xoprs-intention_f.h \
 	xoprs-menu_f.h xoprs-textwin_f.h xt-util_f.h yy-funct_f.h goprs-call_f.h \
 	goprs-dialog_f.h goprs-filesel_f.h op-x-opaque_f.h
 
@@ -111,7 +111,8 @@ EXTERNAL_INCLUDE = action_f-pub.h constant-pub.h ev-function_f-pub.h ev-predicat
 	mp-pub.h opaque-pub.h oprs-array_f-pub.h oprs-type-pub.h oprs-sprint_f-pub.h \
 	oprs-type_f-pub.h oprs_f-pub.h user-action.h user-ev-function.h \
 	user-ev-predicate.h xoprs-main-pub.h oprs-error-pub.h \
-	oprs-rerror_f-pub.h user-trace.h user-trace_f.h oprs-print_f-pub.h
+	oprs-rerror_f-pub.h user-trace.h user-trace_f.h oprs-print_f-pub.h \
+	user-end-hook_f-pub.h user-end-hook-pub.h
 
 pkginclude_HEADERS = $(EXTERNAL_INCLUDE)
 
@@ -181,7 +182,7 @@ libGGOprs_la_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX -DGTK $(GTK_CFLAGS)
 #
 BOTH_KERNEL_LIB_SOURCES = action.c activate.c ev-function.c intend.c intention.c \
 	int-graph.c op-instance.c oprs-init.c tcl.c soak.c oprs-parser.y \
-	top-lev.c default-hook.c
+	top-lev.c default-hook.c user-end-hook.c
 
 libTKernel_la_SOURCES = $(BOTH_KERNEL_LIB_SOURCES)
 libTKernel_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/contrib/src -UGRAPHIX

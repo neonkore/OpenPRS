@@ -44,6 +44,7 @@ static const char* const rcsid = "$Id$";
 
 #include "intention_f-pub.h"
 #include "default-hook_f.h"
+#include "user-end-hook_f.h"
 
 PBoolean my_intention_list_sort_example(Intention *i1, Intention *i2)
 {
@@ -69,8 +70,7 @@ void start_kernel_hook(char *name)
 
 void end_kernel_hook()
 {
-     /* if (end_kernel_user_hook)  */
-     /*   (*end_kernel_user_hook)(); */
+     execute_user_end_kernel_hook();
      printf("Bye, bye...\n");
 }
 
