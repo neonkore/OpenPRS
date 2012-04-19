@@ -1,7 +1,7 @@
 static const char* const rcsid = "$Id$";
 
 /*
- * Copyright (c) 1991-2009 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,6 +46,8 @@ static const char* const rcsid = "$Id$";
 #include <stdlib.h>
 #include <string.h>
 #endif
+
+#include "mallocPack_f.h"
 
 #ifndef HAS_BCOPY
 #define BCOPY(from, to, nbytes) memcpy(to, from, nbytes)
@@ -134,7 +136,7 @@ void give_sem(SEM_ID sem)
 #include "stdlib.h"
 #else
 #ifndef GNUWIN32
-#include <malloc.h>
+#include <stdlib.h>
 #endif
 #endif
 

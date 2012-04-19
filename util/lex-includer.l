@@ -2,11 +2,11 @@
 /*                               -*- Mode: C -*- 
  * lex-includer.l -- 
  * 
- * Copyright (C) 1994-2003 Francois Felix Ingrand
+ * Copyright (C) 1994-2011 Francois Felix Ingrand
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2011 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,6 +46,8 @@
 
 #include <string.h>
 %}
+
+%option noyywrap
 
 %%
 ^include[ \t]*\"[^\"\n]*\"$	{output_file_to_stdout(yytext);}

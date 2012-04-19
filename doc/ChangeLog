@@ -1,3 +1,7 @@
+2012-02-25  Felix Ingrand  <felix@cturtle>
+
+	* Makefile.am: added export to properly export TEXINPUTS and BIBINPUTS.
+
 2011-02-21  Francois Felix Ingrand  <felix@cturtle>
 
 	* \* should probably be \\* all over the documentation... 

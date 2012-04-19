@@ -3,33 +3,40 @@
 
 AC_PREREQ(2.53)
 
-AC_INIT([Open PRS],[1.0b15],[felix@laas.fr],[openprs])
-AC_CONFIG_SRCDIR([oprs-main.c])
-AC_CONFIG_HEADERS([config-ac.h])
-AC_CONFIG_AUX_DIR([util])
-
+AC_INIT([Open PRS],[1.1b0],[felix@laas.fr],[openprs])
+AC_CONFIG_SRCDIR([src/oprs-main.c])
+AC_CONFIG_HEADERS([src/config-ac.h])
+AC_CONFIG_AUX_DIR([config])
+AC_CONFIG_MACRO_DIR([m4])
 
 AC_LANG(C)
 
 # Checks for programs.
 AC_PROG_CC
 AC_PROG_INSTALL
-AC_PROG_RANLIB
+AC_LIBTOOL_DLOPEN
+# AC_LIBLTDL_CONVENIENCE
+AC_PROG_LIBTOOL
+
+LT_CONFIG_LTDL_DIR([libltdl])
+
+LT_INIT([dlopen])
+LTDL_INIT([convenience])
+
+AC_SUBST(INCLTDL)
+AC_SUBST(LIBLTDL)
+
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
 
-dnl ------- check for mkdep (le LAAS one) -------------------
-ROBOT_PROG_MKDEP
-#AC_PATH_PROG(MKDEP, mkdep, no, $prefix/bin:$exec_prefix/bin:$PATH)
+AM_INIT_AUTOMAKE([foreign])
+AM_PROG_LEX
+AC_PROG_YACC
 
-dnl ------- check for bison (not yack) and flex --------------
-AC_PATH_PROG(BISON, bison, no, $prefix/bin:$exec_prefix/bin:$PATH)
-if test "x$BISON" = xno; then
-AC_PATH_PROG(BISON_OLD, bison-1.35, no, $prefix/bin:$exec_prefix/bin:$PATH)
-BISON=$BISON_OLD
-fi
-
-AC_PATH_PROG(FLEX, flex, no, $prefix/bin:$exec_prefix/bin:$PATH)
+AC_ARG_VAR(LATEX, "LaTeX text formatting and typesetting")
+AC_CHECK_PROGS(LATEX, [pdflatex latex], [:])
+AC_CHECK_PROGS(BIBTEX, [bibtex], [:])
+AC_CHECK_PROGS(MAKEINDEX, [makeindex], [:])
 
 # Checks for libraries.
 # FIXME: Replace `main' with a function in `-lm':
@@ -56,13 +63,18 @@ AC_SUBST(MP_EXTRA_LIBS)
 #check for Readline
 AC_CHECK_READLINE
 
+PKG_CHECK_MODULES(GTK, gtk+-2.0)
+
+PKG_CHECK_MODULES(X11, x11)
+
+PKG_CHECK_MODULES(XT, xt)
+
 # Checks for header files.
-AC_PATH_XTRA
 AC_FIND_MOTIF
 
 AC_HEADER_STDC
 AC_HEADER_SYS_WAIT
-AC_CHECK_HEADERS([arpa/inet.h fcntl.h limits.h locale.h malloc.h netdb.h netinet/in.h stddef.h stdlib.h string.h sys/file.h sys/ioctl.h sys/param.h sys/socket.h sys/time.h unistd.h])
+AC_CHECK_HEADERS([arpa/inet.h fcntl.h limits.h locale.h netdb.h netinet/in.h stddef.h stdlib.h string.h sys/file.h sys/ioctl.h sys/param.h sys/socket.h sys/time.h unistd.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
@@ -73,6 +85,7 @@ AC_STRUCT_TM
 AC_TYPE_UID_T
 
 # Checks for library functions.
+AC_CHECK_LIB(pthread, pthread_create)
 AC_FUNC_FORK
 AC_PROG_GCC_TRADITIONAL
 AC_FUNC_MALLOC
@@ -83,25 +96,20 @@ AC_CHECK_FUNCS([abort sigaction setitimer valloc clock_gettime dup2 gethostname 
 
 AC_CONFIG_FILES([
                  Makefile
-                 site.make
-                 openprs.pc
-                 mp-openprs.pc
+                 src/Makefile
                  c_toolkit/Makefile
+                 util/Makefile
                  contrib/Makefile
                  contrib/data/Makefile
                  contrib/src/Makefile
+		 contrib/src/openprs-util.pc
                  data/Makefile
+                 data/test/Makefile
                  doc/Makefile
+                 src/openprs.pc
+                 src/mp-openprs.pc
                  doc/oprs-macros.tex
-                 util/Makefile
-                 stamp-h
-		 config.h
+		 src/config.h
                 ])
 AC_OUTPUT
 
-#                 demo/Makefile
-#                 demo/truck-demo/Makefile
-#                 demo/truck-demo/include/Makefile
-#                 demo/truck-demo/oprs/Makefile
-#                 demo/truck-demo/src/Makefile
-#                 dist/Makefile

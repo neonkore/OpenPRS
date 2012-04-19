@@ -1,0 +1,446 @@
+%{
+static const char* const rcsid = "$Id$";
+/*                               -*- Mode: C -*- 
+ * opc-parser.y -- 
+ * 
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ *    - Redistributions of source code must retain the above copyright
+ *      notice, this list of conditions and the following disclaimer.
+ *    - Redistributions in binary form must reproduce the above
+ *      copyright notice, this list of conditions and the following
+ *      disclaimer in the documentation and/or other materials provided
+ *      with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ */
+
+
+#include "config.h"
+
+#ifdef VXWORKS
+#include "vxWorks.h"
+#include "stdioLib.h"
+#else
+#include <stdio.h>
+#ifndef WIN95
+#include <sys/file.h>
+#endif
+#endif
+
+
+
+#include "constant.h"
+#include "macro.h"
+#include "opaque.h"
+#include "shashPack.h"
+#include "shashPack_f.h"
+
+#include "oprs-type.h"
+
+#ifdef GRAPHIX
+#include <X11/Intrinsic.h>
+#include <Xm/Xm.h>
+#endif
+
+#include "op-structure.h"
+#include "opc.h"
+#include "op-compiler.h"
+#include "help_f.h"
+#include "oprs-print.h"
+#include "oprs-sprint.h"
+#include "oprs_f.h"
+#include "parser-funct.h"
+#include "op-default.h"
+#include "database.h"
+#include "oprs-pred-func.h"
+#include "relevant-op.h"
+#include "parser-funct_f.h"
+#include "oprs-main.h"
+#include "top-lev.h"
+#include "oprs-profiling.h"
+
+#include "xoprs-main.h"
+
+#include "oprs-type_f.h"
+#include "oprs-print_f.h"
+#include "oprs-sprint_f.h"
+#include "op-structure_f.h"
+#include "top-structure_f.h"
+#include "database_f.h"
+#include "op-compiler_f.h"
+#include "fact-goal_f.h"
+#include "unification_f.h"
+#include "relevant-op_f.h"
+#include "soak_f.h"
+#include "other_proto.h"
+#include "oprs-send-m_f.h"
+#include "oprs-init_f.h"
+#include "int-graph_f.h"
+#include "conditions_f.h"
+#include "oprs-pred-func_f.h"
+#include "oprs-array_f.h"
+#include "top-lev_f.h"
+#include "oprs-profiling_f.h"
+
+char *node_name;
+PString type_string;
+Node_Type node_type;
+int node_x, node_y, visible, text_dx, text_dy, string_width, fill_lines;
+Slist *text, *graphic, *step_list;
+Slist *edge_location;
+long int read_check_sum;
+
+
+%}
+
+%union {
+    double    		real;        /* real value */
+    int    		integer;    /* integer value */
+    long long int	long_long;    /* integer value */
+    void    		*pointer;    /* pointer value */
+    char    		*string;    /* string buffer */
+    int    		cmd;        /* command value */
+    PBoolean		bool;
+    TermList 		list_term;
+    ExprList 		list_expr;
+    PropertyList 	prop_list;
+    Add_Del_List	add_del_list;
+    VarList 		var_list;
+    Property		*prop;
+    Envar       	*var;
+    Term 		*term;
+    Expression 		*expr;
+    Pred_Func_Rec	*pred_func_rec;
+    Action_Field	*action_field;
+    Double_Node		*dn;
+    NodeList 		nl;
+    EdgeList 		el;
+    Node_Type 		nt;
+    Slist *		list;
+}
+
+%token <real> 		REAL_TK
+%token <pointer>	POINTER_TK
+%token <integer> 	INTEGER_TK
+%token <long_long> 	LONG_LONG_TK
+%token <string> 	QSTRING_TK SYMBOL_TK COMMENT_TK LOGICAL_VAR_TK PROGRAM_VAR_TK
+
+%token <cmd>		DECLARE_TK ID_TK SET_TK ACTION_TK
+%token <cmd>		EMPTY_TK INCLUDE_TK LOAD_TK
+%token <cmd>		DB_TK OP_TK OPF_TK ON_TK OFF_TK  TYPE_SEP_TK
+%token <cmd>		FF_TK BE_TK CWP_TK EVALUABLE_TK PREDICATE_TK FUNCTION_TK REQUIRE_TK SYM_TK
+%token <cmd>		OPRS_DATA_PATH_TK OP_PREDICATE_TK DUMP_TK 
+
+%token <cmd>		OPF_VERSION1 OPF_VERSION2
+
+%token <cmd>		FT_INVOCATION_TK FT_CONTEXT_TK FT_CALL_TK FT_ACTION_TK 
+%token <cmd>		FT_SETTING_TK FT_PROPERTIES_TK FT_DOCUMENTATION_TK FT_EFFECTS_TK 
+
+%token <cmd>		NT_PROCESS_TK NT_START_TK NT_END_TK NT_ELSE_TK 
+%token <cmd>		NT_THEN_TK NT_IF_TK 
+
+%token <cmd>		ET_GOAL_TK ET_ELSE_TK ET_THEN_TK ET_IF_TK 
+
+%token <cmd>		SPEC_ACT_TK RESET_DOT_TK
+%token <cmd>		OP_LISP_TK CP_LISP_TK OP_ARRAY_TK CP_ARRAY_TK OPENP_TK CLOSEP_TK EOF_TK
+%token <cmd>		TFT_INVOCATION_TK TFT_CONTEXT_TK TFT_SETTING_TK TFT_BODY_TK
+%token <cmd>		TFT_PROPERTIES_TK TFT_DOCUMENTATION_TK TFT_EFFECTS_TK TFT_ACTION_TK 
+%token <cmd>	        TFT_CALL_TK
+
+%token <cmd>		WHILE_TK DO_TK PAR_TK DEFOP_TK IF_TK ELSE_TK GOTO_TK BREAK_TK ELSEIF_TK LABEL_TK
+
+%type <integer> 	pos_x pos_y pp_width
+%type <bool> 		debug_flag boolean visible pp_fill split join
+%type <string> 		op_name node_name edge_name prop_name documentation file_name write_file_name read_file_name symbol
+%type <pred_func_rec>	pred_func
+%type <list_term> 	term_list
+%type <var> 		variable
+%type <term> 		term 
+%type <expr>		expr call simple_action edge_expr invocation setting
+%type <action_field>	action action_expr
+%type <list_expr> 	list_expr context list_par_expr effects list_effects
+/* %type <add_del_list> 	 */
+%type <dn> 		body inst list_inst while_inst do_inst par_inst top_expr if_inst comment goto_inst
+%type <dn> 		label_inst break_inst if_part_inst
+%type <prop_list>       properties properties_list
+%type <prop> 		property
+%type <var_list> 	var_list
+%type <list>		edge_knots list_knots body_list
+
+%%
+one_command_return: 				
+	command 			{YYACCEPT;} /* We have to return explicitly to free the memory
+								and get out of here*/
+	;
+
+command:
+	EOF_TK 					{;} /* Just to swallow EOF in iclude files... */
+	| LOAD_TK OPF_TK			{yy_begin_0();}
+		read_file_name 			{if (!be_quiet) printf(LG_STR("%sLoading/compiling OP File \"%s\".\n",
+									      "%sChargement/compilation fichier OP \"%s\".\n"),parser_indent, $4);
+						 if (open_file_for_yyparse($4)<0) {
+						      printf(LG_STR("%sAbort loading/compiling OP File.\n",
+								    "%sAbandon chargement/compilation fichier OP.\n"),parser_indent);
+						      FREE($4);
+						      YYABORT;
+						 }
+						 current_graph_file_name = $4;} 
+		op_graph 			{close_file_for_yyparse(); FREE($4);
+						 if (!be_quiet) printf(LG_STR("%sLoading/compiling OP File done.\n",
+									      "%sChargement/compilation fichier OP terminé.\n"),parser_indent);}
+	| DUMP_TK OP_TK				{yy_begin_0();} 
+		write_file_name			{if (!be_quiet) printf(LG_STR("Dumping OP db in \"%s\".\n",
+							       "Dump de base de OP dans \"%s\".\n"),$4);
+		                                 dump_op_database_from_parser(relevant_op, $4);
+						 if (!be_quiet) printf(LG_STR("\nDumping OP db done.\n",
+							       "\nDump de base de OP terminé.\n"));
+						 FREE($4);}
+	| LOAD_TK DUMP_TK OP_TK			{yy_begin_0();} 
+		read_file_name			{if (!be_quiet) printf(LG_STR("%sLoading compiled OPs from \"%s\".\n",
+							       "%sChargement OPs compilés de \"%s\".\n"),parser_indent,$5);
+		                                 load_op_database_from_parser(relevant_op, $5);
+						 if (!be_quiet) printf(LG_STR("\n%sLoading compiled OPs done.\n",
+							       "\n%sChargement OPs compilés terminé.\n"),parser_indent);
+						 FREE($5);}
+	| EMPTY_TK OP_TK DB_TK			{clear_op_database(relevant_op, compile_graphix); 
+						 if (!be_quiet) printf(LG_STR("OP Database cleared.\n",
+									      "Base de OP vidée.\n"));}
+	| INCLUDE_TK   				{yy_begin_0();} 
+		read_file_name 			{if (open_file_for_yyparse($3)<0) YYABORT; FREE($3);} 
+	| REQUIRE_TK   				{yy_begin_0();} 
+		read_file_name 			{if (! (loaded_include_file($3))) {
+		     					if (open_file_for_yyparse($3)<0) YYABORT;
+							provide_include_file($3);
+						} else  FREE($3);} 
+ 	| DECLARE_TK ID_TK			{yy_begin_0();}
+		SYMBOL_TK 			/* Nothing to do... it will register it. */
+ 	| DECLARE_TK PREDICATE_TK		{yy_begin_0(); check_pfr = FALSE;}
+		pred_func  			{check_pfr = TRUE;}
+ 	| DECLARE_TK FUNCTION_TK		{yy_begin_0(); check_pfr = FALSE;}
+		pred_func 			{check_pfr = TRUE;}
+ 	| DECLARE_TK OP_PREDICATE_TK		{yy_begin_0(); check_pfr = FALSE;}
+		pred_func  			{declare_predicate_op($4); check_pfr = TRUE;}
+ 	| DECLARE_TK CWP_TK 			{yy_begin_0(); check_pfr = FALSE;}
+		pred_func  			{declare_cwp($4); check_pfr = TRUE;}
+ 	| DECLARE_TK FF_TK  			{yy_begin_0(); check_pfr = FALSE;}
+		pred_func INTEGER_TK 		{declare_ff($4,$5); check_pfr = TRUE;}
+ 	| DECLARE_TK BE_TK  			{yy_begin_0(); check_pfr = FALSE;}
+		pred_func 			{declare_be($4); check_pfr = TRUE;}
+ 	| DECLARE_TK EVALUABLE_TK PREDICATE_TK  {yy_begin_0(); check_pfr = FALSE;}
+		SYMBOL_TK INTEGER_TK    	{make_and_declare_eval_pred($5,NULL,$6,TRUE);
+		                                 check_pfr = TRUE;}
+ 	| DECLARE_TK EVALUABLE_TK FUNCTION_TK   {yy_begin_0(); check_pfr = FALSE;}
+		SYMBOL_TK INTEGER_TK      	{make_and_declare_eval_funct($5,NULL,$6);
+		                                 check_pfr = TRUE;}
+ 	| DECLARE_TK ACTION_TK                  {yy_begin_0(); check_pfr = FALSE;}
+		SYMBOL_TK INTEGER_TK       	{make_and_declare_action($4,NULL,$5);
+		                                 check_pfr = TRUE;}
+	| SET_TK OPRS_DATA_PATH_TK QSTRING_TK	{oprs_data_path = $3;}
+
+	| SET_TK SYM_TK debug_flag		{compiler_option[CHECK_SYMBOL]=$3;}
+	| SET_TK FUNCTION_TK debug_flag		{compiler_option[CHECK_PFR]=$3;}
+	| SET_TK PREDICATE_TK debug_flag	{compiler_option[CHECK_PFR]=$3;}
+
+        ;
+
+debug_flag:
+	 ON_TK 					{$$ = TRUE;}
+	|OFF_TK					{$$ = FALSE;}
+	   ;
+
+/**************/
+/* OP section */
+/**************/
+
+op_graph:					{yy_begin_OPF_VERSION();}
+	new_op_graph 				
+	| error					{warning(LG_STR("Either this is not a OP file, or this OP file version is obsolete.\n\
+\tConvert it using the OP-Editor (load the file in the op-editor and then save it)\n\
+\tor issue the \"op-editor -c <file-to-convert>*\" command.",
+								"Ou bien ce fichier n'es pas un fichier de OP, ou cette version de format de OP est obsolète.\n\
+\tSi c'est le case, convertisses le en utilisant le OP-Editor (chargez le puis sauvez le)\n\
+\tou bien tapez la commande \"op-editor -c <fichier-a-convertir>*\"."));}
+
+	;
+
+/*****************************************************/
+/* This is the new OP file grammar. Format Version 1 */
+/*****************************************************/
+
+new_op_graph: | /* empty  file... */
+        OPENP_TK OPF_VERSION1 			{yy_begin_0();}
+	nop_list CLOSEP_TK			      
+        | OPENP_TK OPF_VERSION2 			{yy_begin_0();}
+	  OPENP_TK					
+           symbol_list				
+          CLOSEP_TK nop_list CLOSEP_TK
+	| OPENP_TK 				{yy_begin_0();} 
+	     top_list CLOSEP_TK
+	;
+
+symbol_list: 	
+        /* empty */
+	| symbol_list symbol			 
+	;
+
+nop_list: 	
+        /* empty */
+	| nop_list nop
+	| nop_list top
+	;
+
+nop: 	
+	OPENP_TK op_name 				{init_make_op($2, compile_graphix);} /* Will initialize current_op. */
+	OPENP_TK nlist_fields CLOSEP_TK
+	OPENP_TK nlist_nodes CLOSEP_TK
+	OPENP_TK nlist_edges CLOSEP_TK CLOSEP_TK		{finish_loading_op(current_op,  (compile_graphix?global_draw_data:NULL));
+						 add_op_to_relevant_op(current_op,relevant_op);
+						 if (!be_quiet) printf("    %s%s\n",parser_indent,$2);
+						 disable_variable_parsing();}
+	;
+
+nlist_nodes: 
+	/* empty */
+	| nlist_nodes nnode  			
+	;
+
+nnode: 	
+	OPENP_TK {yy_begin_NODE_TYPE();} nnode_typed CLOSEP_TK
+	;
+
+nnode_typed: 		
+	NT_ELSE_TK {yy_begin_0();} node_name join split pos_x pos_y
+                {build_and_add_node(current_op, $3, NT_ELSE, $4, $5, $6, $7, (compile_graphix?global_draw_data:NULL));}
+	| NT_THEN_TK {yy_begin_0();} node_name join split pos_x pos_y
+                {build_and_add_node(current_op, $3, NT_THEN, $4, $5, $6, $7, (compile_graphix?global_draw_data:NULL));}
+	| NT_IF_TK  {yy_begin_0();} node_name join split pos_x pos_y
+		{build_and_add_node(current_op, $3, NT_IF, $4, $5, $6, $7,  (compile_graphix?global_draw_data:NULL));}
+	| NT_PROCESS_TK  {yy_begin_0();} node_name join split pos_x pos_y
+		{build_and_add_node(current_op, $3, NT_PROCESS, $4, $5, $6, $7,  (compile_graphix?global_draw_data:NULL));}
+	| NT_END_TK  {yy_begin_0();} node_name join split pos_x pos_y
+		{build_and_add_node(current_op, $3, NT_END, $4, $5, $6, $7,  (compile_graphix?global_draw_data:NULL));}
+	| NT_START_TK {yy_begin_0();} node_name join split pos_x pos_y
+		{build_and_add_node(current_op, $3, NT_START, $4, $5, $6, $7,  (compile_graphix?global_draw_data:NULL));}
+     	;
+
+join: boolean		{$$ = $1;}
+	;
+
+split: boolean		{$$ = $1;}
+	;
+
+nlist_fields: 
+	/* empty (bien que ca ne soit pas possible...) */
+	| nlist_fields nfield
+	;
+
+nfield: 	
+	OPENP_TK {yy_begin_FIELD_TYPE();} nfield_typed CLOSEP_TK
+	;
+
+nfield_typed: 		
+	FT_INVOCATION_TK {yy_begin_0();} node_name invocation pos_x pos_y visible pp_width pp_fill
+		{build_invocation(current_op, $3, $4, $5, $6, $7, $8, $9, (compile_graphix?global_draw_data:NULL));}
+	FT_CALL_TK {yy_begin_0();} node_name call pos_x pos_y visible pp_width pp_fill
+		{build_call(current_op, $3, $4, $5, $6, $7, $8, $9, (compile_graphix?global_draw_data:NULL));}
+	| FT_CONTEXT_TK {yy_begin_0();} node_name context  pos_x pos_y visible pp_width pp_fill
+		{build_context(current_op, $3, $4, $5, $6, $7, $8, $9,  (compile_graphix?global_draw_data:NULL));}
+	| FT_SETTING_TK {yy_begin_0();} node_name setting  pos_x pos_y visible pp_width pp_fill
+		{build_setting(current_op, $3, $4, $5, $6, $7, $8, $9,  (compile_graphix?global_draw_data:NULL));}
+	| FT_PROPERTIES_TK {yy_begin_0();} node_name properties  pos_x pos_y visible pp_width pp_fill
+		{build_properties(current_op, $3, $4, $5, $6, $7, $8, $9,  (compile_graphix?global_draw_data:NULL));}
+	| FT_DOCUMENTATION_TK {yy_begin_0();} node_name documentation pos_x pos_y visible pp_width pp_fill
+		{if (compile_graphix)                 
+		     build_documentation(current_op, $3, $4, $5, $6, $7, $8, $9, global_draw_data);
+		     else
+		     FREE($4);}
+	| FT_EFFECTS_TK {yy_begin_0();} node_name effects pos_x pos_y visible pp_width pp_fill
+		{build_effects(current_op, $3, $4, $5, $6, $7, $8, $9,  (compile_graphix?global_draw_data:NULL));}
+	| FT_ACTION_TK {yy_begin_0();} node_name action  pos_x pos_y visible pp_width pp_fill
+		{build_action(current_op, $3, $4, $5, $6, $7, $8, $9,  (compile_graphix?global_draw_data:NULL));}
+	;
+
+include "yacc-graph-op.y.part"
+
+nedge_typed:
+	ET_GOAL_TK {yy_begin_0();} node_name edge_name node_name edge_expr edge_knots pos_x pos_y pp_width pp_fill
+		{build_and_add_edge(current_op, $3, $5, ET_GOAL, $6, $7, $8, $9, $10, $11, (compile_graphix?global_draw_data:NULL));}
+	| ET_IF_TK {yy_begin_0();} node_name edge_name node_name edge_expr edge_knots pos_x pos_y pp_width pp_fill
+		{build_and_add_edge(current_op, $3, $5, ET_IF, $6, $7, $8, $9, $10, $11, (compile_graphix?global_draw_data:NULL));}
+	| ET_ELSE_TK {yy_begin_0();} node_name edge_name node_name
+		{build_and_add_then_else_edge(current_op, $3, $5, ET_ELSE, (compile_graphix?global_draw_data:NULL));}
+	| ET_THEN_TK {yy_begin_0();} node_name edge_name node_name
+		{build_and_add_then_else_edge(current_op, $3, $5, ET_THEN, (compile_graphix?global_draw_data:NULL));}
+	;
+
+top_list: 
+	/* empty */
+	| top_list top
+	|  error RESET_DOT_TK 			{warning(LG_STR("Parsing error, expecting a Text OP list",
+								"Erreur de parsing, attendait une liste de OP textuel"));}
+	;
+
+top: OPENP_TK DEFOP_TK op_name 			{init_make_top($3, compile_graphix);} /* Will initialize current_op. */
+	       fields_list
+	CLOSEP_TK					{finish_loading_top(current_op, (compile_graphix?global_draw_data:NULL));
+						 add_op_to_relevant_op(current_op,relevant_op);
+						 if (!be_quiet) printf("    %s%s\n",parser_indent,$3);
+						 disable_variable_parsing();}
+;
+
+include "yacc-text-op.y.part"
+
+
+
+variable:
+	LOGICAL_VAR_TK 				{$$=build_var_in_frame($1,LOGICAL_VARIABLE);}
+	| LOGICAL_VAR_TK  TYPE_SEP_TK SYMBOL_TK	{$$=build_var_in_frame($1,LOGICAL_VARIABLE);
+						 set_var_type_by_name($3, $$);}
+	| PROGRAM_VAR_TK			{$$=build_var_in_frame($1,PROGRAM_VARIABLE);}
+	| PROGRAM_VAR_TK  TYPE_SEP_TK SYMBOL_TK	{$$=build_var_in_frame($1,PROGRAM_VARIABLE);
+						 set_var_type_by_name($3, $$);}
+	;
+
+symbol:  SYMBOL_TK				{$$=$1;}
+	| SYMBOL_TK TYPE_SEP_TK SYMBOL_TK 	{set_type_by_name($3,$1);$$=$1;}
+	;
+
+include "yacc-exp.y.part"
+include "yacc-file.y.part"
+
+%%
+
+Slist *included_file_name;
+
+PBoolean loaded_include_file(char *filename)
+{
+	 return (included_file_name ?
+	     (sl_search_slist(included_file_name, filename, equal_string) != NULL) :
+	     FALSE);
+}
+
+void provide_include_file(char *filename)
+{
+/*      if (! current_oprs->included_file_name)  */
+/* 	  current_oprs->included_file_name = sl_make_slist(); */
+
+     sl_add_to_tail(included_file_name,filename);
+}
