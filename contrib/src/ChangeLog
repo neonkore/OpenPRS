@@ -1,3 +1,14 @@
+2012-07-23  Felix Ingrand  <felix@cturtle>
+
+	* pu-genom.c (pu_check_ttc_name_strict): Made a strict
+	version... this could be a macro.
+
+2012-06-08  Felix Ingrand  <felix@cturtle>
+
+	* pu-genom.c: Added macro/function for
+	genom3 encoding/decoding... I removed the "array" stuff, which I
+	should not need anymore... we will see.
+
 2011-03-01  Felix Ingrand  <felix@cturtle>
 
 	* pu-genom.c added function to add simple type (not expecting array like with GenoM).

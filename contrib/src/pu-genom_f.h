@@ -41,6 +41,38 @@ extern Term *pu_decode_genom_float ( char *name, float *addr, int size );
 extern Term *pu_decode_genom_double ( char *name, double *addr, int size );
 extern Term *pu_decode_genom_string ( char *name, char *addr, int size, int max_size );
 
+extern PBoolean pu_check_ttc_name_strict(Expression *tc, char *name);
+extern PBoolean pu_encode_genom3_double ( char *name, Expression *tc, double *val_addr);
+extern PBoolean pu_encode_genom3_float ( char *name, Expression *tc, float *val_addr);
+extern PBoolean pu_encode_genom3_long_long_int ( char *name, Expression *tc, long long int *val_addr);
+extern PBoolean pu_encode_genom3_unsigned_long_long_int ( char *name, Expression *tc, unsigned long long int *val_addr);
+extern PBoolean pu_encode_genom3_int ( char *name, Expression *tc, int *val_addr);
+extern PBoolean pu_encode_genom3_unsigned_int ( char *name, Expression *tc, unsigned int *val_addr);
+extern PBoolean pu_encode_genom3_short ( char *name, Expression *tc, short *val_addr);
+extern PBoolean pu_encode_genom3_short_int ( char *name, Expression *tc, short int *val_addr);
+extern PBoolean pu_encode_genom3_unsigned_short_int ( char *name, Expression *tc, unsigned short int *val_addr);
+extern PBoolean pu_encode_genom3_long_int ( char *name, Expression *tc, long int *val_addr);
+extern PBoolean pu_encode_genom3_unsigned_long_int ( char *name, Expression *tc, unsigned long int *val_addr);
+extern PBoolean pu_encode_genom3_char ( char *name, Expression *tc, char *val_addr);
+extern PBoolean pu_encode_genom3_unsigned_char ( char *name, Expression *tc, unsigned char *val_addr);
+extern PBoolean pu_encode_genom3_addr ( char *name, Expression *tc, void * *val_addr);
+
+extern Term *pu_decode_genom3_int ( char *name, int *addr);
+extern Term *pu_decode_genom3_long_long_int ( char *name, long long int *addr);
+extern Term *pu_decode_genom3_unsigned_long_long_int ( char *name, unsigned long long int *addr);
+extern Term *pu_decode_genom3_unsigned_int ( char *name, unsigned int *addr);
+extern Term *pu_decode_genom3_unsigned_char ( char *name, unsigned char *addr);
+extern Term *pu_decode_genom3_short ( char *name, short *addr);
+extern Term *pu_decode_genom3_short_int ( char *name, short int *addr);
+extern Term *pu_decode_genom3_unsigned_short_int ( char *name, unsigned short int *addr);
+extern Term *pu_decode_genom3_long_int ( char *name, long int *addr);
+extern Term *pu_decode_genom3_unsigned_long_int ( char *name, unsigned long int *addr);
+extern Term *pu_decode_genom3_addr ( char *name, void * *addr);
+extern Term *pu_decode_genom3_char ( char *name, char *addr);
+extern Term *pu_decode_genom3_float ( char *name, float *addr);
+extern Term *pu_decode_genom3_double ( char *name, double *addr);
+
+
 extern Term *pu_simple_decode_int ( char *name, int addr );
 extern Term *pu_simple_decode_long_long_int ( char *name, long long int addr );
 extern Term *pu_simple_decode_unsigned_long_long_int ( char *name, unsigned long long int addr );

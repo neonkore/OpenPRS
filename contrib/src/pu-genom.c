@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * pu-genom.c -- 
  * 
- * Copyright (C) 1999-2011 LAAS/CNRS
+ * Copyright (C) 1999-2012 LAAS/CNRS
  * 
  * $Id$
  */
@@ -46,7 +46,18 @@ PBoolean pu_check_ttc_name(Expression *tc, char *name, char *type_name)
 	  fprintf(stderr,"pu_check_ttc_name: bad name, %s should be %s\n",
 		   (name ? name : type_name), PFR_NAME(tc->pfr));
 	  return FALSE;
-     } else return TRUE;
+     } else 
+	  return TRUE;
+}
+
+PBoolean pu_check_ttc_name_strict(Expression *tc, char *name)
+{
+     if (strcasecmp(PFR_NAME(tc->pfr), name) != 0) {
+	  fprintf(stderr,"pu_check_ttc_name_strict: bad name, %s should be %s\n",
+		   name, PFR_NAME(tc->pfr));
+	  return FALSE;
+     } else 
+	  return TRUE;
 }
 
 /* PBoolean pu_check_array_size(int *i) */
@@ -85,6 +96,20 @@ PBoolean pu_encode_genom_ ## type_gen_name (char *name, Expression *tc, type_gen
      }\
 }
 
+#define define_pu_encode_genom3(type_gen_name,type_gen,type_oprs,type_term) \
+PBoolean pu_encode_genom3_ ## type_gen_name (char *name, Expression *tc, type_gen *val_addr)\
+{\
+     if (!pu_check_ttc_name(tc, name, #type_term))\
+	  return FALSE;\
+     else {\
+       type_oprs val;\
+       if (!PUGetOprsTermCompSpecArg(tc, 1, type_term, &val))\
+	 return FALSE;\
+       *(val_addr) = (type_gen)val;\
+       return TRUE;\
+     }\
+}
+
 
 /* pu_encode_genom_double */
 define_pu_encode_genom(double, double, double, FLOAT)
@@ -108,6 +133,29 @@ define_pu_encode_genom(char, char, int, INTEGER)
 define_pu_encode_genom(unsigned_char, unsigned char, int, INTEGER)
 
 define_pu_encode_genom(addr, void *, void *, U_POINTER)
+
+/* pu_encode_genom_double */
+define_pu_encode_genom3(double, double, double, FLOAT)
+/* pu_encode_genom_float */
+define_pu_encode_genom3(float, float, double, FLOAT)
+/* pu_encode_genom_int */
+define_pu_encode_genom3(long_long_int, long long int, long long int, LONG_LONG)
+define_pu_encode_genom3(unsigned_long_long_int, unsigned long long int, long long int, LONG_LONG)
+
+define_pu_encode_genom3(int, int, int, INTEGER)
+define_pu_encode_genom3(unsigned_int, unsigned int, int, INTEGER)
+
+define_pu_encode_genom3(short, short, int, INTEGER)
+define_pu_encode_genom3(short_int, short int, int, INTEGER)
+define_pu_encode_genom3(unsigned_short_int, unsigned short int, int, INTEGER)
+
+define_pu_encode_genom3(long_int, long int, int, INTEGER)
+define_pu_encode_genom3(unsigned_long_int, unsigned long int, int, INTEGER)
+
+define_pu_encode_genom3(char, char, int, INTEGER)
+define_pu_encode_genom3(unsigned_char, unsigned char, int, INTEGER)
+
+define_pu_encode_genom3(addr, void *, void *, U_POINTER)
 
 /* Strings are particular... */
 PBoolean pu_encode_genom_string(char *name, Expression *tc, char *val_addr, int size, int max_size)
@@ -162,6 +210,15 @@ Term *pu_decode_genom_ ## type_gen_name(char *name, type_gen *addr, int size) \
      return build_term_expr(build_expr_pfr_terms(fr, tl));\
 }
 
+#define define_pu_decode_genom3(type_gen_name,type_gen,oprs_fct,type_term,prop_type) \
+Term *pu_decode_genom3_ ## type_gen_name(char *name, type_gen *addr) \
+{\
+     Pred_Func_Rec *fr = find_or_create_pred_func(declare_atom(name?name:#prop_type));\
+     TermList tl = sl_make_slist();\
+     sl_add_to_tail(tl, oprs_fct((type_term)*(addr)));\
+     return build_term_expr(build_expr_pfr_terms(fr, tl));\
+}
+
 define_pu_decode_genom(int, int, PUMakeTermInteger, int, INTEGER)
 define_pu_decode_genom(long_long_int, long long int, PUMakeTermLongLong, long long int, LONG_LONG)
 define_pu_decode_genom(unsigned_long_long_int, unsigned long long int, PUMakeTermLongLong, long long int, LONG_LONG)
@@ -179,6 +236,24 @@ define_pu_decode_genom(addr, void *, PUMakeTermUPointer, void *, U_POINTER)
 define_pu_decode_genom(char, char, PUMakeTermInteger, int, INTEGER)
 define_pu_decode_genom(float, float, PUMakeTermFloat, double, FLOAT)
 define_pu_decode_genom(double, double, PUMakeTermFloat, double, FLOAT)
+
+define_pu_decode_genom3(int, int, PUMakeTermInteger, int, INTEGER)
+define_pu_decode_genom3(long_long_int, long long int, PUMakeTermLongLong, long long int, LONG_LONG)
+define_pu_decode_genom3(unsigned_long_long_int, unsigned long long int, PUMakeTermLongLong, long long int, LONG_LONG)
+define_pu_decode_genom3(unsigned_int, unsigned int, PUMakeTermInteger, int, INTEGER)
+define_pu_decode_genom3(unsigned_char, unsigned char, PUMakeTermInteger, int, INTEGER)
+
+define_pu_decode_genom3(short, short, PUMakeTermInteger, int, INTEGER)
+define_pu_decode_genom3(short_int, short int, PUMakeTermInteger, int, INTEGER)
+define_pu_decode_genom3(unsigned_short_int, unsigned short int, PUMakeTermInteger, int, INTEGER)
+
+define_pu_decode_genom3(long_int, long int, PUMakeTermInteger, int, INTEGER)
+define_pu_decode_genom3(unsigned_long_int, unsigned long int, PUMakeTermInteger, int, INTEGER)
+
+define_pu_decode_genom3(addr, void *, PUMakeTermUPointer, void *, U_POINTER)
+define_pu_decode_genom3(char, char, PUMakeTermInteger, int, INTEGER)
+define_pu_decode_genom3(float, float, PUMakeTermFloat, double, FLOAT)
+define_pu_decode_genom3(double, double, PUMakeTermFloat, double, FLOAT)
 
 Term *pu_decode_genom_string(char *name, char *addr, int size, int max_size)
 {
