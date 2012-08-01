@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * pu-mk-term.c -- 
  * 
- * Copyright (C) 1993-2005 LAAS/CNRS.
+ * Copyright (C) 1993-2012 LAAS/CNRS.
  *
  *                         -- C N R S -- 
  *         Laboratoire d'Automatique et d'Analyse des Systemes 
@@ -87,7 +87,7 @@ Term * PUMakeTermNil()
      return(build_nil());
 }
 
-Term *PUMakeTermString(char *string)
+Term *PUMakeTermString(const char *string)
 {    
      return(build_string(string));
 }

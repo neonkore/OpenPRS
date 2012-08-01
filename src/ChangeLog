@@ -1,3 +1,10 @@
+2012-08-01  Felix Ingrand  <felix@cturtle>
+
+	* oprs-type.c (build_dummy_expr_terms): Added this function for
+	openprs genom3 encoding... not sure it is a great idea.
+
+	* oprs-type_f-pub.h: Exporting build_term_l_list_from_c_list.
+
 2012-03-14  Felix Ingrand  <felix@cturtle>
 
 	* openprs.pc.in (oprsdatadir): Add the path to the data in the .pc

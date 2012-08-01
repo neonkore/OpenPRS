@@ -19,7 +19,7 @@ extern Term* PUMakeTermUPointer ( void *pointer );
 extern Term* PUMakeTermUMemory ( void *p, int size );
 extern Term * PUMakeTermTrue ( void );
 extern Term * PUMakeTermNil ( void );
-extern Term *PUMakeTermString ( char *string );
+extern Term *PUMakeTermString (const char *string );
 extern Term * PUMakeTermLispList ( int NbTerm, ... );
 extern Term * PUMakeTermComp ( Pred_Func_Rec* funcName, int NbTerm, ... );
 extern Term * PUMakeExternalTermComp ( char* fName, int NbTerm, ... );

@@ -1,3 +1,7 @@
+2012-07-31  Felix Ingrand  <felix@cturtle>
+
+	* pu-mk-term.c (PUMakeTermString): const char *...
+
 2012-07-23  Felix Ingrand  <felix@cturtle>
 
 	* pu-genom.c (pu_check_ttc_name_strict): Made a strict

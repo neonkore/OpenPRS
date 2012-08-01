@@ -3,7 +3,7 @@
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -174,10 +174,6 @@ Expression *not_expr_dup (Expression *expr);
 #define CALL_P(expr) ((expr)->pfr->name == call_sym)
 
 Expression *build_expr_sym_expr(Symbol predicat, Expression *i);
-
-#define TERM_EXPR(term) ((term)->u.expr)
-#define EXPR_TERMS(expr) ((TermList)((expr)->terms))
-#define EXPR_EXPR1(expr) (TERM_EXPR((Term *)sl_get_slist_head(EXPR_TERMS(expr))))
 
 ExprList expr_list_from_term_list(TermList tl);
 

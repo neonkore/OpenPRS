@@ -3,7 +3,7 @@
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2005 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -92,6 +92,11 @@ int num_char_sprint(char *x);
 #else
 int num_char_sprint(int x);
 #endif
+
+#define TERM_EXPR(term) ((term)->u.expr)
+#define EXPR_TERMS(expr) ((TermList)((expr)->terms))
+#define EXPR_TERM1(expr) ((Term *)sl_get_slist_head(EXPR_TERMS(expr)))
+#define EXPR_EXPR1(expr) (TERM_EXPR((Term *)sl_get_slist_head(EXPR_TERMS(expr))))
 
 #ifdef __cplusplus
 }
