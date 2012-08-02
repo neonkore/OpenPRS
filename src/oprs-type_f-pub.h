@@ -66,8 +66,7 @@ void *u_memory_mem(Term *t);
 Term *transform_term_c_list_to_term_l_list(Term *res);
 
 TermList build_term_list(TermList tl, Term *t);
-
-
+Term *build_term_l_list_from_c_list(TermList tl);
 Expression *build_expr_pfr_terms(Pred_Func_Rec *pfr, TermList i);
 Expression *build_expr_sym_terms(Symbol predicat, TermList i);
 

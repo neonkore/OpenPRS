@@ -42,7 +42,6 @@ Undo *make_undo(Envar *ev);
 void build_frame();
 
 Term *build_term_from_var_list(VarList vl);
-Term *build_term_l_list_from_c_list(TermList tl);
 Term *build_goal_term(Goal *l);
 Term *build_opi_term(Op_Instance *l);
 Term *build_intention_term(Intention *l);

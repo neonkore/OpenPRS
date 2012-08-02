@@ -54,7 +54,7 @@ PBoolean pu_check_ttc_name_strict(Expression *tc, char *name)
 {
      if (strcasecmp(PFR_NAME(tc->pfr), name) != 0) {
 	  fprintf(stderr,"pu_check_ttc_name_strict: bad name, %s should be %s\n",
-		   name, PFR_NAME(tc->pfr));
+		  PFR_NAME(tc->pfr), name);
 	  return FALSE;
      } else 
 	  return TRUE;

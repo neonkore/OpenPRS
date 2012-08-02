@@ -1430,7 +1430,7 @@ OpenPRS est fourni sans garantie aucune.\n\
 static void quit_handler(int sig)
 {
      fprintf(stderr,"Quitting on signal %d.\n", sig);
-     wrap_up();
+     wrap_up();			/* this is probably not safe...  */
      fprintf(stderr,"Finished cleaning up.\n");
      exit(1);
 } 
