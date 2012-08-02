@@ -1,3 +1,10 @@
+2012-08-02  Felix Ingrand  <felix@cturtle>
+
+	* lex-exp.l.part (>): Removed the various "test, achieve,
+	maintain, etc" temporal operators... hardly used and
+	confusing. Moreover, it creates "problem" with namespace when
+	loading external OPs. (e.g. for the test module ;-) )
+
 2012-08-01  Felix Ingrand  <felix@cturtle>
 
 	* oprs-type.c (build_dummy_expr_terms): Added this function for

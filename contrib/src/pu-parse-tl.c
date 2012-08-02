@@ -5,7 +5,7 @@
  * Description: 
  * Author: Felix Ingrand <felix@laas.fr>
  *
- * Copyright (C) 1993-2011 LAAS/CNRS.
+ * Copyright (C) 1993-2012 LAAS/CNRS.
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -73,7 +73,7 @@
 
 #endif
 
-static PBoolean PU_bind_integer(int *intPtr, Term *term)
+PBoolean PU_bind_integer(int *intPtr, Term *term)
 {
      if (term->type == INTEGER) {
 	  *intPtr = term->u.intval;
@@ -84,7 +84,7 @@ static PBoolean PU_bind_integer(int *intPtr, Term *term)
      }
 }
 
-static PBoolean PU_bind_long_long(long long int *intPtr, Term *term)
+PBoolean PU_bind_long_long(long long int *intPtr, Term *term)
 {
      if (term->type == LONG_LONG) {
 	  *intPtr = term->u.llintval;
@@ -95,7 +95,7 @@ static PBoolean PU_bind_long_long(long long int *intPtr, Term *term)
      }
 }
 
-static PBoolean PU_bind_string(char **strPtr, Term *paramTerm)
+PBoolean PU_bind_string(char **strPtr, Term *paramTerm)
 {
      if (paramTerm->type == STRING) {
 	  *strPtr = paramTerm->u.string;
@@ -106,7 +106,7 @@ static PBoolean PU_bind_string(char **strPtr, Term *paramTerm)
      }
 }
 
-static PBoolean PU_bind_atom(Symbol *atomPtr, Term *paramTerm)
+PBoolean PU_bind_atom(Symbol *atomPtr, Term *paramTerm)
 {
      if (paramTerm->type == ATOM) {
 	  *atomPtr = paramTerm->u.id;
@@ -117,7 +117,7 @@ static PBoolean PU_bind_atom(Symbol *atomPtr, Term *paramTerm)
      }
 }
 
-static PBoolean PU_bind_u_pointer(void **ptr, Term *paramTerm)
+PBoolean PU_bind_u_pointer(void **ptr, Term *paramTerm)
 {
      if (paramTerm->type == U_POINTER) {
 	  *ptr = paramTerm->u.u_pointer;
@@ -128,7 +128,7 @@ static PBoolean PU_bind_u_pointer(void **ptr, Term *paramTerm)
      }		
 }
 
-static PBoolean PU_bind_u_memory(U_Memory **u_mem, Term *paramTerm)
+PBoolean PU_bind_u_memory(U_Memory **u_mem, Term *paramTerm)
 {
      if (paramTerm->type == U_MEMORY) {
 	  *u_mem = paramTerm->u.u_memory;
@@ -139,7 +139,7 @@ static PBoolean PU_bind_u_memory(U_Memory **u_mem, Term *paramTerm)
      }		
 }
 
-static PBoolean PU_bind_expr(Expression **tcPtr, Term *paramTerm)
+PBoolean PU_bind_expr(Expression **tcPtr, Term *paramTerm)
 {
      if (paramTerm->type == EXPRESSION) {
 	  *tcPtr = paramTerm->u.expr;
@@ -150,7 +150,7 @@ static PBoolean PU_bind_expr(Expression **tcPtr, Term *paramTerm)
      }
 }
 
-static PBoolean PU_bind_l_list(L_List *lispList, Term *paramTerm)
+PBoolean PU_bind_l_list(L_List *lispList, Term *paramTerm)
 {
      if (paramTerm->type == LISP_LIST) {
 	  *lispList = paramTerm->u.l_list;
@@ -161,7 +161,7 @@ static PBoolean PU_bind_l_list(L_List *lispList, Term *paramTerm)
      }
 }
 
-static PBoolean PU_bind_float(double *doublePtr, Term *paramTerm)
+PBoolean PU_bind_float(double *doublePtr, Term *paramTerm)
 {
      if (paramTerm->type == FLOAT) {
 	  *doublePtr = *paramTerm->u.doubleptr;

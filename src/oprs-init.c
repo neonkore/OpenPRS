@@ -39,6 +39,12 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#ifdef HAS_SYS_SIGNAL
+#include <sys/signal.h>
+#else
+#include <signal.h>
+#endif
+
 #ifdef GRAPHIX
 #ifdef GTK
 #include <gtk/gtk.h>
@@ -112,6 +118,9 @@
 #include "xoprs-intention.h"
 #endif
 #endif
+
+
+void install_quit_handler(void);
 
 #define OPRS_HELP_MESSAGE LG_STR(\
 "Go to the oprs-server, and enter the 'accept' command.\n",\
@@ -620,7 +629,7 @@ char *oprs_init_arg(int argc,char **argv, char **mp_hostn, int *mp_p, char **ser
 	  }
      if (getoptflg) {
 	  fprintf(stderr, OPRS_ARG_ERR_MESSAGE, argv[0]);
-	  socket_cleanup_and_exit(1);
+	  socket_cleanup_and_exit(0);
      }
 
      if ( !oprsname_flg ){
@@ -778,6 +787,8 @@ char *oprs_init_arg(int argc,char **argv, char **mp_hostn, int *mp_p, char **ser
      *mp_p = mp_port;
      *server_hostn = server_hostname;
      *server_p = server_port;
+
+     install_quit_handler();
 
      return(oprs_name);
 }
@@ -1413,4 +1424,29 @@ Date        : %s\n\
 \n\
 OpenPRS est fourni sans garantie aucune.\n\
 "), package_version, COPYRIGHT_STRING, package_version, host, date);
+}
+
+
+static void quit_handler(int sig)
+{
+     fprintf(stderr,"Quitting on signal %d.\n", sig);
+     wrap_up();
+     fprintf(stderr,"Finished cleaning up.\n");
+     exit(1);
+} 
+
+static struct sigaction quit_act;
+
+void install_quit_handler(void)
+{
+#ifdef HAS_SIGACTION
+     /* Install the handler. */
+     quit_act.sa_handler = quit_handler;
+     sigemptyset(&quit_act.sa_mask);
+     sigaddset(&quit_act.sa_mask, SIGINT);
+
+     sigaction(SIGINT, &quit_act, NULL);
+#else /* SVR4 */
+     signal(SIGINT, quit_handler);
+#endif /* SVR4 */
 }

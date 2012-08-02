@@ -8,6 +8,15 @@ extern "C" {
 #endif
 
 /* Prototypes */
+extern PBoolean PU_bind_integer(int *intPtr, Term *term);
+extern PBoolean PU_bind_long_long(long long int *intPtr, Term *term);
+extern PBoolean PU_bind_string(char **strPtr, Term *paramTerm);
+extern PBoolean PU_bind_atom(Symbol *atomPtr, Term *paramTerm);
+extern PBoolean PU_bind_u_pointer(void **ptr, Term *paramTerm);
+extern PBoolean PU_bind_u_memory(U_Memory **u_mem, Term *paramTerm);
+extern PBoolean PU_bind_expr(Expression **tcPtr, Term *paramTerm);
+extern PBoolean PU_bind_l_list(L_List *lispList, Term *paramTerm);
+extern PBoolean PU_bind_float(double *doublePtr, Term *paramTerm);
 
 extern PBoolean PUGetOprsParameters ( TermList paramList, int NbParametres, ... );
 extern PBoolean PUGetLispListElem ( L_List lispList, int NbTerm, ... );

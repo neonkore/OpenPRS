@@ -1,3 +1,7 @@
+2012-08-02  Felix Ingrand  <felix@cturtle>
+
+	* pu-parse-tl.c (PU_bind_expr): from static to extern for PU_bind functions.
+
 2012-07-31  Felix Ingrand  <felix@cturtle>
 
 	* pu-mk-term.c (PUMakeTermString): const char *...
