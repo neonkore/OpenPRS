@@ -112,7 +112,7 @@ EXTERNAL_INCLUDE = action_f-pub.h constant-pub.h ev-function_f-pub.h ev-predicat
 	oprs-type_f-pub.h oprs_f-pub.h user-action.h user-ev-function.h \
 	user-ev-predicate.h xoprs-main-pub.h oprs-error-pub.h \
 	oprs-rerror_f-pub.h user-trace.h user-trace_f.h oprs-print_f-pub.h \
-	user-end-hook_f-pub.h user-end-hook-pub.h
+	user-end-hook_f-pub.h user-end-hook-pub.h  default-hook.h default-hook_f.h
 
 pkginclude_HEADERS = $(EXTERNAL_INCLUDE)
 
