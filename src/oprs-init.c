@@ -114,8 +114,10 @@
 #include "goprs-intention.h"
 #include "goprs-main.h"
 #else
+#include "int-graph_f.h"
 #include "xoprs-main.h"
 #include "xoprs-intention.h"
+#include "xoprs-intention_f.h"
 #endif
 #endif
 
@@ -944,8 +946,8 @@ void load_kernel_from_parser(Oprs *oprs, PString file_name)
 	  oprs->posted_meta_fact = load_boolean(); /* discutable... */
 	  
 	  LOAD_ADDR_AND_REF_LOC(DPT_TIB, oprs->critical_section);
-	  LOAD_ADDR_AND_REF_LOC_ADDR(DPT_TIB, (void **)&new_current_tib);
-	  LOAD_ADDR_AND_REF_LOC_ADDR(DPT_INTENTION, (void **)&new_current_intention);
+	  LOAD_ADDR_AND_REF_LOC_ADDR(DPT_TIB, &new_current_tib);
+	  LOAD_ADDR_AND_REF_LOC_ADDR(DPT_INTENTION, &new_current_intention);
 
 	  graphix = load_boolean();
 

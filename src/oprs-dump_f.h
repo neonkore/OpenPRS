@@ -55,19 +55,29 @@ void reference_object(void *old_addr, void **addr_ref, Dump_Type dt);
 
 #define load_boolean load_char
 
-#define LOAD_ADDR_AND_REF_LOC_ADDR(type,loc_addr) \
+#define LOAD_ADDR_AND_REF_LOC_ADDR(type,loc_addr)	\
 do {void *addr = load_ptr(); \
-    if (addr) reference_object(addr,loc_addr,type); \
+     if (addr) reference_object(addr,(void **)loc_addr,type);	\
     else *(loc_addr) = addr; \
 } while(0)
 
-#define LOAD_ADDR_AND_REF_LOC(type,loc) LOAD_ADDR_AND_REF_LOC_ADDR(type,(void **)&(loc))
+#define LOAD_ADDR_AND_REF_LOC(type,loc) LOAD_ADDR_AND_REF_LOC_ADDR(type,&(loc))
 
 void *load_list_reloc_elt(Dump_Type dt);
 void ntohd(u_char *buf, double *dbl);
 void htond(double *dbl, u_char *buf);
 void ntohll(u_char *buf, long long *ll);
-void htonll(long long ll, u_char *buf);
+void htonll(long long *ll, u_char *buf);
+void ntoh64(u_char *buf, void *ll);
+void hton64(void *ll, u_char *buf);
+
+#ifdef _LP64
+void htonptr(void *ptr, uchar buf[8]);
+void ntohptr(u_char *buf, uchar ptr[8]);
+#else
+void htonptr(void *ptr, void **buf);
+void ntohptr(void *buf, void **ptr);
+#endif
 
 int dump_ptr(void *ptr);
 int dump_char(char c);

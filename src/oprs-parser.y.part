@@ -45,6 +45,7 @@ static const char* const rcsid = "$Id$";
 #endif
 #endif
 
+#include "oprs-lex.h"
 
 
 #include "constant.h"
@@ -79,6 +80,7 @@ static const char* const rcsid = "$Id$";
 #include "xoprs-main.h"
 #endif
 
+#include "yy-funct_f.h"
 #include "oprs-type_f.h"
 #include "oprs-print_f.h"
 #include "oprs-sprint_f.h"
@@ -101,6 +103,7 @@ static const char* const rcsid = "$Id$";
 #include "oprs-array_f.h"
 #include "top-lev_f.h"
 #include "oprs-profiling_f.h"
+#include "op-dump-load_f.h"
 #include "ltdl-loader_f.h"
 
 char *node_name;
@@ -231,7 +234,7 @@ command:
 	   	top_or_nop
 	| LOAD_TK OPF_TK			{yy_begin_0();}
 		read_file_name 			{char *dopf_filename;
-		                                 if (dopf_filename = read_file_name_newer_dopf_p($4)) {
+		                                 if ((dopf_filename = read_file_name_newer_dopf_p($4))) {
 		                                 printf(LG_STR("%sLoading compiled OPs from \"%s\".\n",
 							       "%sChargement OPs compilés de \"%s\".\n"),parser_indent,dopf_filename);
 		                                 load_op_database_from_parser(current_oprs->relevant_op, dopf_filename);
@@ -308,7 +311,7 @@ command:
 								     (global_draw_data?TRUE:FALSE)
 #endif
 								     , TRUE);
-                                                 if (dopf_filename = read_file_name_newer_dopf_p($4)) {
+                                                 if ((dopf_filename = read_file_name_newer_dopf_p($4))) {
 		                                    if (!be_quiet) printf(LG_STR("%sReloading compiled OPs from \"%s\".\n",
 							                         "%sRechargement OPs compilés de \"%s\".\n"),
 									  parser_indent,
@@ -390,7 +393,7 @@ command:
 		 debug_flag			{trace_text_opf($5,current_oprs->relevant_op,$7);FREE($5);}
 	| SHOW_TK VARIABLE_TK			{show_global_variable();}
 	| SHOW_TK DB_TK				{print_database(current_oprs->database);}
-	| SHOW_TK ALL_TK DB_TK				{print_database_key(current_oprs->database);}
+	| SHOW_TK ALL_TK DB_TK			{print_database_key(current_oprs->database);}
 	| SHOW_TK INTENTION_TK			{show_intentions(current_oprs->intention_graph);}
 	| SHOW_TK CONDITION_TK			{show_conditions(current_oprs->conditions_list);}
 	| SHOW_TK RUN_TK STATUS_TK		{report_run_status();}
@@ -452,7 +455,7 @@ command:
 							       "%sChargement dump base de faits de \"%s\".\n"),parser_indent,$5);
 		                                 load_database_from_parser(current_oprs->database, $5);
 						 printf(LG_STR("\n%sLoading db dump done.\n",
-							       "\n%sChargement dump base de faits terminé.\n"),parser_indent,$5);
+							       "\n%sChargement dump base de faits terminé.\n"),parser_indent);
 						 FREE($5);}
 	| LOAD_TK DUMP_TK OP_TK			{yy_begin_0();} 
 		read_file_name			{printf(LG_STR("%sLoading OP db dump from \"%s\".\n",

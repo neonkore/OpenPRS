@@ -246,19 +246,31 @@ int dump_long_long(long long i)
 {
      u_char buf[8];
 
-     htonll(i, buf);
+     htonll(&i, buf);
 
      return dump_write(buf, 8);
 }
 
+#ifdef _LP64
 int dump_ptr(void *ptr)
 {
      u_char buf[8];
 
-     htonll((long long) ptr,buf);
+     htonptr(ptr,buf);
 
      return dump_write(buf, 8);
 }
+#else
+int dump_ptr(void *ptr)
+{
+     void *buf;
+
+     htonptr(ptr,&buf);
+
+     return dump_write(buf, 8);
+}
+
+#endif
 
 int dump_float(double f)
 {

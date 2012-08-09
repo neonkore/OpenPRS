@@ -1,12 +1,12 @@
 /*                               -*- Mode: C -*- 
-/* tcl.c --- 
+ * tcl.c --- 
  * 
  * Filename: tcl.c
  * Description: 
  * Author: Felix Ingrand <felix@laas.fr>
  * Created: Fri Feb 25 15:43:16 2011 (+0100)
  *
- * Copyright (c) 2011 LAAS/CNRS
+ * Copyright (c) 2011-2012 LAAS/CNRS
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without

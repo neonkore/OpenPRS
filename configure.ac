@@ -3,7 +3,7 @@
 
 AC_PREREQ(2.53)
 
-AC_INIT([Open PRS],[1.1b0],[felix@laas.fr],[openprs])
+AC_INIT([Open PRS],[1.1b1],[felix@laas.fr],[openprs])
 AC_CONFIG_SRCDIR([src/oprs-main.c])
 AC_CONFIG_HEADERS([src/config-ac.h])
 AC_CONFIG_AUX_DIR([config])
@@ -30,8 +30,22 @@ AC_PROG_LN_S
 AC_PROG_MAKE_SET
 
 AM_INIT_AUTOMAKE([foreign])
+
+AC_ARG_ENABLE([gtk],
+  [  --enable-gtk    Turn on gtk based goprs/gope],
+  [case "${enableval}" in
+     yes) gtk=yes ;;
+     no)  gtk=no ;;
+      *) AC_MSG_ERROR([bad value ${enableval} for --enable-gtk]) ;;
+    esac],[gtk=no])
+AM_CONDITIONAL([WANT_GTK], [test x$gtk = xyes])
+
+# we do not want it for now
+AM_CONDITIONAL([WANT_OPC], [test xno = xyes])
+
 AM_PROG_LEX
 AC_PROG_YACC
+
 
 AC_ARG_VAR(LATEX, "LaTeX text formatting and typesetting")
 AC_CHECK_PROGS(LATEX, [pdflatex latex], [:])
@@ -63,15 +77,17 @@ AC_SUBST(MP_EXTRA_LIBS)
 #check for Readline
 AC_CHECK_READLINE
 
-PKG_CHECK_MODULES(GTK, gtk+-2.0)
-
 PKG_CHECK_MODULES(X11, x11)
 
 PKG_CHECK_MODULES(XT, xt)
 
-# Checks for header files.
 AC_FIND_MOTIF
 
+if test x$gtk = xyes; then
+   PKG_CHECK_MODULES(GTK, gtk+-2.0)
+fi
+
+# Checks for header files.
 AC_HEADER_STDC
 AC_HEADER_SYS_WAIT
 AC_CHECK_HEADERS([arpa/inet.h fcntl.h limits.h locale.h netdb.h netinet/in.h stddef.h stdlib.h string.h sys/file.h sys/ioctl.h sys/param.h sys/socket.h sys/time.h unistd.h])

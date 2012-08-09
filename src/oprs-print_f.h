@@ -3,7 +3,7 @@
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -62,7 +62,6 @@ void print_lenv(List_Envar le);
 void print_envar(Envar *ev);
 void print_undo_list(List_Undo lu);
 void print_undo(Undo *ud);
-void print_expr(Expression *expr);
 void print_action_field(Action_Field *ac);
 void print_expr_frame(ExprFrame *ef);
 void print_term(Term *term);

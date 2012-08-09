@@ -2,7 +2,7 @@
 /*                               -*- Mode: C -*-
  * top-lev-loop.c -- Main loop of a OPRS agent
  *
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -78,14 +78,16 @@
 #include "lisp-list_f.h"
 #include "oprs-type_f.h"
 #include "fact-goal_f.h"
-#ifndef WINSOCK
 #include "socket_f.h"
-#endif
 #include "int-graph_f.h"
 #include "op-instance_f.h"
 #include "oprs-error_f.h"
 #include "oprs-rerror_f.h"
 #include "oprs-sprint_f.h"
+
+#ifdef GRAPHIX
+#include "xoprs-main_f.h"
+#endif
 
 long main_loop_pool_sec = 0L;
 long main_loop_pool_usec = 100000L;

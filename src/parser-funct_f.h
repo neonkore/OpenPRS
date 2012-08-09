@@ -65,3 +65,4 @@ void yy_begin_ACTION_TYPE(void);
 void yy_begin_EDGE_TYPE(void);
 void yy_begin_COLLECT_COMMENT(void);
 
+PBoolean yyparse_one_command_string(PString s);

@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * oprs-client.c -- 
  * 
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -164,7 +164,7 @@ Oprs_Client *make_oprs_client(PString name)
 
      if (pid == 0) {		/* The child */
 
-	  char *args[12];
+	  char *args[13];
 	  char *prog =  (use_x_window ? X_OPRS_PROGNAME: OPRS_PROGNAME);
 	  int fd;
 

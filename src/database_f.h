@@ -3,7 +3,7 @@
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -48,6 +48,7 @@ ExprFrameList consult(Expression *expr, Frame *frame, Database *db, PBoolean fac
 void clear_database(Database *db);
 void stat_database(Database *db);
 void print_database(Database *db);
+void print_database_key(Database *db);
 void save_database(Database *db, PString filename);
 void dump_database_from_parser(Database *db, PString filename);
 void load_database_from_parser(Database *db, PString file_name);

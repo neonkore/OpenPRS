@@ -99,3 +99,6 @@ Term *evaluate_term_function(Eval_Funct *ef, char *ef_name, TermList tl);
 Term *evaluate_term_action(Action *ef, char *ac_name, TermList tl);
 
 Pred_Rec *declare_pred(Pred_Func_Rec *pfr);
+
+void stat_pred_func_hashtable(void);
+int stat_pred_func_hash_bucket (int *stat_array, Pred_Func_Rec *pr);

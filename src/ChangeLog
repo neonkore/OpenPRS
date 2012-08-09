@@ -1,6 +1,12 @@
+2012-08-09  Felix Ingrand  <felix@cturtle>
+
+	* Makefile.am (noinst_LTLIBRARIES): do not build gtk binaries by
+	default (configure with --enable-gtk if you want to override
+	this).
+
 2012-08-02  Felix Ingrand  <felix@cturtle>
 
-	* lex-exp.l.part (>): Removed the various "test, achieve,
+	* lex-exp.l.part: Removed the various "test, achieve,
 	maintain, etc" temporal operators... hardly used and
 	confusing. Moreover, it creates "problem" with namespace when
 	loading external OPs. (e.g. for the test module ;-) )

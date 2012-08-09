@@ -85,6 +85,7 @@
 
 #include "mp-register.h"
 #include "xoprs-main.h"
+#include "xoprs-main_f.h"
 #include "ope-graphic_f.h"
 #include "xoprs-intention_f.h"
 #include "top-lev_f.h"

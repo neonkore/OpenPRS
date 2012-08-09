@@ -73,7 +73,9 @@ FINC = action_f.h activate_f.h conditions_f.h database_f.h \
 	tcl_f.h top-lev_f.h top-structure_f.h type_f.h unification_f.h usage_f.h \
 	user-end-hook_f.h xhelp_f.h xm2gtk_f.h xoprs-dialog_f.h xoprs-intention_f.h \
 	xoprs-menu_f.h xoprs-textwin_f.h xt-util_f.h yy-funct_f.h goprs-call_f.h \
-	goprs-dialog_f.h goprs-filesel_f.h op-x-opaque_f.h
+	goprs-dialog_f.h goprs-filesel_f.h op-x-opaque_f.h op-dump-load_f.h \
+	oprs-server-main_f.h xoprs-main_f.h
+
 
 
 #
@@ -119,10 +121,15 @@ pkginclude_HEADERS = $(EXTERNAL_INCLUDE)
 #
 lib_LTLIBRARIES = libExtMP.la 
 noinst_LTLIBRARIES = libMP.la libBasic.la libOprs.la \
-		libTOpEOprs.la libXGOpEOprs.la libGGOpEOprs.la \
-		libTOprs.la libXGOprs.la libGGOprs.la libKernel.la \
-		libTKernel.la libXGKernel.la libGGKernel.la \
-		libXOpG.la libGOpG.la
+		libTOpEOprs.la libXGOpEOprs.la \
+		libTOprs.la libXGOprs.la libKernel.la \
+		libTKernel.la libXGKernel.la \
+		libXOpG.la 
+
+if WANT_GTK
+noinst_LTLIBRARIES += libGGOpEOprs.la libGGOprs.la libGGKernel.la libGOpG.la
+endif
+
 
 noinst_LIBRARIES = libVersion.a
 
@@ -163,7 +170,6 @@ libTOpEOprs_la_CPPFLAGS = $(AM_CPPFLAGS) -UGRAPHIX
 libXGOpEOprs_la_SOURCES = $(BOTH_OPE_OPRS_LIB_SOURCES)
 libXGOpEOprs_la_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX $(XT_FLAGS)
 
-
 libGGOpEOprs_la_SOURCES = $(BOTH_OPE_OPRS_LIB_SOURCES)
 libGGOpEOprs_la_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX -DGTK $(GTK_CFLAGS)
 
@@ -181,7 +187,7 @@ libGGOprs_la_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX -DGTK $(GTK_CFLAGS)
 
 #
 BOTH_KERNEL_LIB_SOURCES = action.c activate.c ev-function.c intend.c intention.c \
-	int-graph.c op-instance.c oprs-init.c tcl.c soak.c oprs-parser.y \
+	int-graph.c op-instance.c oprs-init.c tcl.c soak.c \
 	top-lev.c default-hook.c user-end-hook.c
 
 libTKernel_la_SOURCES = $(BOTH_KERNEL_LIB_SOURCES)
@@ -205,7 +211,16 @@ INCLUDES = @INCLTDL@
 #
 # Here is the list of program to build and install
 #
-bin_PROGRAMS = mp-oprs kill-mp oprs-server oprs xoprs oprs-cat ope opc goprs gope
+bin_PROGRAMS = mp-oprs kill-mp oprs-server oprs xoprs oprs-cat ope 
+
+if WANT_OPC
+bin_PROGRAMS += opc
+endif
+
+# we do not install GTK version for now (too beta).
+if WANT_GTK
+bin_PROGRAMS += goprs gope
+endif
 
 mp_oprs_SOURCES = mp.c
 mp_oprs_LDADD = ../c_toolkit/libOPList.la libBasic.la libMP.la libVersion.a
@@ -213,18 +228,21 @@ mp_oprs_LDADD = ../c_toolkit/libOPList.la libBasic.la libMP.la libVersion.a
 kill_mp_SOURCES = kill-mp.c
 kill_mp_LDADD = ../c_toolkit/libOPList.la libBasic.la libMP.la libVersion.a
 
-oprs_server_SOURCES = oprs-server-parser.y oprs-server-lex.l opaque-ext.c oprs-client.c \
+nodist_oprs_server_SOURCES = oprs-server-parser.y oprs-server-lex.l
+oprs_server_SOURCES = opaque-ext.c oprs-client.c \
 		oprs-server-main.c oprs-server-opaque.c
 oprs_server_LDADD = ../c_toolkit/libOPList.la libBasic.la libTOprs.la libOprs.la libMP.la \
 		 libVersion.a $(READLINE_LIBS)
 
-oprs_SOURCES = oprs-lex.l op-x-opaque.c oprs-main.c top-lev-loop.c user-trace.c
+nodist_oprs_SOURCES = oprs-lex.l oprs-parser.y
+oprs_SOURCES =  op-x-opaque.c oprs-main.c top-lev-loop.c user-trace.c
 oprs_LDFLAGS = -export-dynamic
 oprs_LDADD = libTKernel.la libKernel.la libBasic.la libTOprs.la libOprs.la libTOpEOprs.la \
 		 libMP.la libVersion.a ../c_toolkit/libOPList.la $(CONTRIB_LIB)\
 		 @LIBLTDL@ @LIBADD_DL@
 
-xoprs_SOURCES = oprs-lex.l xoprs-call.c xoprs-textwin.c \
+nodist_xoprs_SOURCES = oprs-lex.l  oprs-parser.y
+xoprs_SOURCES = xoprs-call.c xoprs-textwin.c \
 	xoprs-dialog.c xoprs-filesel.c xoprs-intention.c \
 	xoprs-main.c xoprs-menu.c xtop-lev-loop.c \
 	xoprs-op-graphic.c xoprs-rop.c user-trace.c
@@ -234,7 +252,8 @@ xoprs_LDADD = libXGKernel.la libKernel.la libBasic.la libXGOprs.la libOprs.la li
 	libXOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la $(CONTRIB_LIB) \
 	$(MOTIF_LIBS) $(XT_LIBS) @LIBLTDL@ @LIBADD_DL@
 
-goprs_SOURCES = xm2gtk.c oprs-lex.l goprs-call.c goprs-textwin.c \
+nodist_goprs_SOURCES = oprs-lex.l oprs-parser.y
+goprs_SOURCES = xm2gtk.c goprs-call.c goprs-textwin.c \
 	goprs-dialog.c goprs-filesel.c goprs-intention.c \
 	goprs-main.c goprs-menu.c gtop-lev-loop.c \
 	goprs-op-graphic.c goprs-rop.c user-trace.c
@@ -246,24 +265,28 @@ goprs_LDADD = libGGKernel.la libKernel.la libBasic.la libGGOprs.la libOprs.la li
 oprs_cat_SOURCES = oprs-cat.c
 oprs_cat_LDADD = ../c_toolkit/libOPList.la
 
-ope_SOURCES = ope-lex.l ope-parser.y ope-bboard.c ope-edit.c ope-filesel.c ope-op-opf.c ope-main.c \
+nodist_ope_SOURCES = ope-lex.l ope-parser.y
+ope_SOURCES = ope-bboard.c ope-edit.c ope-filesel.c ope-op-opf.c ope-main.c \
 	ope-menu.c ope-print.c ope-pxmw.c ope-save.c ope-syntax.c \
 	ope-vsblf.c ope-rop.c ope-op-str.c ope-opaque.c
 ope_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX $(XT_FLAGS)
 ope_LDADD = libBasic.la libXGOprs.la libOprs.la libXGOpEOprs.la \
 		libXOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la $(MOTIF_LIBS) $(XT_LIBS)
 
-gope_SOURCES = xm2gtk.c ope-lex.l ope-parser.y gope-bboard.c gope-edit.c gope-filesel.c gope-op-opf.c gope-main.c \
+nodist_gope_SOURCES = ope-lex.l ope-parser.y
+gope_SOURCES = xm2gtk.c gope-bboard.c gope-edit.c gope-filesel.c gope-op-opf.c gope-main.c \
 	gope-menu.c ope-save.c ope-syntax.c gope-vsblf.c gope-rop.c ope-op-str.c ope-opaque.c
 gope_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX -DGTK $(GTK_CFLAGS)
 gope_LDADD = libBasic.la libGGOprs.la libOprs.la libGGOpEOprs.la \
 		libGOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la @GTK_LIBS@
 
-opc_SOURCES = opc-lex.l opc-parser.y opc-main.c ope-opaque.c
+if WANT_OPC
+nodist_opc_SOURCES = opc-lex.l opc-parser.y
+opc_SOURCES =  opc-main.c ope-opaque.c
 opc_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX $(XT_FLAGS)
 opc_LDADD = libBasic.la libXGOprs.la libOprs.la libXGOpEOprs.la \
 	libXOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la $(MOTIF_LIBS) $(XT_LIBS)
-
+endif
 
 # This is what replace relocatable... dynamic loading of evaluable function, predicates and actions.
 

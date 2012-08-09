@@ -56,6 +56,7 @@
 #include "oprs-profiling_f.h"
 #include "oprs-init_f.h"
 #include "oprs-socket_f.h"
+#include "default-hook_f.h"
 
 PBoolean install_user_trace = FALSE;
 

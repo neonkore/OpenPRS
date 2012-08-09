@@ -49,6 +49,7 @@
 #include "relevant-op_f.h"
 #include "oprs-dump_f.h"
 #include "parser-funct_f.h"
+#include "op-dump-load_f.h"
 
 #ifdef GRAPHIX
 #include "ope-external_f.h"

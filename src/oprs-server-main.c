@@ -71,6 +71,7 @@ pthread_t accept_thread;
 #include "oprs-server.h"
 #include "parser-funct.h"
 
+#include "oprs-server-main_f.h"
 #include "oprs-type_f.h"
 #include "help_f.h"
 #include "oprs-util_f.h"

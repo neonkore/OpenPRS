@@ -360,15 +360,27 @@ long load_long(void)
      return ntohl(i);
 }
 
+#ifdef _LP64
 void *load_ptr(void)
 {
-     unsigned long long hi;
+     void *hi;
      u_char buf[8];
 
      load_read(buf, 8);
-     ntohll(buf, &hi);
-     return (void *)hi;		/* This is going to cause a warning on a 32 bits machine... */
+     ntohptr(buf, hi);
+     return hi;	
 }
+#else
+void *load_ptr(void)
+{
+     void *hi;
+     u_char buf[4];
+
+     load_read(buf, 4);
+     ntohptr(buf, &hi);
+     return hi;	
+}
+#endif
 
 #define SWAP(x,y,tmp) tmp=y;y=x;x=tmp
 
@@ -410,14 +422,14 @@ void ntohd(u_char *buf, double *dbl)
      return;
 }
 
-void htonll(long long ll, u_char *buf)
+void htonll(long long *ll, u_char *buf)
 {
 #if defined(BIG_ENDIAN)
-     BCOPY(&ll,buf, 8);
+     BCOPY(ll,buf, 8);
 #elif defined(LITTLE_ENDIAN)
      u_char tmp;
 
-     BCOPY(&ll,buf, 8);
+     BCOPY(ll,buf, 8);
      SWAP(buf[0],buf[7],tmp);
      SWAP(buf[1],buf[6],tmp);
      SWAP(buf[2],buf[5],tmp);
@@ -447,6 +459,53 @@ void ntohll(u_char *buf, long long *ll)
 #endif     
      return;
 }
+
+#ifdef _LP64
+void htonptr(void *ptr, uchar buf[8])
+{
+#if defined(BIG_ENDIAN)
+     BCOPY(ptr,buf, 8);
+#elif defined(LITTLE_ENDIAN)
+     u_char tmp;
+
+     BCOPY(ptr,buf, 8);
+     SWAP(buf[0],buf[7],tmp);
+     SWAP(buf[1],buf[6],tmp);
+     SWAP(buf[2],buf[5],tmp);
+     SWAP(buf[3],buf[4],tmp);
+#else
+#error BIG_ENDIAN or LITTLE_ENDIAN should be defined in config.h.
+#endif     
+     return;
+}
+
+void ntohptr(u_char *buf, uchar ptr[8])
+{
+#if defined(BIG_ENDIAN)
+     BCOPY(buf,ptr, 8);
+#elif defined(LITTLE_ENDIAN)
+     u_char tmp;
+
+     BCOPY(buf,ptr, 8);
+     SWAP(ptr[0],ptr[7],tmp);
+     SWAP(ptr[1],ptr[6],tmp);
+     SWAP(ptr[2],ptr[5],tmp);
+     SWAP(ptr[3],ptr[4],tmp);
+#else
+#error BIG_ENDIAN or LITTLE_ENDIAN should be defined in config.h.
+#endif     
+}
+#else
+void htonptr(void *ptr, void **buf)
+{
+     buf = (void *)htonl((uint32_t)ptr);
+}
+
+void ntohptr(void *buf, void **ptr)
+{
+     ptr = (void *)ntohl((uint32_t)buf);
+}
+#endif
 
 long long load_long_long(void)
 {
