@@ -745,3 +745,111 @@ PBoolean PUGetOprsVarArgParameters(TermList paramList, PBoolean find_them_all, i
      
      return(result);
 }
+
+typedef PBoolean (* encode_genom_function)(Term *, void *);
+
+PBoolean PUGetOprsVarArgG3Parameters(Expression *expr, PBoolean find_them_all, int nb, ...)
+{
+     /* I get something like:
+	(tc, TRUE,  1, 
+	"speedRef",TRUE,&(in->speedRef),encode_genom_demo_speed,
+	"bar.pos", 
+	TRUE, 
+	&(in->bar.pos),
+	encode_genom_int,
+	"bar.err", 
+	FALSE, 
+	&(in->bar.err),
+	encode_genom_double,
+
+	); */
+     va_list listArg;
+     int paramCour;
+     int result = TRUE;
+     Term *t;
+     TermList tl;
+     static Symbol vararg_sym = NULL;
+     Slist *filled = sl_make_slist();
+
+     tl = expr->terms; /* The list of argument of the vararg */
+
+     sl_loop_through_slist(tl, t, Term *) {
+	  PBoolean found;
+	  char *argName;
+	  Term * argTerm;
+       
+	  if (t->type != EXPRESSION) { 
+	       fprintf(stderr,"PUGetOprsVarArgG3Parameters: ERROR: expecting an Expression\n");
+	       return FALSE;
+	  }
+
+	  argName = pred_func_rec_symbol(t->u.expr->pfr);
+	  argTerm = (Term *)sl_get_slist_head(t->u.expr->terms);
+       
+	  found = FALSE;
+	  va_start(listArg, nb);
+  
+	  for(paramCour = 0; paramCour <nb; paramCour++) {
+	       Term_Type type;
+	       char *fieldName, *ptr;
+	       char *last = NULL;
+	       int mandatory;
+	       void *addr;
+	       encode_genom_function funct;
+
+	       /* Get the four fields */
+	       fieldName = va_arg(listArg, char *);
+	       mandatory = va_arg(listArg, int);
+	       addr = va_arg(listArg, void *);
+	       funct = va_arg(listArg, encode_genom_function);
+
+	       ptr = fieldName;
+	       while((ptr = strstr(ptr, argName))) last = ptr++; /* find the last occurence of argName in fieldName. */
+	  
+	       if (last && (strlen(last) == strlen(argName)) && /* The last AND it terminates the string */
+		   ((last == fieldName) || /* argName is the whole field I am not sure it is a great idea, 
+					      no particular reasons why we should know the structure name. */
+		    (last[-1] == '.'))) { /* or the char before is a period . (better) */
+	    
+		    found = TRUE;
+		    add_to_tail(filled, (void *)(paramCour+1)); /* we remember the ith param was filled. */
+	    
+		    (funct)(argTerm,addr);
+		    break; 		/* we found it, move to the next arg */
+	       }
+	  }
+	  va_end(listArg); /* Will end this turn and then we can go back to the beginning of the list. */
+
+	  if (!found) 
+	       if (find_them_all) {
+		    fprintf(stderr,"PUGetOprsVarArgG3Parameters: Error: could not find \"%s\" in the argument list.\n", argName);
+		    return (FALSE);
+	       }
+     }
+
+     /* check the filled list. */
+     va_start(listArg, nb);
+     
+     for(paramCour = 0; paramCour <nb; paramCour++) {
+	  char *fieldName;;
+	  int mandatory;
+	  void *addr;
+	  encode_genom_function funct;
+	  
+	  /* Get the four fields */
+	  fieldName = va_arg(listArg, char *);
+	  mandatory = va_arg(listArg, int);
+	  addr = va_arg(listArg, void *);
+	  funct = va_arg(listArg, encode_genom_function);
+	  if (mandatory && ! sl_in_slist(filled, (void *)(paramCour+1))) {
+	       fprintf(stderr,"PUGetOprsVarArgG3Parameters: Error: Param %s is mandatory but was not provided.\n", 
+		       fieldName);
+	       return (FALSE);
+	  }
+     }
+
+     va_end(listArg);		/* Will end this turn and then we can go back to the beginning of the list. */
+     sl_free_slist(filled);
+
+     return(TRUE);
+}

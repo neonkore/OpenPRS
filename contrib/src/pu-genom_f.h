@@ -9,7 +9,6 @@
 extern "C" {
 #endif
 
-extern PBoolean pu_check_ttc_name ( Expression *tc, char *name, char *type_name );
 extern PBoolean pu_encode_genom_double ( char *name, Expression *tc, double *val_addr, int size );
 extern PBoolean pu_encode_genom_float ( char *name, Expression *tc, float *val_addr, int size );
 extern PBoolean pu_encode_genom_long_long_int ( char *name, Expression *tc, long long int *val_addr, int size );
@@ -41,6 +40,8 @@ extern Term *pu_decode_genom_float ( char *name, float *addr, int size );
 extern Term *pu_decode_genom_double ( char *name, double *addr, int size );
 extern Term *pu_decode_genom_string ( char *name, char *addr, int size, int max_size );
 
+extern PBoolean pu_check_ttc_name_alter(Expression *tc, char *name, char *type_name);
+extern PBoolean pu_check_ttc_name(Expression *tc, char *name);
 extern PBoolean pu_check_ttc_name_strict(Expression *tc, char *name);
 extern PBoolean pu_encode_genom3_double ( char *name, Expression *tc, double *val_addr);
 extern PBoolean pu_encode_genom3_float ( char *name, Expression *tc, float *val_addr);

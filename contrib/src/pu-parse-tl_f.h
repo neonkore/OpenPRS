@@ -25,8 +25,11 @@ extern PBoolean PUGetOprsTermCompArgs ( Expression *tc, int NbParametres, ... );
 extern PBoolean PUGetOprsTermCompSpecArg ( Expression *tc, int rank, Term_Type type, void *ptr );
 extern PBoolean PUGetOprsParametersSpecArg ( TermList paramList, int rank, Term_Type type, void *ptr );
 extern PBoolean PUGetOprsVarArgParameters(TermList paramList, PBoolean find_them_all, int nb, ...);
+extern PBoolean PUGetOprsVarArgG3Parameters(Expression *expr, PBoolean find_them_all, int nb, ...);
 
 #define set_parameter_or_default_value(parameter,default_value,oprs_type) (parameter = (default_value),oprs_type),#parameter,&(parameter)
+
+#define set_val_addr_func(in,field,mandatory,encode_func) #field, mandatory, &(in->field), encode_func
 
   
 
