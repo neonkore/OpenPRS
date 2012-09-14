@@ -15,7 +15,7 @@ doc_DATA = oprs.pdf
 export BIBINPUTS = .:$(top_srcdir)/doc:
 export TEXINPUTS = .:$(top_srcdir)/doc:$(top_srcdir)/doc/fig:
 
-oprs.pdf: oprs.tex oprs-macros.tex oprs.bib $(OP_TEX) appendices.tex
+oprs.pdf: oprs.tex oprs-kernel.tex oprs-macros.tex oprs.bib $(OP_TEX) appendices.tex
 	$(LATEX) $<
 	$(MAKE) index
 	$(BIBTEX) oprs

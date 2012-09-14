@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -*- Mode: Latex -*- %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% oprs-kernel.tex -- 
-%% Copyright (c) 1991-2011 Francois Felix Ingrand.
+%% Copyright (c) 1991-2012 Francois Felix Ingrand.
 %% All rights reserved.
 %%
 %% Redistribution and use in source and binary forms, with or without
@@ -165,7 +165,8 @@ If a \CPK{} is created from the Unix shell, then you can specify a number of
 arguments. There is a large number of possible arguments, but most of them are
 seldom used.
 
-Usage: \begin{verbatim}
+Usage: 
+\begin{verbatim}
 oprs [-s server-hostname] [-i server-port-number] [-a]
     [-m message-passer-hostname] [-j message-passer-port-number]
     [-x include-filename]* [-c oprs-command]*
@@ -1313,13 +1314,31 @@ the various hashtables in the kernel (occupation, collision, etc). It can be
 used to tune your application by using the adequate arguments to the \code{oprs}
 or \code{xoprs} command (\pxref{Arguments to the oprs Command}).
 
+\pgindex{load external (oprs)}
+\item \code{load external \file{file\_name} \var{entry\_point}}. This is a new
+  feature since OpenPRS 1.1. It allows the user to load external binary code in
+  the kernel. It loads (with \code{lt\_dlopen}) the library/module (.so)
+  \file{file\_name} (produced with libltdl) and try to call the string
+  \var{entry\_point} after looking for it with \code{dl\_sym}. This is now the
+  preferred way to extend an OpenPRS kernel with new actions, evaluable
+  functions and predicates. The standard rules to search the path are used to
+  localized the \file{file\_name} library/module. Check the libltdl
+  documentation for further information on how to produce and install the
+  library/module. There are examples of actions, evaluable functions and
+  predicates in the following files: \file{user-action.c}
+  \file{user-ev-function.c} \file{user-ev-predicate.c}. Check also the
+  \file{Makefile.am} file in the \file{src} sub directory to find how the .la
+  are produced.\\*
+Example: \code{load external "user-action" "declare\_user\_action''}
+
+
 \pgindex{q (oprs)}
 \pgindex{quit (oprs)}
 \pgindex{exit (oprs)}
 \item \code{q|quit|exit|EOF}. Quit the kernel. This command also disconnects
 you. It will execute the:\\*
 \code{end\_kernel\_user\_hook}\\*
-function which can be usedto do some cleanup (\pxref{User Hooks}).
+function which can be used to do some cleanup (\pxref{User Hooks}).
 
 \pgindex{show version (oprs)}
 \item \code{show version}. Print the version of the \CPK{}.
@@ -5338,21 +5357,39 @@ algorithm or heuristic.
 \cpindex{Starting User Hook}
 \cpindex{Ending User Hook}
 
-There are two user hooks provided to the user to change global variables or to
-initialize its own data structure (they are defined in
-\file{default-user-external\_f.h}).
+There used to be two user hooks (one at the start of the kernel, another one
+upon quitting)  provided to the user to change global variables or to
+initialize its own data structure, to initialize library, and symmetrically to
+clean up before quitting. Now that the \code{load external} command
+(\pxref{OPRS Kernel Miscellaneous Commands}) exists, one can execute any
+  arbitrary code upon starting. Still, one can use the
+  \code{add\_user\_end\_kernel\_hook} function to add a function to be called before
+  quitting the PRS kernel.
 
-\begin{typefn}{Kernel User Function}{void}{start\_kernel\_user\_hook} {(void)}
-is the function which is called by the kernel upon start-up to eventually give
-a chance to the user to set his own global value predicate. You can put in it
-the affectation of intention\_list\_sort\_predicate to the address of your
-function.  You can also change the value of global such as
-\code{main\_loop\_pool\_sec} or \code{main\_loop\_pool\_usec} (\pxref{Important Variables}). Last, you can make any call required by your application...  This
-hook is executed before any loading command specified with the \code{-x}
-argument.
+\begin{typefn}{Kernel User Function}{void}{add\_user\_end\_kernel\_hook} {(PKV hook)}
+is the function which is called to add \code{hook} to the list of functions which
+are called by the kernel upon exiting to eventually give a
+chance to the user to properly terminate services, close connections, free
+global structure or memory, etc. They are executed in the order they are defined.
 
-Example:
+\end{typefn}
+
+Start kernel hook can still be defined to give a chance to the user to set his
+own global value predicate. You can put in it the assignment of
+intention\_list\_sort\_predicate to the address of your function.  You can also
+change the value of global variables such as \code{main\_loop\_pool\_sec} or
+\code{main\_loop\_pool\_usec} (\pxref{Important Variables}).
+This hook  can be executed by adding for example in the command file:\\*
+\code{load external "user-kernel-hook" "start\_kernel\_user\_hook"}
+
+Example of possible content of the \file{user-kernel-hook.c}:
 \begin{verbatim}
+void end_kernel_user_hook()
+{
+     free_my_own_objects();
+     shutdown_my_own_server();
+}
+ 
 void start_kernel_user_hook()
 {
      intention_scheduler = &intention_scheduler_time_sharing;
@@ -5361,24 +5398,9 @@ void start_kernel_user_hook()
      create_my_widget_tree(x_oprs_top_level_widget);
      create_my_own_objects();
      start_my_own_server();
+     add_user_end_kernel_hook(end_kernel_user_hook);
 }
 \end{verbatim}
-\end{typefn}
-
-\begin{typefn}{Kernel User Function}{void}{end\_kernel\_user\_hook} {(void)}
-is the function which is called by the kernel upon exiting to eventually give a
-chance to the user to properly terminate services, close connections, free
-global structure or memory, etc.
-
-Example:
-\begin{verbatim}
-void end_kernel_user_hook()
-{
-     free_my_own_objects();
-     shutdown_my_own_server();
-}
-\end{verbatim}
-\end{typefn}
 
 \section{User Code Error Handler}
 \node{User Code Error Handler}
@@ -5393,7 +5415,7 @@ advised to use these functions.
 is the function used to report fatal errors. This function does not return
 (because the error is considered to be fatal, and terefore the execution cannot
 proceed from this point). In other words, it will "jump" to a safe place and
-try to recover from the error.  Accoring to the current state in which the
+try to recover from the error.  According to the current state in which the
 error occurs the \CPK{} will take some action to protect the operations still
 valid and running in the kernel. Nevertheless, most of the time, such an error
 will lead to the failure/cancel of the intention in which it occured.

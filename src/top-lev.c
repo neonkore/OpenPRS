@@ -84,6 +84,7 @@
 #include "oprs-error_f.h"
 #include "oprs-rerror_f.h"
 #include "oprs-sprint_f.h"
+#include "parser-funct_f.h"
 
 #ifdef GRAPHIX
 #include "xoprs-main_f.h"

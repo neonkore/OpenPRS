@@ -102,6 +102,7 @@ AC_DEFUN([AC_READLINE], [
 AC_DEFUN([AC_SEARCH_READLINE], [
     AC_CHECKING("location of readline.h file")
 
+    AC_READLINE(/opt/local/include/readline, readline.h,  -L/opt/local/lib -lreadline -lhistory, -I/opt/local/include, "readline on /opt/local/include/readline")
     AC_READLINE(/sw/include/readline, readline.h,  -L/sw/lib -lreadline -lhistory, -I/sw/include, "readline on /sw/include/readline")
     AC_READLINE(/usr/include, readline.h, -lreadline -ltermcap,, "readline on /usr/include")
     AC_READLINE(/usr/include/readline, readline.h, -lreadline -ltermcap, -I/usr/include/readline, "readline on /usr/include/readline")

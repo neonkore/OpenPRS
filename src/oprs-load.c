@@ -166,7 +166,14 @@ static int reloc_table_size = DUMP_LOAD_TABLE_SIZE, reloc_table_mod = DUMP_LOAD_
 
 int reloc_table_hash_func(void *addr)
 {
-     return ((unsigned int)addr>>3) & reloc_table_mod;
+#ifdef _LP64
+     uint32_t addr32 =  (uint64_t)addr & 0x00000000FFFFFFFF; /* grab the 32 lower bits */
+
+     return ((unsigned int)(addr32)>>3) & reloc_table_mod; 
+#else
+     return ((unsigned int)(addr)>>3) & reloc_table_mod; 
+
+#endif
 }
 
 PBoolean reloc_table_match_func(void *ad1, Object_Reloc *or)
@@ -367,7 +374,7 @@ void *load_ptr(void)
      u_char buf[8];
 
      load_read(buf, 8);
-     ntohptr(buf, hi);
+     ntohptr(buf, &hi);
      return hi;	
 }
 #else
@@ -461,7 +468,7 @@ void ntohll(u_char *buf, long long *ll)
 }
 
 #ifdef _LP64
-void htonptr(void *ptr, uchar buf[8])
+void htonptr(void *ptr, u_char buf[8])
 {
 #if defined(BIG_ENDIAN)
      BCOPY(ptr,buf, 8);
@@ -479,7 +486,7 @@ void htonptr(void *ptr, uchar buf[8])
      return;
 }
 
-void ntohptr(u_char *buf, uchar ptr[8])
+void ntohptr(u_char *buf, u_char ptr[8])
 {
 #if defined(BIG_ENDIAN)
      BCOPY(buf,ptr, 8);

@@ -95,7 +95,11 @@
 #include "oprs-dump_f.h"
 #include "oprs-pred-func_f.h"
 
-int dump_format_version = 5;	/* I use 5 for 64 bits machine... assuming pointers are now 64 bits. */
+#ifdef _LP64
+int dump_format_version = 7;	/* I use 7 for 64 bits machine and 6 for 32 bits */
+#else
+int dump_format_version = 6;
+#endif
 
 int dump_file;
 
@@ -109,7 +113,14 @@ void dump_symbol(Symbol string);
 
 int dump_table_hash_func(void *addr)
 {
+#ifdef _LP64
+     uint32_t addr32 = (uint64_t)addr & 0x00000000FFFFFFFF; /* grab the 32 lower bits */
+
+     return ((unsigned int)(addr32)>>3) & dump_table_mod; 
+#else
      return ((unsigned int)(addr)>>3) & dump_table_mod; 
+
+#endif
 }
 
 PBoolean dump_table_match_func(void *ad1, Object_Dump *od)

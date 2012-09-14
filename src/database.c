@@ -42,6 +42,10 @@
  * never... (FFI 1/22/92)
  */
 
+#include "config.h"
+
+#include <stdint.h>
+
 #include "macro.h"
 
 #include "shashPack_f.h"
@@ -96,6 +100,12 @@ PBoolean eq_expr(Expression *e1, Expression *e2)
      return (e1 == e2);
 }
 
+#ifdef _LP64
+#define GRAB_LW32(addr) ((uint64_t)(addr) & 0x00000000FFFFFFFF)
+#else
+#define GRAB_LW32(addr) (addr)
+#endif
+
 int hash_a_term(Term *t)
 /*  
  *  hash_a_term - computes the hash value for a term... Some are 
@@ -108,16 +118,16 @@ int hash_a_term(Term *t)
      case LONG_LONG:
 	  return (int)t->u.llintval;
      case INT_ARRAY:
-	  return (int)t->u.int_array;
+	  return (int)GRAB_LW32(t->u.int_array);
      case FLOAT_ARRAY:
-	  return (int)t->u.float_array;
+	  return (int)GRAB_LW32(t->u.float_array);
      case TT_FACT:
      case TT_GOAL:
      case TT_OP_INSTANCE:
      case TT_INTENTION:
      case U_MEMORY:
      case U_POINTER:
-	  return (int)t->u.u_pointer;
+	  return (int)GRAB_LW32(t->u.u_pointer);
      case TT_FLOAT:
 	  return ((int) (*t->u.doubleptr));
      case STRING:
@@ -143,7 +153,7 @@ int db_hash_func(Key *key)
      int hash;
 
      /* hash = hash_a_string(key->pred); */
-     hash = (int)(key->pred);	/* This is the adress of the string pred... */
+     hash = (int)GRAB_LW32(key->pred);	/* This is the adress of the string pred... */
      hash += key->ar;
      if (key->pos) {
 	  hash += key->pos;

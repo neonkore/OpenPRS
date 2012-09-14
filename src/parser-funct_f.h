@@ -65,4 +65,7 @@ void yy_begin_ACTION_TYPE(void);
 void yy_begin_EDGE_TYPE(void);
 void yy_begin_COLLECT_COMMENT(void);
 
+void yy_switch_to_yy_ps(void);
+void yy_switch_to_yy_mp(void);
+
 PBoolean yyparse_one_command_string(PString s);
