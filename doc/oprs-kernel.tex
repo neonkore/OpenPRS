@@ -3649,14 +3649,14 @@ However, you can add a definition of evaluable functions, and even
 redefine the ones which are defined by default in the kernel. Actions (which
 have similitude with evaluable functions) are presented in \nxref{Using Action OPs}.
 
-Evaluable functions are used whenever you want to evaluate some expression, to
+Evaluable functions are used whenever you want to evaluate some expressions, to
 compute some results, or to have some ``side effects'' on external modules (by
 sending a message, or by calling a function which will have some effects on
 these external modules).
 
 Evaluable functions can be used in a Composed Term embedded in an Expression.
 Whenever an evaluable function is called, each argument must be defined and
-bound (unless the function is able to handle unbound variable, but this is
+bound (unless the function is able to handle gracefully unbound variable, but this is
 unlikely).
 
 
