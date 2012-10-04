@@ -30,3 +30,14 @@
 SUBDIRS = libltdl util c_toolkit contrib src data doc
 
 ACLOCAL_AMFLAGS = -I m4
+
+.PHONY: dist-robotpkg git-tag
+
+dist_name = @PACKAGE_TARNAME@-@PACKAGE_VERSION@
+
+git-tag:
+	git tag -m "release @PACKAGE_VERSION@"  $(dist_name)
+	echo "Do not forget to push the tag with git push --tags"
+
+dist-robotpkg: distcheck git-tag
+	scp $(dist_name).tar.gz softs.laas.fr:/ftp/pub/openrobots/openprs/
