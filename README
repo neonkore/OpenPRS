@@ -1,10 +1,10 @@
-Copyright (c) 1991-2010 Francois Felix Ingrand.
+Copyright (c) 1991-2012 Francois Felix Ingrand and LAAS-CNRS.
 All rights reserved.
 
 This README is somehow outdated. Please see this page for more update
 information, in particular with respect to installation wich is now quite easy using robotpkg.
 
-https://softs.laas.fr/openrobots/wiki/openprs
+http://www.openrobots.org/wiki/openprs/
 
 Open PRS is an open source version of PRS (Procedural Reasoning Systems) / Propice. 
 
@@ -28,7 +28,7 @@ it, providing the original copyright and licence are included...
 Anyway, it is not that long, so I put it here again (please read it once, at
 least):
 
- Copyright (c) 1991-2004 Francois Felix Ingrand.
+ Copyright (c) 1991-2012 Francois Felix Ingrand and LAAS/CNRS
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -59,56 +59,13 @@ least):
 PREREQUISITES
 -------------
 
-Open PRS needs the following tools to be installed on the system before you can
-compile it:
-
-- autoconf and autoheader (both >=2.53, but only required if you really plan to hack the source)
-- gcc (and/or cc on Solaris)
-- X11 Release 6
-- Some version of Motif, such as Motif itself, Lesstif, or Open Motif
-- libreadline/libhistory (or some compatible replacement... not tested though)
-- The GNU make utility, version 3.79 or higher. Open PRS Makefiles use some
-  GNU make extensions and thus won't work with other make implementations. 
-  Note the GNU make is the standard make on most Linux systems.
-  (<http://www.gnu.org/software/make/make.html>).
-- LAAS mkdep, the dependencies generator from CNRS/LAAS. Mkdep has many
-  features that other dependencies generators miss, and even more. 
-  (<http://softs.laas.fr/openrobots/tools/mkdep.php>). 
-- latex if you want to typeset the documentation (to postscript or to
-  PDF). My experience is that it works fine with teTeX 2.0... but may fail
-  with older version of TeX
-- a PDF reader if you want to read the documentation.
-- lex/yacc/bison tools (the name of lex could be different depending on your linux distri, for example, flex in Mandriva)
-
-
+Now that we use autotools, all prerequisites are taken care of... just install whatever configure instruct you too.
 
 SUPPORTED PLATFORMS
 -------------------
 
 Open PRS is known to run on many platforms (in fact, I still have to find a
-Unix on which it did not run):
-
-As of today... here are the system on which OpenPRS has been successfully
-built using configure: 
-- MacOS X 10.3 (using Apple X11)
-- Linux RH 7.3
-- Sparc Solaris 5.9, gcc 2.95 and Sun WorkShop 6 cc
-
-The system it was working on before and for which configure support should
-come... 
-- SPARC Solaris (tested on Solaris 2.5.1 through Solaris 8),
-- x86 Linux (tested on many of them)
-
-
-The system for which I am dropping support (although the code retains #ifdef
-all over the place which should help you to get it compiling...) 
-- VxWorks (68x00, PPC)
-- SGI Irix
-- HP UX
-
-In any case, the source are provided and it has never been a problem to
-recompile it on a new architecture. We even had a version running under
-Windows 95, Windows NT, etc but this was a long time ago.
+Unix on which it does not run):
 
 GETTING Open PRS
 ----------------
@@ -119,54 +76,24 @@ The latest Open PRS version is available for download from:
 INSTALLATION INSTRUCTIONS
 -------------------------
 
-Open PRS now does use an automatic configuration tool... (Finally found some time to do it)...
+./configure
+make
 
-Usually, you just untar the source directory (src) in your open-prs
-directory, then just create a build directory at the same level than the src
-directory.
-
-If you intend to compile it for more than one architecture, just create a
-$TARGET subdirectory in the build directory ($TARGET has often a value which
-explicit the current architecture/os such as i386-linux or sparc-solaris or
-powerpc-darwin). Then cd in this $TARGET directory and execute:
-
-	../../src/configure
+you may build openprs in a specific directory:
+mkdir build 
+cd build
+../configure
+make
 
 Note that if you do not intend to install OpenPRS in the standard
 /usr/local directory you may have to specify the --prefix=<dir>
 Similarly, if you plan to have more than one architecture-dependent file in
 the same tree you may want to specify the  --exec-prefix=<bindir>
 
-	../../src/configure --prefix=/usr/local/openprs \
-			    --exec-prefix=/usr/local/openprs/i386-linux
-
-Anyway... ../../src/configure --help will give you some information
-
-if you did not create a $TARGET subdirectory, you can remove the first ../
-from the previous commands)
-
-	../src/configure
-
-For some historical reasons (and because it is then messy ;-)... I tend not
-to compile in the src directory... but it should work (just do a ./configure
-in the src directory)
-
-Then in the directory where you executed configure, type:
-
-	make depend
-	make
-
-****** 
-Do not forget the make depend (it does create files which are needed in the
-next step).
-******
-
-
-
-
 You can test the result with something like:
 
-	./xoprs -n fact -a -A -x data/fact-meta-if-par.inc
+cd src
+./xoprs -n fact -a -A -x data/fact-meta-if-par.inc
 
 A window should appear...
 
@@ -180,21 +107,7 @@ The result should show up..
 
 If you think that everything seems to work, type:
 	make install
-will also build other things such as the documentation... and install everything.
 
-**** CAUTION **** it looks like one needs a recent version of Latex and its
-**** package to be able to generate the documentation...
-
-	cd doc 
-	make
-
-If you are happy about the built and want to install it, go back in the
-directory above the doc directory and make install (check the path where it
-will be installed in the site.make file created in your build/$TARGET
-directory.)
-
-	cd ..
-	make install
 
 RUNNING Open PRS
 ----------------
@@ -237,12 +150,6 @@ primer... if I can find where I put it).
 Known Problems
 --------------
 
-- The current Configure mechanism is very "basic" and may fail on a number
-of system... SO Far I tested it under Mac OSX 10.3.6 and Linux RHL 7.3.
-
-- The documentation does not come out right on every systems... I do not
-know why... some latex/index version problems... In any case, it is available in PDF
-format from the distribution.
 
 Reporting Problems / Getting Help
 ---------------------------------
