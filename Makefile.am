@@ -40,4 +40,4 @@ git-tag:
 	echo "Do not forget to push the tag with git push --tags"
 
 dist-robotpkg: distcheck git-tag
-	scp $(dist_name).tar.gz softs.laas.fr:/ftp/pub/openrobots/openprs/
+	scp $(dist_name).tar.gz trac.laas.fr:/var/ftp/pub/openrobots/openprs/
