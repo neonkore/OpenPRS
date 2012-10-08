@@ -30,6 +30,9 @@
  *
  */
 
+#include <sys/socket.h>
+
+#include <netinet/in.h>
 
 #include <stdlib.h>
 #include <sys/time.h>
