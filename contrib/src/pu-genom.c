@@ -40,7 +40,7 @@
 #include "pu-enum_f.h"
 #endif
 
-PBoolean pu_check_ttc_name_alter(Expression *tc, char *name, char *type_name)
+PBoolean pu_check_ttc_name(Expression *tc, char *name, char *type_name)
 {
      if (strcasecmp(PFR_NAME(tc->pfr), (name ? name : type_name)) != 0) {
 	  fprintf(stderr,"pu_check_ttc_name: bad name, %s should be %s\n",
@@ -50,7 +50,7 @@ PBoolean pu_check_ttc_name_alter(Expression *tc, char *name, char *type_name)
 	  return TRUE;
 }
 
-PBoolean pu_check_ttc_name(Expression *tc, char *name)
+PBoolean pu_check_ttc_name_alter(Expression *tc, char *name)
 {
      if (strcasecmp(PFR_NAME(tc->pfr), name) != 0) {
 	  return FALSE;
@@ -60,7 +60,7 @@ PBoolean pu_check_ttc_name(Expression *tc, char *name)
 
 PBoolean pu_check_ttc_name_strict(Expression *tc, char *name)
 {
-     if (!pu_check_ttc_name(tc, name)) {
+     if (!pu_check_ttc_name_alter(tc, name)) {
 	  fprintf(stderr,"pu_check_ttc_name_strict: bad name, %s should be %s\n",
 		  PFR_NAME(tc->pfr), name);
 	  return FALSE;
@@ -90,7 +90,7 @@ PBoolean pu_check_ttc_name_strict(Expression *tc, char *name)
 #define define_pu_encode_genom(type_gen_name,type_gen,type_oprs,type_term) \
 PBoolean pu_encode_genom_ ## type_gen_name (char *name, Expression *tc, type_gen *val_addr, int size)\
 {\
-     if (!pu_check_ttc_name_alter(tc, name, #type_term))\
+     if (!pu_check_ttc_name(tc, name, #type_term))\
 	  return FALSE;\
      else {\
        int j;\
@@ -107,7 +107,7 @@ PBoolean pu_encode_genom_ ## type_gen_name (char *name, Expression *tc, type_gen
 #define define_pu_encode_genom3(type_gen_name,type_gen,type_oprs,type_term) \
 PBoolean pu_encode_genom3_ ## type_gen_name (char *name, Expression *tc, type_gen *val_addr)\
 {\
-     if (!pu_check_ttc_name_alter(tc, name, #type_term))\
+     if (!pu_check_ttc_name(tc, name, #type_term))\
 	  return FALSE;\
      else {\
        type_oprs val;\
@@ -168,7 +168,7 @@ define_pu_encode_genom3(addr, void *, void *, U_POINTER)
 /* Strings are particular... */
 PBoolean pu_encode_genom_string(char *name, Expression *tc, char *val_addr, int size, int max_size)
 {
-     if (!pu_check_ttc_name_alter(tc, name, "string"))
+     if (!pu_check_ttc_name(tc, name, "string"))
 	  return FALSE;
      else {
 	  int j;
