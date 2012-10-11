@@ -404,7 +404,9 @@ CLEANFILES =  XOprs.ad.h oprs-server-lex.l ope-lex.l ope-parser.y oprs-server-pa
 
 EXTRA_DIST += default-user-external.c default-user-external.h default-user-external_f.h
 
+if WANT_GTK
 %.h: %.png
 	gdk-pixbuf-csource --name "my_icon" $< > $@
 
 BUILT_SOURCES += goprs-icon.h gope-icon.h
+endif

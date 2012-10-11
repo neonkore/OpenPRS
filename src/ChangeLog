@@ -1,3 +1,8 @@
+2012-10-11  Felix Ingrand  <felix@lucid>
+
+	* Makefile.am (%.h): "if WANT_GTK"'ed the .png->.h icon generation
+	for the GTK version .
+
 2012-09-11  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* oprs-dump_f.h: uchar-> u_char
