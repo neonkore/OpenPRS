@@ -36,6 +36,14 @@
 #ifndef INCLUDE_oprs_sprint_pub
 #define INCLUDE_oprs_sprint_pub
 
+#ifdef  __cplusplus
+extern "C"  {
+#endif
+
 typedef struct sprinter Sprinter;
+
+#ifdef  __cplusplus
+}
+#endif
 
 #endif /* INCLUDE_oprs_sprint_pub */

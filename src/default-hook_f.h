@@ -42,6 +42,10 @@
  * wish it would perform some operations.
  */
 
+
+#ifdef  __cplusplus
+extern "C"  {
+#endif
 PBoolean intention_list_sort_by_priority(Intention *i1, Intention *i2);
 PBoolean intention_list_sort_by_time(Intention *i1, Intention *i2);
 PBoolean intention_list_sort_by_priority_time(Intention *i1, Intention *i2);
@@ -52,3 +56,8 @@ Intention_List intention_scheduler_time_sharing_with_sort_predicate(Intention_Li
 void start_kernel_hook(char *name);
 
 void end_kernel_hook();
+
+#ifdef  __cplusplus
+}
+#endif
+

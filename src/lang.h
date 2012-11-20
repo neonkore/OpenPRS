@@ -35,6 +35,10 @@
 #ifndef INCLUDE_lang
 #define INCLUDE_lang
 
+#ifdef  __cplusplus
+extern "C"  {
+#endif
+
 typedef enum {ENGLISH, FRENCH} Language_Type;
 
 extern Language_Type oprs_language;
@@ -43,6 +47,10 @@ extern Language_Type oprs_language;
 #define LG_STR(english,french) (english)
 #else
 #define LG_STR(english,french) (oprs_language == ENGLISH?english:french)
+#endif
+
+#ifdef  __cplusplus
+}
 #endif
 
 #endif /* INCLUDE_lang */

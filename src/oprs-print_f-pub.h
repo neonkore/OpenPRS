@@ -32,4 +32,12 @@
  *
  */
 
+#ifdef  __cplusplus
+extern "C"  {
+#endif
+
 void print_expr(Expression *expr);
+
+#ifdef  __cplusplus
+}
+#endif

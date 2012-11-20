@@ -32,6 +32,10 @@
  *
  */
 
+#ifdef  __cplusplus
+extern "C"  {
+#endif
+
 void user_trace_post_goal(Goal *goal);
 void user_trace_post_fact(Fact *fact);
 void user_trace_receive_message(Fact *fact, PString sender);
@@ -39,3 +43,7 @@ void user_trace_send_message(PString message, unsigned int nb_recs, PString *rec
 void user_trace_suc_fail(Op_Instance *op_ins, Goal* goal, Fact *fact, PBoolean success);
 void user_trace_intend(Thread_Intention_Block *tib,Op_Instance *op_inst);
 void user_trace_op(Thread_Intention_Block *tib,Op_Instance *op_ins, Goal *goal, int what);
+
+#ifdef  __cplusplus
+}
+#endif
