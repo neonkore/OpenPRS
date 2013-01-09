@@ -1,3 +1,7 @@
+2013-01-09  Felix Ingrand  <felix@precise>
+
+	* slistPack.c (sl_free_slist): Remove some inlining to try chasing code...
+
 2012-02-09  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* mallocPack.c: Darwin does not have malloc.h...?

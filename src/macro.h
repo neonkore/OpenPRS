@@ -229,7 +229,7 @@ void *realloc1(void *ptr, size_t size);
 
 #define LAST_REF_SLIST(ptr) (REF_SLIST(ptr) == 1)
 
-#define FREE_SLIST(slist) do {if (LAST_REF_SLIST(slist) == 1) \
+#define FREE_SLIST(slist) do {if (LAST_REF_SLIST(slist)) \
 			       {sl_free_slist(slist);} \
                             else FREE(slist);} \
                         while (0)

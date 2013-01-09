@@ -2,7 +2,7 @@ static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * slistPack.c -- 
  * 
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -153,22 +153,12 @@ static INLINE Snode *sl_make_snode(void *node)
      return res;
 }
 
-static INLINE void sl_free_snode(Snode *snode)
+//static INLINE 
+void sl_free_snode(Snode *snode)
 {
      FREE_OBJECT(snode);
      return;
 }
-
-#ifdef UNUSED
-static INLINE Snode *sl_copy_snode(Snode *snode)
-{
-     Snode *res = MAKE_OBJECT(Snode);
-     
-     *res = *snode;
-
-     return res;
-}
-#endif
 
 void *sl_add_to_head(Slist *slist, void *node)
 {
@@ -743,7 +733,7 @@ void *sl_get_from_head(Slist *slist)
 	  res = snode->node;
 	  slist->first.dy = snode->next;
 	  if (slist->last.dy == snode)
-	       slist->last.dy =NULLSnode;
+	       slist->last.dy = NULLSnode;
 	  if (slist->current.dy == snode) slist->current.dy = NULLSnode;
 	  sl_free_snode(snode);
 	  slist->length--;

@@ -1,3 +1,7 @@
+2013-01-09  Felix Ingrand  <felix@precise>
+
+	* macro.h (FREE_SLIST): This macro had a weird test... simplified it.
+
 2012-10-11  Felix Ingrand  <felix@lucid>
 
 	* Makefile.am (%.h): "if WANT_GTK"'ed the .png->.h icon generation

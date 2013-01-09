@@ -148,6 +148,7 @@ L_List transform_c_list_to_l_list(Slist *l)
      
      return res;
 }
+
 Term *transform_term_c_list_to_term_l_list(Term *res)
 {
      if (res->type == C_LIST) {
