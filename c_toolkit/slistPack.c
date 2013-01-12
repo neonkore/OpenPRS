@@ -147,6 +147,10 @@ static INLINE Snode *sl_make_snode(void *node)
 {
      Snode *res = MAKE_OBJECT(Snode);
      
+     if (!node) {
+	  fprintf(stderr,"slistPack: sl_make_snode: you should not put NULL pointers in slist.\n");
+     }
+     
      res->next = NULLSnode;
      res->node = node;
 
@@ -745,12 +749,15 @@ void *sl_get_from_head(Slist *slist)
 
 void *sl_get_from_tail(Slist *slist) /* Very expensive... avoid it as much as possible... please. */
 {
-     void * res;
+     void *res;
      Snode *snode;
 
      sl_check_loop_corruption(slist);
 
      if (slist->type) decompile_slist(slist,TRUE);
+
+     if (slist->length == 0)
+	  return NULL;
 
      snode = slist->first.dy;
      if (slist->length == 1) {
@@ -767,14 +774,20 @@ void *sl_get_from_tail(Slist *slist) /* Very expensive... avoid it as much as po
 	  }
 
 	  if (snode) {		/* The before last item */
+	       Snode *tmp;
+
 	       slist->last.dy = snode;
 	       slist->length--;
-	       snode = snode->next;
+	       tmp = snode;
+	       snode = snode->next; /* grab the last snode. */
+	       tmp->next = NULLSnode; /* unlink the last snode... may fix MW's bug! */
 	       if (slist->current.dy == snode) slist->current.dy = NULLSnode;
 	       res =  snode->node;
 	       sl_free_snode(snode);
-	  } else
+	  } else {		/* snode is NULLSnode */
+	       fprintf(stderr,"slistPack: sl_get_from_tail: list problem.\n");
 	       res = NULL;
+	  }
      }
      return res;
 }

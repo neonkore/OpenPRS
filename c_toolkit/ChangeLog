@@ -1,3 +1,14 @@
+2013-01-12  Felix Ingrand  <felix@precise>
+
+	* slistPack.c (sl_get_from_tail): Trying to nail down MW
+	bug. Maybe he managed to put a NULL Term in the list, confusing
+	the loop transforming the c_list in lisp_list. Need more
+	investigation, but this may fix the memory corruption and make the
+	bug more visible.
+	(sl_make_snode): Add an error check if people are trying to add a
+	NULL element to a list, as it can create problem when the list is
+	accessed making the assumption it does not contain any (NULL).
+
 2013-01-09  Felix Ingrand  <felix@precise>
 
 	* slistPack.c (sl_free_slist): Remove some inlining to try chasing code...
