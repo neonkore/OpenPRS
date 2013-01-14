@@ -147,9 +147,9 @@ static INLINE Snode *sl_make_snode(void *node)
 {
      Snode *res = MAKE_OBJECT(Snode);
      
-     if (!node) {
-	  fprintf(stderr,"slistPack: sl_make_snode: you should not put NULL pointers in slist.\n");
-     }
+//     if (!node) {
+//	  fprintf(stderr,"slistPack: sl_make_snode: you should not put NULL pointers in slist.\n");
+//     }
      
      res->next = NULLSnode;
      res->node = node;
