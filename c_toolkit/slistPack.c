@@ -1,8 +1,7 @@
-static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * slistPack.c -- 
  * 
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -57,7 +56,7 @@ static const char* const rcsid = "$Id$";
 
 #define SWAP_NODE(s1,s2) \
 do {\
-     void *_tmp = s1->node;\
+     const void *_tmp = s1->node;\
      s1->node = s2->node;\
      s2->node = _tmp;\
 } while (0)
@@ -143,7 +142,7 @@ Slist *sl_make_slist(void)
      return res;
 }
 
-static INLINE Snode *sl_make_snode(void *node)
+static INLINE Snode *sl_make_snode(const void *node)
 {
      Snode *res = MAKE_OBJECT(Snode);
      
@@ -164,7 +163,7 @@ void sl_free_snode(Snode *snode)
      return;
 }
 
-void *sl_add_to_head(Slist *slist, void *node)
+const void *sl_add_to_head(Slist *slist, const void *node)
 {
      Snode *snode = sl_make_snode(node);
      
@@ -181,7 +180,7 @@ void *sl_add_to_head(Slist *slist, void *node)
      return node;
 }
 
-void *sl_add_in_order(Slist *slist, void *node, int (*comp)(void*, void*))
+const void *sl_add_in_order(Slist *slist, const void *node, int (*comp)(const void*, const void*))
 /* enzo: 
  * We assume 'slist' nodes are correctly ordered, with respect to 'comp'.
  * Than, we insert 'node' at the right place, by using 'comp'.
@@ -220,7 +219,7 @@ void *sl_add_in_order(Slist *slist, void *node, int (*comp)(void*, void*))
      return node;
 }
 
-void *sl_add_to_tail(Slist *slist, void *node)
+const void *sl_add_to_tail(Slist *slist, const void *node)
 {
      Snode *snode = sl_make_snode(node);
 
@@ -296,7 +295,7 @@ Slist *_sl_copy_slist_func(Slist *slist, SL_PFPV func)
      return res;
 }
 
-Slist *_sl_copy_slist_func1(Slist *slist, void *node1, SL_PFPV func)
+Slist *_sl_copy_slist_func1(Slist *slist, const void *node1, SL_PFPV func)
 {
      Slist *res;
      Snode *snode;
@@ -352,7 +351,7 @@ Slist *_sl_copy_slist_func1(Slist *slist, void *node1, SL_PFPV func)
      return res;
 }
 
-Slist *_sl_copy_slist_func2(Slist *slist, void *node1, void *node2, SL_PFPV func)
+Slist *_sl_copy_slist_func2(Slist *slist, const void *node1, const void *node2, SL_PFPV func)
 {
      Slist *res;
      Snode *snode;
@@ -518,7 +517,7 @@ void sl_flush_slist(Slist *slist)
      return;
 }
 
-void **sl_add_to_tail_ret_ref(Slist *slist, void *node)	/* return the @ of the pointer to the node */
+const void **sl_add_to_tail_ret_ref(Slist *slist, const void *node)	/* return the @ of the pointer to the node */
 {
      Snode *snode = sl_make_snode(node);
 
@@ -538,7 +537,7 @@ void **sl_add_to_tail_ret_ref(Slist *slist, void *node)	/* return the @ of the p
      return &(snode->node);
 }
 
-void *sl_insert_slist_pos(Slist *slist, void *node, int pos)
+const void *sl_insert_slist_pos(Slist *slist, const void *node, int pos)
 {
      Snode *snode, *res;
 
@@ -567,7 +566,7 @@ void *sl_insert_slist_pos(Slist *slist, void *node, int pos)
      return NULL;
 }
 
-void *sl_delete_slist_node(Slist *slist, void *node)
+const void *sl_delete_slist_node(Slist *slist, const void *node)
 {
 /* _sl_delete_slist_func  and  sl_delete_slist_node are almost the same... so if you find
  * a bug here, most likely, the same is in the other.
@@ -604,7 +603,7 @@ void *sl_delete_slist_node(Slist *slist, void *node)
 	  return NULL;
 }
 
-void *_sl_delete_slist_func(Slist *slist, void *node, SL_PFC func)
+const void *_sl_delete_slist_func(Slist *slist, const void *node, SL_PFC func)
 {
 /* _sl_delete_dy_slist_func  and  sl_delete_dy_slist_node are almost the same... so if you find
  * a bug here, most likely, the same is in the other.
@@ -633,7 +632,7 @@ void *_sl_delete_slist_func(Slist *slist, void *node, SL_PFC func)
      }
      
      if (snode) {
-	  void *res;
+	  const void *res;
 
 	  res = snode->node;
 	  if (slist->current.dy == snode) slist->current.dy = NULLSnode;
@@ -644,7 +643,7 @@ void *_sl_delete_slist_func(Slist *slist, void *node, SL_PFC func)
 	  return NULL;
 }
 
-void *sl_replace_slist_node(Slist *slist, void *oldnode, void *newnode)
+const void *sl_replace_slist_node(Slist *slist, const void *oldnode, const void *newnode)
 {
      Snode *snode;
 
@@ -665,7 +664,7 @@ void *sl_replace_slist_node(Slist *slist, void *oldnode, void *newnode)
 	  return sl_add_to_tail(slist, newnode);
 }
 
-void *sl_replace_slist_func(Slist *slist, SL_PFPV func)
+const void *sl_replace_slist_func(Slist *slist, SL_PFPV func)
 {
      Snode *snode;
 
@@ -685,7 +684,7 @@ int sl_slist_empty(Slist *slist)
      return (slist->length == 0);
 }
 
-int sl_in_slist(Slist *slist, void *node)
+int sl_in_slist(Slist *slist, const void *node)
 {
      Snode *snode;
      unsigned int i = 1;
@@ -724,9 +723,9 @@ int sl_slist_length(Slist *slist)
      return slist->length;
 }
 
-void *sl_get_from_head(Slist *slist)
+const void *sl_get_from_head(Slist *slist)
 {
-     void *res;
+     const void *res;
      Snode *snode;
 
      sl_check_loop_corruption(slist);
@@ -747,9 +746,9 @@ void *sl_get_from_head(Slist *slist)
      return res;
 }
 
-void *sl_get_from_tail(Slist *slist) /* Very expensive... avoid it as much as possible... please. */
+const void *sl_get_from_tail(Slist *slist) /* Very expensive... avoid it as much as possible... please. */
 {
-     void *res;
+     const void *res;
      Snode *snode;
 
      sl_check_loop_corruption(slist);
@@ -792,7 +791,7 @@ void *sl_get_from_tail(Slist *slist) /* Very expensive... avoid it as much as po
      return res;
 }
 
-void *sl_get_slist_head(Slist *slist)
+const void *sl_get_slist_head(Slist *slist)
 {
      switch (slist->type) {
      case SLT_DYNAMIC:
@@ -808,7 +807,7 @@ void *sl_get_slist_head(Slist *slist)
      return NULL ;
 }
 
-void *sl_get_slist_tail(Slist *slist)
+const void *sl_get_slist_tail(Slist *slist)
 {
      switch (slist->type) {
      case SLT_DYNAMIC:
@@ -825,7 +824,7 @@ void *sl_get_slist_tail(Slist *slist)
      return NULL ;
 }
 
-void *sl_get_slist_pos(Slist *slist, int pos)
+const void *sl_get_slist_pos(Slist *slist, int pos)
 {
      Snode *snode;
 
@@ -851,7 +850,7 @@ void *sl_get_slist_pos(Slist *slist, int pos)
      return NULL;
 }
 
-void *sl_get_slist_next(Slist *slist, void *node) /* Do not use it to delete node... */
+const void *sl_get_slist_next(Slist *slist, const void *node) /* Do not use it to delete node... */
 {
      if (!slist->first.dy) return NULL;
  
@@ -895,7 +894,7 @@ void *sl_get_slist_next(Slist *slist, void *node) /* Do not use it to delete nod
 	       else
 		    return NULL;
 	  } else {
-	       void **nnode;
+	       const void **nnode;
 	  
 	       for(nnode = slist->first.st; nnode <= slist->last.st; nnode++)
 		    if (*nnode == node) {
@@ -967,10 +966,10 @@ Slist *sl_list_difference(Slist *l1, Slist *l2)
      return res;
 }
 
-void *_sl_search_slist(Slist *slist, void *node, SL_PFC func)
+const void *_sl_search_slist(Slist *slist, const void *node, SL_PFC func)
 {
      Snode *snode;
-     void **nnode;
+     const void **nnode;
      
 /*      if (slist->length >150 ) */
 /* 	  fprintf(stderr,"Search in a long list\n"); */
@@ -981,7 +980,7 @@ void *_sl_search_slist(Slist *slist, void *node, SL_PFC func)
 	       if ((*func)(node, snode->node)) return (snode->node);
 	  break;
      case SLT_STATIC:
-	  for(nnode = (void **)slist->first.st; nnode <= slist->last.st; nnode++)
+	  for(nnode = slist->first.st; nnode <= slist->last.st; nnode++)
 	       if ((*func)(node, *nnode)) return (*nnode);
 	  break;
      case SLT_DOUBLE:
@@ -1069,7 +1068,7 @@ void compile_slist(Slist *slist)
      }
      default: {
 	  Snode *snode, *tmp;
-	  void **array = MALLOC(slist->length*sizeof(void *));
+	  const void **array = MALLOC(slist->length*sizeof(void *));
 	  int i = 0, found = 0;
 
 	  snode = slist->first.dy; 
@@ -1133,7 +1132,7 @@ Slist *decompile_slist(Slist *slist, int lock_it)
      }
      case SLT_STATIC: {
 	  int i, found = 0;
-	  void **array = slist->first.st;
+	  const void **array = slist->first.st;
 	  Snode *prev = NULLSnode;
 
 	  for (i = slist->length;i > 0; i--) {

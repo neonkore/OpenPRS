@@ -1,4 +1,3 @@
-/* $Id$ */
 #define oprs_icon_width 48
 #define oprs_icon_height 48
 static char oprs_icon_bits[] = {

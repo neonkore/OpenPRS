@@ -1,9 +1,7 @@
 /*                               -*- Mode: C -*- 
  * oprsdum-pub.h -- 
  * 
- * $Id$
- * 
- * Copyright (c) 1991-2009 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -85,7 +83,7 @@ extern TypeList type_conversion;
 typedef struct object_dump {
      void *addr;		/* Its adress. */
      unsigned short obj_refcount;
-     u_char type;		/* Type of the object. */
+     Dump_Type type;		/* Type of the object. */
 } Object_Dump;
 
 
@@ -96,7 +94,7 @@ typedef struct object_reloc {
 	  void *new_addr;	/* Its new adress, if already loaded. */
      } u;
      unsigned short refcount;
-     u_char type;		/* Type of the object. */
+     Dump_Type type;		/* Type of the object. */
      PBoolean loaded;		/* Has it been loaded yet? */
 } Object_Reloc;
 

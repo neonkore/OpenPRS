@@ -145,14 +145,16 @@ libExtMP_la_CPPFLAGS = $(AM_CPPFLAGS) -DEXT_MALLOC
 # this is for our own usage
 libMP_la_SOURCES = $(LIB_MP_SOURCES)
 
-#
+# Library used by ALL the programs (mp-oprs included)
 libBasic_la_SOURCES = oprs-socket.c oprs-util.c
 
+# Library used by all the programs except the mp-oprs
 libOprs_la_SOURCES = help.c lisp-list.c oprs-ll.c oprs-send-m.c oprs-sprint.c \
 		parser-funct.c oprs-array.c oprs-copy.c oprs-dup.c oprs-free.c oprs-print.c \
-		oprs-error.c op-compiler.c type.c oprs-pred-func.c ltdl-loader.c
+		oprs-error.c op-compiler.c type.c oprs-pred-func.c
 
-libKernel_la_SOURCES = database.c ev-predicate.c fact-goal.c oprs.c oprs-rerror.c unification.c oprs-profiling.c
+# Library used by all kernel program (oprs text and graphic).
+libKernel_la_SOURCES = database.c ev-predicate.c fact-goal.c oprs.c oprs-rerror.c unification.c oprs-profiling.c ltdl-loader.c
 
 libXOpG_la_SOURCES = ope-external.c ope-graphic.c xhelp.c oprs-pprint.c ope-report.c xt-util.c
 libXOpG_la_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX $(XT_CFLAGS) $(MOTIF_CFLAGS)

@@ -1,9 +1,7 @@
 /*                               -*- Mode: C -*- 
  * op-structure_f-pub.h -- op-structure.c public external functions declaration.
  * 
- * $Id$
- * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +34,7 @@
 extern "C"  {
 #endif
 
-PString op_name(Op_Structure *op);
+Symbol op_name(Op_Structure *op);
 PString op_file_name(Op_Structure *op);
 
 #ifdef __cplusplus

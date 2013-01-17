@@ -143,7 +143,7 @@ int free_od_from_hash(void *ignore, Object_Dump *od)
 static unsigned char dump_buf[DUMP_BUFSIZ];
 static int char_dumped = 0;
 
-int dump_write_to_file(void *buf, size_t nbyte)
+int dump_write_to_file(const void *buf, size_t nbyte)
 {
      int i;
 
@@ -156,7 +156,7 @@ int dump_write_to_file(void *buf, size_t nbyte)
      return i;
 }
 
-int dump_write(void *buf, size_t nbyte)
+int dump_write(const void *buf, size_t nbyte)
 {
      if (nbyte + char_dumped > DUMP_BUFSIZ) { /* Will not fit... */
 	  dump_write_to_file(dump_buf, char_dumped);
@@ -272,7 +272,7 @@ int dump_ptr(void *ptr)
      return dump_write(buf, 8);
 }
 #else
-int dump_ptr(void *ptr)
+int dump_ptr(const void *ptr)
 {
      void *buf;
 
@@ -354,12 +354,12 @@ void end_dump_session(void)
      if (comp_old_value) enable_slist_compaction();
 }
 
-Object_Dump *object_dumped(void *addr)
+Object_Dump *object_dumped(const void *addr)
 {
      return (Object_Dump *)sh_get_from_hashtable(dump_table, addr);
 }
 
-void add_object_to_dump(Dump_Type dt, void *addr)
+void add_object_to_dump(Dump_Type dt, const void *addr)
 {
      if (addr) {
 	  Object_Dump *od;
@@ -369,7 +369,7 @@ void add_object_to_dump(Dump_Type dt, void *addr)
 	       Object_Dump *od = MAKE_OBJECT(Object_Dump);
 
 	       od->type = dt;
-	       od->addr = addr;
+	       od->addr = (void *)addr;
 	       od->obj_refcount = 1;
 	       sh_add_to_hashtable(dump_table,od,addr);
 	       sl_add_to_head(object_to_dump_list,od); /* May be better to do a depth first
@@ -1340,6 +1340,7 @@ void dump_object(Object_Dump *od)
      case DPT_IG:
      case DPT_END:
      case DPT_MAX:
+     case DPT_FLUSH:
 	  oprs_perror("dump_object", PE_UNEXPECTED_DUMP_TYPE);
 	  break;
      }

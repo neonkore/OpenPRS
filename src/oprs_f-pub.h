@@ -1,9 +1,7 @@
 /*                               -*- Mode: C -*- 
  * oprs_f.h -- declaration des fonctions externes de oprs.c
  * 
- * $Id$
- * 
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,8 +36,8 @@ extern "C"  {
 
 void add_fact(Fact *, Oprs *);
 void send_command_to_parser(PString s);
-void send_message_term(Expression *exp, PString rec);
-void multicast_message_term(Expression *exp, unsigned int nb_recs, PString *recs);
+void send_message_term(Expression *exp, Symbol rec);
+void multicast_message_term(Expression *exp, unsigned int nb_recs, Symbol *recs);
 void broadcast_message_term(Expression *exp);
 
 void add_external_fact(char *predicat, TermList param_list);

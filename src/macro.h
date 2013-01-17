@@ -1,9 +1,7 @@
 /*                               -*- Mode: C -*- 
  * macro.h -- Macros used in OPRS.
  * 
- * $Id$
- * 
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -102,8 +100,10 @@ void *realloc1(void *ptr, size_t size);
 
 /* Macro to allocate and create a string equal to from pointer by to */
 #define NEWSTR(from, to) do {int len = strlen(from);\
-				   to = (char *)MALLOC(len+1);\
-				   BCOPY(from, to, len+1);\
+	  			   char *tmp2;\
+				   tmp2 = (char *)MALLOC(len+1);\
+				   BCOPY(from, tmp2, len+1);\
+				   to = tmp2;\
 				   } while (0)
 
 
@@ -151,7 +151,7 @@ void *realloc1(void *ptr, size_t size);
 #else
 #define DECLARE_ID(from, to) \
 	  do {if  (! ID_BAR_P(from)) NORMALIZE_STRING_IN_PLACE(from); \
-	      if ((to = (PString)get_and_check_from_hashtable(id_hash,from)) == NULL) { \
+	      if ((to = (Symbol)get_and_check_from_hashtable(id_hash,from)) == NULL) { \
 		 NEWSTR(from,to); \
 		 sh_add_to_hashtable(id_hash,to,to); } \
 	   } while (0)

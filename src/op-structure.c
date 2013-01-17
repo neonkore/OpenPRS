@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * op-structure.c -- Functions used for and with op-structure.
  * 
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -313,7 +313,7 @@ void register_node(Op_Structure *op, Symbol name, Node *n)
 }
 #endif
 
-Node *make_node(PString name, PBoolean graphic)
+Node *make_node(Symbol name, PBoolean graphic)
 {
      Node *node = MAKE_OBJECT(Node);
      
@@ -350,7 +350,7 @@ PBoolean equal_node_name_name_list (Symbol name, Node_Name *n)
 }
 #endif
 
-Node *find_node_or_create(Symbol name,PBoolean graphic)
+Node *find_node_or_create(Symbol name, PBoolean graphic)
 {
 #ifdef GRAPHIX
      Node *n;
@@ -406,7 +406,7 @@ Edge *build_edge(PString n1, PString n2, Expression *expr, PBoolean graphic)
      return edge;
 }
 
-PString op_name(Op_Structure *op)
+Symbol op_name(Op_Structure *op)
 {
 	return op->name;	
 }
@@ -919,10 +919,10 @@ void  finish_loading_op(Op_Structure *op,  Draw_Data *dd)
 #endif
 }
 
-PString new_node_name(Op_Structure *op)
+Symbol new_node_name(Op_Structure *op)
 {
      char name[20];
-     char *node_name;
+     Symbol node_name;
      PBoolean save_cs = check_symbol;
 
      check_symbol = FALSE;
@@ -972,7 +972,7 @@ void new_then_else_node_name_from_if_name (PString if_name, PString *then_name_p
      }
 }
 
-void new_if_then_else_node_name(Op_Structure *op, PString *nif, PString *nthen, PString *nelse)
+void new_if_then_else_node_name(Op_Structure *op, Symbol *nif, Symbol *nthen, Symbol *nelse)
 {
      char name[20];
      char name_else[20];
@@ -1006,7 +1006,7 @@ void new_if_then_else_node_name(Op_Structure *op, PString *nif, PString *nthen, 
 PString new_end_node_name(Op_Structure *op)
 {
      char name[20];
-     char *node_name;
+     Symbol node_name;
      PBoolean save_cs = check_symbol;
 
      check_symbol = FALSE;

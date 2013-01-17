@@ -276,7 +276,7 @@ Term *action_log_printf(TermList terms)
   return res;
 }
 
-Term *evaluate_term_action(Action *ac, char *ac_name, TermList tl)
+Term *evaluate_term_action(Action *ac, Symbol ac_name, TermList tl)
 /* This is the main function to evaluate a composed term with an evaluable function */
 {
      Term *res;
@@ -352,7 +352,7 @@ Term *action_multicast_message(TermList terms)
 /* multicast message. */
 {
      Term *t1, *t2,*res;
-     PString *recs;
+     Symbol *recs;
      int i, nb_recs;
      L_List l;
      res = MAKE_OBJECT(Term);
@@ -366,7 +366,7 @@ Term *action_multicast_message(TermList terms)
 
      l = t1->u.l_list;
      nb_recs = l_length(l);
-     recs = MALLOC(sizeof(PString)*nb_recs);
+     recs = MALLOC(sizeof(Symbol)*nb_recs);
 
      for (i=0; i!= nb_recs;i++) {
 	  Term *car=CAR(l);
@@ -898,7 +898,7 @@ Term *read_inside_id_action(TermList terms)
      TermList tl;
 
      char var_name[16];
-     char *var_nm_tmp;
+     Symbol var_nm_tmp;
      int i=0;
 
      t1 = (Term *)sl_get_slist_pos(terms, 1);
@@ -975,7 +975,7 @@ Term *read_inside_action(TermList terms)
      TermList tl;
 
      char var_name[16];
-     char *var_nm_tmp;
+     Symbol var_nm_tmp;
      int i=0;
      tib = current_tib;
      if (tib->num_called == 0) {

@@ -1,9 +1,7 @@
 /*                               -*- Mode: C -*- 
  * oprs-init_f.h -- 
  * 
- * $Id$
- * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,3 +42,4 @@ void clear_op_database(Relevant_Op *rk, PBoolean graphic);
 void report_meta_option_array(void);
 void set_user_trace(User_Trace ut, PBoolean val);
 void run_initial_commands(void);
+void send_completion_to_server(Relevant_Op *rk);

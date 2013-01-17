@@ -1,9 +1,7 @@
 /*                               -*- Mode: C -*- 
  * relevant-op_f.h -- Declaration des fonctions externes a relevant-op.c
  * 
- * $Id$
- * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,6 +41,7 @@ void add_op_expr_to_relevant_op(Op_Structure *op, Expression *expr);
 void clear_relevant_op(Relevant_Op *rk);
 void parser_consult_goal_relevant_op(Expression *gtexpr, Relevant_Op *rk);
 void parser_consult_fact_relevant_op(Expression *gexpr, Relevant_Op *rk);
+void parser_consult_expr_relevant_op(Expression *expr, Relevant_Op *rk);
 void stat_relevant_op(Relevant_Op *rk);
 void delete_opf_from_rop(PString file_name, Relevant_Op *rk, PBoolean graphic, PBoolean verbose);
 void delete_op_from_rop(Op_Structure *op,Relevant_Op *rk, PBoolean graphic, PBoolean verbose, PBoolean free_it);

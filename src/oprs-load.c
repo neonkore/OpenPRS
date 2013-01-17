@@ -503,12 +503,12 @@ void ntohptr(u_char *buf, u_char ptr[8])
 #endif     
 }
 #else
-void htonptr(void *ptr, void **buf)
+void htonptr(const void *ptr, void **buf)
 {
      buf = (void *)htonl((uint32_t)ptr);
 }
 
-void ntohptr(void *buf, void **ptr)
+void ntohptr(const void *buf, void **ptr)
 {
      ptr = (void *)ntohl((uint32_t)buf);
 }
@@ -2235,7 +2235,7 @@ void *load_object(Dump_Type *return_type)
 	  new_addr = load_property();
 	  break;
      case DPT_SYMBOL:
-	  new_addr = load_symbol();
+	  new_addr = (void *)load_symbol();
 	  break;
      case DPT_TERM:
 	  new_addr = load_term();

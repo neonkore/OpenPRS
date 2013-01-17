@@ -1,9 +1,7 @@
 /*                               -*- Mode: C -*- 
  * oprs-send-mess_f.h -- 
  * 
- * $Id$
- * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,6 +33,6 @@
 void send_message_expr(Expression *f, PString rec);
 void broadcast_message_expr(Expression *f);
 
-void oprs_send_message_string(PString message, PString rec);
+void oprs_send_message_string(PString message, Symbol rec);
 void oprs_broadcast_message_string(PString message);
-void oprs_multicast_message_string(PString message, unsigned int nb_recs, PString *recs);
+void oprs_multicast_message_string(PString message, unsigned int nb_recs, Symbol *recs);

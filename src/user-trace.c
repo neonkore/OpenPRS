@@ -106,9 +106,9 @@ void user_trace_receive_message(Fact *fact, PString sender)
     return;
 }
 
-void user_trace_send_message(PString message, unsigned int nb_recs, PString *recs)
+void user_trace_send_message(PString message, unsigned int nb_recs, Symbol *recs)
 {
-     /* 0 is broadcast, 1 is message to one repository, n is multicast. */
+     /* 0 is broadcast, 1 is message to one recipient, n is multicast. */
      printf("User Trace: sending the message: %s to: ", message);
      
      if (! nb_recs)

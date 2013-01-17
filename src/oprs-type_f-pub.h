@@ -1,9 +1,7 @@
 /*                               -*- Mode: C -*- 
  * oprs-type_f-pub.h -- 
  * 
- * $Id$
- * 
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -84,7 +82,7 @@ Symbol pred_func_rec_symbol(Pred_Func_Rec *pfr);
 Pred_Func_Rec *declare_pred_from_symbol(Symbol pfr_name);
 Pred_Func_Rec *find_or_create_pred_func(Symbol pred_func_name);
 
-int hash_a_string(PString name);
+int hash_a_string(const char *name);
 
 #ifdef SPRINT_RETURN_STRING
 int num_char_sprint(char *x);

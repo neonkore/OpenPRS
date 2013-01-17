@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * oprs-error.c -- 
  * 
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,9 +41,9 @@
 #include "oprs-sprint_f.h"
 #include "oprs-rerror_f.h"
 
-char *current_eval_funct = NULL;
-char *current_eval_pred = NULL;
-char *current_ac = NULL;
+Symbol current_eval_funct = NULL;
+Symbol current_eval_pred = NULL;
+Symbol current_ac = NULL;
 
 Error_Type current_error_type = ET_NONE;
 

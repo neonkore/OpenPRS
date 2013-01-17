@@ -436,7 +436,7 @@ PBoolean start_mp_oprs(const char *mp_hostname, int mp_port)
 	  sprintf(buffer,"rsh %s -n mp-oprs -j %d &", mp_hostname, mp_port);
 	  sys_ret = system(buffer);
 	       
-	  return TRUE;
+	  return (sys_ret != -1); /* system returns -1 if an error occurs. */
      }
 #endif
 }

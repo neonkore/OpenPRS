@@ -1,9 +1,7 @@
 /*                               -*- Mode: C -*- 
  * oprs-pred-func_f.h -- 
  * 
- * $Id$
- *
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -96,7 +94,7 @@ Pred_Func_Rec *find_pred_func(Symbol pred_func_name);
 Pred_Func_Rec *create_var_pred_func(Envar *var);
 
 Term *evaluate_term_function(Eval_Funct *ef, char *ef_name, TermList tl);
-Term *evaluate_term_action(Action *ef, char *ac_name, TermList tl);
+Term *evaluate_term_action(Action *ef, Symbol ac_name, TermList tl);
 
 Pred_Rec *declare_pred(Pred_Func_Rec *pfr);
 

@@ -69,7 +69,7 @@ static SEM_ID pred_func_hash_sem = NULL;
 
 PBoolean check_pfr = TRUE;
 
-int hash_a_string_pred_func(PString name )	
+int hash_a_string_pred_func(Symbol name )	
 {
   return (hash_a_string(name) & pred_func_hashtable_mod);
 }
@@ -603,9 +603,9 @@ void make_and_declare_eval_funct(char *name, PFPT funct, int ar)
 }
 
 
-void make_and_declare_eval_pred_internal(Symbol name, PFBPTL pred, PFBPFTL pred_noevv, int ar, PBoolean cwp, PBoolean eval_var)
+void make_and_declare_eval_pred_internal(PString name, PFBPTL pred, PFBPFTL pred_noevv, int ar, PBoolean cwp, PBoolean eval_var)
 {
-     char *name_tmp2;
+     Symbol name_tmp2;
      Pred_Func_Rec *pfr;
      Pred_Rec *pr;
      Eval_Pred *ep;
@@ -637,13 +637,13 @@ void make_and_declare_eval_pred_internal(Symbol name, PFBPTL pred, PFBPFTL pred_
      if (cwp) pr->cwp = TRUE;
 }
 
-void make_and_declare_eval_pred(Symbol name,  PFBPTL pred, int ar, PBoolean cwp)
+void make_and_declare_eval_pred(PString name,  PFBPTL pred, int ar, PBoolean cwp)
 {
   make_and_declare_eval_pred_internal(name, pred, NULL, ar, cwp, TRUE);
 
 }
 
-void make_and_declare_eval_pred_no_eval_var(Symbol name,  PFBPFTL pred, int ar, PBoolean cwp)
+void make_and_declare_eval_pred_no_eval_var(PString name,  PFBPFTL pred, int ar, PBoolean cwp)
 {
   make_and_declare_eval_pred_internal(name, NULL, pred, ar, cwp, FALSE);
 }

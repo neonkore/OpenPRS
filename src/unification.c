@@ -2,7 +2,7 @@
 /*                               -*- Mode: C -*-
  * unification.c -- Unification pour OPRS
  *
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -73,7 +73,7 @@ PBoolean compatible_type(Envar *ev, Term *t)
 	       else
 		    return TRUE; /* No value, no unif_type */
 	  } /* T is not a variable */
-	  if ((t->type == ATOM))
+	  if ((t->type == TT_ATOM))
 	       return is_of_type(t->u.id,ev->unif_type);
      }
      return TRUE;

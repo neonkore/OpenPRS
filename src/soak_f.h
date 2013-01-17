@@ -1,9 +1,7 @@
 /*                               -*- Mode: C -*- 
  * soak_f.h -- 
  * 
- * $Id$
- * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,6 +34,7 @@ Op_Instance_List find_soak(Oprs *oprs);
 Op_Instance_List find_soak_goal(Goal *goal, Oprs *oprs, PBoolean consulting);
 void test_find_soak_goal(Goal *goal, Oprs *oprs);
 void test_find_soak_fact(Fact *fact, Oprs *oprs);
+void test_find_soak_expr(Expression *expr, Oprs *oprs);
 void install_condition_timer_handler(void);
 void arm_condition_timer(void);
 void desarm_condition_timer(void);

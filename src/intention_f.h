@@ -1,9 +1,7 @@
 /*                               -*- Mode: C -*- 
  * intention_f.h -- Intention external functions declarations.
  * 
- * $Id$
- * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -65,7 +63,7 @@ void fprint_tib(FILE *f,Thread_Intention_Block *tib);
 void print_tib(Thread_Intention_Block *tib);
 
 void set_intention_priority(Intention *in, int priority);
-void set_intention_id(Intention *in, PString id);
+void set_intention_id(Intention *in, Symbol id);
 
 void show_tib_list(Thread_Intention_Block_List tib_list, int indent);
 void sprint_show_tib_list(Sprinter *sp, Thread_Intention_Block_List tib_list, int indent);

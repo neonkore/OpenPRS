@@ -1,9 +1,7 @@
 /*                               -*- Mode: C -*- 
  * lex-exp.l -- 
  * 
- * $Id$
- * 
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -54,40 +52,40 @@
 {qstring}	{ NEWQSTR(oprs_yytext,oprs_yylval.string);
 		  return QSTRING_TK;}
 
-\|\|		{ oprs_yylval.string = or_sym;
+\|\|		{ oprs_yylval.symbol = or_sym;
 		  return SYMBOL_TK;}
-&		{ oprs_yylval.string = and_sym;
+&		{ oprs_yylval.symbol = and_sym;
 		  return SYMBOL_TK;}
-~		{ oprs_yylval.string = not_sym;
+~		{ oprs_yylval.symbol = not_sym;
 		  return SYMBOL_TK;}
 
 /* Variables. */
-{lvar}		{ DECLARE_VAR(oprs_yytext,oprs_yylval.string);
+{lvar}		{ DECLARE_VAR(oprs_yytext,oprs_yylval.symbol);
 		  return LOGICAL_VAR_TK;}
 {pvar} |
-{gpvar}		{ DECLARE_VAR(oprs_yytext,oprs_yylval.string);
+{gpvar}		{ DECLARE_VAR(oprs_yytext,oprs_yylval.symbol);
 		  return PROGRAM_VAR_TK;}
 
 /* Temporal operators. */
-\+>		{  oprs_yylval.string = cond_add_sym;
+\+>		{  oprs_yylval.symbol = cond_add_sym;
 		  return SYMBOL_TK;}
-->		{  oprs_yylval.string = cond_del_sym;
+->		{  oprs_yylval.symbol = cond_del_sym;
 		  return SYMBOL_TK;}
-=>		{  oprs_yylval.string = temp_conclude_sym;
+=>		{  oprs_yylval.symbol = temp_conclude_sym;
 		  return SYMBOL_TK;}
-~> 		{  oprs_yylval.string = retract_sym;
+~> 		{  oprs_yylval.symbol = retract_sym;
 		  return SYMBOL_TK;}
-! 		{  oprs_yylval.string = achieve_sym;
+! 		{  oprs_yylval.symbol = achieve_sym;
 		  return SYMBOL_TK;}
-\?	 	{  oprs_yylval.string = test_sym;
+\?	 	{  oprs_yylval.symbol = test_sym;
 		  return SYMBOL_TK;}
-#		{  oprs_yylval.string = preserve_sym;
+#		{  oprs_yylval.symbol = preserve_sym;
 		  return SYMBOL_TK;}
-\^	 	{  oprs_yylval.string = twait_sym;
+\^	 	{  oprs_yylval.symbol = twait_sym;
 		  return SYMBOL_TK;}
-\%		{  oprs_yylval.string = maintain_sym;
+\%		{  oprs_yylval.symbol = maintain_sym;
 		  return SYMBOL_TK;}
-\<>		{  oprs_yylval.string = call_sym;
+\<>		{  oprs_yylval.symbol = call_sym;
 		  return SYMBOL_TK;}
 
 /* Paranthesis and brackets. */
@@ -98,13 +96,13 @@
 
 /* Particular symbol and atom. */
 t	|
-T		{ oprs_yylval.string = lisp_t_sym;
+T		{ oprs_yylval.symbol = lisp_t_sym;
 		  return SYMBOL_TK;}
-[nN][iI][lL]	{ oprs_yylval.string = nil_sym;
+[nN][iI][lL]	{ oprs_yylval.symbol = nil_sym;
 		  return SYMBOL_TK;}
 
 {id} |
-{idbar}		{ DECLARE_ID(oprs_yytext,oprs_yylval.string);
+{idbar}		{ DECLARE_ID(oprs_yytext,oprs_yylval.symbol);
 		  return SYMBOL_TK;}
 
 {op}        	{ return OPENP_TK;}

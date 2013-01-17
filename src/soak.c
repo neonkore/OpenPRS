@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * soak.c -- will find all the applicable ops (determine the famous soak "Set Of Applicable OPs")...
  * 
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -656,7 +656,7 @@ void keep_track_of_goal_failure(Goal *goal)
 {
      if (goal->interne) {
 	  if (debug_trace[INT_FAIL_BIND]) {
-	       char *op_name =  goal->tib->curr_op_inst->op->name;
+	       Symbol op_name =  goal->tib->curr_op_inst->op->name;
 	       Sprinter *sp = goal->interne->failed_goal_sprinter; 
 
 	       if (SPRINTER_SIZE(sp)) 

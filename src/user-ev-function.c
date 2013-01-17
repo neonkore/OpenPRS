@@ -46,11 +46,11 @@
 
 Term *toto_eval_func(TermList terms)
 {
-     Term *t1,*res;
+     Term *res;
 
      res = MAKE_OBJECT(Term);
      
-     t1 = (Term *)sl_get_slist_pos(terms, 1);
+     // t1 = (Term *)sl_get_slist_pos(terms, 1);
      res->type = INTEGER;
      res->u.intval = 3;
      

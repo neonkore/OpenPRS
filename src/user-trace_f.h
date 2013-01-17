@@ -1,9 +1,7 @@
 /*                               -*- Mode: C -*- 
  * user-trace_f.h -- 
  * 
- * $Id$
- *
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,7 +37,7 @@ extern "C"  {
 void user_trace_post_goal(Goal *goal);
 void user_trace_post_fact(Fact *fact);
 void user_trace_receive_message(Fact *fact, PString sender);
-void user_trace_send_message(PString message, unsigned int nb_recs, PString *recs);
+void user_trace_send_message(PString message, unsigned int nb_recs, Symbol *recs);
 void user_trace_suc_fail(Op_Instance *op_ins, Goal* goal, Fact *fact, PBoolean success);
 void user_trace_intend(Thread_Intention_Block *tib,Op_Instance *op_inst);
 void user_trace_op(Thread_Intention_Block *tib,Op_Instance *op_ins, Goal *goal, int what);

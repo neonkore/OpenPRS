@@ -826,37 +826,37 @@ void xpCompilerOptionDialogAccept(Widget w, XtPointer client_data, XtPointer cal
 
 typedef enum {TEXT_TRACE, GRAPHIC_TRACE, BOTH_TRACE, STEP_TRACE, ALL_TRACE } Trace_Type;
 
-text_button_changed(Widget w, XtPointer client_data, XmToggleButtonCallbackStruct * call_data)
+void text_button_changed(Widget w, XtPointer client_data, XmToggleButtonCallbackStruct * call_data)
 {
      if (call_data->set)
 	  update_trace_op_list(TEXT_TRACE);
 }
 
-graphic_button_changed(Widget w, XtPointer client_data, XmToggleButtonCallbackStruct * call_data)
+void graphic_button_changed(Widget w, XtPointer client_data, XmToggleButtonCallbackStruct * call_data)
 {
      if (call_data->set)
 	  update_trace_op_list(GRAPHIC_TRACE);
 }
 
-both_button_changed(Widget w, XtPointer client_data, XmToggleButtonCallbackStruct * call_data)
+void both_button_changed(Widget w, XtPointer client_data, XmToggleButtonCallbackStruct * call_data)
 {
      if (call_data->set)
 	  update_trace_op_list(BOTH_TRACE);
 }
 
-step_button_changed(Widget w, XtPointer client_data, XmToggleButtonCallbackStruct * call_data)
+void step_button_changed(Widget w, XtPointer client_data, XmToggleButtonCallbackStruct * call_data)
 {
      if (call_data->set)
 	  update_trace_op_list(STEP_TRACE);
 }
 
-all_button_changed(Widget w, XtPointer client_data, XmToggleButtonCallbackStruct * call_data)
+void all_button_changed(Widget w, XtPointer client_data, XmToggleButtonCallbackStruct * call_data)
 {
      if (call_data->set)
 	  update_trace_op_list(ALL_TRACE);
 }
 
-update_trace_op_list(Trace_Type tt)
+void update_trace_op_list(Trace_Type tt)
 {
      Arg args[4];
      Op_Structure *op;

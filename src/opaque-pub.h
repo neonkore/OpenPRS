@@ -1,9 +1,7 @@
 /*                               -*- Mode: C -*- 
  * opaque-pub.h -- Public Opaque declarations...
  * 
- * $Id$
- * 
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -60,7 +58,7 @@ typedef char PBoolean;
 
 typedef unsigned char Uchar;
 
-typedef char *Symbol;
+typedef const char *Symbol;	/* Symbol are "fixed" pointers. */
 
 typedef struct pred_rec Pred_Rec;
 typedef struct func_rec Func_Rec;

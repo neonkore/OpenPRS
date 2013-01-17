@@ -1,11 +1,7 @@
 /*                               -*- Mode: C -*- 
  * send-message_f.h -- 
  * 
- * Copyright (C) 1991-2003 Francois Felix Ingrand
- * 
- * $Id$
- * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (C) 1991-2013 Francois Felix Ingrand
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

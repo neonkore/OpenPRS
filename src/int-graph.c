@@ -425,9 +425,9 @@ Intention_List list_in_modified(Intention_List list_old, Intention_List list_new
 
 void find_current_intentions(Intention_Graph *ig)
 {
-     Intention *previous_current;
      Intention *intention;
 #ifdef GRAPHIX
+     Intention *previous_current;
      Intention_List list_modified = NULL;
 #endif
 
@@ -469,9 +469,9 @@ void find_current_intentions(Intention_Graph *ig)
 #endif
 
      } else {			/* Execution in mono intention mode. */
+#ifdef GRAPHIX
 	  previous_current = (Intention *)sl_get_slist_head(ig->current_intentions);
 
-#ifdef GRAPHIX
 	  if (previous_current && /* There is a current intention */
 	      (!(sl_in_slist(ig->list_runnable,previous_current)))) /* or it is not runnable */
 	       if (debug_trace[GRAPHIC_INTEND] && global_int_draw_data) touch_intention_ginode(previous_current);

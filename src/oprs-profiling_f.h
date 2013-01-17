@@ -1,9 +1,7 @@
 /*                               -*- Mode: C -*- 
  * oprs-profiling_f.h -- 
  * 
- * $Id$
- * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -64,3 +62,4 @@ void time_note(int index, int funct_id);
 
 void reset_profiled_data_db(void);
 void report_profiled_data(void);
+void reset_profiled_data(void);

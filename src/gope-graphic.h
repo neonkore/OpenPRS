@@ -1,9 +1,7 @@
 /*                               -*- Mode: C -*-
  * ope-graphic.h -- Defines some constants and structure for the op-editor.
  *
- * $Id$
- *
- * Copyright (c) 1991-2012 Francois Felix Ingrand, LAAS/CNRS.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand, LAAS/CNRS.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

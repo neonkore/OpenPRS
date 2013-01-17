@@ -700,7 +700,7 @@ void init_hash_size_id(int hash_size)
      id_hashtable_mod =  id_hashtable_size - 1;
 }
 
-int hash_a_string_id(PString name)
+int hash_a_string_id(Symbol name)
 {
      return (hash_a_string(name) & id_hashtable_mod);	/* replaced with a bitwise & because the size = 2**n... */
 }
@@ -742,7 +742,8 @@ void show_global_variable(void)
 
 void free_symbol(void *ignore, Symbol sym)
 {
-     FREE(sym);
+     char *free_sym = (char *)sym;	/* to avoid const warning. */
+     FREE(free_sym);
 }
 
 void free_id_hash(void)
@@ -844,13 +845,13 @@ void stat_id_hashtable(void)
      FREE(stat_array);
 }
 
-int hash_a_string(PString name)
+int hash_a_string(const char * name)
 {
      register int hash_value = 0;
      register
      char *pointer;
 
-     for (pointer = name; *pointer != '\0'; pointer++)
+     for (pointer = (char *)name; *pointer != '\0'; pointer++)
 	  hash_value = (hash_value << 5) + hash_value + *pointer;	/* hash = hash * 33 + char */
 
      return hash_value;
@@ -933,7 +934,7 @@ PString remove_vert_bar(PString name)
 
 Symbol make_atom(char *id)
 {
-     char *res;     
+     Symbol res;     
 
      if (id[0] == '|') {
 	  int len = strlen(id);
@@ -950,7 +951,7 @@ Symbol find_atom(char *id)
 /* Call make_atom, but force symbol checking... Therefore, will generate a warning if 
    it has not been declared previously */
 {
-     char *res;
+     Symbol res;
      PBoolean save_check_symbol = check_symbol;
 
      check_symbol = TRUE;
@@ -963,7 +964,7 @@ Symbol find_atom(char *id)
 Symbol declare_atom(char *id)
 /* Call make_atom, but disable symbol checking... */
 {
-     char *res;
+     Symbol res;
      PBoolean save_check_symbol = check_symbol;
 
      check_symbol = FALSE;

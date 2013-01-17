@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*-
  * oprs-main.c --
  *
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,7 +27,7 @@
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *
+ *`
  */
 
 #include "config.h"
@@ -220,7 +220,7 @@ char *strip_start_white(char *string)
      return (s);
 }
 
-char *concat_str1_str2(char *str1, char *str2)
+char *concat_str1_str2(const char *str1, const char *str2)
 {
      char *res = MALLOC_STD(sizeof(char)*(strlen(str1) + 1 + strlen(str2)));
      
@@ -228,7 +228,7 @@ char *concat_str1_str2(char *str1, char *str2)
      return res;     
 }
 
-char *concat_str1_space_str2(char *str1, char *str2)
+char *concat_str1_space_str2(const char *str1, const char *str2)
 {
      char *res = MALLOC_STD(sizeof(char)*(strlen(str1) + 2 + strlen(str2)));
      
@@ -236,7 +236,7 @@ char *concat_str1_space_str2(char *str1, char *str2)
      return res;     
 }
 
-char *concat_str1_str2_quote(char *str1, char *str2)
+char *concat_str1_str2_quote(const char *str1, const char *str2)
 {
      char *res = MALLOC_STD(sizeof(char)*(strlen(str1) + 2 + strlen(str2)));
      
@@ -677,6 +677,9 @@ The following commands are currently available under the oprs-server:\n\
 \n\
 \t q|quit|exit|EOF\n\
 \t\t quit the program\n\
+\n\
+\t rehash name\n\
+\t\t Get the completion table from the OPRS client named \"name\".\n\
 \n\
 \t reset parser name\n\
 \t\t Send a \"reset parser\" to the OPRS client named \"name\".\n\

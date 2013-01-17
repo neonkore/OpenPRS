@@ -1,9 +1,7 @@
 /*                               -*- Mode: C -*- 
  * oprs-client.h -- 
  * 
- * $Id$
- * 
- * Copyright (c) 1991-2004 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +35,7 @@
 #define INCLUDE_oprs_client
 
 struct oprs_client {
-     PString name;
+     Symbol name;
      int pid;
      int socket;
      PBoolean use_x;

@@ -386,7 +386,7 @@ Intention *dup_intention(Intention *in)
      return in;
 }
 
-void set_intention_id(Intention *in, PString id)
+void set_intention_id(Intention *in, Symbol id)
 {
      in->id = id;
 #ifdef GRAPHIX
@@ -433,7 +433,7 @@ Goal *intention_goal(Intention *in)
 	return in->goal;
 }
 
-PString intention_id(Intention *in)
+Symbol intention_id(Intention *in)
 {
 	return in->id;
 }

@@ -1,9 +1,7 @@
 /*                               -*- Mode: C -*- 
  * intention_f.h -- Intention external functions declarations.
  * 
- * $Id$
- * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,7 +40,7 @@ PBoolean action_first_call();
 int action_number_called();
 Fact *intention_fact(Intention *in);
 Goal *intention_goal(Intention *in);
-PString intention_id(Intention *in);
+Symbol intention_id(Intention *in);
 long intention_time(Intention *in);
 
 #ifdef __cplusplus

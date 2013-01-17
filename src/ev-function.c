@@ -1669,7 +1669,6 @@ Term *all_ef(TermList terms)
      Expression *expr;
      ExprFrameList efl;
      ExprFrame *ef;
-     Envar *env;	
      TermList term_list = sl_make_slist();
 
      res = MAKE_OBJECT(Term);
@@ -1678,7 +1677,6 @@ Term *all_ef(TermList terms)
      t2 = (Term *)sl_get_slist_pos(terms, 2);
      if (t1->type != VARIABLE)
 	  report_fatal_external_error(oprs_strerror(PE_EXPECTED_VARIABLE_TERM_TYPE));
-     env = t1->u.var;
      if ((t2->type != EXPRESSION) && (t2->type != EXPRESSION))
 	  report_fatal_external_error(oprs_strerror(PE_EXPECTED_EXPRESSION_TERM_TYPE)); 
 
@@ -1747,7 +1745,6 @@ Term *all_pos_ef(TermList terms)
      Expression *expr = NULL;
      ExprFrameList efl;
      ExprFrame *ef;
-     Envar *env;	
      TermList term_list = sl_make_slist();
 
      res = MAKE_OBJECT(Term);
@@ -1756,7 +1753,6 @@ Term *all_pos_ef(TermList terms)
      t2 = (Term *)sl_get_slist_pos(terms, 2);
      if (t1->type != INTEGER)
 	  report_fatal_external_error(oprs_strerror(PE_EXPECTED_INTEGER_TERM_TYPE));
-     env = t1->u.var;
 
      if (t2->type != EXPRESSION)
 	  report_fatal_external_error(oprs_strerror(PE_EXPECTED_EXPRESSION_TERM_TYPE)); 
@@ -1790,7 +1786,6 @@ Term *ff_val_ef(TermList terms)
      Expression *expr;
      ExprFrameList efl;
      ExprFrame *ef;
-     Envar *env;	
      PBoolean first;
 
      res = MAKE_OBJECT(Term);
@@ -1803,7 +1798,6 @@ Term *ff_val_ef(TermList terms)
 	  report_fatal_external_error(oprs_strerror(PE_EXPECTED_VARIABLE_TERM_TYPE));
      }
      
-     env = t1->u.var;
      if (t2->type != EXPRESSION) {
 	  report_fatal_external_error(oprs_strerror(PE_EXPECTED_EXPRESSION_TERM_TYPE)); 
 	  return res;
@@ -2126,7 +2120,9 @@ Term *list_difference_order_ef(TermList terms)
 Term *preferred_of_ef(TermList terms)
 {
      Term *t1,*res;
-     PString prop;
+     static Symbol prop = NULL;
+
+     if (!prop) DECLARE_TEXT_ID("PREFERRED",prop);
 
      res = MAKE_OBJECT(Term);
      
@@ -2134,7 +2130,6 @@ Term *preferred_of_ef(TermList terms)
      if (t1->type != LISP_LIST)
 	  report_fatal_external_error(oprs_strerror(PE_EXPECTED_LISP_LIST_TERM_TYPE));
      res->type = LISP_LIST;
-     DECLARE_TEXT_ID("PREFERRED",prop);
      res->u.l_list = satisfy_prop_l_list_opi(t1->u.l_list,prop);
      
      return res;
@@ -2143,7 +2138,9 @@ Term *preferred_of_ef(TermList terms)
 Term *safety_handlers_of_ef(TermList terms)
 {
      Term *t1,*res;
-     PString prop;
+     static Symbol prop = NULL;
+
+     if (!prop) DECLARE_TEXT_ID("SAFETY-HANDLER",prop);
 
      res = MAKE_OBJECT(Term);
      
@@ -2151,7 +2148,6 @@ Term *safety_handlers_of_ef(TermList terms)
      if (t1->type != LISP_LIST)
 	  report_fatal_external_error(oprs_strerror(PE_EXPECTED_LISP_LIST_TERM_TYPE));
      res->type = LISP_LIST;
-     DECLARE_TEXT_ID("SAFETY-HANDLER",prop);
      res->u.l_list = satisfy_prop_l_list_opi(t1->u.l_list,prop);
      
      return res;

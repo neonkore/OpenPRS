@@ -1,9 +1,7 @@
 /*                               -*- Mode: C -*- 
  * op-instance_f.h -- op-instance.c external functions declaration.
  * 
- * $Id$
- * 
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,10 +38,10 @@ Op_Instance *make_op_instance_for_maint_goal(Op_Structure *op, FramePtr frame, L
 Op_Instance *make_op_instance_from_goal_satisfied_in_db(FramePtr frame, Goal *goal);
 Op_Instance *make_op_instance_from_waiting_goal(Goal *goal);
 Op_Instance *make_op_instance_for_intention_from_goal(FramePtr frame, Goal *goal);
-L_List satisfy_prop_l_list_opi(L_List l, PString prop);
+L_List satisfy_prop_l_list_opi(L_List l, Symbol prop);
 L_List fact_invoked_ops_l_list_opi(L_List l);
 PBoolean property_p_ep(TermList tl);
-PBoolean property_p(Op_Instance *opi, PString prop);
+PBoolean property_p(Op_Instance *opi, Symbol prop);
 Term *property_of_ef(TermList tl);
 void free_op_instance(Op_Instance *opi);
 void free_op_instance_from_gf(Op_Instance *opi);

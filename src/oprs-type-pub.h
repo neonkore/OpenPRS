@@ -1,9 +1,7 @@
 /*                               -*- Mode: C -*- 
  * oprs-type-pub.h -- Public OPRS type.
  * 
- * $Id$
- * 
- * Copyright (c) 1991-2005 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,25 +42,17 @@ extern "C"  {
 
 /*  
  *  This file contains public definitions of various structures used in 
- *  OPRS. This file should not be modified in any way. The user 
- *  should not even assume that the real definitions are the same than 
- *  the one defined here.
+ *  OPRS. 
  */
 
 
  /* Definition of the types used in a Term */
-     typedef enum {INTEGER, LONG_LONG, TT_FLOAT, STRING, TT_ATOM, EXPRESSION, VARIABLE,
+typedef enum {INTEGER, LONG_LONG, TT_FLOAT, STRING, TT_ATOM, EXPRESSION, VARIABLE,
 	      LISP_LIST, INT_ARRAY, FLOAT_ARRAY, C_LIST, TT_FACT, TT_GOAL, 
 	      TT_INTENTION, TT_OP_INSTANCE, U_POINTER, U_MEMORY} Term_Type;
 
 typedef enum {ETOT_ACHIEVE, ETOT_TEST, ETOT_CALL, ETOT_CONCLUDE, ETOT_RETRACT} External_Temporal_Operator_Type;
 
-
-/* These two symbols are defined by Windows 95... */
-#ifndef WIN95			
-#define ATOM TT_ATOM
-#define FLOAT TT_FLOAT
-#endif
 
 /* typedef enum {PF_UNKNOWN, PF_PRED, PF_EF, PF_ACT, PF_ENVAR} Pred_Func_Rec_Type; */
 
@@ -90,7 +80,7 @@ struct term {
 	  long long int 	llintval;
 	  double *doubleptr;
 	  char *string;
-	  char *id;
+	  Symbol id;
 	  Expression *expr;
 	  Envar *var;
 	  L_List l_list;

@@ -42,7 +42,7 @@
 #include "send-message_f.h"
 #include "mp-register_f.h"
 
-void send_message_string_socket(int socket, PString rec, PString message )
+void send_message_string_socket(int socket, Symbol rec, PString message )
 {
      uint32_t h_size_name,i,total_size, h_size_mess;
      uint32_t n_size_name, n_size_mess;                  /* for network */
@@ -87,7 +87,7 @@ void send_message_string_socket(int socket, PString rec, PString message )
 
 }
 
-void send_message_string(PString message, PString rec)
+void send_message_string(PString message, Symbol rec)
 {
      send_message_string_socket(mp_socket,rec,message);
 }
@@ -134,7 +134,7 @@ void broadcast_message_string(PString message)
      broadcast_message_string_socket(mp_socket,message);
 }
 
-void multicast_message_string_socket(int socket, unsigned int nb_recs, PString *recs, PString message )
+void multicast_message_string_socket(int socket, unsigned int nb_recs, Symbol *recs, PString message )
 {
      uint32_t h_size_name,i,total_size, h_size_mess;
      uint32_t n_size_mess, n_nb_recs;                  /* for network */
@@ -192,7 +192,7 @@ void multicast_message_string_socket(int socket, unsigned int nb_recs, PString *
      free(buf);
 }
 
-void multicast_message_string(PString message, unsigned int nb_recs, PString *recs)
+void multicast_message_string(PString message, unsigned int nb_recs, Symbol *recs)
 {
      if (nb_recs)
 	  multicast_message_string_socket(mp_socket, nb_recs, recs, message);

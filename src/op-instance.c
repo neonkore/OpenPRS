@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * op-instance.c -- Function dealing with op-instance.
  * 
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -208,7 +208,7 @@ PBoolean match_property(Symbol name, Property *prop)
      return (prop->name == name);
 }
 
-Term *property(Op_Instance *opi, PString p_name)
+Term *property(Op_Instance *opi, Symbol p_name)
 {
      Term *res,*tmp_res;
      Property *prop;
@@ -231,7 +231,7 @@ Term *property(Op_Instance *opi, PString p_name)
      return res;
 }
 
-PBoolean property_p(Op_Instance *opi, PString prop)
+PBoolean property_p(Op_Instance *opi, Symbol prop)
 {
      PBoolean res;
      Term *term;
@@ -279,7 +279,7 @@ PBoolean property_p_ep(TermList tl)
      return(property_p(t2->u.opi, t1->u.id));
 }
 
-L_List satisfy_prop_l_list_opi(L_List l, PString prop)
+L_List satisfy_prop_l_list_opi(L_List l, Symbol prop)
 {
      L_List res = l_nil;
      Term *t;

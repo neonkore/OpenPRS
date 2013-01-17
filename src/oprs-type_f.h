@@ -1,9 +1,7 @@
 /*                               -*- Mode: C -*- 
  * oprs-type_f.h -- Declaration of external function to oprs-type.c
  * 
- * $Id$
- * 
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -58,7 +56,7 @@ Expression *build_expr(Symbol predicat, TermList i);
 Expression *build_expr_to_cached_pred(Symbol predicat, TermList i, PBoolean signe);
 Action_Field *build_action_field(Expression *tc, PBoolean special, PBoolean multi, List_Envar lv, Envar *var);
 void make_id_hash();
-int hash_a_string(PString name);
+int hash_a_string(const char *name);
 List_Envar copy_lenv(List_Envar le);
 Frame *copy_frame_up_to_replaced_frame (Frame *fr1, Frame *prev, Frame *new_prev);
 Frame *subst_lenv_in_copy_of_frame_up_to_frame(Frame *fr1,List_Envar lenv, Frame *frame);

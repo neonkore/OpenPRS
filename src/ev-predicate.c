@@ -143,7 +143,7 @@ PBoolean is_of_type_ep(TermList tl)
 
      t1 = (Term *)sl_get_slist_pos(tl, 1);
      t2 = (Term *)sl_get_slist_pos(tl, 2);
-     if ((t1->type != ATOM) || (t2->type != ATOM))
+     if ((t1->type != TT_ATOM) || (t2->type != TT_ATOM))
 	  report_fatal_external_error(oprs_strerror(PE_EXPECTED_ATOM_TERM_TYPE));
 
      return is_of_type_sym(t1->u.id,t2->u.id);
@@ -583,7 +583,7 @@ PBoolean unify_ep(Frame *fr, TermList tl)
      return res;
 }
 
-PBoolean evaluate_expression_predicate(Eval_Pred *ep, char *ep_name, TermList tl)
+PBoolean evaluate_expression_predicate(Eval_Pred *ep, Symbol ep_name, TermList tl)
 /* This is the main function when one wants to evaluate an evaluable predicate.*/
 {
      PBoolean res;
@@ -613,7 +613,7 @@ PBoolean evaluate_expression_predicate(Eval_Pred *ep, char *ep_name, TermList tl
      return res;
 }
 
-PBoolean evaluate_expression_predicate_frame(Frame *fr, Eval_Pred *ep, char *ep_name, TermList tl)
+PBoolean evaluate_expression_predicate_frame(Frame *fr, Eval_Pred *ep, Symbol ep_name, TermList tl)
 /* This is the main function when one wants to evaluate an evaluable predicate (! eval_var).*/
 {
      PBoolean res;

@@ -1,9 +1,7 @@
 /*                               -*- Mode: C -*- 
  * oprs-dump_f.h -- 
  * 
- * $Id$
- * 
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,7 +31,7 @@
  */
 
 
-void add_object_to_dump(Dump_Type dt, void *addr);
+void add_object_to_dump(Dump_Type dt, const void *addr);
 int dump_object_list(void);
 int start_dump_session(char *filename);
 int start_load_session(char *filename);
@@ -75,11 +73,11 @@ void hton64(void *ll, u_char *buf);
 void htonptr(void *ptr, u_char buf[8]);
 void ntohptr(u_char *buf, u_char ptr[8]);
 #else
-void htonptr(void *ptr, void **buf);
-void ntohptr(void *buf, void **ptr);
+void htonptr(const void *ptr, void **buf);
+void ntohptr(const void *buf, void **ptr);
 #endif
 
-int dump_ptr(void *ptr);
+int dump_ptr(const void *ptr);
 int dump_char(char c);
 void dump_list_expr(ExprList exprs_to_dump);
 void dump_list_op(Op_List opl);

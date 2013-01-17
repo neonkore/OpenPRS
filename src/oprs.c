@@ -208,7 +208,7 @@ Oprs *make_oprs(PString name)
      return oprs;
 }
 
-void send_message_term(Expression *exp, PString rec)
+void send_message_term(Expression *exp, Symbol rec)
 {
      static Sprinter *message = NULL;
      PBoolean save_pvv =  print_var_value;
@@ -225,7 +225,7 @@ void send_message_term(Expression *exp, PString rec)
      oprs_send_message_string(SPRINTER_STRING(message),rec);
 }
 
-void multicast_message_term(Expression *exp, unsigned int nb_recs, PString *recs)
+void multicast_message_term(Expression *exp, unsigned int nb_recs, Symbol *recs)
 {
      static Sprinter *message = NULL;
      PBoolean save_pvv =  print_var_value;

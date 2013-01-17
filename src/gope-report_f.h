@@ -1,9 +1,7 @@
 /*                               -*- Mode: C -*- 
  * ope-report_f.h -- 
  * 
- * $Id$
- *
- * Copyright (c) 1991-2011 Francois Felix Ingrand, LAAS/CNRS.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand, LAAS/CNRS.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

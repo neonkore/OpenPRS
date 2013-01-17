@@ -1,9 +1,7 @@
 /*                               -*- Mode: C -*- 
  * intention.h -- Definition of intention and its components.
  * 
- * $Id$
- * 
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -87,7 +85,7 @@ struct intention {
      Op_Instance *top_op;
      short priority;
      Intention_Status status;
-     PString id;
+     Symbol id;
      Thread_Intention_Block *critical_section;
      PDate creation;	
      Condition_List activation_conditions_list;

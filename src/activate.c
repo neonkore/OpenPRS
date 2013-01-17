@@ -79,6 +79,9 @@
 
 #ifdef GRAPHIX
 #ifdef GTK
+#include "gope-graphic.h"
+#include "gope-graphic_f.h"
+#include "goprs-dialog_f.h"
 #else
 #include "ope-graphic.h"
 #include "ope-graphic_f.h"
@@ -426,10 +429,10 @@ Thread_Execution_Result failed_thread(Thread_Intention_Block *tib)
      Fact *fact;
      Thread_Execution_Result result;
      Thread_Intention_Block *pere;
-     Intention *int_pere = NULL;
+//     Intention *int_pere = NULL;
 
      pere = tib->pere;
-     if (!pere) int_pere = tib->intention;
+//     if (!pere) int_pere = tib->intention;
 
      op_ins = tib->curr_op_inst;
 
@@ -1165,12 +1168,12 @@ Thread_Execution_Result execute_intention_body(Thread_Intention_Block *tib)
 {
      Op_Instance *op_ins;
      List_Envar lenv;
-     Op_Structure *op;
+//     Op_Structure *op;
      FramePtr frame;
 
      op_ins = tib->curr_op_inst;
      lenv = op_ins->lenv;
-     op = op_ins->op;
+//     op = op_ins->op;
      frame = op_ins->frame;
 
      if ((SAFE_SL_SLIST_EMPTY(tib->list_to_try)) && ! (tib->current_goal)) { /* Has not been seen before, and no goal... */

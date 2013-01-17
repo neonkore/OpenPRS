@@ -1,9 +1,7 @@
 /*                               -*- Mode: C -*- 
  * mp-pub.h -- Public functions to register to, send to and receive from the MP.
  * 
- * $Id$
- *
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,9 +49,9 @@ int external_register_to_the_mp_host_prot(const char *name, const char *host_nam
 int external_register_to_the_mp_prot(const char *name, int port, Protocol_Type prot);
 
 PString read_string_from_socket(int s,int *size);
-void send_message_string(const PString message, const PString rec);
+void send_message_string(const PString message, Symbol rec);
 void broadcast_message_string(const PString message);
-void multicast_message_string(PString message, unsigned int nb_rec, PString *rec);
+void multicast_message_string(PString message, unsigned int nb_rec, Symbol *rec);
 #endif
 
 #ifdef __cplusplus

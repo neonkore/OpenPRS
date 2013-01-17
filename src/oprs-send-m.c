@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * oprs-send-m.c -- 
  * 
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,7 @@
 #include "mp-pub.h"
 #include "user-trace_f.h"
 
-void oprs_send_message_string(PString message, PString rec)
+void oprs_send_message_string(PString message, Symbol rec)
 {
 
      if (debug_trace[SEND_MESSAGE]) {
@@ -50,7 +50,7 @@ void oprs_send_message_string(PString message, PString rec)
      }
 
      if (user_trace[USER_TRACE] && user_trace[UT_SEND_MESSAGE]) {
-	  PString recs[1];
+	  Symbol recs[1];
 	  
 	  recs[0] = rec;
 	  user_trace_send_message(message, 1, recs);
@@ -74,7 +74,7 @@ void oprs_broadcast_message_string(PString message)
 }
 
 
-void oprs_multicast_message_string(PString message, unsigned int nb_recs, PString *recs)
+void oprs_multicast_message_string(PString message, unsigned int nb_recs, Symbol *recs)
 {
      if (nb_recs) {
 	  if (debug_trace[SEND_MESSAGE]) {

@@ -1,9 +1,7 @@
 /*                               -*- Mode: C -*- 
  * op-structure_f.h -- Declaration of external functions of op-structure.c
  * 
- * $Id$
- * 
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,7 +40,7 @@ NodeList build_node_list(NodeList nl, Node *n);
 EdgeList build_edge_list(EdgeList el, Edge *e);
 
 Edge *make_edge(void);
-Node *make_node(PString name, PBoolean graphic);
+Node *make_node(Symbol name, PBoolean graphic);
 Op_Structure *make_op();
 Op_Structure *dup_op(Op_Structure *op);
 void free_op(Op_Structure *op);
@@ -94,14 +92,14 @@ void build_and_add_then_else_edge(Op_Structure *op,  PString in,  PString out,
 Node *else_node_from_if_node(Node *node);
 Node *then_node_from_if_node(Node *node);
 void finish_loading_op(Op_Structure *op,  Draw_Data *dd);
-Node *find_node_or_create(PString name,PBoolean graphic);
+Node *find_node_or_create(Symbol name, PBoolean graphic);
 Control_Point *valid_cp(Control_Point *cp);
 Logic *valid_logic(Logic *logic);
 
-PString new_node_name(Op_Structure *op);
+Symbol new_node_name(Op_Structure *op);
 PString new_edge_name(Op_Structure *op);
 void new_then_else_node_name_from_if_name (PString if_name, PString *then_name_p, PString *else_name_p);
-void new_if_then_else_node_name(Op_Structure *op, PString *nif, PString *nthen, PString *nelse);
+void new_if_then_else_node_name(Op_Structure *op, Symbol *nif, Symbol *nthen, Symbol *nelse);
 PString new_end_node_name(Op_Structure *op);
 
 PBoolean sort_op(Op_Structure *op1, Op_Structure *op2);

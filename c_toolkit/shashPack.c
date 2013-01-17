@@ -1,8 +1,7 @@
-static const char* const rcsid = "$Id$";
 /*                               -*- Mode: C -*- 
  * shashPack.c -- 
  * 
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -83,7 +82,7 @@ void sh_free_hashtable(Shash *table)
      FREE_OBJECT(table);
 }
 
-void *sh_add_to_hashtable(Shash * table, void * node, void * ident)
+const void *sh_add_to_hashtable(Shash * table, const void *node, const void *ident)
 {
      int index;
      Slist *list;
@@ -98,10 +97,10 @@ void *sh_add_to_hashtable(Shash * table, void * node, void * ident)
 }
 
 
-void *sh_get_from_hashtable(Shash *table, void *ident)
+const void *sh_get_from_hashtable(Shash *table, const void *ident)
 {
      int index;
-     void *ptr;
+     const void *ptr;
      Slist *list;
 
      index = (* table -> hashfunc)(ident);
@@ -116,10 +115,10 @@ void *sh_get_from_hashtable(Shash *table, void *ident)
      return NULL;
 }
 
-void *sh_delete_from_hashtable(Shash *table, void *ident)
+const void *sh_delete_from_hashtable(Shash *table, const void *ident)
 {
      int index;
-     void *ptr;
+     const void *ptr;
      Slist *list;
 
      index = (* table -> hashfunc)(ident);
@@ -135,7 +134,7 @@ void *sh_delete_from_hashtable(Shash *table, void *ident)
      return NULL;
 }
 
-int _sh_for_all_hashtable(Shash *table, void *node, SL_PFI func)
+int _sh_for_all_hashtable(Shash *table, const void *node, SL_PFI func)
 {
      int i, sum = 0;
      void *temp;
@@ -149,7 +148,7 @@ int _sh_for_all_hashtable(Shash *table, void *node, SL_PFI func)
      return sum;
 }
 
-int _sh_for_all_2hashtable(Shash *table, void *node, void *node2, SL_PFI func)
+int _sh_for_all_2hashtable(Shash *table, const void *node, const void *node2, SL_PFI func)
 {
      int i, sum = 0;
      void *temp;
@@ -163,7 +162,7 @@ int _sh_for_all_2hashtable(Shash *table, void *node, void *node2, SL_PFI func)
      return sum;
 }
 
-int _sh_for_all_3hashtable(Shash *table, void *node, void *node2, void *node3, SL_PFI func)
+int _sh_for_all_3hashtable(Shash *table, const void *node, const void *node2, const void *node3, SL_PFI func)
 {
      int i, sum = 0;
      void *temp;
