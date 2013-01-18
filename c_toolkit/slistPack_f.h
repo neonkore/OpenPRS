@@ -145,7 +145,7 @@ for(slist->current.st = slist->first.st , (slist->type==SLT_DOUBLE?slist->dynami
 #define sl_copy_slist_func2(slist,node1,node2,func) _sl_copy_slist_func2(slist,node1,node2,(SL_PFPV)(func))
 Slist *sl_copy_slist(Slist *_slist);
 const void *sl_replace_slist_node(Slist *_slist, const void *_oldnode, const void *_newnode);
-const void *sl_replace_slist_func(Slist *_slist, SL_PFPV _func);
+Slist *sl_replace_slist_func(Slist *_slist, SL_PFPV _func);
 const void *_sl_delete_slist_func(Slist *_slist, const void *_node, SL_PFC _func);
 const void *sl_delete_slist_node(Slist *_slist, const void *_node);
 const void *sl_add_to_head(Slist *_slist, const void *_snode);

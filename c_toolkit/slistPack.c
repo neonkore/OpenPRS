@@ -664,7 +664,7 @@ const void *sl_replace_slist_node(Slist *slist, const void *oldnode, const void 
 	  return sl_add_to_tail(slist, newnode);
 }
 
-const void *sl_replace_slist_func(Slist *slist, SL_PFPV func)
+Slist *sl_replace_slist_func(Slist *slist, SL_PFPV func)
 {
      Snode *snode;
 

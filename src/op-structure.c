@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * op-structure.c -- Functions used for and with op-structure.
  * 
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -187,7 +187,7 @@ Op_Structure *make_op()
      return t;
 }
 
-void init_make_op(PString name, PBoolean graphic)
+void init_make_op(Symbol name, PBoolean graphic)
 {
      Op_Structure *op;
 
@@ -202,7 +202,7 @@ void init_make_op(PString name, PBoolean graphic)
      current_list_og_inst = op->list_og_inst;
 
      if (graphic) {
-	  op->op_title = make_op_title(global_draw_data, name);
+	  op->op_title = make_op_title(global_draw_data, (PString)name);
      }
 #endif
 }
@@ -381,7 +381,7 @@ Edge *make_edge(void)
      return e;
 }
 
-Edge *build_edge(PString n1, PString n2, Expression *expr, PBoolean graphic)
+Edge *build_edge(Symbol n1, Symbol n2, Expression *expr, PBoolean graphic)
 {
      Edge *edge = MAKE_OBJECT(Edge);
 
@@ -655,7 +655,7 @@ void free_list_og_inst(List_OG list_og_inst)
 
 #endif
 
-void build_invocation(Op_Structure *op, PString name, Expression *expr, 
+void build_invocation(Op_Structure *op, Symbol name, Expression *expr, 
 		      int  x, int y, PBoolean visible, int pp_width, PBoolean pp_fill, Draw_Data *dd)
 {
      op->invocation = expr;
@@ -666,7 +666,7 @@ void build_invocation(Op_Structure *op, PString name, Expression *expr,
 #endif
 }
 
-void build_call(Op_Structure *op, PString name, Expression *expr, 
+void build_call(Op_Structure *op, Symbol name, Expression *expr, 
 		      int  x, int y, PBoolean visible, int pp_width, PBoolean pp_fill, Draw_Data *dd)
 {
      op->call = expr;
@@ -677,7 +677,7 @@ void build_call(Op_Structure *op, PString name, Expression *expr,
 #endif
 }
 
-void build_context(Op_Structure *op, PString name, ExprList pcnd,
+void build_context(Op_Structure *op, Symbol name, ExprList pcnd,
 		      int  x, int y, PBoolean visible, int pp_width, PBoolean pp_fill, Draw_Data *dd)
 {
      op->context = pcnd;
@@ -688,7 +688,7 @@ void build_context(Op_Structure *op, PString name, ExprList pcnd,
 #endif
 }
 
-void build_setting(Op_Structure *op, PString name, Expression *expr, 
+void build_setting(Op_Structure *op, Symbol name, Expression *expr, 
 		      int  x, int y, PBoolean visible, int pp_width, PBoolean pp_fill, Draw_Data *dd)
 {
      op->setting = expr;
@@ -699,7 +699,7 @@ void build_setting(Op_Structure *op, PString name, Expression *expr,
 #endif
 }
 
-void build_properties(Op_Structure *op, PString name, PropertyList pl, 
+void build_properties(Op_Structure *op, Symbol name, PropertyList pl, 
 		      int  x, int y, PBoolean visible, int pp_width, PBoolean pp_fill, Draw_Data *dd)
 {
      if (op->properties) FREE_SLIST(op->properties); /* it was intialized with a empty list. */
@@ -712,7 +712,7 @@ void build_properties(Op_Structure *op, PString name, PropertyList pl,
 }
 
 #ifdef GRAPHIX
-void build_documentation(Op_Structure *op, PString name, PString documentation, 
+void build_documentation(Op_Structure *op, Symbol name, PString documentation, 
 		      int  x, int y, PBoolean visible, int pp_width, PBoolean pp_fill, Draw_Data *dd)
 {
      op->documentation = documentation;
@@ -727,7 +727,7 @@ Add_Del_List make_adl_from_el(ExprList el)
      return el;
 }
 
-void build_effects(Op_Structure *op, PString name,  ExprList adl, 
+void build_effects(Op_Structure *op, Symbol name,  ExprList adl, 
 		      int  x, int y, PBoolean visible, int pp_width, PBoolean pp_fill, Draw_Data *dd)
 {
 /*      if (op->effects) FREE_SLIST(op->effects);  it was intialized with a empty list. */
@@ -740,7 +740,7 @@ void build_effects(Op_Structure *op, PString name,  ExprList adl,
 #endif
 }
 
-void build_action(Op_Structure *op, PString name, Action_Field *action, 
+void build_action(Op_Structure *op, Symbol name, Action_Field *action, 
 		      int  x, int y, PBoolean visible, int pp_width, PBoolean pp_fill, Draw_Data *dd)
 {
      op->action = action;
@@ -756,7 +756,7 @@ OG *
 #else
 void
 #endif
-build_and_add_node(Op_Structure *op, PString name, Node_Type nt, PBoolean join, PBoolean split,
+build_and_add_node(Op_Structure *op, Symbol name, Node_Type nt, PBoolean join, PBoolean split,
 			int  x, int y, Draw_Data *dd)
 {
   Node *node = MAKE_OBJECT(Node);
@@ -810,7 +810,7 @@ Node *find_node(Op_Structure *op, Symbol name)
 #endif
 }
 
-void build_and_add_edge(Op_Structure *op,  PString in,  PString out,
+void build_and_add_edge(Op_Structure *op,  Symbol in,  Symbol out,
 			Edge_Type et, Expression *expr, Slist *knots, int x, int y,
 			int pp_width, PBoolean pp_fill,  Draw_Data *dd) 
 {
@@ -841,7 +841,7 @@ void build_and_add_edge(Op_Structure *op,  PString in,  PString out,
      }
 }
 
-void build_and_add_then_else_edge(Op_Structure *op, PString in,  PString out,
+void build_and_add_then_else_edge(Op_Structure *op, Symbol in,  Symbol out,
 				  Edge_Type et, Draw_Data *dd) 
 {
      Edge *edge = MAKE_OBJECT(Edge);
@@ -943,17 +943,16 @@ Symbol new_node_name(Op_Structure *op)
 }
 
 
-void new_then_else_node_name_from_if_name (PString if_name, PString *then_name_p,
-					   PString *else_name_p)
+void new_then_else_node_name_from_if_name (Symbol if_name, Symbol *then_name_p,
+					   Symbol *else_name_p)
 {
      PString then_name;
      PString else_name;
 
      int length = strlen (if_name);
 
-     then_name = *then_name_p = (PString) MALLOC(length +3); 
-     else_name = *else_name_p = (PString) MALLOC(length +3); 
-
+     then_name = (PString) MALLOC(length +3); 
+     else_name = (PString) MALLOC(length +3); 
      if (if_name[0] == '|') {  /* The name is an "idbar" */
 	  strncpy(then_name, if_name, length - 1);
 	  strncpy(else_name, if_name, length - 1);
@@ -970,6 +969,10 @@ void new_then_else_node_name_from_if_name (PString if_name, PString *then_name_p
 	  else_name[length+1] = 'F';
 	  then_name[length+2] = else_name[length+2] = '\0';
      }
+     DECLARE_ID(then_name, *then_name_p);
+     DECLARE_ID(else_name, *else_name_p);
+     FREE(then_name);
+     FREE(else_name);
 }
 
 void new_if_then_else_node_name(Op_Structure *op, Symbol *nif, Symbol *nthen, Symbol *nelse)
@@ -1003,7 +1006,7 @@ void new_if_then_else_node_name(Op_Structure *op, Symbol *nif, Symbol *nthen, Sy
      check_symbol = save_cs;
 }
 
-PString new_end_node_name(Op_Structure *op)
+Symbol new_end_node_name(Op_Structure *op)
 {
      char name[20];
      Symbol node_name;

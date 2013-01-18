@@ -109,7 +109,6 @@ Expression *dup_expr_ct(Expression *expr);
 void free_frame_until_empty(FramePtr fp);
 void free_frame_until_frame(FramePtr fp1,FramePtr fp2);
 void free_frame_and_envar_until_empty(FramePtr fp);
-PString get_and_check_from_hashtable(Shash *hash, PString from);
 void add_frame_to_free(Frame *to_add, Frame *until, FrameList fl);
 
 Expression *build_expr_from_used_expr(Expression *t);
@@ -121,7 +120,7 @@ void free_id_hash(void);
 ExprFrame *make_ef(Expression *expr, Frame *f);
 ExprListFrame *make_elf(ExprList exprl, Frame *f);
 
-PString get_and_check_from_hashtable(Shash *hash, PString from);
+Symbol get_and_check_from_hashtable(Shash *hash, PString from);
 int debackslashify(char *string);
 PBoolean equal_string(PString s1, PString s2);
 
@@ -139,7 +138,7 @@ PBoolean global_variable(Envar *ev);
 
 void init_hash_size_id(int hash_size);
 
-PString remove_vert_bar(PString name);
+PString remove_vert_bar(Symbol name);
 
 void show_global_variable(void);
 void stat_id_hashtable(void);

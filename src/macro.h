@@ -99,7 +99,7 @@ int alloc_refcount1(void *mem);
 void *realloc1(void *ptr, size_t size);
 
 /* Macro to allocate and create a string equal to from pointer by to */
-#define NEWSTR(from, to) do {int len = strlen(from);\
+#define NEWSTR(from, to) do {size_t len = strlen(from);\
 	  			   char *tmp2;\
 				   tmp2 = (char *)MALLOC(len+1);\
 				   BCOPY(from, tmp2, len+1);\
@@ -107,13 +107,13 @@ void *realloc1(void *ptr, size_t size);
 				   } while (0)
 
 
-#define NEWSTR_STD(from, to) do {int len = strlen(from);\
+#define NEWSTR_STD(from, to) do {size_t len = strlen(from);\
 				   to = (char *)malloc(len+1);\
 				   BCOPY(from, to, len+1);\
 				   } while (0)
 
 /* Macro to allocate and create a string equal to from (which is double quoted...) pointed by to (without the quote). */
-#define NEWQSTR(from, to) do {int len = strlen(from) - 2;\
+#define NEWQSTR(from, to) do {size_t len = strlen(from) - 2;\
 				   to = (char *)MALLOC(len+1);\
 				   BCOPY(from + 1, to, len);\
 				   to[len] = '\0';\
@@ -123,7 +123,7 @@ void *realloc1(void *ptr, size_t size);
 /* will normalize an ID according to the various flags... */
 #define NORMALIZE_STRING_IN_PLACE(from) \
      if (! no_case_id ) \
-		do {int i,len = strlen(from); \
+		do {size_t i,len = strlen(from); \
 			 if (lower_case_id) \
 			      for(i = 0; i <= len; i++) \
 			        	from[i] = (isupper(from[i]) ? tolower(from[i]) : from[i]); \

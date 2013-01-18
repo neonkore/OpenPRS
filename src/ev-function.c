@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * ev-function.c -- Deal with evaluable functions in OPRS.
  * 
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -1335,7 +1335,7 @@ Term *goal_statement_arg_ef(TermList terms)
 	  return build_nil();
      }
 
-     return dup_term(sl_get_slist_pos(tl,pos->u.intval));
+     return dup_term((Term *)sl_get_slist_pos(tl,pos->u.intval));
 }
 
 Term *copy_term_keeping_variable_unique_ef(TermList terms)
@@ -1451,7 +1451,7 @@ Term *fact_statement_arg_ef(TermList terms)
 	  return build_nil();
      }
 
-     return dup_term(sl_get_slist_pos(tl,pos->u.intval));
+     return dup_term((Term *)sl_get_slist_pos(tl,pos->u.intval));
 }
 
 Term *fact_statement_arg_cp_ef(TermList terms)
@@ -1511,7 +1511,7 @@ Term *tc_arg_ef(TermList terms)
 	  return build_nil();
      }
 
-     return dup_term(sl_get_slist_pos(tl,pos->u.intval));
+     return dup_term((Term *)sl_get_slist_pos(tl,pos->u.intval));
 }
 
 Term *tc_arg_cp_ef(TermList terms)
@@ -1762,7 +1762,7 @@ Term *all_pos_ef(TermList terms)
      efl = consult(expr, empty_env, current_oprs->database, TRUE);
      
      sl_loop_through_slist(efl, ef, ExprFrame *) {
-	  sl_add_to_head(term_list, copy_term(sl_get_slist_pos(ef->expr->terms,
+	  sl_add_to_head(term_list, copy_term((Term *)sl_get_slist_pos(ef->expr->terms,
 							       t1->u.intval)));
 	  
 	  free_frame(ef->frame);
@@ -2828,7 +2828,7 @@ Term *llint_to_float_ef(TermList terms)
      return res;
 }
 
-Term *evaluate_term_function(Eval_Funct *ef, char *ef_name, TermList tl)
+Term *evaluate_term_function(Eval_Funct *ef, Symbol ef_name, TermList tl)
 /* This is the main function to evaluate a composed term with an evaluable function */
 {
      Term *res;

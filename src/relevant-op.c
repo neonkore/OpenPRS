@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * relevant_op.c -- Gestion de la table des procedures "relevants"
  * 
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -157,7 +157,7 @@ void delete_op_call_from_pfr(Op_Structure *op, Expression *expr)
 
      pr = PFR_PR(expr->pfr);
      
-     opm_to_del = sl_get_from_head(pr->cached_rop[CALL]);
+     opm_to_del = (Op_Expr *)sl_get_from_head(pr->cached_rop[CALL]);
      if (opm_to_del) FREE(opm_to_del);
 }
 

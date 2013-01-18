@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * activate.c -- Executes the intentions in the intention graph.
  * 
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -159,7 +159,7 @@ void report_intention_failure(Intention *in)
 \n\tthe goal: ",
 			     "\tprobablement parce qu'elle n'a pu satisfaire\
 \n\tle but: "));
-	       print_expr(expr = sl_get_from_head(stack));
+	       print_expr(expr = (Expression *)sl_get_from_head(stack));
 	       free_expr(expr);
 	       printf(LG_STR(" in OP %s",
 			     " dans le OP %s"),
@@ -167,7 +167,7 @@ void report_intention_failure(Intention *in)
 	       while (! (sl_slist_empty(stack))) {
 		    printf(LG_STR("\n\t\ttrying to achieve: ",
 				  "\n\t\tessayant de réaliser: "));
-		    print_expr(expr = sl_get_from_head(stack));
+		    print_expr(expr = (Expression *)sl_get_from_head(stack));
 		    free_expr(expr);
 		    printf(LG_STR(" in OP %s",
 				  " dans le OP %s"),
@@ -836,7 +836,7 @@ void whipe_out_goal_failure(Intention *in)
 	  reset_sprinter(in->failed_goal_sprinter);
      
      while (! (sl_slist_empty(stack))) {
-	  free_expr(sl_get_from_head(stack));
+	  free_expr((Expression *)sl_get_from_head(stack));
 	  sl_get_from_head(stack); /* Op name. */
      }
 }

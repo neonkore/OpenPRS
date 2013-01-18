@@ -2,7 +2,7 @@
 /*                               -*- Mode: C -*-
  * unification.c -- Unification pour OPRS
  *
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -190,13 +190,13 @@ PBoolean unify_expr(Expression *e1, Expression *e2, FramePtr frame)
      if ((e1->pfr != e2->pfr) || ((sl_slist_length(e1->terms) != sl_slist_length(e2->terms))))
 	  return (FALSE);
 
-     ptr1 = sl_get_slist_next(e1->terms, NULL);
-     ptr2 = sl_get_slist_next(e2->terms, NULL);
+     ptr1 = (void *)sl_get_slist_next(e1->terms, NULL);
+     ptr2 = (void *)sl_get_slist_next(e2->terms, NULL);
      while (ptr1 != NULL && ptr2 != NULL)
 	  if (unify_term(find_binding_or_prog_var((Term *) ptr1),	/* on unifie toujours une variable programme */
 			 find_binding_or_prog_var((Term *) ptr2), frame)) {
-	       ptr1 = sl_get_slist_next(e1->terms, ptr1);
-	       ptr2 = sl_get_slist_next(e2->terms, ptr2);
+	       ptr1 = (void *)sl_get_slist_next(e1->terms, ptr1);
+	       ptr2 = (void *)sl_get_slist_next(e2->terms, ptr2);
 	  } else {
 	       uninstall_frame(frame);	/* parfois, il y a eu des variable binde... fonc il faut les defaire */
 	       /* free_frame(frame); c'est pas a lui de free un object qu'il n'a pas cree. */
@@ -210,13 +210,13 @@ PBoolean unify_expr_from_db(Expression *e1, Expression *e2, FramePtr frame, PBoo
 /* with the variable in the DB we may now get a literal variable in e2... */
      void *ptr1, *ptr2;
 
-     ptr1 = sl_get_slist_next(e1->terms, NULL);
-     ptr2 = sl_get_slist_next(e2->terms, NULL);
+     ptr1 = (void *)sl_get_slist_next(e1->terms, NULL);
+     ptr2 = (void *)sl_get_slist_next(e2->terms, NULL);
      while (ptr1 != NULL)
 	  if (unify_term_from_db(find_binding_or_prog_var((Term *) ptr1), /* on unifie toujours une var. program */
 				 (Term *) ptr2, frame, dup_var)) { /* The second one comes from the DB */
-	       ptr1 = sl_get_slist_next(e1->terms, ptr1);
-	       ptr2 = sl_get_slist_next(e2->terms, ptr2);
+	       ptr1 = (void *)sl_get_slist_next(e1->terms, ptr1);
+	       ptr2 = (void *)sl_get_slist_next(e2->terms, ptr2);
 	  } else {
 	       uninstall_frame(frame);	/* parfois, il y a eu des variable binde... fonc il faut les defaire */
 	       return (FALSE);
@@ -627,12 +627,12 @@ PBoolean equal_expr(Expression *e1, Expression *e2)
      if ((e1->pfr != e2->pfr) ||
 	 (sl_slist_length(e1->terms) != sl_slist_length(e2->terms)))
 	  return (FALSE);
-     ptr1 = sl_get_slist_next(e1->terms, NULL);
-     ptr2 = sl_get_slist_next(e2->terms, NULL);
+     ptr1 = (void *)sl_get_slist_next(e1->terms, NULL);
+     ptr2 = (void *)sl_get_slist_next(e2->terms, NULL);
      while (ptr1 != NULL && ptr2 != NULL)
 	  if (equal_term((Term *) ptr1, (Term *) ptr2) == TRUE) {
-	       ptr1 = sl_get_slist_next(e1->terms, ptr1);
-	       ptr2 = sl_get_slist_next(e2->terms, ptr2);
+	       ptr1 = (void *)sl_get_slist_next(e1->terms, ptr1);
+	       ptr2 = (void *)sl_get_slist_next(e2->terms, ptr2);
 	  } else
 	       return (FALSE);
      return (TRUE);
@@ -649,12 +649,12 @@ PBoolean equal_expr_for_given_depth(Expression *e1, Expression *e2, int depth)
 
      if ((e1->pfr != e2->pfr) || (sl_slist_length(e1->terms) != sl_slist_length(e2->terms)))
 	  return (FALSE);
-     ptr1 = sl_get_slist_next(e1->terms, NULL);
-     ptr2 = sl_get_slist_next(e2->terms, NULL);
+     ptr1 = (void *)sl_get_slist_next(e1->terms, NULL);
+     ptr2 = (void *)sl_get_slist_next(e2->terms, NULL);
      while (depth && ptr1 != NULL && ptr2 != NULL)
 	  if (equal_term((Term *) ptr1, (Term *) ptr2) == TRUE) {
-	       ptr1 = sl_get_slist_next(e1->terms, ptr1);
-	       ptr2 = sl_get_slist_next(e2->terms, ptr2);
+	       ptr1 = (void *)sl_get_slist_next(e1->terms, ptr1);
+	       ptr2 = (void *)sl_get_slist_next(e2->terms, ptr2);
 	       depth--;
 	  } else
 	       return (FALSE);
@@ -688,12 +688,12 @@ PBoolean equal_expr_wo_sign(Expression *e1, Expression *e2)
      if (sl_slist_length(e1->terms) != sl_slist_length(e2->terms))
 	  return (FALSE);
      if (e1->pfr == e2->pfr) {
-	  ptr1 = sl_get_slist_next(e1->terms, NULL);
-	  ptr2 = sl_get_slist_next(e2->terms, NULL);
+	  ptr1 = (void *)sl_get_slist_next(e1->terms, NULL);
+	  ptr2 = (void *)sl_get_slist_next(e2->terms, NULL);
 	  while (ptr1 != NULL && ptr2 != NULL)
 	       if (equal_term((Term *) ptr1, (Term *) ptr2) == TRUE) {
-		    ptr1 = sl_get_slist_next(e1->terms, ptr1);
-		    ptr2 = sl_get_slist_next(e2->terms, ptr2);
+		    ptr1 = (void *)sl_get_slist_next(e1->terms, ptr1);
+		    ptr2 = (void *)sl_get_slist_next(e2->terms, ptr2);
 	       } else
 		    return (FALSE);
 	  return (TRUE);
@@ -751,15 +751,15 @@ PBoolean matching_lenv_between_frames(List_Envar le1, Frame *fr1,List_Envar le2,
 	  }
 	  desinstall_frame(fr2, prev_inst_frame);
 
-	  pos1 =  sl_get_from_head(unbound1);
-	  pos2 =  sl_get_from_head(unbound2);
+	  pos1 =  (void *)sl_get_from_head(unbound1);
+	  pos2 =  (void *)sl_get_from_head(unbound2);
 	  while ((pos1 != 0) || (pos2 != 0)) {
 	       if (pos1 !=  pos2) {
 		    match = FALSE;
 		    break;
 	       }
-	       pos1 =  sl_get_from_head(unbound1);
-	       pos2 =  sl_get_from_head(unbound2);
+	       pos1 =  (void *)sl_get_from_head(unbound1);
+	       pos2 =  (void *)sl_get_from_head(unbound2);
 	  }
 	  FREE_SLIST(unbound1);
 	  FREE_SLIST(unbound2);

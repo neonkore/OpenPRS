@@ -2,7 +2,7 @@
 /*                               -*- Mode: C -*-
  * ope-external.c --
  *
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -846,7 +846,7 @@ void update_list_og_inst(Draw_Data *dd, Op_Structure *op, OG *og_body)
      y0 = og_body->y;
 
      /* the first gt_string of the list is the title */
-     gt_str = sl_get_slist_pos(og_body->u.gtext->lgt_string, 2);
+     gt_str =  (Gtext_String *)sl_get_slist_pos(og_body->u.gtext->lgt_string, 2);
 	  
      x0 += gt_str->off_x; /* should be 0 */
      y0 += gt_str->off_y; 
@@ -934,7 +934,7 @@ OG *make_og_node(Draw_Data *dd, Op_Structure *op, Node *node, int x, int y)
      OG *og = MAKE_OBJECT(OG);
      Gnode *gnode = MAKE_OBJECT(Gnode);
      Node_Type nt = node->type;
-     PString name = node->name;
+     Symbol name = node->name;
      PString stripped_name;
      Draw_Type dt = DT_NODE;	/* To please gcc. */
 
@@ -1071,7 +1071,7 @@ OG *make_og_edge(Draw_Data *dd, Op_Structure *op,  Edge *edge, Node *in, Node *o
 
 }
 
-OG *make_node_graphic(PString name, Node *node)
+OG *make_node_graphic(Symbol name, Node *node)
 {
      PString stripped_name;
      Gnode *gnode = MAKE_OBJECT(Gnode);

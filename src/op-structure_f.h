@@ -34,7 +34,7 @@
 
 Edge_Type build_edge_type_from_type(PString type);
 
-void init_make_op(PString name, PBoolean graphic);
+void init_make_op(Symbol name, PBoolean graphic);
 void print_op(Op_Structure *op);
 NodeList build_node_list(NodeList nl, Node *n);
 EdgeList build_edge_list(EdgeList el, Edge *e);
@@ -57,21 +57,21 @@ void free_op_title(OG *og);
 void sl_free_slist_og_inst(List_OG list_og_inst);
 #endif
 
-void build_invocation(Op_Structure *op, PString name, Expression *expr, 
+void build_invocation(Op_Structure *op, Symbol name, Expression *expr, 
 		      int  x, int y, PBoolean visible, int pp_width, PBoolean pp_fill, Draw_Data *dd);
-void build_call(Op_Structure *op, PString name, Expression *expr, 
+void build_call(Op_Structure *op, Symbol name, Expression *expr, 
 		      int  x, int y, PBoolean visible, int pp_width, PBoolean pp_fill, Draw_Data *dd);
-void build_context(Op_Structure *op, PString name, ExprList pcnd,
+void build_context(Op_Structure *op, Symbol name, ExprList pcnd,
 		      int  x, int y, PBoolean visible, int pp_width, PBoolean pp_fill, Draw_Data *dd);
-void build_setting(Op_Structure *op, PString name, Expression *expr, 
+void build_setting(Op_Structure *op, Symbol name, Expression *expr, 
 		      int  x, int y, PBoolean visible, int pp_width, PBoolean pp_fill, Draw_Data *dd);
-void build_properties(Op_Structure *op, PString name, PropertyList pl, 
+void build_properties(Op_Structure *op, Symbol name, PropertyList pl, 
 		      int  x, int y, PBoolean visible, int pp_width, PBoolean pp_fill, Draw_Data *dd);
-void build_documentation(Op_Structure *op, PString name, PString documentation, 
+void build_documentation(Op_Structure *op, Symbol name, PString documentation, 
 		      int  x, int y, PBoolean visible, int pp_width, PBoolean pp_fill, Draw_Data *dd);
-void build_effects(Op_Structure *op, PString name, ExprList adl,
+void build_effects(Op_Structure *op, Symbol name, ExprList adl,
 		      int  x, int y, PBoolean visible, int pp_width, PBoolean pp_fill, Draw_Data *dd);
-void build_action(Op_Structure *op, PString name, Action_Field *action, 
+void build_action(Op_Structure *op, Symbol name, Action_Field *action, 
 		      int  x, int y, PBoolean visible, int pp_width, PBoolean pp_fill, Draw_Data *dd);
 
 #ifdef GRAPHIX
@@ -79,14 +79,14 @@ OG *
 #else
 void
 #endif
-build_and_add_node(Op_Structure *op, PString name, Node_Type nt, PBoolean join, PBoolean split,
+build_and_add_node(Op_Structure *op, Symbol name, Node_Type nt, PBoolean join, PBoolean split,
 			int  x, int y, Draw_Data *dd);
 
-void build_and_add_edge(Op_Structure *op,  PString in,  PString out,
+void build_and_add_edge(Op_Structure *op,  Symbol in,  Symbol out,
 			Edge_Type et, Expression *expr, Slist *knots, int x, int y,
 			int pp_width, PBoolean pp_fill, Draw_Data *dd);
 
-void build_and_add_then_else_edge(Op_Structure *op,  PString in,  PString out,
+void build_and_add_then_else_edge(Op_Structure *op,  Symbol in,  Symbol out,
 				  Edge_Type et, Draw_Data *dd);
 
 Node *else_node_from_if_node(Node *node);
@@ -97,9 +97,9 @@ Control_Point *valid_cp(Control_Point *cp);
 Logic *valid_logic(Logic *logic);
 
 Symbol new_node_name(Op_Structure *op);
-PString new_edge_name(Op_Structure *op);
-void new_then_else_node_name_from_if_name (PString if_name, PString *then_name_p, PString *else_name_p);
+Symbol new_edge_name(Op_Structure *op);
+void new_then_else_node_name_from_if_name (Symbol if_name, Symbol *then_name_p, Symbol *else_name_p);
 void new_if_then_else_node_name(Op_Structure *op, Symbol *nif, Symbol *nthen, Symbol *nelse);
-PString new_end_node_name(Op_Structure *op);
+Symbol new_end_node_name(Op_Structure *op);
 
 PBoolean sort_op(Op_Structure *op1, Op_Structure *op2);

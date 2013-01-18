@@ -41,17 +41,17 @@ Double_Node *build_while(Expression *cond, Double_Node *insts);
 Double_Node *build_if(Expression *cond, Double_Node *thenb,  Double_Node *elseb, PBoolean elseif);
 Double_Node *build_inst(Expression *inst);
 Double_Node *build_comment(PString comment);
-Double_Node *build_goto_inst(PString label);
+Double_Node *build_goto_inst(Symbol label);
 Double_Node *build_break_inst(void);
-Double_Node *build_label_inst(PString label);
-void build_body(Op_Structure *op, PString name, Body *body, int  x, int y, 
+Double_Node *build_label_inst(Symbol label);
+void build_body(Op_Structure *op, Symbol name, Body *body, int  x, int y, 
 		PBoolean visible, int pp_width, PBoolean pp_fill, Draw_Data *dd);
 void parse_break_list(Double_Node *dn);
 
 Double_Node *add_inst_to_list_inst(Double_Node *list_inst, Double_Node *inst);
 void  finish_loading_top(Op_Structure *op,  Draw_Data *dd);
 void free_body(Body *body);
-void init_make_top(PString name, PBoolean graphic);
+void init_make_top(Symbol name, PBoolean graphic);
 void print_body(Body *body);
 
 #define DN_HEAD(dn) ((dn)->head)

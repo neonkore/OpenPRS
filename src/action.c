@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * action.c -- 
  * 
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -215,7 +215,7 @@ Term *action_log_printf(TermList terms)
 				       "Ce fichier n'a pas été initializé correctement."));
 
   tc = t->u.expr;
-  if (strcmp(tc->pfr->name,"FORMAT") != 0)
+  if (tc->pfr->name != format_sym)
     report_fatal_external_error(LG_STR("Expecting a keyword FORMAT in action_printf.",
 				       "Attendait un mot clef FORMAT dans la fonction action_printf."));
   
@@ -511,7 +511,7 @@ Term *action_print_list_term(TermList terms)
 	  report_fatal_external_error(oprs_strerror(PE_EXPECTED_EXPRESSION_TERM_TYPE));
 
      tc = t->u.expr;
-     if (strcmp(tc->pfr->name,"FORMAT") != 0)
+     if (tc->pfr->name != format_sym)
 	  report_fatal_external_error(LG_STR("Expecting a FORMAT in action_print_list_term.",
 					     "Attendait le symbol FORMAT dans la fonction action_print_list_term."));
      terms2 = COPY_SLIST(tc->terms);
@@ -547,7 +547,7 @@ Term *action_printf(TermList terms)
 	  report_fatal_external_error(oprs_strerror(PE_EXPECTED_EXPRESSION_TERM_TYPE));
 
      tc = t->u.expr;
-     if (strcmp(tc->pfr->name,"FORMAT") != 0)
+     if (tc->pfr->name != format_sym)
 	  report_fatal_external_error(LG_STR("Expecting a keyword FORMAT in action_printf.",
 					     "Attendait un mot clef FORMAT dans la fonction action_printf."));
 
@@ -709,7 +709,7 @@ Term *action_printf_window(TermList terms)
 	  report_fatal_external_error(oprs_strerror(PE_EXPECTED_EXPRESSION_TERM_TYPE));
 
      tc = t->u.expr;
-     if (strcmp(tc->pfr->name,"FORMAT") != 0)
+     if (tc->pfr->name != format_sym)
 	  report_fatal_external_error(LG_STR("Expecting a keyword FORMAT in action_printf.",
 					     "Attendait un mot clef FORMAT dans la fonction action_printf."));
 

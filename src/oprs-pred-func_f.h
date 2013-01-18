@@ -93,7 +93,7 @@ Pred_Func_Rec *declare_pred_from_symbol(Symbol pfr_name);
 Pred_Func_Rec *find_pred_func(Symbol pred_func_name);
 Pred_Func_Rec *create_var_pred_func(Envar *var);
 
-Term *evaluate_term_function(Eval_Funct *ef, char *ef_name, TermList tl);
+Term *evaluate_term_function(Eval_Funct *ef, Symbol ef_name, TermList tl);
 Term *evaluate_term_action(Action *ef, Symbol ac_name, TermList tl);
 
 Pred_Rec *declare_pred(Pred_Func_Rec *pfr);

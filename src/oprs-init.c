@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * oprs-init.c -- 
  * 
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -956,7 +956,7 @@ void load_kernel_from_parser(Oprs *oprs, PString file_name)
 	  end_load_session();
 
 	  sl_loop_through_slist(oprs_type_list, ltype, Type *) {
-	       if (!(type = sl_search_slist(current_oprs->types, ltype->name, eq_stype_type))) {
+	       if (!(type = (Type *)sl_search_slist(current_oprs->types, ltype->name, eq_stype_type))) {
 		    sl_add_to_head(current_oprs->types, ltype); 
 		    sl_loop_through_slist(ltype->elts, s, Symbol)
 			 set_type_from_reload(ltype,s);
@@ -965,8 +965,8 @@ void load_kernel_from_parser(Oprs *oprs, PString file_name)
 
 	  FREE_SLIST(oprs_type_list);
 
-	  while ((ltype = sl_get_from_head(type_conversion))) {
-	       elts = sl_get_from_head(type_conversion);
+	  while ((ltype = (Type *)sl_get_from_head(type_conversion))) {
+	       elts = (SymList)sl_get_from_head(type_conversion);
 	       sl_loop_through_slist(elts, s,  Symbol) {
 		    set_type(ltype,s);
 	       }

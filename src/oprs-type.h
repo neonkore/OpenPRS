@@ -150,6 +150,7 @@ extern List_Envar current_var_list; /* Current var list when the parser swallow 
 extern Slist *empty_list;	/* This is a constant... do not use it to start a list or I kill you */
 
 extern Symbol object_sym;
+extern Symbol format_sym;
 extern Symbol current_sym;
 extern Symbol quote_sym;
 extern Symbol decision_procedure_sym;

@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*-
  * oprs-type.c -- Fonction de construction et de print pour les types...
  *
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -58,6 +58,7 @@ Symbol wait_son_sym;
 Symbol wait_sym;
 Symbol nil_sym;
 Symbol current_sym;
+Symbol format_sym;
 Symbol object_sym;
 Symbol quote_sym;
 Symbol decision_procedure_sym;
@@ -792,14 +793,15 @@ void init_id_hash()
      DECLARE_TEXT_ID("T", lisp_t_sym);/* Declare the T symbol */
      DECLARE_TEXT_ID("NIL", nil_sym);	/* Initialize the nil symbol */
 
-     DECLARE_TEXT_ID("*=*", spec_act_sym);	/* Initialize the special action symbol */
-     DECLARE_TEXT_ID(":WAIT", wait_sym);	/* Initialize the special action symbol */
-     DECLARE_TEXT_ID(":WAIT-SON", wait_son_sym);	/* Initialize the special action symbol */
+     DECLARE_TEXT_ID("*=*", spec_act_sym);
+     DECLARE_TEXT_ID(":WAIT", wait_sym);
+     DECLARE_TEXT_ID(":WAIT-SON", wait_son_sym);
      DECLARE_TEXT_ID("CURRENT", current_sym);	/* declare the current keyword */
      DECLARE_TEXT_ID("QUOTE", quote_sym);	/* declare the quote keyword */
-     DECLARE_TEXT_ID("DECISION-PROCEDURE", decision_procedure_sym);	/* declare the current keyword */
+     DECLARE_TEXT_ID("DECISION-PROCEDURE", decision_procedure_sym);
 
-     DECLARE_TEXT_ID("OBJECT", object_sym);	/* Initialize the nil symbol */
+     DECLARE_TEXT_ID("FORMAT", format_sym);
+     DECLARE_TEXT_ID("OBJECT", object_sym);
      
 
 }
@@ -867,16 +869,16 @@ void *select_randomly_c_list(Slist *l)
 	  fprintf(stderr, LG_STR("empty list in select_randomly_c_list..\n",
 				 "empty list in select_randomly_c_list..\n"));
      if (len == 1)
-	  return sl_get_slist_head(l);
+	  return (void *)sl_get_slist_head(l);
      rand_value = RANDOM();
-     return sl_get_slist_pos(l, (rand_value % len) + 1);
+     return (void *)sl_get_slist_pos(l, (rand_value % len) + 1);
 }
 
 
-PString get_and_check_from_hashtable(Shash *hash, PString from)
+Symbol get_and_check_from_hashtable(Shash *hash, PString from)
 {
      static PBoolean first = TRUE;
-     PString res = sh_get_from_hashtable(hash, from);
+     Symbol res = sh_get_from_hashtable(hash, from);
 
      if ((compiler_option[CHECK_SYMBOL]) && check_symbol && (res == NULL)) {
 	  fprintf(stdout, LG_STR("WARNING: the symbol \"%s\" has not been declared.\n",
@@ -918,7 +920,7 @@ void add_frame_to_free(Frame *to_add, Frame *until, FrameList fl)
      }
 }
 
-PString remove_vert_bar(PString name)
+PString remove_vert_bar(Symbol name)
 {
      PString s1, s2;
 
@@ -1064,7 +1066,7 @@ int compare_term(Term *t1, Term *t2)
 	  case STRING:
 	       return strcmp(t1->u.string, t2->u.string);
 	  case TT_ATOM:
-	       return strcmp(t1->u.id, t2->u.id);
+	       return (t1->u.id == t2->u.id); /* these are symbols */
 	  case EXPRESSION:
 	       return compare_expr(t1->u.expr, t2->u.expr);
 	  case INT_ARRAY:
@@ -1118,7 +1120,7 @@ int compare_exprs(ExprList terms1, ExprList terms2)
 int compare_expr(Expression *expr1, Expression *expr2)
 {
      if (expr1->pfr != expr2->pfr) 
-	  return (strcmp(expr1->pfr->name, expr2->pfr->name));
+	  return (expr1->pfr->name == expr2->pfr->name); /* symbols... */
      else
 	  return compare_terms(expr1->terms, expr2->terms);
 }

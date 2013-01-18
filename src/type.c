@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * type.c -- 
  *
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -53,11 +53,11 @@ Type *make_type(Symbol name, Symbol stype)
      Type *t, *tmp_type;
      Type *father = NULL;
 
-     if (stype && (stype != object_sym) && (! (father = sl_search_slist(current_oprs->types, stype, eq_stype_type))))
+     if (stype && (stype != object_sym) && (! (father = (Type *)sl_search_slist(current_oprs->types, stype, eq_stype_type))))
 	  fprintf(stderr, LG_STR("ERROR: make_type: Undeclared type %s\n",
 				 "ERREUR: make_type: type non declare %s\n"), stype);
 
-     if (! (t = (sl_search_slist(current_oprs->types, name, eq_stype_type)))) {
+     if (! (t = (Type *)sl_search_slist(current_oprs->types, name, eq_stype_type))) {
 	 t = MAKE_OBJECT(Type);
 
 	 t->name = name;
@@ -121,7 +121,7 @@ void show_type(Symbol stype)
 
      if (stype == object_sym) {
 	  fprint_type(stdout, NULL);
-     } else if (! (type = sl_search_slist(current_oprs->types, stype, eq_stype_type)))
+     } else if (! (type = (Type *)sl_search_slist(current_oprs->types, stype, eq_stype_type)))
 	  fprintf(stderr, LG_STR("ERROR: show_type: Undeclared type %s\n",
 				 "ERREUR: show_type: type non declare %s\n"), stype);
      else {
@@ -252,7 +252,7 @@ void stat_type_hashtable(void)
 
 Type_Symbol *get_symbol_type(Symbol sym)
 {
-     return sh_get_from_hashtable(type_hash, sym);
+     return (Type_Symbol *)sh_get_from_hashtable(type_hash, sym);
 }
 
 Type *get_type(Symbol sym)
@@ -291,7 +291,7 @@ void set_type(Type *type, Symbol sym)
      Type_Symbol *ts;
 
      if (!type) {
-	  if ((ts = sh_delete_from_hashtable(type_hash, sym))) {
+	  if ((ts = (Type_Symbol *)sh_delete_from_hashtable(type_hash, sym))) {
 	       report_type_change(ts->type->name, object_sym, sym);
 	       sl_delete_slist_node(ts->type->elts,sym);
 	       free_type_symbol(ts);
@@ -334,7 +334,7 @@ void set_type_by_name(Symbol stype, Symbol sym)
      
      if (stype == object_sym) {
 	  set_type(NULL,sym);
-     } else if ((type = sl_search_slist(current_oprs->types, stype, eq_stype_type)))
+     } else if ((type = (Type *)sl_search_slist(current_oprs->types, stype, eq_stype_type)))
 	  set_type(type,sym);
      else
 	  fprintf(stderr, LG_STR("ERROR: set_type_by_name: Undeclared type %s\n",
@@ -351,7 +351,7 @@ void set_var_type_by_name(Symbol stype, Envar *var)
 	       report_type_change(var->unif_type->name, stype, var->name);
 	       var->unif_type = NULL;
 	  } 
-     } else if ((type = sl_search_slist(current_oprs->types, stype, eq_stype_type))) {
+     } else if ((type = (Type *)sl_search_slist(current_oprs->types, stype, eq_stype_type))) {
 	  if (var->unif_type && var->unif_type->name != stype)
 	       report_type_change(var->unif_type->name, stype, var->name);
 	  var->unif_type=type;
@@ -365,7 +365,7 @@ PBoolean is_of_type_sym(Symbol sym, Symbol stype)
      Type *type, *tmp;
      
      return ((stype == object_sym) ||
-	     ((type = sl_search_slist(current_oprs->types, stype, eq_stype_type)) &&
+	     ((type = (Type *)sl_search_slist(current_oprs->types, stype, eq_stype_type)) &&
 	      (tmp = get_type(sym)) &&
 	      sl_in_slist(type->sur_types, tmp)));
 }

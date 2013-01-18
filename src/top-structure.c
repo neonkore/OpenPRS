@@ -2,7 +2,7 @@
 /*                               -*- Mode: C -*- 
  * top-structure.c -- 
  * 
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -219,7 +219,7 @@ Instruction *make_comment_instruction(PString comment)
      return res;
 } 
 
-Instruction *make_goto_instruction(PString goto_label)
+Instruction *make_goto_instruction(Symbol goto_label)
 {
      Instruction *res = MAKE_OBJECT(Instruction);
 
@@ -229,7 +229,7 @@ Instruction *make_goto_instruction(PString goto_label)
      return res;
 } 
 
-Instruction *make_label_instruction(PString label)
+Instruction *make_label_instruction(Symbol label)
 {
      Instruction *res = MAKE_OBJECT(Instruction);
 
@@ -364,11 +364,11 @@ Node *make_simple_node()
      } else return NULL;
 }
 
-Node *make_complex_node(PString name, Node_Type type)
+Node *make_complex_node(Symbol name, Node_Type type)
 {
      if (really_build_node) {
 	  Node *node = make_simple_node();
-     
+//	  node->name = name;	/* recently added... */
 	  node->type = type;
 
 	  return node; 
@@ -564,8 +564,8 @@ Double_Node *build_do_until(Double_Node *insts, Expression *cond)
      Instruction *inst_res;
 
      if (really_build_node) {
-	  PString nelse = NULL, nthen = NULL, nif = NULL;
-	  PString *nifp, *nelsep, *nthenp;
+	  Symbol nelse = NULL, nthen = NULL, nif = NULL;
+	  Symbol *nifp, *nelsep, *nthenp;
 	  Double_Node *dn = make_empty_double_node();
 	  Node *node = make_simple_node();
 	  Node *nnif, *nnthen, *nnelse;
@@ -611,8 +611,8 @@ Double_Node *build_while(Expression *cond, Double_Node *insts)
      Instruction *inst_res;
 
      if (really_build_node) {
-	  PString nelse = NULL, nthen = NULL, nif = NULL;
-	  PString *nifp, *nelsep, *nthenp;
+	  Symbol nelse = NULL, nthen = NULL, nif = NULL;
+	  Symbol *nifp, *nelsep, *nthenp;
 	  Node *nnif, *nnthen, *nnelse;
 	  Node *node = make_simple_node();
 	  Double_Node *dn = make_empty_double_node();
@@ -663,8 +663,8 @@ Double_Node *build_if(Expression *cond, Double_Node *thenb, Double_Node *elseb, 
 	       edge = make_and_connect_simple_edge(res->head, res->tail, cond);
 	  } else {
 
-	       PString nelse = NULL, nthen = NULL, nif = NULL;
-	       PString *nifp, *nelsep, *nthenp;
+	       Symbol nelse = NULL, nthen = NULL, nif = NULL;
+	       Symbol *nifp, *nelsep, *nthenp;
 	       Node *nnif, *nnthen, *nnelse;
 	       Node *node = make_simple_node();
 	       Double_Node *dn1 = make_empty_double_node();
@@ -763,7 +763,7 @@ Double_Node *build_comment(PString comment)
      return res;
 }
 
-Goto_Label_Edge *make_goto_label(PString label, Edge *edge)
+Goto_Label_Edge *make_goto_label(Symbol label, Edge *edge)
 {
      Goto_Label_Edge *res = MAKE_OBJECT(Goto_Label_Edge);
 
@@ -773,12 +773,12 @@ Goto_Label_Edge *make_goto_label(PString label, Edge *edge)
      return res;
 }
 
-PBoolean eq_goto_label_name(PString name, Goto_Label_Edge *n)
+PBoolean eq_goto_label_name(Symbol name, Goto_Label_Edge *n)
 {
      return (name == n->name);
 }
 
-Double_Node *build_goto_inst(PString label)
+Double_Node *build_goto_inst(Symbol label)
 {
      Double_Node *res;
 
@@ -787,12 +787,12 @@ Double_Node *build_goto_inst(PString label)
      DN_INST(res) = make_goto_instruction(label);
 
      if (really_build_node) 
-	  sl_add_to_tail(goto_list, make_goto_label(label,sl_get_slist_head(res->head->out)));
+	  sl_add_to_tail(goto_list, make_goto_label(label,(Edge *)sl_get_slist_head(res->head->out)));
      
      return res;
 }
 
-Double_Node *build_label_inst(PString label)
+Double_Node *build_label_inst(Symbol label)
 {
      Double_Node *res;
      
@@ -802,7 +802,7 @@ Double_Node *build_label_inst(PString label)
 
      if (really_build_node) {
 	  if (! sl_search_slist(label_list, label, eq_goto_label_name))	/* S'il n'y est pas deja. */
-	       sl_add_to_tail(label_list, make_goto_label(label,sl_get_slist_head(res->head->out)));
+	       sl_add_to_tail(label_list, make_goto_label(label, (Edge *)sl_get_slist_head(res->head->out)));
 	  else
 	       printf(LG_STR("ERROR: Label %s declared more than once in OP %s.\n",
 			     "ERROR: Label %s declared more than once in OP %s.\n"), label, current_op->name);
@@ -838,7 +838,7 @@ void parse_break_list(Double_Node *dn)
      FLUSH_SLIST(break_list);
 }
 
-void build_body(Op_Structure *op, PString name, Body *body, int  x, int y, 
+void build_body(Op_Structure *op, Symbol name, Body *body, int  x, int y, 
 		PBoolean visible, int pp_width, PBoolean pp_fill, Draw_Data *dd) 
 {
      op->body = body;
@@ -917,7 +917,7 @@ void  finish_loading_top(Op_Structure *op,  Draw_Data *dd)
      FLUSH_SLIST(break_list);
 
      sl_loop_through_slist(goto_list, goto_edge, Goto_Label_Edge *) {
-	  if ( ! (label_edge = sl_search_slist(label_list, goto_edge->name, eq_goto_label_name))) 
+	  if ( ! (label_edge = (Goto_Label_Edge *)sl_search_slist(label_list, goto_edge->name, eq_goto_label_name))) 
 	       printf(LG_STR("ERROR: Undeclared LABEL %s in %s.\n",
 			     "ERROR: Undeclared LABEL %s in %s.\n"), goto_edge->name, current_op->name);
 	  else {
@@ -934,7 +934,7 @@ void  finish_loading_top(Op_Structure *op,  Draw_Data *dd)
      FLUSH_SLIST(label_list);
 }
 
-void init_make_top(PString name, PBoolean graphic)
+void init_make_top(Symbol name, PBoolean graphic)
 {
      init_make_op(name,graphic);
 

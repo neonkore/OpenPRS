@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * lisp-list.c -- 
  * 
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -93,7 +93,7 @@ L_List make_l_list_from_c_list_type(Slist *list, Term_Type type)
      if (list) {
 	  l = COPY_SLIST(list); 
 
-	  while ((node = sl_get_from_tail(l)) != NULL) {
+	  while ((node = (void *)sl_get_from_tail(l)) != NULL) {
 	       switch (type) {
 	       case TT_INTENTION: 	 
 		    elt = build_intention_term(dup_intention(node));
@@ -125,7 +125,7 @@ L_List make_l_list_from_c_list(Slist *list)
      Term *elt;
      Slist *l = COPY_SLIST(list); 
 
-     while ((elt = sl_get_from_tail(l)) != NULL)
+     while ((elt = (Term *)sl_get_from_tail(l)) != NULL)
 	  res = cons(dup_term(elt),res); /* We need to make a dup of each element. */
      FREE_SLIST(l);
      
@@ -141,7 +141,7 @@ L_List transform_c_list_to_l_list(Slist *l)
      L_List res = l_nil;
      Term *elt;
 
-     while ((elt = sl_get_from_tail(l)) != NULL)
+     while ((elt = (Term *)sl_get_from_tail(l)) != NULL)
 	  res = cons(elt,res);
 
      FREE_SLIST(l);

@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * oprs-load.c -- 
  * 
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -717,7 +717,7 @@ void *load_list_reloc_elt(Dump_Type dt)
 	       break;
 	  }
 	  default: {
-	       void **array = MALLOC(l->length*sizeof(void *));
+	       const void **array = MALLOC(l->length*sizeof(void *));
 
 	       for(i=0;i<length;i++) {
 		    LOAD_ADDR_AND_REF_LOC_ADDR(dt,array + i);
@@ -777,7 +777,7 @@ void *load_list_elt_here(void * (*load_function)(void))
 	       break;
 	  }
 	  default: {
-	       void **array = MALLOC(l->length*sizeof(void *));
+	       const void **array = MALLOC(l->length*sizeof(void *));
 
 	       for(i=0;i<length;i++) {
 		    *(array + i) = load_function();
@@ -887,7 +887,7 @@ void *load_type(void)
      Type *t;
 
      name = load_symbol();
-     if ((t = sl_search_slist(current_oprs->types, name, eq_stype_type))) {
+     if ((t = (Type *)sl_search_slist(current_oprs->types, name, eq_stype_type))) {
 	  SymList elts;
 	  fprintf(stderr, LG_STR("ERROR: load_kernel_from_parser: Type already defined: %s\n\
 \tusing already loaded version.\n",

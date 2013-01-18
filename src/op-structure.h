@@ -110,8 +110,8 @@ struct instruction {
 	  Par_Instruction *par_inst;
 	  Do_Instruction *do_inst;
 	  PString comment;
-	  PString label_inst;
-	  PString goto_inst;
+	  Symbol label_inst;
+	  Symbol goto_inst;
      } u;	  
 };
 

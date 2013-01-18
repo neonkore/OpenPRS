@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * xps-call.c -- 
  * 
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -58,6 +58,7 @@
 #include <X11/Intrinsic.h>
 #include <Xm/Xm.h>
 #include "ope-graphic.h"
+#include "xoprs-textwin_f.h"
 
 #include "xoprs-main.h"
 #include <sys/types.h>

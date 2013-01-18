@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*-
  * database.c -- Database management functions.
  *
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -209,7 +209,7 @@ static PBoolean key_term_cmp(Term *t1, Term *t2)
 	       return (strcmp(t1->u.string, t2->u.string) == 0);
 	       break;
 	  case TT_ATOM:
-	       return (strcmp(t1->u.id,t2->u.id) == 0);
+	       return (t1->u.id == t2->u.id); /* These are Symbol (unique in the hashtable). */
 	       break;
 	  case VARIABLE:	/* In this context (variable literal semantic) */
 	       return TRUE;	/* variable are always equal... */
@@ -1201,7 +1201,7 @@ Key_List delete_ff_expr(Expression *expr, int ff,Database *db)
      Slist *key_arg_list, *key_val_list;
      ExprList el, el2, el3;
      Expression *expr_tmp;
-     void *ptr1;
+     const void *ptr1;
      Key *kt;
 
      if (debug_trace[DATABASE]) {
@@ -1320,7 +1320,7 @@ ExprList delete_expr_internal(Expression *expr, Database *db)
      ExprList el, el2, el3, el_a_del;
      Expression *expr_tmp;
      FramePtr fp;
-     void *ptr1;
+     const void *ptr1;
      TermList tl_tmp;
      List_Envar dup_var_list = sl_make_slist();
 
@@ -1594,7 +1594,7 @@ ExprFrameList consult_expr(Expression *expr, Frame *frame, Database *db, PBoolea
 	       Expression *expr_tmp;
 	       Key *kt;
 	       FramePtr fp;
-	       void *ptr1;
+	       const void *ptr1;
 	       List_Envar dup_var_list = sl_make_slist();
 	       PBoolean duplicate_var;
 

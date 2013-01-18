@@ -359,7 +359,7 @@ char *oprs_kernel_name_completion(char *text, int state, Completion_Cont cont)
 	       list_index = 1;
 	       len = strlen (text);
 	  }
-	  while ((oprs_cl = sl_get_slist_pos(oprslist, list_index))) {
+	  while ((oprs_cl = (Oprs_Client *)sl_get_slist_pos(oprslist, list_index))) {
 	       list_index++;
 
 	       if (strncasecmp (oprs_cl->name, text, len) == 0) {
@@ -376,7 +376,7 @@ char *oprs_kernel_name_completion(char *text, int state, Completion_Cont cont)
 	       i = 0;
 	       len = strlen (text);
 	  }
-	  while ((oprs_cl = sl_get_slist_pos(oprslist, list_index))) {
+	  while ((oprs_cl = (Oprs_Client *)sl_get_slist_pos(oprslist, list_index))) {
 	       int j;
 	       for (j=i ; j < oprs_cl->completion_size ; j++) {
 		    if (strncasecmp (oprs_cl->completion[j], text, len) == 0) {

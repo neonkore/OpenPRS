@@ -1,3 +1,8 @@
+2013-01-18  Felix Ingrand  <felix@precise>
+
+	* database.c (key_term_cmp): Symbol are uniquely present in a
+	kernel, comparison can be a pointer one.
+
 2013-01-09  Felix Ingrand  <felix@precise>
 
 	* macro.h (FREE_SLIST): This macro had a weird test... simplified it.
@@ -499,4 +504,3 @@
 2003-09-22  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* README: creation...
-	
