@@ -1,10 +1,10 @@
 // this java code should show how a Java program can connect to the
-// message passer and interact with prs kernels.  This code has a bug
-// when it reads int on socket... assuming that they are less than
-// 2**8. See my comment below. One should read the 4 bytes, make an
-// int of it instead.
+// Open PRS message passer and interact with prs kernels.  The old code
+// had a bug when it read int on socket... assuming that they are
+// less than 2**8. See my comment below. One should read the 4 bytes,
+// make an int of it instead. 
+// I believe I fixed the bug, but I am not a Java expert... FFI
 
-// If somebody correct this bug, please share the fix.
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,9 +26,15 @@ import java.awt.event.*;
 * @since 1.4
 */
 public class MPClient extends JFrame implements ActionListener {
-    public String OPRS_HOST = "space";
-    public String OPRS_MANIP = "MANIP-SPACE";
-    public String CLIENT_NAME = "JAVA-LAASKO";
+    // The host where the message passer is running.
+    public String OPRS_HOST = "localhost";
+    // The name of the OPRS Kernel you want to talk to. Note that you
+    // can talk to any program connected to the message passer, his is
+    // just an example.
+    public String OPRS_MANIP = "OPRS";
+    // Your name (this is where other program will send you message).
+    public String CLIENT_NAME = "JAVA_CLIENT";
+    // The default port to connect to the message passer.
     public int SOCKET_MP = 3300;
     public boolean debug = false;
 
@@ -40,9 +46,9 @@ public class MPClient extends JFrame implements ActionListener {
 
     // Layout and constraints
     private GridBagConstraints constraints;
-    private JLabel propice_host_label, propice_manip_label, client_name_label, 
+    private JLabel oprs_host_label, oprs_manip_label, client_name_label, 
 	socket_mp_label, msg_to_send_label, msg_received_label;
-    private JTextField msg_to_send_text, propice_host_text, propice_manip_text, 
+    private JTextField msg_to_send_text, oprs_host_text, oprs_manip_text, 
 	client_name_text, socket_mp_text;
     private JButton connect_button, send_button;
     public JTextArea msg_received_textarea; 
@@ -59,10 +65,10 @@ public class MPClient extends JFrame implements ActionListener {
    	this.setTitle("Message Passer very light client");
 
    	// components of the interface
-   	propice_host_label = new JLabel("Propice host : ");
-   	propice_host_text = new JTextField(OPRS_HOST, 10);
-   	propice_manip_label = new JLabel("Propice manip : ");
-   	propice_manip_text = new JTextField(OPRS_MANIP, 10);
+   	oprs_host_label = new JLabel("Message Passer host : ");
+   	oprs_host_text = new JTextField(OPRS_HOST, 10);
+   	oprs_manip_label = new JLabel("Oprs Kernel : ");
+   	oprs_manip_text = new JTextField(OPRS_MANIP, 10);
    	client_name_label = new JLabel("Client name : ");
    	client_name_text = new JTextField(CLIENT_NAME, 10);
    	socket_mp_label = new JLabel("MP Socket : ");
@@ -89,13 +95,13 @@ public class MPClient extends JFrame implements ActionListener {
    	constraints.gridheight = 1;
    	constraints.gridx = 1;
    	constraints.gridy = 1;
-   	this.getContentPane().add(propice_host_label, constraints);
+   	this.getContentPane().add(oprs_host_label, constraints);
    	constraints.gridx = 2;
-   	this.getContentPane().add(propice_host_text, constraints);
+   	this.getContentPane().add(oprs_host_text, constraints);
    	constraints.gridx = 3;
-   	this.getContentPane().add(propice_manip_label, constraints);
+   	this.getContentPane().add(oprs_manip_label, constraints);
    	constraints.gridx = 4;
-   	this.getContentPane().add(propice_manip_text, constraints);
+   	this.getContentPane().add(oprs_manip_text, constraints);
    	constraints.gridx = 5;
    	constraints.gridheight = 2;
    	this.getContentPane().add(connect_button, constraints);
@@ -135,8 +141,8 @@ public class MPClient extends JFrame implements ActionListener {
      */
     public void actionPerformed(ActionEvent e) {
    	if (e.getSource() == connect_button) {
-   	    OPRS_HOST = propice_host_text.getText();
-   	    OPRS_MANIP = propice_manip_text.getText();
+   	    OPRS_HOST = oprs_host_text.getText();
+   	    OPRS_MANIP = oprs_manip_text.getText();
    	    CLIENT_NAME = client_name_text.getText();
    	    SOCKET_MP = Integer.parseInt(socket_mp_text.getText());
 		
@@ -179,7 +185,7 @@ public class MPClient extends JFrame implements ActionListener {
 	try {
 	    System.out.print("Sending client infos to Message Passer...");
 	    write_int(1); // The protocol, corresponding to STRINGS_PT
-	    write_string(CLIENT_NAME);
+	    write_string(CLIENT_NAME); // We send our name for identification.
 	    System.out.println(" done.");
 	} catch (Exception e) {
 	    System.out.println(" FAILED");
@@ -190,13 +196,14 @@ public class MPClient extends JFrame implements ActionListener {
 	/* And to end this initialisation, we will launch a thread that will listen for messages */
 	lmp = new ListenMessagePasser();
 	lmp.start();
-	System.out.println("Now listening the Message Passer on socket : " + SOCKET_MP);
+	System.out.println("Now listening to the Message Passer on socket : " + SOCKET_MP);
 	return OK;
     }
 
     /**
      * To write an int to MP 
-     * @param i The integer to send to MP
+     * @param i The integer to send to the MP. I am not sure this code
+     * is endian robust... may need some testing or tweaking. AFAICT, It works on x86 machine.
      */
     public void write_int(int i) {
 	byte buffer[] = new byte[4]; // 4 is the length of an int in Java
@@ -245,6 +252,8 @@ public class MPClient extends JFrame implements ActionListener {
     public int sendMessageToSupervisor(String msg) {
 	/* The format of a message is :
 	   MessageType+sizeof(DestinationName)+DestinationName+sizeof(msg)+msg*/
+	// This code works, but I am not sure why it is not using write_int and write_string above...
+	// Moreover, to be more generic, it should take two argument, the recipient and the msg.
 	int message_mt = 1; // MESSAGE_MT
 	int lengthdest = OPRS_MANIP.length();
 	int lengthmsg = msg.length();
@@ -298,6 +307,23 @@ public class MPClient extends JFrame implements ActionListener {
 	
 	}
 	
+	public int ReadInt(){
+	    try {
+	    int b1 = istream.read();
+	    int b2 = istream.read();
+	    int b3 = istream.read();
+	    int b4 = istream.read();
+
+	    int res;
+	    res = (b1<<24) + (b2<<16) + (b3<<8) + b4;
+
+	    return res;
+	    }  catch (IOException e) {
+		System.out.println("Error :" + e + "\nError while listening on the socket...");
+		return ERROR;
+	    }
+	}
+
 	/**
 	 * The code executed when the thread is started.
 	 */
@@ -305,36 +331,31 @@ public class MPClient extends JFrame implements ActionListener {
 	    try {
 		// At the very beginning, we receive four 0, so we get rid of them
 		// They correspond to the REGISTER_OK
-		istream.read();istream.read();istream.read();istream.read();
+		int protocol = ReadInt();
 		// In fact, we should check that we are getting REGISTER_OK, otherwise something went wrong.
 
 		/* Then we are ready to receive a message
 		 * As we are in STRINGS_PT mode, a message will look like :
-		 * three zeros, an int giving the length of the string for the sender, the sender's name (ascii),
-		 * three more zeros, an int for the length of the message, and the message itself (ascii).
-		 * We'll skip the zeros, consider the first number and send the following string to the parser
+		 * an int giving the length of the string for the sender, the sender's name (ascii),
+		 * an int for the length of the message, and the message itself (ascii).
 		 */
 
-		// This is partly wrong... it is not 3 zeros + an int
-		// (in one byte) but an int on 4 bytes. So if your int
-		// is less than 2**8, fine, otherwise, you need
-		// something smarter (i.e. read the 4 bytes and make an int of it).
-
 		while (true) {
-		    int ch = istream.read();
-		    if (ch == 0) continue;
-		    else { // The first number after a serie of zeros is the size of the upcoming string
-			char[] chaine = new char[ch];
-			istream.read(chaine, 0, ch);
-			messageParser(new String(chaine));
+		    int froms = ReadInt();
+		    char[] from = new char[froms];
+		    istream.read(from, 0, froms);
+
+		    int messages = ReadInt();
+		    char[] message = new char[messages];
+		    istream.read(message, 0, messages);
+
+		    messageParser(new String(from), new String(message));
 		    }
-		}
 	    } catch (IOException e) {
 		System.out.println("Error :" + e + "\nError while listening on the socket...");
 	    }
 	}
     }
-
     /** 
      * To analyse what is received, we need a parser. 
      * The message parser will receive alternatively the two strings... 
@@ -342,16 +363,10 @@ public class MPClient extends JFrame implements ActionListener {
      * Once the message is parsed, we display it in the textarea
      * @param s The next string
      */
-    public void messageParser(String s) {
-	if (!s.equalsIgnoreCase(OPRS_MANIP)) { // Then this is the message that is coming
-	    Calendar cal = Calendar.getInstance();
-	    msg_received_textarea.append(cal.get(Calendar.HOUR_OF_DAY)+":"+cal.get(Calendar.MINUTE)+":"+cal.get(Calendar.SECOND)+" from "+sender+"> "+s+"\n");		
-	    if (debug) System.out.println(s+"\n=>"+s);
-	}
-	else {	// here we receive the name of the sender.
-	    sender = s;
-	}
-    } 
+     public void messageParser(String from, String message) {
+	 Calendar cal = Calendar.getInstance();
+	 msg_received_textarea.append(cal.get(Calendar.HOUR_OF_DAY)+":"+cal.get(Calendar.MINUTE)+":"+cal.get(Calendar.SECOND)+" from " + from + "> " + message + "\n");		
+     } 
 
     public static void main(String[] args) {
    	new MPClient();

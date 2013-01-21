@@ -1,6 +1,7 @@
 # Lines that start with '#' are comments.
 # exclude patterns (uncomment them if you want to use them):
 # git-ls-files --others --exclude-from=.git/info/exclude
+*.class
 *-lex.c
 *-lex.h
 *-lex.l
