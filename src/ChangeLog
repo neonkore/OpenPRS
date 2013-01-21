@@ -1,3 +1,9 @@
+2013-01-21  Felix Ingrand  <felix@precise>
+
+	* mp-openprs.pc.in (Libs): Not linking with the proper library... ExtMP should be used.
+
+	* socket_f.h, oprs-pprint.c: removed IGNORE code.
+
 2013-01-18  Felix Ingrand  <felix@precise>
 
 	* database.c (key_term_cmp): Symbol are uniquely present in a

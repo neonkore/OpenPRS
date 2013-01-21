@@ -1342,7 +1342,7 @@ ListLines pretty_print_expr(int width, Expression *expr)
 
      lline = pretty_print_pred_func_rec(width, expr->pfr);
      sl_concat_slist_lines(lline);
-     tmp_line = sl_get_slist_head(lline);
+     tmp_line = (Line *)sl_get_slist_head(lline);
      FREE_SLIST(lline);
 
      if (tmp_line->width <=  EXPR_INDENT) {
@@ -1372,35 +1372,6 @@ ListLines pretty_print_expr(int width, Expression *expr)
      return lline;
 }
 
-#ifdef IGNORE
-ListLines pretty_print_expr_old(int width, Expression *expr)
-{
-     int my_indent;
-     ListLines lline;
-     Line *first_line, *last_line;
-
-     first_line = create_line("(");
-     last_line = create_line(")");
-
-     concat_lines(first_line, create_line(expr->pfr->name)); 
-	  
-     my_indent = first_line->width;
-     width -= first_line->width + last_line->width;
-
-     if (sl_slist_length(lline = pretty_print_tl(width, expr->terms)) <= 1) {
-	  sl_add_to_head(lline, first_line);
-	  sl_add_to_tail(lline, last_line);
-	  sl_concat_slist_lines(lline);
-     } else {
-	  concat_lines((Line *)sl_get_slist_tail(lline), last_line);   /* concat the end first 
-							       in case it was only one line */
-	  concat_lines(first_line, (Line *)sl_get_from_head(lline)); 
-	  update_indent(lline, my_indent);
-	  sl_add_to_head(lline, first_line);
-     }
-     return lline;
-}
-#endif
 
 ListLines pretty_print_special_action_field(int width, Action_Field *ac)
 {
@@ -1661,89 +1632,6 @@ ListLines pretty_print_tl(int width, TermList tl)
      return lline;
 }
 
-#ifdef IGNORE
-#define EXPRESSION_INDENT 2
-
-ListLines pretty_print_expr(int width, Expression *tc)
-{
-     int my_indent, my_width = width;
-     ListLines lline;
-     Line *first_line, *tmp_line, *last_line;
-     PBoolean concat_first;
-
-     first_line = create_line("(");
-     last_line = create_line(")");
-     if (sl_slist_empty(tc->terms)) { 
-	  lline = pretty_print_pred_func_rec(width, tc->pfr);
-	  sl_add_to_head(lline, first_line);
-	  sl_add_to_tail(lline, last_line);
-	  sl_concat_slist_lines(lline);
-	  return lline;
-     }
-
-     lline = pretty_print_pred_func_rec(width, tc->pfr);
-     sl_concat_slist_lines(lline);
-     tmp_line = sl_get_slist_head(lline);
-     FREE_SLIST(lline);
-
-     if (tmp_line->width <=  EXPRESSION_INDENT) {
-	  concat_first = TRUE;
-	  my_indent = first_line->width + tmp_line->width;
-     } else {
-	  concat_first = FALSE;
-	  my_indent = first_line->width + EXPRESSION_INDENT;
-     }
-     width -= my_indent + last_line->width;
-
-     concat_lines(first_line, tmp_line);
-     my_width -= first_line->width + last_line->width;
-
-     if ((sl_slist_length(lline = pretty_print_tl(width, tc->terms)) <=1 ) &&
-	 (total_size_sep(lline, 1) <= my_width))  {
-	  sl_add_to_head(lline, first_line);
-	  sl_add_to_tail(lline, last_line);
-	  sl_concat_slist_lines(lline);
-     } else {
-	  concat_lines((Line *)sl_get_slist_tail(lline), last_line); 
-	  if (concat_first)
-	       concat_lines(first_line, (Line *)sl_get_from_head(lline)); 
-	  update_indent(lline, my_indent);
-	  sl_add_to_head(lline, first_line);
-     }
-     return lline;
-}
-
-ListLines pretty_print_expr_old(int width, Expression *tc)
-{
-     int my_indent;
-     ListLines lline;
-     Line *first_line, *last_line;
-
-     first_line = make_line();
-     first_line->width = strlen(tc->pfr->name) + 1 ;
-     first_line->str = (char *) MALLOC((first_line->width + 1) * sizeof(char));
-
-     sprintf(first_line->str,"(%s",tc->pfr->name);
-     last_line = create_line(")");
-
-     my_indent = first_line->width;
-     width -= first_line->width + last_line->width;
-     
-     if (sl_slist_length(lline = pretty_print_tl(width, tc->terms)) <=1 ) {
-	  sl_add_to_head(lline, first_line);
-	  sl_add_to_tail(lline, last_line);
-	  sl_concat_slist_lines(lline);
-     } else {
-	  concat_lines((Line *)sl_get_slist_tail(lline), last_line);   /* concat the end first 
-							       in case it was only one line */
-	  concat_lines(first_line, (Line *)sl_get_from_head(lline)); 
-	  update_indent(lline, my_indent);
-	  sl_add_to_head(lline, first_line);
-     }
-     return lline;
-}
-#endif
-
 ListLines pretty_print_backslash_string(int width, PString string)
 {
      ListLines lline = sl_make_slist();
@@ -1980,56 +1868,6 @@ ListLines pretty_print_exprlist(int width, ExprList lexpr)
 
 }
 
-
-#ifdef IGNORE
-ListLines pretty_print_add_del_list(int width, Add_Del_List *adl)
-{
-     int my_indent;
-     ListLines lline;
-     Line *first_line, *last_line;
-     
-	  
-     if (adl == NULL)
-	  return sl_make_slist();
-
-     first_line = create_line("(");
-     last_line = create_line(")");
-
-     my_indent = first_line->width;
-     width -= first_line->width + last_line->width;
-     lline = sl_make_slist();
-
-     if (! sl_slist_empty(adl->add)) {
-	  sl_concat_slist(lline, pretty_print_add_or_del(width, adl->add, ADD));
-     }
-	       
-     if (! sl_slist_empty(adl->del)) {
-	  sl_concat_slist(lline, pretty_print_add_or_del(width, adl->del, DEL));
-     }
-
-
-     if (! sl_slist_empty(adl->cond_add)) {
-	  sl_concat_slist(lline, pretty_print_add_or_del(width, adl->cond_add, COND_ADD));
-     }
-	       
-     if (! sl_slist_empty(adl->cond_del)) {
-	  sl_concat_slist(lline, pretty_print_add_or_del(width, adl->cond_del, COND_DEL));
-     }
-
-     
-     if (sl_slist_empty(lline)) {
-	  sl_add_to_head(lline, first_line);
-	  sl_add_to_tail(lline, last_line);
-	  sl_concat_slist_lines(lline);
-     } else {
-	  concat_lines((Line *) sl_get_slist_tail(lline), last_line);
-	  concat_lines(first_line, (Line *)sl_get_from_head(lline)); 
-	  update_indent(lline, my_indent);
-	  sl_add_to_head(lline, first_line);
-     }
-     return lline;
-}
-#endif
 
 ListLines pretty_print_fact(int width, Fact *fact)
 {

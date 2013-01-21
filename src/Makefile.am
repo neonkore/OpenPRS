@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2012 LAAS/CNRS
+# Copyright (c) 2012-2013 LAAS/CNRS
 # All rights reserved.
 #
 # Redistribution  and  use in source   and binary forms,  with or without
@@ -121,74 +121,74 @@ pkginclude_HEADERS = $(EXTERNAL_INCLUDE)
 #
 lib_LTLIBRARIES = libExtMP.la 
 noinst_LTLIBRARIES = libMP.la libBasic.la libOprs.la \
-		libTOpEOprs.la libXGOpEOprs.la \
 		libTOprs.la libXGOprs.la libKernel.la \
 		libTKernel.la libXGKernel.la \
 		libXOpG.la 
 
 if WANT_GTK
-noinst_LTLIBRARIES += libGGOpEOprs.la libGGOprs.la libGGKernel.la libGOpG.la
+noinst_LTLIBRARIES += libGGOprs.la libGGKernel.la libGOpG.la
 endif
 
 
 noinst_LIBRARIES = libVersion.a
 
-LIB_MP_SOURCES = mp-register.c send-message.c lang.c
 
 libVersion_a_SOURCES = version.c
 libVersion_a_CPPFLAGS = $(AM_CPPFLAGS) -DCOMPIL_DATE="\"`date`\"" -DHOST="\"`hostname`\""
+
+############################################
+# message passer library
+LIB_MP_SOURCES = mp-register.c send-message.c lang.c
 
 # this is for external program... do not confuse them with our homebrew malloc.
 libExtMP_la_SOURCES = $(LIB_MP_SOURCES)
 libExtMP_la_CPPFLAGS = $(AM_CPPFLAGS) -DEXT_MALLOC
 
+############################################
 # this is for our own usage
 libMP_la_SOURCES = $(LIB_MP_SOURCES)
 
+############################################
 # Library used by ALL the programs (mp-oprs included)
 libBasic_la_SOURCES = oprs-socket.c oprs-util.c
 
+############################################
 # Library used by all the programs except the mp-oprs
 libOprs_la_SOURCES = help.c lisp-list.c oprs-ll.c oprs-send-m.c oprs-sprint.c \
 		parser-funct.c oprs-array.c oprs-copy.c oprs-dup.c oprs-free.c oprs-print.c \
 		oprs-error.c op-compiler.c type.c oprs-pred-func.c
 
-# Library used by all kernel program (oprs text and graphic).
+############################################
+# Library used by all kernel programs (oprs text and graphic) but not graphic dependant.
 libKernel_la_SOURCES = database.c ev-predicate.c fact-goal.c oprs.c oprs-rerror.c unification.c oprs-profiling.c ltdl-loader.c
 
+
+############################################
+# Library used by graphic programs {x,g}oprs and {,g}ope.
+# X11 version
 libXOpG_la_SOURCES = ope-external.c ope-graphic.c xhelp.c oprs-pprint.c ope-report.c xt-util.c
-libXOpG_la_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX $(XT_CFLAGS) $(MOTIF_CFLAGS)
+libXOpG_la_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX -UGTK $(XT_CFLAGS) $(MOTIF_CFLAGS)
 
-
+# GTK version
 libGOpG_la_SOURCES = gope-external.c gope-graphic.c xhelp.c oprs-pprint.c gope-report.c g-util.c
 libGOpG_la_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX -DGTK $(GTK_CFLAGS)
 
-#
-BOTH_OPE_OPRS_LIB_SOURCES = oprs-dump.c oprs-load.c
-
-libTOpEOprs_la_SOURCES = $(BOTH_OPE_OPRS_LIB_SOURCES)
-libTOpEOprs_la_CPPFLAGS = $(AM_CPPFLAGS) -UGRAPHIX
-
-libXGOpEOprs_la_SOURCES = $(BOTH_OPE_OPRS_LIB_SOURCES)
-libXGOpEOprs_la_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX $(XT_CFLAGS) $(MOTIF_CFLAGS)
-
-
-libGGOpEOprs_la_SOURCES = $(BOTH_OPE_OPRS_LIB_SOURCES)
-libGGOpEOprs_la_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX -DGTK $(GTK_CFLAGS)
-
-#
-BOTH_OPRS_LIB_SOURCES = op-structure.c oprs-subst.c oprs-type.c conditions.c top-structure.c consult-rop.c relevant-op.c op-dump-load.c
+############################################
+# Library used by all kernel programs (oprs text and graphic) and
+# editors (ope and gope) but graphic dependant, hence the 3 versions.
+BOTH_OPRS_LIB_SOURCES = op-structure.c oprs-subst.c oprs-type.c conditions.c top-structure.c consult-rop.c relevant-op.c op-dump-load.c oprs-dump.c oprs-load.c
 
 libTOprs_la_SOURCES = $(BOTH_OPRS_LIB_SOURCES)
 libTOprs_la_CPPFLAGS = $(AM_CPPFLAGS) -UGRAPHIX
 
 libXGOprs_la_SOURCES = $(BOTH_OPRS_LIB_SOURCES)
-libXGOprs_la_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX $(XT_CFLAGS) $(MOTIF_CFLAGS)
+libXGOprs_la_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX -UGTK $(XT_CFLAGS) $(MOTIF_CFLAGS)
 
 libGGOprs_la_SOURCES = $(BOTH_OPRS_LIB_SOURCES)
 libGGOprs_la_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX -DGTK $(GTK_CFLAGS)
 
-#
+############################################
+# Library used by all kernel programs (oprs text and graphic).
 BOTH_KERNEL_LIB_SOURCES = action.c activate.c ev-function.c intend.c intention.c \
 	int-graph.c op-instance.c oprs-init.c tcl.c soak.c \
 	top-lev.c default-hook.c user-end-hook.c
@@ -197,7 +197,7 @@ libTKernel_la_SOURCES = $(BOTH_KERNEL_LIB_SOURCES)
 libTKernel_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/contrib/src -UGRAPHIX
 
 libXGKernel_la_SOURCES = $(BOTH_KERNEL_LIB_SOURCES)
-libXGKernel_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/contrib/src -DGRAPHIX $(XT_CFLAGS) $(MOTIF_CFLAGS)
+libXGKernel_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/contrib/src -DGRAPHIX -UGTK $(XT_CFLAGS) $(MOTIF_CFLAGS)
 
 libGGKernel_la_SOURCES = $(BOTH_KERNEL_LIB_SOURCES)
 libGGKernel_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/contrib/src -DGRAPHIX -DGTK $(GTK_CFLAGS)
@@ -207,13 +207,14 @@ libGGKernel_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/contrib/src -DGRAPHIX -
 #
 USER_MODULES_EXAMPLE = user-action.c user-ev-function.c user-ev-predicate.c
 
+############################################
+# this is an externaly installed library with many utility functions.
 CONTRIB_LIB = $(top_builddir)/contrib/src/libpu.la
 
 INCLUDES = @INCLTDL@
 
-#
+############################################
 # Here is the list of program to build and install
-#
 bin_PROGRAMS = mp-oprs kill-mp oprs-server oprs xoprs oprs-cat ope 
 
 if WANT_OPC
@@ -241,7 +242,7 @@ oprs_server_LDADD = ../c_toolkit/libOPList.la libBasic.la libTOprs.la libOprs.la
 nodist_oprs_SOURCES = oprs-lex.l oprs-parser.y
 oprs_SOURCES =  op-x-opaque.c oprs-main.c top-lev-loop.c user-trace.c
 oprs_LDFLAGS = -export-dynamic
-oprs_LDADD = libTKernel.la libKernel.la libBasic.la libTOprs.la libOprs.la libTOpEOprs.la \
+oprs_LDADD = libTKernel.la libKernel.la libBasic.la libTOprs.la libOprs.la \
 		 libMP.la libVersion.a ../c_toolkit/libOPList.la $(CONTRIB_LIB)\
 		 @LIBLTDL@ @LIBADD_DL@
 
@@ -250,9 +251,9 @@ xoprs_SOURCES = xoprs-call.c xoprs-textwin.c \
 	xoprs-dialog.c xoprs-filesel.c xoprs-intention.c \
 	xoprs-main.c xoprs-menu.c xtop-lev-loop.c \
 	xoprs-op-graphic.c xoprs-rop.c user-trace.c
-xoprs_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX $(XT_CFLAGS) $(MOTIF_CFLAGS)
+xoprs_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX -UGTK $(XT_CFLAGS) $(MOTIF_CFLAGS)
 xoprs_LDFLAGS = -export-dynamic
-xoprs_LDADD = libXGKernel.la libKernel.la libBasic.la libXGOprs.la libOprs.la libXGOpEOprs.la \
+xoprs_LDADD = libXGKernel.la libKernel.la libBasic.la libXGOprs.la libOprs.la \
 	libXOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la $(CONTRIB_LIB) \
 	$(MOTIF_LIBS) $(XT_LIBS) @LIBLTDL@ @LIBADD_DL@
 
@@ -262,7 +263,7 @@ goprs_SOURCES = xm2gtk.c goprs-call.c goprs-textwin.c \
 	goprs-main.c goprs-menu.c gtop-lev-loop.c \
 	goprs-op-graphic.c goprs-rop.c user-trace.c
 goprs_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX -DGTK $(GTK_CFLAGS)
-goprs_LDADD = libGGKernel.la libKernel.la libBasic.la libGGOprs.la libOprs.la libGGOpEOprs.la \
+goprs_LDADD = libGGKernel.la libKernel.la libBasic.la libGGOprs.la libOprs.la \
 	libGOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la $(CONTRIB_LIB) \
 	@GTK_LIBS@ @LIBLTDL@ @LIBADD_DL@
 
@@ -273,22 +274,22 @@ nodist_ope_SOURCES = ope-lex.l ope-parser.y
 ope_SOURCES = ope-bboard.c ope-edit.c ope-filesel.c ope-op-opf.c ope-main.c \
 	ope-menu.c ope-print.c ope-pxmw.c ope-save.c ope-syntax.c \
 	ope-vsblf.c ope-rop.c ope-op-str.c ope-opaque.c
-ope_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX $(XT_CFLAGS) $(MOTIF_CFLAGS)
-ope_LDADD = libBasic.la libXGOprs.la libOprs.la libXGOpEOprs.la \
+ope_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX -UGTK $(XT_CFLAGS) $(MOTIF_CFLAGS)
+ope_LDADD = libBasic.la libXGOprs.la libOprs.la \
 		libXOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la $(MOTIF_LIBS) $(XT_LIBS)
 
 nodist_gope_SOURCES = ope-lex.l ope-parser.y
 gope_SOURCES = xm2gtk.c gope-bboard.c gope-edit.c gope-filesel.c gope-op-opf.c gope-main.c \
 	gope-menu.c ope-save.c ope-syntax.c gope-vsblf.c gope-rop.c ope-op-str.c ope-opaque.c
 gope_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX -DGTK $(GTK_CFLAGS)
-gope_LDADD = libBasic.la libGGOprs.la libOprs.la libGGOpEOprs.la \
+gope_LDADD = libBasic.la libGGOprs.la libOprs.la \
 		libGOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la @GTK_LIBS@
 
 if WANT_OPC
 nodist_opc_SOURCES = opc-lex.l opc-parser.y
 opc_SOURCES =  opc-main.c ope-opaque.c
-opc_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX $(XT_FLAGS) $(MOTIF_CFLAGS)
-opc_LDADD = libBasic.la libXGOprs.la libOprs.la libXGOpEOprs.la \
+opc_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX -UGTK $(XT_FLAGS) $(MOTIF_CFLAGS)
+opc_LDADD = libBasic.la libXGOprs.la libOprs.la \
 	libXOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la $(MOTIF_LIBS) $(XT_LIBS)
 endif
 
@@ -340,14 +341,11 @@ AM_YFLAGS = -d -p oprs_yy
 # %.tab.c %.tab.h: %.y
 # 	$(YACC) -d -p oprs_yy -o $*.tab.c $<
 
-# this could be smarter about which one depends of which...
 oprs-parser.y: yacc-file.y.part yacc-graph-op.y.part yacc-exp.y.part yacc-text-op.y.part
 
-ope-parser.y: yacc-file.y.part yacc-graph-op.y.part yacc-exp.y.part yacc-text-op.y.part
+ope-parser.y: yacc-exp.y.part yacc-text-op.y.part
 
 opc-parser.y:  yacc-file.y.part yacc-graph-op.y.part yacc-exp.y.part yacc-text-op.y.part
-
-oprs-server-parser.y: yacc-file.y.part yacc-graph-op.y.part yacc-exp.y.part yacc-text-op.y.part
 
 # Same for .lex grammars which are built from components
 %.l: %.l.part $(LEX_INCLUDER)
@@ -366,9 +364,13 @@ BUILT_SOURCES += oprs-lex.h oprs-server-lex.h opc-lex.h ope-lex.h
 %-lex.c: %-lex.l
 	$(LEX) $(LFLAGS) --header-file=$(basename $<).h -Poprs_yy -o $@ $<
 
+ope-lex.l: lex-simple-def.l.part lex-parser-def.l.part lex-macro.l.part lex-graph-op.l.part lex-text-op.l.part lex-meta-exp.l.part lex-exp.l.part
 
-# idem, this could be smarter... I am probably over doing it too... 
-ope-lex.l oprs-server-lex.l opc-lex.l oprs-lex.l: lex-exp.l.part lex-macro.l.part lex-parser-def.l.part lex-text-op.l.part lex-graph-op.l.part lex-meta-exp.l.part lex-simple-def.l.part 
+oprs-server-lex.l: lex-simple-def.l.part lex-parser-def.l.part lex-macro.l.part lex-exp.l.part
+
+opc-lex.l: lex-simple-def.l.part lex-parser-def.l.part lex-macro.l.part lex-graph-op.l.part lex-text-op.l.part lex-meta-exp.l.part lex-exp.l.part
+
+oprs-lex.l: lex-simple-def.l.part lex-parser-def.l.part lex-macro.l.part lex-graph-op.l.part lex-text-op.l.part lex-meta-exp.l.part lex-exp.l.part
 
 
 BUILT_SOURCES += XOprs.ad.h Ope.ad.h

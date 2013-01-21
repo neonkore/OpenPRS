@@ -30,13 +30,4 @@
  *
  */
 
-#ifdef IGNORE
-int socket(int domain, int type, int protocol);
-int gethostname(char *name, int namelen);
-int bind(int s, struct sockaddr *name, int namelen);
-int recv(int s,  char *buf, int len, int flags);
-int accept(int s, struct sockaddr *addr, int *addrlen);
-int listen(int s, int backlog);
-int shutdown(int s, int how);
-#endif
 

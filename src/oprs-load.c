@@ -91,15 +91,6 @@
 #include "xt-util_f.h"
 #endif
 
-#ifdef IGNORE
-#include "xoprs-main.h"
-#include "ope-graphic.h"
-#include "xoprs-intention.h"
-#include "xoprs-intention_f.h"
-#include "xt-util_f.h"
-#endif
-
-
 #include "oprs-error_f.h"
 #include "oprs-type_f.h"
 #include "oprs-pred-func_f.h"
