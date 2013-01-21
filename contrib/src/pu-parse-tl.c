@@ -5,7 +5,7 @@
  * Description: 
  * Author: Felix Ingrand <felix@laas.fr>
  *
- * Copyright (C) 1993-2012 LAAS/CNRS.
+ * Copyright (C) 1993-2013 LAAS/CNRS.
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -423,7 +423,7 @@ PBoolean PUGetOprsTermCompArgs(Expression *tc, int NbParametres, ...)
 
 	  if (paramCour == 1) 
 	       if (type == ATOM) {
-		    char **atom = va_arg(listArg, char**);
+		    Symbol *atom = va_arg(listArg, Symbol *);
 		    *atom =  pred_func_rec_symbol(tc->pfr);
 	       } else {
 		    fprintf(stderr,"PUGetOprsTermCompArgs: Bad parameter %d (expected an ATOM)\n",  paramCour);
@@ -651,7 +651,7 @@ PBoolean PUGetOprsVarArgParameters(TermList paramList, PBoolean find_them_all, i
 
      sl_loop_through_slist(tl, t, Term *) {
        PBoolean found;
-       char *argName;
+       Symbol argName;
        Term * argTerm;
        
        if (t->type != EXPRESSION) { 
@@ -775,7 +775,7 @@ PBoolean PUGetOprsVarArgG3Parameters(Expression *expr, PBoolean find_them_all, i
 
      sl_loop_through_slist(tl, t, Term *) {
 	  PBoolean found;
-	  char *argName;
+	  Symbol argName;
 	  Term * argTerm;
        
 	  if (t->type != EXPRESSION) { 

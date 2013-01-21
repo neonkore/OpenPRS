@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * pu-enum.c -- 
  * 
- * Copyright (C) 1998-2003 LAAS/CNRS
+ * Copyright (C) 1998-2013 LAAS/CNRS
  * 
  * $Id$
  */
@@ -40,7 +40,7 @@ HASH PU_atom_enum_hash;
 
 
 typedef struct {	
-     char *atom;
+     Symbol atom;
      int enm;
 } PU_Atom_Enum;
 
@@ -62,7 +62,7 @@ void PU_init_atom_enum_hash()
 
 void PU_declare_enum_atom(char *id, int enm)
 {
-     char *atom;
+     Symbol atom;
      PU_Atom_Enum *atom_enum;
 
      atom = make_atom(id);

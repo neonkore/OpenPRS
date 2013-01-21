@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * oprs-pprint.c -- 
  * 
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -76,7 +76,7 @@ Line *transform_sprinter_in_line(Sprinter *sp)
      return (res);
 }
 
-Line *create_line(char *s)
+Line *create_line(const char *s)
 {
      Line *line = MAKE_OBJECT(Line);
 

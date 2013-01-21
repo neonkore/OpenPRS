@@ -51,6 +51,10 @@ typedef enum {INTEGER, LONG_LONG, TT_FLOAT, STRING, TT_ATOM, EXPRESSION, VARIABL
 	      LISP_LIST, INT_ARRAY, FLOAT_ARRAY, C_LIST, TT_FACT, TT_GOAL, 
 	      TT_INTENTION, TT_OP_INSTANCE, U_POINTER, U_MEMORY} Term_Type;
 
+/* These are here for historical reasons, because Windows 95 had these defined... */
+#define ATOM TT_ATOM
+#define FLOAT TT_FLOAT
+
 typedef enum {ETOT_ACHIEVE, ETOT_TEST, ETOT_CALL, ETOT_CONCLUDE, ETOT_RETRACT} External_Temporal_Operator_Type;
 
 

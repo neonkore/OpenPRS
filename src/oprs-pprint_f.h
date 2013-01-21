@@ -62,7 +62,7 @@ ListLines pretty_print_body(int width, Body *body);
 /* ListLines pretty_print_add_del_list(int width, Add_Del_List *adl); */
 
 Line *make_line(void);
-Line *create_line(char *s);
+Line *create_line(const char *s);
 void free_line(Line *l);
 void update_indent( ListLines ll, int indent);
 Line *concat_lines(Line *l1, Line *l2);
