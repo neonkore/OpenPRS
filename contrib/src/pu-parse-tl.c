@@ -752,16 +752,9 @@ PBoolean PUGetOprsVarArgG3Parameters(Expression *expr, PBoolean find_them_all, i
 {
      /* I get something like:
 	(tc, TRUE,  1, 
-	"speedRef",TRUE,&(in->speedRef),encode_genom_demo_speed,
-	"bar.pos", 
-	TRUE, 
-	&(in->bar.pos),
-	encode_genom_int,
-	"bar.err", 
-	FALSE, 
-	&(in->bar.err),
-	encode_genom_double,
-
+	"speedRef",TRUE,&(in->speedRef), encode_genom_demo_speed,
+	"bar.pos", TRUE, &(in->bar.pos), encode_genom_int,
+	"bar.err", FALSE, &(in->bar.err), encode_genom_double,
 	); */
      va_list listArg;
      int paramCour;

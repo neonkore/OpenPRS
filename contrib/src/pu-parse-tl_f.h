@@ -8,24 +8,24 @@ extern "C" {
 #endif
 
 /* Prototypes */
-extern PBoolean PU_bind_integer(int *intPtr, Term *term);
-extern PBoolean PU_bind_long_long(long long int *intPtr, Term *term);
-extern PBoolean PU_bind_string(char **strPtr, Term *paramTerm);
-extern PBoolean PU_bind_atom(Symbol *atomPtr, Term *paramTerm);
-extern PBoolean PU_bind_u_pointer(void **ptr, Term *paramTerm);
-extern PBoolean PU_bind_u_memory(U_Memory **u_mem, Term *paramTerm);
-extern PBoolean PU_bind_expr(Expression **tcPtr, Term *paramTerm);
-extern PBoolean PU_bind_l_list(L_List *lispList, Term *paramTerm);
-extern PBoolean PU_bind_float(double *doublePtr, Term *paramTerm);
+PBoolean PU_bind_integer(int *intPtr, Term *term);
+PBoolean PU_bind_long_long(long long int *intPtr, Term *term);
+PBoolean PU_bind_string(char **strPtr, Term *paramTerm);
+PBoolean PU_bind_atom(Symbol *atomPtr, Term *paramTerm);
+PBoolean PU_bind_u_pointer(void **ptr, Term *paramTerm);
+PBoolean PU_bind_u_memory(U_Memory **u_mem, Term *paramTerm);
+PBoolean PU_bind_expr(Expression **tcPtr, Term *paramTerm);
+PBoolean PU_bind_l_list(L_List *lispList, Term *paramTerm);
+PBoolean PU_bind_float(double *doublePtr, Term *paramTerm);
 
-extern PBoolean PUGetOprsParameters ( TermList paramList, int NbParametres, ... );
-extern PBoolean PUGetLispListElem ( L_List lispList, int NbTerm, ... );
-extern int PUGetLispListCar ( L_List *lispListPtr, Term_Type type, void *ptr );
-extern PBoolean PUGetOprsTermCompArgs ( Expression *tc, int NbParametres, ... );
-extern PBoolean PUGetOprsTermCompSpecArg ( Expression *tc, int rank, Term_Type type, void *ptr );
-extern PBoolean PUGetOprsParametersSpecArg ( TermList paramList, int rank, Term_Type type, void *ptr );
-extern PBoolean PUGetOprsVarArgParameters(TermList paramList, PBoolean find_them_all, int nb, ...);
-extern PBoolean PUGetOprsVarArgG3Parameters(Expression *expr, PBoolean find_them_all, int nb, ...);
+PBoolean PUGetOprsParameters ( TermList paramList, int NbParametres, ... );
+PBoolean PUGetLispListElem ( L_List lispList, int NbTerm, ... );
+int PUGetLispListCar ( L_List *lispListPtr, Term_Type type, void *ptr );
+PBoolean PUGetOprsTermCompArgs ( Expression *tc, int NbParametres, ... );
+PBoolean PUGetOprsTermCompSpecArg ( Expression *tc, int rank, Term_Type type, void *ptr );
+PBoolean PUGetOprsParametersSpecArg ( TermList paramList, int rank, Term_Type type, void *ptr );
+PBoolean PUGetOprsVarArgParameters(TermList paramList, PBoolean find_them_all, int nb, ...);
+PBoolean PUGetOprsVarArgG3Parameters(Expression *expr, PBoolean find_them_all, int nb, ...);
 
 #define set_parameter_or_default_value(parameter,default_value,oprs_type) (parameter = (default_value),oprs_type),#parameter,&(parameter)
 

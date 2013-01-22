@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * pu-genom.c -- 
  * 
- * Copyright (C) 1999-2012 LAAS/CNRS
+ * Copyright (C) 1999-2013 LAAS/CNRS
  * 
  * $Id$
  */
@@ -50,12 +50,24 @@ PBoolean pu_check_ttc_name(Expression *tc, char *name, char *type_name)
 	  return TRUE;
 }
 
-PBoolean pu_check_ttc_name_alter(Expression *tc, char *name)
+PBoolean pu_check_ttc_symbol_alter(Expression *tc, Symbol name)
 {
-     if (strcasecmp(PFR_NAME(tc->pfr), name) != 0) {
+     return (PFR_NAME(tc->pfr) == name);
+}
+
+PBoolean pu_check_ttc_symbol_strict(Expression *tc, Symbol name)
+{
+     if (!pu_check_ttc_symbol_alter(tc, name)) {
+	  fprintf(stderr,"pu_check_ttc_symbol_strict: bad name, %s should be %s\n",
+		  PFR_NAME(tc->pfr), name);
 	  return FALSE;
      } else 
 	  return TRUE;
+}
+
+PBoolean pu_check_ttc_name_alter(Expression *tc, char *name)
+{
+     return (strcmp(PFR_NAME(tc->pfr), name) == 0);
 }
 
 PBoolean pu_check_ttc_name_strict(Expression *tc, char *name)

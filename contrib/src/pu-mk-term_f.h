@@ -8,42 +8,20 @@
 extern "C" {
 #endif
 
-#ifndef __CEXTRACT__
-#ifdef __STDC__
-
-extern Term * PUMakeTermInteger ( int val );
-extern Term * PUMakeTermLongLong(long long int val);
-extern Term* PUMakeTermFloat ( double val );
-extern Term * PUMakeTermAtom ( char *atom );
-extern Term* PUMakeTermUPointer ( void *pointer );
-extern Term* PUMakeTermUMemory ( void *p, int size );
-extern Term * PUMakeTermTrue ( void );
-extern Term * PUMakeTermNil ( void );
-extern Term *PUMakeTermString (const char *string );
-extern Term * PUMakeTermLispList ( int NbTerm, ... );
-extern Term * PUMakeTermComp ( Pred_Func_Rec* funcName, int NbTerm, ... );
-extern Term * PUMakeExternalTermComp ( char* fName, int NbTerm, ... );
-extern TermList PUMakeTermList ( int NbTerm, ... );
-extern Term * PUMakeTermCList ( int NbTerm, ... );
-
-#else /* __STDC__ */
-
-extern Term * PUMakeTermInteger (/* int val */);
-extern Term* PUMakeTermFloat (/* double val */);
-extern Term * PUMakeTermAtom (/* char *atom */);
-extern Term* PUMakeTermUPointer (/* void *pointer */);
-extern Term* PUMakeTermUMemory (/* void *p, int size */);
-extern Term * PUMakeTermTrue (/* void */);
-extern Term * PUMakeTermNil (/* void */);
-extern Term *PUMakeTermString (/* char *string */);
-extern Term * PUMakeTermLispList (/* int NbTerm, ... */);
-extern Term * PUMakeTermComp (/* Func_Rec* funcName, int NbTerm, ... */);
-extern Term * PUMakeExternalTermComp (/* char* fName, int NbTerm, ... */);
-extern TermList PUMakeTermList (/* int NbTerm, ... */);
-extern Term * PUMakeTermCList (/* int NbTerm, ... */);
-
-#endif /* __STDC__ */
-#endif /* __CEXTRACT__ */
+Term * PUMakeTermInteger ( int val );
+Term * PUMakeTermLongLong(long long int val);
+Term* PUMakeTermFloat ( double val );
+Term * PUMakeTermAtom ( char *atom );
+Term* PUMakeTermUPointer ( void *pointer );
+Term* PUMakeTermUMemory ( void *p, int size );
+Term * PUMakeTermTrue ( void );
+Term * PUMakeTermNil ( void );
+Term *PUMakeTermString (const char *string );
+Term * PUMakeTermLispList ( int NbTerm, ... );
+Term * PUMakeTermComp ( Pred_Func_Rec* funcName, int NbTerm, ... );
+Term * PUMakeExternalTermComp ( char* fName, int NbTerm, ... );
+TermList PUMakeTermList ( int NbTerm, ... );
+Term * PUMakeTermCList ( int NbTerm, ... );
 
 #ifdef __cplusplus
 }

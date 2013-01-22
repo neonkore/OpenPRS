@@ -1,3 +1,8 @@
+2013-01-22  Felix Ingrand  <felix@precise>
+
+	* pu-genom.c (pu_check_ttc_name_alter): Define symbol functions.
+	(pu_check_ttc_name_alter): most apps are not case dependant... and genom generated code is.
+
 2012-10-09  Felix Ingrand  <felix@lucid>
 
 	* pu-genom.c (pu_check_ttc_name): This was pretty stupid to change the protoype of a function used by GenoM2. Renamed the new version instead.
