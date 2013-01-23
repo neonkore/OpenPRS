@@ -50,7 +50,7 @@
 #endif
 #include <stdlib.h>
 
-#if defined(HAS_READLINE)
+#if defined(HAVE_LIBREADLINE)
 #include <readline/readline.h>
 #include <readline/history.h>
 #endif     
@@ -190,7 +190,7 @@ void server_init_arg(int argc,char **argv)
 
 }
 
-#if defined(HAS_READLINE)
+#if defined(HAVE_LIBREADLINE)
 
 char *strip_white(char *string)
 {
@@ -489,7 +489,7 @@ int main(int argc, char **argv, char **envp)
 {
      Oprs_Client *oprs_cl;
      Slist *oprslist2;
-#if defined(HAS_READLINE)
+#if defined(HAVE_LIBREADLINE)
      char hist_filename[FILENAME_MAX];
      char *home;
 #endif
@@ -546,7 +546,7 @@ int main(int argc, char **argv, char **envp)
 	  printf(LG_STR("This oprs-server does not auto accept new clients.\n",
 			"Ce oprs-server n'accepte pas les nouveaux clients automatiquement.\n"));
 
-#if defined(HAS_READLINE)
+#if defined(HAVE_LIBREADLINE)
      using_history ();
      
      if ((home = getenv("HOME")))
@@ -565,7 +565,7 @@ int main(int argc, char **argv, char **envp)
 
      while (!quit &&		/* I have not been ask to quit */
 	    (feof(stdin) == 0)) { /* The stdin is still here... */
-#if defined(HAS_READLINE)
+#if defined(HAVE_LIBREADLINE)
 	  char *command;
 
 	  command = rl_gets("oprs-server> ");
@@ -582,7 +582,7 @@ int main(int argc, char **argv, char **envp)
 #endif
      }
 
-#if defined(HAS_READLINE)
+#if defined(HAVE_LIBREADLINE)
      if (write_history(hist_filename) != 0) {
 	  perror("oprs-server: write_history");
      }

@@ -2,7 +2,7 @@
 /*                               -*- Mode: C -*-
  * top-lev-loop.c -- Main loop of a OPRS agent
  *
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -105,14 +105,14 @@ void let_the_good_time_roll(Oprs *oprs)
      pool_tv.tv_sec = main_loop_pool_sec;
      pool_tv.tv_usec = main_loop_pool_usec;
 
-#if defined(HAS_TIMER) && defined(HAS_SIGACTION)
+#if defined(HAVE_SETITIMER) && defined(HAVE_SIGACTION)
      block_sigalarm();		/* We should sleep/select for the remaining of the itimer time. */
 #endif
      if (select(max_fds, &readfds, NULL, NULL, &pool_tv) < 0)
 	  if (errno != EINTR) {
 	       perror("top-lev-loop: select NULL");
 	  }
-#if defined(HAS_TIMER) && defined(HAS_SIGACTION)
+#if defined(HAVE_SETITIMER) && defined(HAVE_SIGACTION)
      unblock_sigalarm();	/* We should restart the timer with the remaining of pool_tv... */
 #endif
 }
@@ -127,7 +127,7 @@ void client_oprs_top_level_loop(Oprs *oprs)
      Op_Instance *opi1, *opi2;
 
      while (TRUE) {
-#ifdef HAS_TIMER
+#ifdef HAVE_SETITIMER
 	  if (check_the_stdin) {
 	       check_the_stdin = FALSE;
 	       check_stdin();

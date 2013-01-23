@@ -96,10 +96,8 @@ void *realloc1(void *ptr, size_t size);
 
 /* Macro to allocate and create a string equal to from pointer by to */
 #define NEWSTR(from, to) do {size_t len = strlen(from);\
-	  			   char *tmp2;\
-				   tmp2 = (char *)MALLOC(len+1);\
-				   BCOPY(from, tmp2, len+1);\
-				   to = tmp2;\
+				   to = (char *)MALLOC(len+1);\
+				   BCOPY(from, (char *)to, len+1);	\
 				   } while (0)
 
 

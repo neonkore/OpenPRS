@@ -2,7 +2,7 @@
 /*                               -*- Mode: C -*-
  * top-lev-loop.c -- Main loop of a graphical OpenPRS agent 
  *
- * Copyright (c) 1991-2011 Francois Felix Ingrand, LAAS/CNRS.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand, LAAS/CNRS.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -63,7 +63,7 @@ PBoolean xoprs_top_level_loop(Oprs *oprs)
 
 	  if ( !meta_option[META_LEVEL] || !oprs->posted_meta_fact ) /* We check the stdin only if 
 								    the Meta OPs have been intended. */
-#ifdef HAS_TIMER
+#ifdef HAVE_SETITIMER
 	  if (check_the_stdin) {
 	       check_the_stdin = FALSE;
 	       check_stdin();

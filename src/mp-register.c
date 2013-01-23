@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*-
  * mp-register.c --
  *
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -132,7 +132,7 @@ int external_register_to_the_mp_host_prot(const char *name, const char *host_nam
 	  
      } while (connect(mp_socket, (struct sockaddr *)&socket_addr, len) < 0);
 
-#ifdef HAS_FORK
+#ifdef HAVE_FORK
 	  fcntl(mp_socket, F_SETFD, 1);      /* this is to avoid that the ns will be dup when we fork */
 #endif
 

@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * oprs-client.c -- 
  * 
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -116,7 +116,7 @@ void init_server_socket()
      len = sizeof(oprs_socket_addr);
      
      no_linger_reuseaddr(oprs_server_socket);
-#ifdef HAS_FORK
+#ifdef HAVE_FORK
      if (fcntl(oprs_server_socket, F_SETFD, 1) == -1)
 	  perror("oprs-server: init_server_socket: fcntl:");      /* this is to avoid that the ns will be dup when we fork */
 #endif
@@ -152,7 +152,7 @@ Oprs_Client *make_oprs_client(PString name)
  *                   Return a pointer to Oprs_Client.
  */
 {
-#ifdef HAS_FORK
+#ifdef HAVE_FORK
 	  int pid;
 
      fflush(stdout);		/* Lets flush, otherwise the child will print the same thing for a while. */
@@ -216,7 +216,7 @@ Oprs_Client *make_oprs_client(PString name)
 #endif
 	  return( accept_oprs_client());
 	  }     
-#else /* HAS_FORK */
+#else /* HAVE_FORK */
 	  printf(LG_STR("oprs-server: No fork available under this system.",
 			"oprs-server: Pas de fork possible sur ce systeme."));
 	  return NULL;
@@ -277,7 +277,7 @@ Oprs_Client *accept_oprs_client()
 #endif
 
      oprs_cl->socket = ns;
-#ifdef HAS_FORK
+#ifdef HAVE_FORK
 	  fcntl(ns, F_SETFD, 1);      /* this is to avoid that the ns will be dup when we fork */
 #endif
 #ifdef USE_MULTI_THREAD

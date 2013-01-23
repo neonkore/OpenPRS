@@ -218,7 +218,7 @@ void take_the_stdin(void)
 
      parse_source = PS_FILE;
 
-#ifdef HAS_TIMER
+#ifdef HAVE_SETITIMER
      desarm_condition_timer();	/* May generate interrupt which make read on stdin return... */
 #endif
      oprs_yy_switch_to_buffer(yy_stdin);
@@ -252,7 +252,7 @@ void leave_the_stdin(void)
      printf(LG_STR("Quitting stdin parsing, the main loop is resumed.\n",
 		   "Arret du parsing du stdin, la boucle principale est reprise.\n"));
 
-#ifdef HAS_TIMER
+#ifdef HAVE_SETITIMER
      arm_condition_timer();
 #endif
 }

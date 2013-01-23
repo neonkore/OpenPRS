@@ -42,29 +42,6 @@
    parameter...  */
 #define LANGUAGE ENGLISH
 
-#ifdef HAVE_LIBREADLINE
-#define HAS_READLINE
-#endif
-
-#ifdef HAVE_VALLOC
-#define HAS_VALLOC
-#endif
-
-/* Has timer functions and SIGALARM. */
-#ifdef HAVE_SETITIMER
-#define HAS_TIMER
-#endif
-
-#ifdef HAVE_SIGACTION
-#define HAS_SIGACTION
-#endif
-
-
-/* Has the abort function call. */
-#ifdef HAVE_ABORT
-#define HAS_ABORT
-#endif
-
 #ifdef WORDS_BIGENDIAN
 #ifndef BIG_ENDIAN
 #define BIG_ENDIAN
@@ -73,12 +50,6 @@
 #ifndef LITTLE_ENDIAN
 #define LITTLE_ENDIAN
 #endif
-#endif
-
-
-/* Has the fork function call. */
-#ifdef HAVE_FORK
-#define HAS_FORK
 #endif
 
 #define INLINE inline
@@ -114,16 +85,11 @@
 /* Allow report on the malloc bucket use. */
 #undef MALLOC_MOUCHARD
 
-/* Should be used if the OP Editor must register... Should be tested though. */
-#undef REGISTER_OP_EDITOR
-
 /* This is an internal LAAS option to allow connection to IxTeT Reco. */
 #undef CONNECT_TO_IXTET
 
 /* This is a development option to find unexisting documentation node. */
 #undef FIND_UNEXISTING_NODE
-
-#undef TRUCK_DEMO
 
 /********************************************************************
  *
@@ -131,21 +97,8 @@
  *
  ********************************************************************/
 
-#undef HAS_BUFSIZ
-
-/* Some systems do not define/initialize yyin and yyout propely.
- In this case define this variable. */
-#undef YY_NO_CONST
-
 /* If setbuf undefined, then use setbuffer. */
 #undef SETBUF_UNDEFINED
-
-/* On some systems these are undefined... */
-#undef HAS_STRERROR
-
-/* On these systems DEC, HP_UX, VXWORKS and IRIS4D, it looks like real_path
-   is undefined. */
-#undef REALPATH_UNDEFINED
 
 /* SysV: pid_t setpgrp(void);
    Bsd: int setpgrp(int pid, int pgrp); */

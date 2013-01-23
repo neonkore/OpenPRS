@@ -1,3 +1,7 @@
+2013-01-23  Felix Ingrand  <felix@precise>
+
+	* Simplified some HAS_ HAVE_ cpp symbol (directly used the one provided by autoconf).
+
 2013-01-21  Felix Ingrand  <felix@precise>
 
 	* mp-openprs.pc.in (Libs): Not linking with the proper library... ExtMP should be used.

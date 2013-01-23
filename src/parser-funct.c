@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * parser-funct.c -- 
  * 
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -121,17 +121,6 @@ PString find_file_path(PString path, PString name)
      return res;
 }
 
-#ifdef REALPATH_UNDEFINED
-PString canonicalize_file_name(PString file_name)
-{   
-     PString found_file_name;
-
-     found_file_name = find_file_path(oprs_data_path,file_name);
-     FREE(file_name);
-
-     return found_file_name;
-}
-#else
 PString canonicalize_file_name(PString file_name)
 {
      char resolved_path[PATH_MAX];
@@ -165,19 +154,7 @@ PString canonicalize_file_name(PString file_name)
 
      return res;
 }
-#endif
 
-#ifdef REALPATH_UNDEFINED
-PString canonicalize_read_file_name(PString file_name)
-{   
-     PString found_file_name;
-
-     found_file_name = find_file_path(oprs_data_path,file_name);
-     FREE(file_name);
-
-     return found_file_name;
-}
-#else
 PString canonicalize_read_file_name(PString file_name)
 {
      char resolved_path[PATH_MAX];
@@ -205,7 +182,6 @@ PString canonicalize_read_file_name(PString file_name)
 
      return res;
 }
-#endif
 
 PBoolean closed_file = FALSE;
 

@@ -159,7 +159,7 @@ PDate ixtet_start_date;	/* The zero */
 
 void wrap_up(void)
 {
-#ifdef HAS_TIMER
+#ifdef HAVE_SETITIMER
      kill_condition_timer();
 #endif
      end_kernel_hook();
@@ -878,7 +878,7 @@ Oprs *oprs_init_main(char *name, PBoolean use_x_window, char *mp_hostn, int mp_p
 
      oprs_prompt = name;
      previous_soak = NULL;
-#ifdef HAS_TIMER
+#ifdef HAVE_SETITIMER
      install_condition_timer_handler_set_arm();
 #endif
      
@@ -1441,7 +1441,7 @@ static struct sigaction quit_act;
 
 void install_quit_handler(void)
 {
-#ifdef HAS_SIGACTION
+#ifdef HAVE_SIGACTION
      /* Install the handler. */
      quit_act.sa_handler = quit_handler;
      sigemptyset(&quit_act.sa_mask);

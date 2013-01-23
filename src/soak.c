@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * soak.c -- will find all the applicable ops (determine the famous soak "Set Of Applicable OPs")...
  * 
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,7 +32,7 @@
 
 #include "config.h"
 
-#ifdef HAS_TIMER
+#ifdef HAVE_SETITIMER
 #ifdef VXWORKS
 #include <vxWorks.h>
 #include <systime.h>
@@ -101,7 +101,7 @@
 #endif
 
 /* Declaration of some functions */
-#ifdef HAS_TIMER
+#ifdef HAVE_SETITIMER
 void set_condition_timer(void);
 #endif
 FrameList parse_inv_part(Expression *expr, FramePtr fp, List_Envar lenv, Oprs *oprs);
@@ -1139,7 +1139,7 @@ Op_Instance_List find_soak(Oprs *oprs)
 	       sl_loop_through_slist(oprs->conditions_list, rc, Relevant_Condition *) 
 		    if (rc->evolving && ! (SAFE_SL_IN_SLIST(cond,rc)))
 			 SAFE_SL_ADD_TO_HEAD(cond,rc);
-#ifdef HAS_TIMER
+#ifdef HAVE_SETITIMER
 	       check_evolving_conditions = FALSE;
 #endif
 	  }
@@ -1383,8 +1383,8 @@ void test_find_soak_fact(Fact *fact, Oprs *oprs)
 	  delete_expr(fact->statement, oprs->database); /* we delete it from the database. */
 }
 
-#ifdef HAS_TIMER
-#ifdef HAS_SIGACTION
+#ifdef HAVE_SETITIMER
+#ifdef HAVE_SIGACTION
 sigset_t sigalarm_set;
 
 void block_sigalarm(void)
@@ -1418,7 +1418,7 @@ struct itimerval interval_timer_val;
 # endif
 
 
-#ifdef HAS_SIGACTION
+#ifdef HAVE_SIGACTION
 static struct sigaction act;
 #endif
 
@@ -1433,7 +1433,7 @@ void arm_condition_timer(void)
 #endif
 }
 
-#ifdef HAS_SIGACTION
+#ifdef HAVE_SIGACTION
 static void condition_timer_handler(int sig)
 #elif defined(VXWORKS)
 void condition_timer_handler(int sig)
@@ -1448,7 +1448,7 @@ static void condition_timer_handler(int sig)
 
 void install_condition_timer_handler(void)
 {
-#ifdef HAS_SIGACTION
+#ifdef HAVE_SIGACTION
     sigaction(SIGALRM, &act, NULL);
 #else /* SVR4 */
     signal(SIGALRM, condition_timer_handler);
@@ -1480,7 +1480,7 @@ void set_interval_timer()
 
 void install_condition_timer_handler_set_arm(void)
 {
-#ifdef HAS_SIGACTION
+#ifdef HAVE_SIGACTION
    /* Install the handler. */
     act.sa_handler = condition_timer_handler;
     sigemptyset(&act.sa_mask);
@@ -1535,5 +1535,5 @@ void desarm_condition_timer(void)
 	  perror("desarm_condition_timer: setitimer");
 #endif
 }
-#endif /* HAS_TIMER */
+#endif /* HAVE_SETITIMER */
 

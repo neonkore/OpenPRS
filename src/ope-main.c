@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*-
  * ope-main.c --
  *
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -555,10 +555,6 @@ Widget topLevel;
 
 extern PBoolean use_dialog_error;
 
-/* #ifdef YY_NO_CONST */
-/* extern FILE *oprs_yyin, *oprs_yyout; */
-/* #endif */
-
 int gtk = 0;
 
 int main(int argc, char **argv, char **envp)
@@ -689,11 +685,6 @@ int main(int argc, char **argv, char **envp)
      file_name_for_print = (char *) MALLOC(sizeof(NAME_FOR_PRINT) + 10);
      sprintf(file_name_for_print, "%s%d",NAME_FOR_PRINT, pid);
 
-/* #ifdef YY_NO_CONST */
-/*      oprs_yyin = stdin; */
-/*      oprs_yyout = stdout; */
-/* #endif */
-     
      global_draw_data = &dd;
 
      list_of_commands = ope_init_arg(argc, argv);

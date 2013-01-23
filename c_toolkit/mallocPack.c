@@ -774,7 +774,7 @@ static OPRS_NODE morecore(int size) /* number of bytes to get */
      allocated += size; /* save the amount of memory we have allocated */
      /* This memory must be aligned on block boundary for macro such as "is small" to work.. */
      /* In this context, this is the standard system memalign/malloc... */
-#ifdef HAS_VALLOC
+#ifdef HAVE_VALLOC
      res = (OPRS_NODE)valloc(size);
      if (is_small(res))
 	  malloc_fatal("morecore: valloc returned badly aligned mem.\n");
@@ -1243,7 +1243,7 @@ OPRS_NODE memalign(unsigned align, unsigned size)
 }
 
 
-#ifndef HAS_VALLOC
+#ifndef HAVE_VALLOC
 OPRS_NODE valloc(unsigned size)
 {
      return memalign(getpagesize(), size);
