@@ -108,7 +108,7 @@ AC_FUNC_MALLOC
 AC_FUNC_SELECT_ARGTYPES
 AC_TYPE_SIGNAL
 AC_FUNC_STAT
-AC_CHECK_FUNCS([abort sigaction setitimer valloc clock_gettime dup2 gethostname getpagesize gettimeofday pow realpath select socket strcasecmp strchr strerror strncasecmp strrchr setpgid])
+AC_CHECK_FUNCS([abort sigaction setitimer valloc clock_gettime dup2 gethostname getpagesize gettimeofday pow realpath select socket strcasecmp strchr strerror strncasecmp strrchr setpgid lrand48 rand])
 
 AC_CONFIG_FILES([
                  Makefile

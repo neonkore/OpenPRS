@@ -54,16 +54,12 @@
 #define MIN3(a,b,c)     (((a) < (b)) ? (MIN(a,c)) : (MIN(b,c)))
 #define SIGN(a)     (((a) < 0) ? (-1) : (1))
 
-#ifdef HAS_LRAND48
+#ifdef HAVE_LRAND48
 #define RANDOM()	lrand48()
 #define SRANDOM(a)	srand48(a)
-#elif defined(HAS_RAND)
+#elif defined(HAVE_RAND)
 #define RANDOM()	rand()
 #define SRANDOM(a)	srand(a)
-#elif defined(GNUWIN32)
-int _rand;
-#define RANDOM() (_rand++)
-#define SRANDOM(a)	(_rand=a)
 #else
 #define RANDOM()	random()
 #define SRANDOM(a)	srandom(a)

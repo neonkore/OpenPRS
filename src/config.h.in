@@ -171,10 +171,6 @@
    renamed... after understanding what it really does. */
 #undef SA_SIGINFO_UNDEFINED
 
-/* One of the two following should be defined. */
-#undef HAS_LRAND48
-#undef HAS_RAND
-
 /* These are self explanatory. */
 #undef HAS_BZERO
 #undef HAS_BCOPY
