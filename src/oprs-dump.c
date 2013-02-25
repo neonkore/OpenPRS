@@ -263,7 +263,7 @@ int dump_long_long(long long i)
 }
 
 #ifdef _LP64
-int dump_ptr(void *ptr)
+int dump_ptr(const void *ptr)
 {
      u_char buf[8];
 
