@@ -1,3 +1,11 @@
+2013-02-26  Felix Ingrand  <felix@precise>
+
+	* oprs-type.c (compare_term): reverse some symbol comparison which
+	were intended to be string comparison...
+	(compare_term): Fix this function which was not always returning meaningful results...
+
+	* constant.h (COPYRIGHT_STRING): Updated the copyright date.
+
 2013-01-23  Felix Ingrand  <felix@precise>
 
 	* Simplified some HAS_ HAVE_ cpp symbol (directly used the one provided by autoconf).

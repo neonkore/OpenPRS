@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*-
  * constant.h -- Defines some constants system-wise.
  *
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -77,7 +77,7 @@ typedef enum {MP_PG, SERV_PG, OPE_PG, XP_PG, OPRS_PG, KILL_PG, OPC_PG} Prog_Type
 #define SERVER_PORT 3400
 #endif
 
-#define COPYRIGHT_STRING "Copyright (c) 1991-2012 Felix Ingrand - LAAS/CNRS."
+#define COPYRIGHT_STRING "Copyright (c) 1991-2013 Felix Ingrand - LAAS/CNRS."
 
 
 #endif	/* INCLUDE_constant */

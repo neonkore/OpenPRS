@@ -1060,13 +1060,15 @@ int compare_term(Term *t1, Term *t2)
 	  case INTEGER:
 	       return ((t1->u.intval) - (t2->u.intval));
 	  case LONG_LONG:
-	       return ((t1->u.llintval) - (t2->u.llintval));
+	       return (((t1->u.llintval) == (t2->u.llintval))? 0 :
+		       ((t1->u.llintval) < (t2->u.llintval))? -1 : 1);
 	  case TT_FLOAT:
-	       return ((*t1->u.doubleptr) - (*t2->u.doubleptr));
+	       return (((*t1->u.doubleptr) == (*t2->u.doubleptr))? 0 :
+		       ((*t1->u.doubleptr) < (*t2->u.doubleptr))? -1 : 1);
 	  case STRING:
 	       return strcmp(t1->u.string, t2->u.string);
 	  case TT_ATOM:
-	       return (t1->u.id == t2->u.id); /* these are symbols */
+	       return (t1->u.id == t2->u.id ? 0 : strcmp(t1->u.id,t2->u.id)); /* these are symbols */
 	  case EXPRESSION:
 	       return compare_expr(t1->u.expr, t2->u.expr);
 	  case INT_ARRAY:
@@ -1080,7 +1082,8 @@ int compare_term(Term *t1, Term *t2)
 	  case TT_OP_INSTANCE:
 	  case TT_INTENTION:
 	  default:
-	       return ((t1->u.u_pointer) == (t2->u.u_pointer));
+	       return (((t1->u.u_pointer) == (t2->u.u_pointer))? 0 :
+		       ((t1->u.u_pointer) < (t2->u.u_pointer))? -1 : 1);
 	  }
 
 }
@@ -1120,7 +1123,8 @@ int compare_exprs(ExprList terms1, ExprList terms2)
 int compare_expr(Expression *expr1, Expression *expr2)
 {
      if (expr1->pfr != expr2->pfr) 
-	  return (expr1->pfr->name == expr2->pfr->name); /* symbols... */
+	  return strcmp(expr1->pfr->name,expr2->pfr->name); /* symbols... but they are different already,
+							       otherwise the pfr would be the same.*/
      else
 	  return compare_terms(expr1->terms, expr2->terms);
 }
