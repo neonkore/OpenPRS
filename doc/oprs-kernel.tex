@@ -79,7 +79,7 @@ evaluable functions and actions to suit your application,
 
 \item each \CPK{} is an independent Unix process,
 
-\item available under various Unix (Solaris, Ultrix, Sun OS, etc) and real-time
+\item available under various Unix (Solaris, Ultrix, Sun OS, etc.) and real-time
 Unix system (VxWorks),
 
 \item reduced size of the kernel (few hundreds of kilo bytes), compared
@@ -114,7 +114,7 @@ and then to connect to it.
 If you start a \CPK{} from the \OPRSS{}, connections to the \OPRSS{}
 are made automatically. However, if you start it from a Unix shell (on another
 host for example) then you need to connect it to the \OPRSS{} (unless you
-specify the \code{-a} argument. This is done by issuing the \code{accept}
+specify the \code{-a} argument). This is done by issuing the \code{accept}
 command in the \OPRSS{}.
 
 \section{How to Start a \CPK{}}
@@ -211,7 +211,7 @@ connection (or will be started if necessary).
   can appear more than once, in which case, the commands are executed in the
   order they are specified.
 
-\item[\code{-d}] to specify a data path, i.e. a colon separated list of
+\item[\code{-d}] to specify a data path, i.e.\ a colon separated list of
 directories where the kernel will look for data files (\file{.inc},
 \file{.opf} and \file{.db}) (\pxref{OPRS Kernel Environment Variables}).
 
@@ -244,7 +244,7 @@ setenv OPRS_ID_CASE none
 
 \item[\code{-L en|fr}] can be used to select the language of the interface
 (French or English). Note that by default your kernel is in English. Note also
-that for the applications with an X interface (i.e. \XPK{} and the \OPE{} the
+that for the applications with an X interface (i.e.\ \XPK{} and the \OPE{} the
 choice of the \file{app-defaults} file will select the language
 (\pxref{Xt/Motif Widgets Hierarchy and Resources}). In this case, selecting a
 different value with the option will lead to a warning and to a mix of language
@@ -267,7 +267,7 @@ have precedence on those acquired from environment variables.
 \begin{description}
 
 \cpindex{OPRS\_DATA\_PATH}
-\item[\code{OPRS\_DATA\_PATH}] is used  to specify a data path, i.e. a colon separated
+\item[\code{OPRS\_DATA\_PATH}] is used  to specify a data path, i.e.\ a colon separated
 list of directories where the kernel will look for data files (\file{.inc},
 \file{.opf} and \file{.db}). It is used by the \CPK{} and the \XPK{}. It is
 equivalent to the \code{-d} command line argument.\\*
@@ -432,7 +432,7 @@ You can then interact with the \OPRSS{} again, and the \CPK{} returns in
 \dfn{run} mode.
 
 If you happen to break the command parser, you need to reset it. Do this by typing a dot 
-\samp{.} at the beginning of a new line, i.e. \key{RET},
+\samp{.} at the beginning of a new line, i.e.\ \key{RET},
 \key{.}, and \key{RET}. \xref{OPRS Kernel Parser} for more on this subject.
 
 Keep in mind that you do not need to connect to a \CPK{} to execute a command
@@ -449,7 +449,7 @@ loop itself.
 
 The \CPK{} has a number of commands which can either be executed by the
 user (when he is connected to the \CPK{} of his choice) or put into an
-\dfn{include file}. Most commands have self-explanatory names
+\dfn{include file}. Most commands have self-explanatory names,
 however, their syntax is very rigorous and the command parser will detect any
 inconsistency. If you put your command in an include file, keep in mind that it
 can contain any command except the \code{connect} and \code{disconnect}
@@ -506,7 +506,7 @@ itself.
 \item \code{delete \var{expression}}. Delete the \var{expression}
 (\pxref{General Expressions}) from the database. Note that you can delete
 expressions containing variables. Variables in this context are universally
-quantified, i.e. all the matching expressions will be deleted. Note that you
+quantified, i.e.\ all the matching expressions will be deleted. Note that you
 cannot delete gexpressions containing logical operators.\\*
 Example: \code{delete (foo a b \$x)}\\*
 \code{delete (bar 12.0 (+ 4 5))}
@@ -514,7 +514,7 @@ Example: \code{delete (foo a b \$x)}\\*
 \pgindex{consult (oprs)}
 \item \code{consult \var{gexpression}}. Consult the \var{gexpression}
 (\pxref{General Expressions}) in the database. Note that the consult
-command accepts a gexpression (i.e. expression combined with logical
+command accepts a gexpression (i.e.\ expression combined with logical
 operators), not only an expression.\\*
 Example: \code{consult (bar \$x b c)}\\*
 \code{consult (\& (foo 4 "String") (bar \$x b c))}\\*
@@ -562,7 +562,7 @@ this command.
 The OP library contains all the OP/procedures which have been loaded in the
 \CPK{}. There are a number of commands to load/unload OP files in the OP
 library of a \CPK{}, as well as to clear/consult the OP library, and to
-set/unset trace on specific OP or OP files (i.e. set of OPs loaded from the
+set/unset trace on specific OP or OP files (i.e.\ set of OPs loaded from the
 concerned file).
 
 \begin{itemize}
@@ -646,7 +646,7 @@ means of commands in include files. Remember that files are searched in the
 \pgindex{set oprs\_data\_path (oprs)}
 \item \code{set oprs\_data\_path \var{string}}. Override the OPRS\_DATA\_PATH to the given
 value. This command has priority over the OPRS\_DATA\_PATH given as environment
-variable or as argument to the \code{oprs} command. Note that you can use environment variable (e.g. \$\{HOME\}, etc),  in the string.\\*
+variable or as argument to the \code{oprs} command. Note that you can use environment variable (e.g.\ \$\{HOME\}, etc.),  in the string.\\*
 Example: \code{set oprs\_data\_path "data:\$\{HOME\}/openprs/data:."}\\*
 \code{set oprs\_data\_path "\$\{OPRS\_DATA\_PATH\}:\$\{ROBOTPKG\_BASE\}/share/openprs/data:."}
 
@@ -836,14 +836,14 @@ OP Instance has not been already intended before intending it. This is to make
 sure, for example, that you do not intend again from a meta level OP, a OP
 instance already intended by the main loop or another meta level OP. Moreover,
 the kernel always check that a OP Instance intended for a particular goal is
-intended in the proper place, i.e. it is not intended if there is already
+intended in the proper place, i.e.\ it is not intended if there is already
 another OP instance which has been intended for the same goal. Note however,
 that it may be intended later if it is still applicable and if the other one
 has failed.
 
 \pgindex{set time\_stamping (oprs)}
 \item \code{set time\_stamping on|off} Turn on or off the time stamping of
-various date (for facts, goals, creation date, soak date, etc). Time stamping
+various date (for facts, goals, creation date, soak date, etc.). Time stamping
 is quite expensive, which is the reason why this option exists.  Default value:
 \code{off}.
 
@@ -940,7 +940,7 @@ Checking}. Default value: \code{on}.
 \pgindex{set symbol (oprs)}
 \item \code{set symbol on|off} Turn on or off some checking on the symbol
 compilation/parsing. All symbols declared by other means (evaluable functions,
-predicates, actions, cwp, basic events, etc) are declared as symbol de
+predicates, actions, cwp, basic events, etc.) are declared as symbol de
 facto. \xref{Symbol Checking}. Default value: \code{on}.
 
 \end{itemize}
@@ -1083,7 +1083,7 @@ or database files. In fact, when one load a OP file, the kernel recompiles the
 OP in some internal structure, while if you load a dump OP file, the structures
 are just loaded in memory, avoiding a costly parsing and compilation.
 
-\item[More than just OP files]. The OP dump files contains in fact more than
+\item[More than just OP files] The OP dump files contains in fact more than
 just the OP description, they also contain all the declarations of predicates,
 functions, and symbols mentioned in the OPs.
 
@@ -1092,11 +1092,11 @@ architecture and endian independant. One can create a dump file under a Pentium
 running Windows NT and reload it under a Sparc running Solaris or a 680x0 board
 under VxWorks.
 
-\item[Graphic and non graphic version of OP]. Graphic information is dumped
-according to the kernel from which you dump the OPs (i.e. it is dumped from an
+\item[Graphic and non graphic version of OP] Graphic information is dumped
+according to the kernel from which you dump the OPs (i.e.\ it is dumped from an
 \XPK{}, while it is not from a \CPK{}). Similarly, when loading OP dump, the
 graphic information is loaded if an only if it is present in the dump and if
-the kernel may use it (i.e. an \XPK{}).
+the kernel may use it (i.e.\ an \XPK{}).
 
 \end{description}
 
@@ -1114,7 +1114,7 @@ require some memory allocation which in some situations is sparse (under
 VxWorks for example). Some tables are required to perform the dump and the
 load. These tables are temporarily allocated and are freed afterward. 
 
-\item[No C compiled code included] C Compiled code, i.e. code linked by the
+\item[No C compiled code included] C Compiled code, i.e.\ code linked by the
 user in the \PK{} is not dumped in the \OPRS{} dump files. The main reason is
 that contrary to the \OPRS{} compiled code, this code is not architecture
 independant. Therefore, when you load a \OPRS{} dump file, the kernel will
@@ -1167,23 +1167,23 @@ Example: \code{load dump db "db-ex.ddb"}
 
 The dump/load mechanism is the first step of a broader mechanism which will, in
 future releases, provide other facilities. For example, future version of
-\COPRS{} will provide warm boot capabilities (i.e. one will be able to dump a
+\COPRS{} will provide warm boot capabilities (i.e.\ one will be able to dump a
 kernel state and later, reload it and continue from the point where it was
 dumped). In fact, the warm boot feature is more or less already present in the
-current version but is not currently supported (i.e. use at your own risk).
+current version but is not currently supported (i.e.\ use at your own risk).
 
 \begin{itemize}
 
 \pgindex{dump kernel (oprs)}
 \item \code{dump kernel \file{file\_name}}.  Dump in binary format the complete
-kernel (i.e. the database, the OPs, and all the intentions). The suggested
+kernel (i.e.\ the database, the OPs, and all the intentions). The suggested
 suffix for the dump kernel file is \file{.dkrn}. If this command is executed 
 from the \XPK{}, graphical information is saved in the file.\\*
 Example: \code{dump kernel "krn-ex.dkrn"}
 
 \pgindex{load kernel (oprs)}
 \item \code{load dump kernel \file{file\_name}}.  Load the kernel contained
-in the dump kernel file which must be in binary dump kernel format, i.e. add
+in the dump kernel file which must be in binary dump kernel format, i.e.\ add
 the loaded fact in the database, add the loaded OP in the OP library (except
 for the OP already loaded), and replace the intention graph with the one loaded
 from the file. The suggested suffix for the dump OP file is \file{.dkrn}.  If
@@ -1254,12 +1254,12 @@ not flush the fact database and the OP Library.
 \pgindex{show intention (oprs)}
 \item \code{show intention}. Display all the intentions in the intention graph.
 It gives an extensive status of the intentions and their component (thread,
-status, waiting condition, joining, etc).
+status, waiting condition, joining, etc.).
 
 \pgindex{show condition (oprs)}
 \item \code{show condition}. Display all the conditions currently active in th
 \CPK{}. It gives an extensive status of the conditions (waiting or preserve
-condition, as well as their "evolving" status).
+condition, as well as their ``evolving'' status).
 
 \pgindex{show memory (oprs)}
 \item \code{show memory}. Display some information on the memory usage of the
@@ -1298,19 +1298,19 @@ goal before it is returned to run mode with the \code{disconnect} command.
 
 \pgindex{stat db (oprs)}
 \item \code{stat db}. Print a report on the use of the
-various hashtables in the database (occupation, collision, etc). It can be
+various hashtables in the database (occupation, collision, etc.). It can be
 used to tune your application by using the appropriate arguments to the
 \code{oprs} or \code{xoprs} command (\pxref{Arguments to the oprs Command}).
 
 \pgindex{stat id (oprs)}
 \item \code{stat id}. Print a report on the use of the
-symbol hashtables in the kernel (occupation, collision, etc). It can be used
+symbol hashtables in the kernel (occupation, collision, etc.). It can be used
 to tune your application by using the appropriate arguments to the \code{oprs}
 or \code{xoprs} command (\pxref{Arguments to the oprs Command}).
 
 \pgindex{stat all (oprs)}
 \item \code{stat all}. Print a report on the use of all
-the various hashtables in the kernel (occupation, collision, etc). It can be
+the various hashtables in the kernel (occupation, collision, etc.). It can be
 used to tune your application by using the adequate arguments to the \code{oprs}
 or \code{xoprs} command (\pxref{Arguments to the oprs Command}).
 
@@ -1389,14 +1389,14 @@ trace text opf "/usr/local/oprs/data/fact-meta.opf" on
 trace graphic op |Print Factorial| off
 \end{verbatim}
 
-\chapter{Syntax and Semantic Used in the \COPRSDE{}}
-\node{Syntax and Semantic Used in the OPRS Development Environment}
-\cpindex{Syntax and Semantic Used in the \COPRSDE{}}
+\chapter[Syntax and Semantics\ldots]{Syntax and Semantics Used in the \COPRSDE{}}
+\node{Syntax and Semantics Used in the OPRS Development Environment}
+\cpindex{Syntax and Semantics Used in the \COPRSDE{}}
 \cpindex{Syntax Used in the \COPRSDE{}}
-\cpindex{Semantic Used in the  \COPRSDE{}}
+\cpindex{Semantics Used in the  \COPRSDE{}}
 \cpindex{Grammar Used in the \COPRSDE{}}
 
-The syntax and the associated semantic is the same in the
+The syntax and the associated semantics is the same in the
 \CPK{}, \XPK{}, \OPE{} and \OPRSS{} modules. The same grammar is used and syntax
 checking is done and enforced whenever possible. In other words, unless you bother with
 the OP files themselves, it is very unlikely that a OP produced by the
@@ -1419,7 +1419,7 @@ values depending on the context (\pxref{Frames and Binding Environments}). This
 allows the user to specify an expression with part of it unspecified. Depending on
 the context, a variable can be existentially or universally
 quantified. These quantifications are usually implicit but obvious. Most often
-however, variables are existentially quantified, i.e. the expression containing
+however, variables are existentially quantified, i.e.\ the expression containing
 the variable is interpreted with one possible value of all the possible values
 this variable can take. We will point out the situation where the variables are
 to be interpreted in a universally quantified way. Finally, there are operators
@@ -1499,11 +1499,11 @@ them, we indicate in parenthesis the C type as defined in
 \node{Integer as a Term}
 \cpindex{Integer as a Term}
 
-A term can be an \dfn{integer}.  Its C type is then \code{INTEGER}. In the \CPK{},
-integers become C \code{int}. A direct consequence is that they are not
-bignums (a la Lisp). Therefore, there are maximum values for these numbers. Check the C
-compiler and your machine architecture for specific maximum and minimum
-values.
+A term can be an \dfn{integer}. Its C type in the Term structure is
+then \code{INTEGER}. In the \CPK{}, integers become C \code{int}. A
+direct consequence is that they are not bignums (a la Lisp). Therefore,
+there are maximum values for these numbers. Check the C compiler and
+your machine architecture for specific maximum and minimum values.
 
 Example of integers: (the parser will accept a useless l) \code{0 1 -3 4732 +34l -0 +0 -023l}. \\*
 Example of numbers which are probably not recognized as integers:
@@ -1513,11 +1513,12 @@ Example of numbers which are probably not recognized as integers:
 \node{Long long integer as a Term}
 \cpindex{Long long integer as a Term}
 
-A term can be a \dfn{long long integer}, i.e. a 64 bits integer.  Its C type
-is then \code{LONG\_LONG}. In the \CPK{}, long long integers become C
-\code{long long int}. You can perform computation on integer larger than the
-``regular'' int. Yet , there is a maximum value (probably 2**(63) - 1). Check the C compiler
-and your machine architecture for specific maximum and minimum values.
+A term can be a \dfn{long long integer}, i.e.\ a 64 bits integer.  Its C
+type in the Term structure is then \code{LONG\_LONG}. In the \CPK{}, long
+long integers become C \code{long long int}. You can perform computation
+on integer larger than the ``regular'' int. Yet, there is a maximum value
+(probably 2**(63) - 1). Check the C compiler and your machine architecture
+for specific maximum and minimum values.
 
 Example of integers: \code{0ll 1123ll -345345ll +83453234ll}. \\*
 Example of numbers which are probably not recognized as long long integers:
@@ -1527,10 +1528,10 @@ Example of numbers which are probably not recognized as long long integers:
 \node{Float as a Term}
 \cpindex{Float as a Term}
 
-A term can be a \dfn{float}. Its C type in the Term structure is then
-\code{TT\_FLOAT} or \code{FLOAT} (except under Windows 95-NT).  In the \CPK{}
-these floats are casted in C \code{double}. Check your C compiler and your
-machine architecture for specific maximum and minimum values.
+A term can be a \dfn{float}. Its C type in the Term structure is
+then \code{TT\_FLOAT}. In the \CPK{} these floats are casted in C
+\code{double}. Check your C compiler and your machine architecture for
+specific maximum and minimum values.
 
 Example of floats: \code{123.234, -45.0, +34.1, 123E-4, -45.90e+23,  45.90e23} \\* 
 Example of numbers which are probably not recognized as floats: \code{+.345
@@ -1543,10 +1544,10 @@ Example of numbers which are probably not recognized as floats: \code{+.345
 A term can be a \dfn{string}. Its C type in the Term structure is then
 \code{STRING}. These strings are standard strings, as commonly encountered in
 C. They use the same backslash notation as the one used in C. To insert a
-\samp{"} in a string you must backslash it with a \samp{\\}.
+\samp{"} in a string you must backslash it with a \samp{\textbackslash}.
 
 Example of strings: \code{"This is a string \$\#\%\$\^{}\%\$\^{} "}, \\*
-\code{"This is another  string with a $\backslash$" embedded and even a $\backslash$n\\* which will
+\code{"This is another  string with a \textbackslash" embedded and even a \textbackslash{}n\\* which will
 become new line."} \\*
 Example of non strings: \code{"This is a " not a string because of the
 char " in it"}.
@@ -1555,10 +1556,10 @@ char " in it"}.
 \node{Symbol as a Term}
 \cpindex{Symbol as a Term}
 
-A term can be a \dfn{symbol}. Its C type in the Term structure is then
-\code{TT\_ATOM} or \code{ATOM} (except under Windows 95-NT). Symbols case may be
-changed automatically according to the option used (unless they are surrounded
-by vertical bars (\samp{|})). In some situations, (such as printing node names,
+A term can be a \dfn{symbol}. Its C type in the Term structure is
+then \code{TT\_ATOM}. Symbols case may be changed automatically
+according to the option used (unless they are surrounded by vertical
+bars (\samp{|})). In some situations, (such as printing node names,
 or scripts names, the vertical bars are not printed around the symbol).
 
 Example of symbols: \code{nil, t, |Foo Bar|, :BOO, bar}.\\*
@@ -1590,9 +1591,10 @@ Example of variable list: \code{(\$g45 \$x \$32a @foo @BoO)}.
 \node{Gtexpression as a Term}
 \cpindex{Gtexpression as a Term}
 
-A term can be a \dfn{gtexpression}. Its C type is then \code{GTEXPRESSION}.
-\xref{General Temporal Expressions}. Gtexpression as terms are used in
-\code{test-and-set} or \code{apply-subst-in-gtexpr} functions.
+A term can be a \dfn{gtexpression}. Its C type in the Term
+structure is then \code{GTEXPRESSION}. \xref{General Temporal
+Expressions}. Gtexpression as terms are used in \code{test-and-set}
+or \code{apply-subst-in-gtexpr} functions.
 
 Example of gtexpression: \code{(? (foo a \$x)), (achieve (position \$x closed))}.
 
@@ -1600,9 +1602,9 @@ Example of gtexpression: \code{(? (foo a \$x)), (achieve (position \$x closed))}
 \node{Gexpression as a Term}
 \cpindex{Gexpression as a Term}
 
-A term can be a \dfn{gexpression}. Its C type is then \code{GEXPRESSION}.
+A term can be a \dfn{gexpression}. Its C type in the Term structure is then \code{GEXPRESSION}.
 \xref{General Expressions}. Gexpression as terms are used in \code{all} and
-\code{n-all} functions.  From the reader, only \code{LEXPRESSION} are allowed,
+\code{n-all} functions. From the reader, only \code{LEXPRESSION} are allowed,
 to be able to distinguish them from \code{TERM\_COMP}.
 
 Example of lexpression: \code{(\& (foo \$x b) (bar \$x b))}.
@@ -1611,9 +1613,9 @@ Example of lexpression: \code{(\& (foo \$x b) (bar \$x b))}.
 \node{Composed Term as a Term}
 \cpindex{Composed Term as a Term}
 
-A term can be a \dfn{composed term}. Its C type is then \code{TERM\_COMP}.
-Beware, these terms look like lisp lists, but they are not (see below for a
-description of the lisp list). Composed terms are a list which first element is a
+A term can be a \dfn{composed term}. Its C type in the Term structure is then \code{TERM\_COMP}.
+Beware, these terms look like Lisp lists, but they are not (see below for a
+description of the Lisp list). Composed terms are a list which first element is a
 function name and the rest of the element of the list are terms. The function
 appearing in this context are not always evaluable. Of course, composed terms
 can contain composed terms recursively.
@@ -1625,10 +1627,10 @@ Example of composed terms: \code{(+ 1 2), (foo a b), (l\_list 1 2 3 4),
 \node{Lisp List as a Term}
 \cpindex{Lisp List as a Term}
 
-A term can be a lisp list. Its C type is then \code{LISP\_LIST}. Lisp lists are
+A term can be a Lisp list. Its C type in the Term structure is then \code{LISP\_LIST}. Lisp lists are
 provided for upward compatibility with the Lisp version of \OPRS{}. However, we
 do not encourage the use of Lisp functions and lispisms in \COPRS{}. Therefore,
-to distinguish lisp lists from other lists like structure (such as composed
+to distinguish Lisp lists from other lists like structure (such as composed
 terms), we use a different parenthesis scheme. The Lisp lists are surrounded
 with parenthesis followed or preceded with the dot char \samp{.}.  Moreover,
 when read by the parser, we only allow terms in the list (so you can still have
@@ -1638,13 +1640,13 @@ when necessary.  In this case the printed form is the name of the structure
 followed by the address of the object in memory.  \xref{LISPLIST}
 for more on this subject.
 
-Example of lisp lists: \code{(. 2 4 7 .), (. 2 (.  2 (. 2 4 7 .) 4 7 .) 4 7.)}.
+Example of Lisp lists: \code{(. 2 4 7 .), (. 2 (.  2 (. 2 4 7 .) 4 7 .) 4 7.)}.
 
 \subsection{User Pointers as a Term}
 \node{User Pointers as a Term}
 \cpindex{User Pointers as a Term}
 
-A term can be a user pointer. Its C type is then a \code{U\_POINTER}. A user
+A term can be a user pointer. Its C type in the Term structure is then a \code{U\_POINTER}. A user
 defined pointer is a pointer on a user created object which he wants to
 manipulate. For example, an evaluable function may return such pointer (like
 the pointer to a complex data structure), which can then be used by other user
@@ -1666,7 +1668,7 @@ Example of user pointer: \code{0xff30}, \code{0xA120}.
 \node{Array of Integers as a Term}
 \cpindex{Array of Integers as a Term}
 
-A term can be an array of integers. Its C type is then \code{INT\_ARRAY}. Arrays
+A term can be an array of integers. Its C type in the Term structure is then \code{INT\_ARRAY}. Arrays
 of integers are read by the various programs of the \COPRSDE{} using the
 \samp{[} and a matching \samp{]} square bracket. In this case, the type of the
 first element determine the type of the whole array. If it is an
@@ -1684,7 +1686,7 @@ Example of array of integers: \code{[ 1 2 4 5 0 3 4]}, \code{[1 3 4.5 5 7]}
 \node{Array of Floats as a Term}
 \cpindex{Array of Floats as a Term}
 
-A term can be an array of floats. Its C type is then \code{FLOAT\_ARRAY}. Arrays
+A term can be an array of floats. Its C type in the Term structure is then \code{FLOAT\_ARRAY}. Arrays
 of floats are read by the various programs of the \COPRSDE{} using the \samp{[}
 and a matching \samp{]} square bracket. In this case, the type of the first
 element determines the type of the whole array. If it is an \code{INTEGER}, then
@@ -1704,8 +1706,8 @@ Example of array of floats: \code{[ 1.5 4.2 4.0 5.888 0.0 3e4 3.1415]},
 \node{C List as a Term}
 \cpindex{C List as a Term}
 
-A term can be a C list. Its C type is then \code{OPRS\_LIST}. C lists are only
-used when you want to return more then one value from an action, i.e. for a
+A term can be a C list. Its C type in the Term structure is then \code{OPRS\_LIST}. C lists are only
+used when you want to return more then one value from an action, i.e.\ for a
 multi variable special actions (\pxref{Multi Variable Special Action}). These
 C lists are always lists of \code{Term *}. These lists look like composed terms,
 or Lisp Lists, but they are not. They are not readable, although they are, to
@@ -1718,8 +1720,8 @@ special action: \code{(1 2 3 nil foo (foo "asd" bar))}.
 \node{Other Objects as Term}
 \cpindex{Other Objects as Term}
 
-There are other object which can be terms: \code{TT\_FACT}, \code{TT\_GOAL},
-\code{TT\_INTENTION}, \code{TT\_OP\_INSTANCE}.  These objects are manipulated by
+There are other objects which can be terms: \code{TT\_FACT}, \code{TT\_GOAL},
+\code{TT\_INTENTION}, \code{TT\_OP\_INSTANCE}. These objects are manipulated by
 the user but cannot be read from the parser as is.
 
 \section{Special Symbols}
@@ -1731,9 +1733,9 @@ useful to the user to write evaluable functions (\pxref{Evaluable Functions})
 or actions (\pxref{Using Action OPs}). They are defined in the file  \file{oprs-type-pub.h}.
 
 \begin{verbatim}
-extern Symbol lisp_t_sym;       /* The lisp t symbol. */
+extern Symbol lisp_t_sym;       /* The Lisp t symbol. */
 extern Symbol wait_sym;         /* The :wait symbol. */
-extern Symbol nil_sym;          /* The lisp nil symbol */
+extern Symbol nil_sym;          /* The Lisp nil symbol */
 \end{verbatim}
 
 \begin{typevr}{Special Symbol}{extern Symbol}{lisp\_t\_sym}
@@ -1864,7 +1866,7 @@ Example of gtexpression:\\*
 \code{(? (> \$x 5))},\\*
 \code{(test (! (position valve close)) (\# (< (pressure-of tk1) 320)))}.
 
-Note that not all gtexpressions have a defined associated semantic. We
+Note that not all gtexpressions have a defined associated semantics. We
 shall see examples of such gtexpression at the end of this section.
 
 
@@ -1876,7 +1878,7 @@ shall see examples of such gtexpression at the end of this section.
 The achieve operator is represented with the symbol: \samp{!}, or with the
 symbol \code{achieve} (in upercase or lowercase).
 
-The semantic of this gexpression is to try anything ``possible'' to make the
+The semantics of this gexpression is to try anything ``possible'' to make the
 gexpression true. Either it is already true in the database, if not and if any
 OP is applicable to satisfy this goal, it will be attempted. If the OP executes
 successfully, then the goal is achieved.
@@ -1886,7 +1888,7 @@ which the position of the valve is closed at the end. However, the kernel is
 unable to handle goals such as: \code{(\& (! (position valve close)) (!
 (pressure tk1 200)))}, because it does not know how to handle this type of
 conjunction. However, a goal such as \code{(! (\& (position valve close)
-(pressure tk1 200)))} may be achieve if \code{(\& (position valve close)
+(pressure tk1 200)))} may be achieved if \code{(\& (position valve close)
 (pressure tk1 200))} is already true in the database. Last, \code{(\& (!
 (position valve close)) (\# (pressure tk1 200)))} is allowed.
 
@@ -1897,7 +1899,7 @@ conjunction. However, a goal such as \code{(! (\& (position valve close)
 The test operator is represented with the symbol: \samp{?}, or with the
 symbol \code{test} (in upercase or lowercase).
 
-The semantic of this gtexpression is to check if the gexpression is
+The semantics of this gtexpression is to check if the gexpression is
 currently true. Either it is already true in the database, or if any OP is
 applicable to satisfy this goal, it will be attempted. If it is not true,
 or cannot be achieved by the execution of a OP, it is considered as
@@ -1925,7 +1927,7 @@ execution (by putting each goal on a separate thread).
 The wait operator is represented with the symbol: \samp{\^{}}, or with the
 symbol \code{wait} (in upercase or lowercase).
 
-The semantic of this gtexpression is to wait until the gexpression becomes
+The semantics of this gtexpression is to wait until the gexpression becomes
 true. Either it is already true in the database, or the kernel waits until it
 becomes true by putting the intention or task, from which this goal comes from,
 to sleep.  Note that this goal never fails\dots{} The intention or thread
@@ -1934,7 +1936,7 @@ sleeps until it becomes true, so at worst, the intention sleeps forever.
 Example: \code{(\^{} (position valve close))} will always return true. It is just
 a matter of when it will return. The kernel will suspend the thread executing
 this goal until the condition is satisfied, so it can never fail (but it can
-remain suspended for ever too). Waiting goal are often combined to make
+remain suspended for ever too). Waiting goals are often combined to make
 watchdog, such as: \code{(\^{} (|| (position valve close)) (elapsed-time (time)
 10))}, which will wait until either the valve is closed or 10 seconds elapsed.
 Note that there are no way to know which condition satisfied, but usually it is
@@ -1948,8 +1950,8 @@ true or not.
 The preserve operator is represented with the symbol: \samp{\#}, or with the
 symbol \code{preserve} (in upercase or lowercase).
 
-The semantic of this operator is to preserve the truth of the
-gexpression. This is a passive preservation, i.e. when the gexpression
+The semantics of this operator is to preserve the truth of the
+gexpression. This is a passive preservation, i.e.\ when the gexpression
 becomes false, automatically, this goal and presumably any conjunction of
 goals it is part of is considered as failed.
 
@@ -1969,8 +1971,8 @@ accordingly.
 The active preserve operator is represented with the symbol: \samp{\%}, or with the
 symbol \code{maintain} (in upercase or lowercase).
 
-The semantic of this operator is to actively preserve the truth of the
-gexpression. This is an active preservation, i.e. when the gexpression
+The semantics of this operator is to actively preserve the truth of the
+gexpression. This is an active preservation, i.e.\ when the gexpression
 becomes false, the system tries automatically to re-achieve it by
 invoking a OP which has this goal in its invocation part. When the condition is
 failed, the execution thread in which this goal appears is stopped and the
@@ -2082,7 +2084,7 @@ the sense that they are just a piece of information which is concluded in the
 database and which may start some procedures. However, if a fact is a message,
 then its data structure stores the module from which it originated.
 Nevertheless, for any fact or message, the success or failure of the procedures
-applicable because of them is of no interest to anybody (i.e. any
+applicable because of them is of no interest to anybody (i.e.\ any
 OP or intention)\dots{}
 
 Facts cannot contain any unbound variable. They would be meaningless as
@@ -2116,16 +2118,16 @@ Although it is technically possible, it is contrary to \OPRS{} philosophy to
 post a goal in a kernel. Goals should only come from the execution of
 procedures. An agent usually does not directly give a goal to another agent. It
 merely passes a message containing a request to achieve a goal, in which case a
-message, i.e. a fact, is passed to the \CPK{}.  Moreover, if you directly post
+message, i.e.\ a fact, is passed to the \CPK{}.  Moreover, if you directly post
 a goal from the ``keyboard'' you may lose it, if the applicable OP selection
 mechanism does retain its OP Instance for execution (if the goal is posted by
 the kernel, it will be automatically reposted until failure or success).
 
-\chapter{OP Syntax and Semantic}
-\node{OP Syntax and Semantic}
-\cpindex{OP Syntax and Semantic}
+\chapter{OP Syntax and Semantics}
+\node{OP Syntax and Semantics}
+\cpindex{OP Syntax and Semantics}
 \cpindex{OP Syntax}
-\cpindex{OP Semantic}
+\cpindex{OP Semantics}
 
 OPs must follow a very rigorous syntax. The \OPE{} and the \CPK{} will
 enforce this syntax as much as possible. As a matter of fact, any OP
@@ -2149,7 +2151,7 @@ parts must be true, but in a different way.
 The applicability fields are the field controlling the applicability of the OP.
 They are: the invocation part, the context part, and the setting part. For a OP
 to be applicable, these three fields must be true in the same binding
-environment. However, each field has a particular semantic, which should be
+environment. However, each field has a particular semantics, which should be
 respected to take full advantage of \COPRS{} OP triggering mechanism. The
 invocation part is a logical expression describing the \dfn{events} that must
 occur for the OP to be executed. Usually, these consist of some \dfn{changes}
@@ -2174,7 +2176,7 @@ The Invocation part is a General Meta Expression (\pxref{General Meta
 Expressions}). It specifies which facts, goals or any combination of both can
 trigger the applicability of a OP. Keep in mind that only the facts
 and goals specified in the invocation part can trigger the OP applicability. In
-other words, a OP is considered relevant, i.e.  considered for applicability,
+other words, a OP is considered relevant, i.e.\  considered for applicability,
 only if the system has a new goal or a new fact which is specified in
 the invocation part of this OP. Note that for this reason there is no point at
 all in putting an evaluable predicate in the invocation part of a OP.
@@ -2480,7 +2482,7 @@ The newly allowed form for special action is thus: \\*
 The old form remains valid. The behavior is exactly the same, except that
 the action is expected to return a list of terms. Each term will be
 unified against the corresponding term/variable in the list. If the number
-of terms differ (i.e. there are two variables in the list and the action
+of terms differ (i.e.\ there are two variables in the list and the action
 returns three terms), or if one of the unification fails, the action
 fails. Note that if the action returns the term symbol \code{:WAIT}, the
 action will be called again later.
@@ -2544,7 +2546,7 @@ grab or edit the text OP in this file, but it is more difficult, and it is at
 your own risk.
 
 The body field of a text OP cannot be empty... it must at least contain the
-empty instruction list, i.e. \code{()}.
+empty instruction list, i.e.\ \code{()}.
 
 Actions OP created under the OP Editor are by default considered as graphic OP.
 
@@ -3273,7 +3275,7 @@ gives the following result:
 \node{Basic Events}
 \cpindex{Basic Events}
 
-Basic events are used to handle facts which are ``transients'', i.e. facts
+Basic events are used to handle facts which are ``transients'', i.e.\ facts
 which must be noticed by the \CPK{} but should not be kept in the
 database. Keep in mind that any fact or message which is received by a
 \CPK{} is stored in the database by default.
@@ -3352,7 +3354,7 @@ relevance of this OP as any predicate of the Invocation Part should.
 \node{Predefined Evaluable Predicates}
 \cpindex{Predefined Evaluable Predicates}
 
-All the evaluable predicates return a \code{PBoolean}, i.e. \code{TRUE} or
+All the evaluable predicates return a \code{PBoolean}, i.e.\ \code{TRUE} or
 \code{FALSE} (\pxref{Important Constants}), not a Term. Besides, all the
 evaluable predicates take a \code{TermList} as an argument. Whenever it is
 possible, we will specify the number of arguments and the type of the
@@ -3631,7 +3633,7 @@ can only be satisfied by OP execution. Keep in mind that whenever the system
 posts a goal, it will check if this goal is already satisfied in the database.
 There exists a number of predicates that can only be satisfied by OP execution
 (example \code{print}, \code{send-message},
-\code{execute-command}, \code{read-inside}, etc), for them, there is no need to
+\code{execute-command}, \code{read-inside}, etc.), for them, there is no need to
 check if they are satisfied or not in the database, so they should be declared
 as OP predicate. 
 
@@ -3665,7 +3667,7 @@ unlikely).
 \node{Predefined Evaluable Functions}
 \cpindex{Predefined Evaluable Functions}
 
-All the evaluable functions return a \code{Term *}, i.e. a pointer to a
+All the evaluable functions return a \code{Term *}, i.e.\ a pointer to a
 \code{Term} structure (\pxref{Data Structures and Types Used}). However, this
 term can contain different types of objects (\pxref{Terms}), and this is left
 to the user to decide which type he needs to return. In the following
@@ -3966,7 +3968,7 @@ code used by the \COPRS{} process since it started (\code{CLK\_TCK}, defined in
 
 \begin{typeefa}{Evaluable Function}{INTEGER} {SYS-CLOCK-TICK} {()}
 returns an \code{INTEGER} which is the number of machine TICK spent in system
-code (i.e. system calls) used by the \COPRS{} process since it started
+code (i.e.\ system calls) used by the \COPRS{} process since it started
 (\code{CLK\_TCK}, defined in \file{<time.h>}, is the number of TICK per seconds).
 \end{typeefa}
 
@@ -3983,10 +3985,10 @@ defined in \file{<time.h>}, is the number of TICK per seconds).
 The following functions are defined for LISP like objects (for more information
 \pxref{Lisp and Lisp-like Functions}). The functions \code{car} and \code{cdr}
 are  the basic access functions in LISP. The \code{car} returns the first
-element of a list, and the \code{cdr} returns the rest of the list (i.e. the
+element of a list, and the \code{cdr} returns the rest of the list (i.e.\ the
 list without the first element).
 
-For example in lisp, if the list \code{l} is equal to \code{(a b c)}, then
+For example in Lisp, if the list \code{l} is equal to \code{(a b c)}, then
 \code{(car l)} return \code{a}, and \code{(cdr l)} returns \code{(b c)}. There
 are then some convenience functions which are provided. They are built following
 the following scheme: \code{c[a|d]+r}. For example \code{(caddr l)}, is
@@ -4150,7 +4152,7 @@ is that the elements will be evaluated.
 \cpindex{Miscellaneous Evaluable Functions}
 
 \begin{typeefa}{Evaluable Function}{ATOM}{gensym}{()}
-is the traditional gensym function (which create a new unique symbol in lisp) .
+is the traditional gensym function (which create a new unique symbol in Lisp) .
 It is defined for no argument. It returns a new unique \code{ATOM}.
 \end{typeefa}
 
@@ -4191,7 +4193,7 @@ this subject.
 
 \begin{typeefa}{Evaluable Function}{LISP\_LIST of LISP\_LIST}{n-all}{(LENV GEXPRESSION)}
 is the n-all function. It is defined for 2 terms, a \code{LISP\_LIST} (a
-lisp list of
+Lisp list of
 \code{VARIABLE}s) and a GEXPRESSION. It returns a \code{LISP\_LIST} of
 \code{LISP\_LIST} (in the same order as they are defined in LENV) containing all
 the possible bindings of \code{LENV} for which the GEXPRESSION is true in the
@@ -4204,7 +4206,7 @@ containing the bindings of the \code{LENV} (example: if we have \code{(foo 1
 
 \begin{typeefa}{Evaluable Function}{LISP\_LIST of LISP\_LIST}{n-all-list}{(LENV GEXPRESSION)}
 is the n-all-list function. It is defined for 2 terms, a \code{LISP\_LIST}
-(a lisp list of
+(a Lisp list of
 \code{VARIABLE}) and a GEXPRESSION. It returns a \code{LISP\_LIST} of
 \code{LISP\_LIST} (in the same order as they are defined in \code{LENV}) each
 containing the bindings of the variable in \code{LENV} for which the
@@ -4363,7 +4365,7 @@ to some events.
 
 Each task or intention can be visualized under the \XPK{}, if you have selected
 the intention graphic trace. It is represented as a box, containing the name of
-the top OP in this task (i.e. the one which was intended in this new task or
+the top OP in this task (i.e.\ the one which was intended in this new task or
 intention) and the goal or the fact which is ``responsible'', or which
 triggered this OP, and lead to this intention.
 
@@ -4379,7 +4381,7 @@ executed before all the other ones.  Moreover, the other tasks will resume
 their activity only when the new root has finished. For example, Figure
 \ref{int-graph} shows an example of an intention graph. Each intention is
 represented with a box which specifies the name of the procedure, as well as
-the fact or the goal responsible for its activity (i.e. the goal or the fact
+the fact or the goal responsible for its activity (i.e.\ the goal or the fact
 which lead to its execution). In this particular example, there are six tasks
 represented. The root of the graph is executing a meta level OP and is placed
 in front of another meta level OP which execution has been interrupted. These 2
@@ -4388,7 +4390,7 @@ execution as soon as the two meta level OP are done.
 
 Note that you can have more than one root in the intention graph. In this
 case, the system can utilize a user-defined mechanism to decide which
-intention should be the current intention, i.e. the one to be executed
+intention should be the current intention, i.e.\ the one to be executed
 (see \pxref{Intention Graph Sorting Predicate}). You can use priority
 (there is in fact a priority slot in each task), or date of creation, or
 whatever you think is the best heuristic to execute this intention.
@@ -4438,7 +4440,7 @@ operating system.
 Multi-threads execution is linked to parallel execution in OPs. As
 described earlier, it is a very versatile mechanism which can be used to
 parallelized operations in a procedure. However, it is usually used for
-operations and actions performed in the same task, intention, i.e. working on a
+operations and actions performed in the same task, intention, i.e.\ working on a
 particular goal, or responding to a particular event. For example, Figure
 \ref{moving} shows a OP with two threads which are both needed to perform the
 goal specified in the invocation part. There are a number of OPRS runtime
@@ -4453,7 +4455,7 @@ The OPRS main loop consists of one inner meta level reasoning loop
 inside the main loop. The inner loop determines
 the successive Sets Of Applicable OPs (SOAK), within the context of
 concluded beliefs on the previous SOAK. The inner loop stops when no
-applicable OPs are found, i.e., when the SOAK is empty.
+applicable OPs are found, i.e.\  when the SOAK is empty.
 
 The code of the OPRS main loop is provided below to show how meta level OPs are 
 executed.
@@ -4487,7 +4489,7 @@ while (TRUE) {        /* Loop for ever. */
 }
 \end{verbatim}
 
-When Ops are not being executed, the main loop is idle. However, the
+When OPs are not being executed, the main loop is idle. However, the
 kernel monitors new events (coming from the \MPA{} or from the
 \OPRSS{}). In addition, one or more OPs might be sleeping and waiting for particular 
 conditions to become true. The \OPRSS{} kernel will wake up
@@ -4495,20 +4497,20 @@ every \code{main\_loop\_pool\_sec + main\_loop\_pool\_usec} (seconds and
 milliseconds) to check if conditions have become true, and awake the appropriate OP.
 
 Every \code{main\_loop\_pool\_sec +
-main\_loop\_pool\_usec}, the conditions which may have change "by themselves",
+main\_loop\_pool\_usec}, the conditions which may have change ``by themselves'',
 like evaluable predicates depending on external conditions are checked. For
 example, if you have written an evaluable predicate which tells if yes or no a
 particlar tank is full or not, a waiting condition on this predicate will be at
 least evaluated every \code{main\_loop\_pool\_sec +main\_loop\_pool\_usec}. As a
-consequence, putting a two small value (such as 0 seconds + 10 milliseconds)
+consequence, putting a too small value (such as 0 seconds + 10 milliseconds)
 will put a higher burden on the kernel execution.
 
 \section{OP Applicability}
 \node{OP Applicability}
 \cpindex{OP Applicability}
 
-The triggering mechanism, i.e., the mechanism which finds the currently
-applicable OPs, has been optimized for dynamic environments. The syntax and semantics 
+The triggering mechanism, i.e.\  the mechanism which finds the currently
+applicable OPs, has been optimized for dynamic environments. The syntax and semantics
 of OPs require the Invocation Part to specify a goal or fact condition that will trigger the 
 execution of the OP. In other words, only the occurrence of one of
 these goals or facts may render this OP applicable. When the procedures are
@@ -4526,7 +4528,7 @@ subset of the set of OPs.
 \node{Intending OP}
 \cpindex{Intending OP}
 
-The action of intending a OP instance, i.e. deciding to execute it is a very
+The action of intending a OP instance, i.e.\ deciding to execute it is a very
 important step in \CXPK{} main loop. No OP is executed before it is intended.
 Moreover, as seen above, there is only one way to intend a OP: when
 the current set of applicable OPs is empty, it intends all the OPs in the
@@ -4606,7 +4608,7 @@ is defined for 1 term. The format of the term passed as argument is somewhat
 awkward and is here for upward compatibility with the old Lisp version of
 \OPRS{}. The Term should look like this: \\*
 \code{(FORMAT NIL "The Factorial of ~a is ~a." \$X \$N)))}\\*
-i.e. a list containing the word \code{FORMAT}, then the symbol
+i.e.\ a list containing the word \code{FORMAT}, then the symbol
 \code{NIL}, then a string, and finally a number of variables or terms.
 The \samp{~a} in the string will be replaced at print time with the value of
 the corresponding terms or variables.
@@ -4617,7 +4619,7 @@ is defined for 1 term. The format of the term passed as argument is somewhat
 awkward but similar to the C format directive. 
 The Term should look like this: \\*
 \code{(FORMAT "The Factorial of  \%d is \%d." \$X \$N)))}\\*
-i.e. a list containing the word \code{FORMAT}, then a string, and finally a
+i.e.\ a list containing the word \code{FORMAT}, then a string, and finally a
 number of variables or terms.  The \samp{\%d} in the string will be replaced at
 print time with the value of the corresponding terms or variables. The
 following directives are supported: \samp{\%g}, \samp{\%d}, \samp{\%f} and
@@ -4795,7 +4797,7 @@ intended  with the priority \var{priority}, after all the intentions in
 \cpindex{Intentions Manipulation Actions}
 
 \begin{typeefa}{Action}{ATOM}{tag-current-intention}{ATOM \var{tag}}
-will tag the current intention, i.e. the intention in which it is executed, with
+will tag the current intention, i.e.\ the intention in which it is executed, with
 the \code{ATOM} passed in argument.
 \end{typeefa}
 
@@ -4907,13 +4909,13 @@ is defined for no Term, it will end the current critical section
 \end{typeefa}
 
 \begin{typeefa}{Action}{ATOM}{fail}{()}
-Does nothing, just fail, i.e. return the \code{nil} symbol. A OP (called
+Does nothing, just fail, i.e.\ return the \code{nil} symbol. A OP (called
 \code{|Fail|}) is defined in \file{new-default.opf} and call this action. This
 action can be useful when you need to explicitly fail a branch of execution.
 \end{typeefa}
 
 \begin{typeefa}{Action}{ATOM}{succeed}{()}
-Does nothing, just succeed, i.e. return the \code{T} symbol. A OP (called
+Does nothing, just succeed, i.e.\ return the \code{T} symbol. A OP (called
 \code{|Succeed|}) is defined in \file{new-default.opf} and call this action. This
 action can be useful when you need an extra edge which does nothing between two nodes.
 \end{typeefa}
@@ -5006,7 +5008,7 @@ their name.
 When a OP is executed, the execution starts at the \code{START} node.
 Then it proceeds from one node to an adjacent one if the goal labelling
 the edge connecting the two nodes can be achieved. This goes until the
-control reach an end node, i.e. a node without outgoing edges. If there
+control reach an end node, i.e.\ a node without outgoing edges. If there
 are more than one edge outgoing from the current node, the system will
 try them one after the other until it findd one it can achieve. Note
 however, that there are no a priori predefined path... The system will
@@ -5142,7 +5144,7 @@ OP Instance has not been already intended before intending it. This is to make
 sure, for example, that you do not intend again from a meta level OP, a OP
 instance already intended by the main loop or another meta level OP. Moreover,
 the kernel always check that a OP Instance intended for a particular goal is
-intended in the proper place, i.e. it is not intended if there is already
+intended in the proper place, i.e.\ it is not intended if there is already
 another OP instance which has been intended for the same goal. Note however,
 that it may be intended later if it is still applicable and if the other one
 has failed.
@@ -5340,7 +5342,7 @@ explain when they can be used and for which purpose.
 Properties in OPs are basically information which is linked to the OPs and
 their execution environment. Keep in mind that the value of a property can be
 any term with evaluable functions and variables. As a result, the value of a
-property is a run time value (i.e. the value of the property is the value
+property is a run time value (i.e.\ the value of the property is the value
 resulting of its evaluation at the time it is retrieved), and can heavily depend
 on the moment at which it is evaluated.
 
@@ -5414,7 +5416,7 @@ advised to use these functions.
 \begin{typefn}{Kernel User Function}{void}{report\_fatal\_external\_error} {(char *error\_message)}
 is the function used to report fatal errors. This function does not return
 (because the error is considered to be fatal, and terefore the execution cannot
-proceed from this point). In other words, it will "jump" to a safe place and
+proceed from this point). In other words, it will ``jump'' to a safe place and
 try to recover from the error.  According to the current state in which the
 error occurs the \CPK{} will take some action to protect the operations still
 valid and running in the kernel. Nevertheless, most of the time, such an error
@@ -5678,7 +5680,7 @@ poor performance.
 
 If it is set to \code{on}, which is its default value, any evaluable function
 would by default be evaluated at goal posting time, unless it is in the quote
-function. To keep the same semantic, the goal \code{(\^{} (>= (time) (+ (current
+function. To keep the same semantics, the goal \code{(\^{} (>= (time) (+ (current
 (time)) 6)))} would then become: \code{(\^{} (>= (quote (time)) (+ (time) 6)))}.
 
 \section{Critical Section}
@@ -5695,7 +5697,7 @@ parsed (they are kept in the input buffer though), and meta level facts are not
 concluded. However, facts and goals posted by the current thread are taken into
 account.
 
-A number of situations will break the critical section, i.e. they will force the
+A number of situations will break the critical section, i.e.\ they will force the
 kernel to exit the critical section state. This will happen if the thread in
 critical section joins (and it is not the last thread to join). Similarly, if
 you perform active maintenance in a critical section, the system will break it.

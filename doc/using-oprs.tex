@@ -86,7 +86,7 @@ To understand this chapter, the reader is supposed to have some common
 knowledge about the following subject: Unix, X11, X server, Motif, Xt. 
 
 Assuming \COPRSDE{} has been properly installed at your site, and assuming
-you have the \COPRSDE{} in ``your path'' (i.e. Unix will find the command
+you have the \COPRSDE{} in ``your path'' (i.e.\ Unix will find the command
 if you invoke them), then you can now start to use \COPRS{}.
 
 
@@ -331,7 +331,7 @@ wrong way to do it?
 The format used to represent facts in the database is simple: \\*
 \code{(predicate-name <arguments>*)}.
 
-The semantic associated with the predicate name and the arguments (and
+The semantics associated with the predicate name and the arguments (and
 the order of the arguments) is yours, and should be consistent through
 the whole database and application.
 
@@ -363,7 +363,7 @@ Calculus''.
 
 The last consideration to take into account relate to the goal
 representation in \COPRS{}. Do not forget that goals are built upon facts.
-According to the temporal operator used, they modify the semantic of the
+According to the temporal operator used, they modify the semantics of the
 fact they are qualifying. As a consequence, it is important that the
 facts underlying the goal representation be consistent with the goal
 representation.
@@ -385,12 +385,12 @@ database...
 Now that the notion of predicate is clear. Remains the problem of
 deciding which predicate should be used and for what.
 
-First, the semantic of the predicates is the one the user wants to give
+First, the semantics of the predicates is the one the user wants to give
 to the predicate. If you want to use the word \code{position} to
 represent things we have nothing to do with position, you can... This will
 just make your OP unreadable...
 
-Similarly, you can overload the semantic of a predicate. The predicate
+Similarly, you can overload the semantics of a predicate. The predicate
 \code{position} can be used in an application to represent the position
 of various objects, and even different types of objects: switches,
 valves, lights, etc. An another alternative is to use predicate such as
@@ -408,7 +408,7 @@ example when one looks for all the open valve of the system: \\*
 
 This is an easy question to answer... In general, most if not all
 predicates should be declared as closed world predicates. Why? Because
-this is usually the way we tend to think, i.e. if something is not know
+this is usually the way we tend to think, i.e.\ if something is not know
 to be true, then its contrary is usually true. To use the example given
 in section \nxref{Closed World Predicates}, if we do not have any
 information about a direct flight between Toulouse an San Francisco, most
@@ -535,7 +535,7 @@ check, such as alarm, or change of values, etc.
 Goal invoked OPs are written to achieve a particular goal or objective.
 Their success is equivalent to achieving the goal which invoked them.
 
-These OPs are usually implementing a goal directed behavior, i.e. the execution
+These OPs are usually implementing a goal directed behavior, i.e.\ the execution
 of these OP is supposed to achieve the goal for which they are applicable.
 
 \subsection{Predefined OPs}
@@ -664,7 +664,7 @@ then you will need to define some action.
 Keep in mind that if your application is organized in such a way that
 there is module which perform the real action on the world, and that this
 module is connected to the \MPA{}, then most if not all the actions are
-done using the \MPA{} (i.e. by sending a message to the module in charge
+done using the \MPA{} (i.e.\ by sending a message to the module in charge
 of performing the action (a simulator or an interface to the real system).
 
 Nevertheless, you may need actions for one the following reasons:
@@ -674,7 +674,7 @@ Nevertheless, you may need actions for one the following reasons:
 \item to associate a specific functions to a OP. Thus enabling the action to
 succeed or fail and make the corresponding OP returning the corresponding
 result. Many users tend to forget that evaluable functions (as presented
-above) are evaluated at posting time, i.e. when the goal in which their
+above) are evaluated at posting time, i.e.\ when the goal in which their
 form is contained is posted. But their evaluation is always meaningful and
 does not bear any success or failure. For example, in \code{(! (foo (+ 3
 4)))}, the   \code{(+ 3 4)} will be evaluated right away (unless you have
@@ -985,7 +985,7 @@ The actions the operator can take are available from the Command board (the
 bottom blue panel).
 
 The operator does not see the bottom panel of the demo window which displays
-the real world (trucks showing up, filling up, etc). He can only rely on the
+the real world (trucks showing up, filling up, etc.). He can only rely on the
 Control board to analyze the current situation, and on the Command board to
 control the operations.
 
@@ -1016,7 +1016,7 @@ CLOSE). If this condition arises, the talkback which disagrees with the switch
 is considered as failed.
 
 \item Talkback 1 and Talkback 2 show a barber pole for more than x seconds
-(i.e., there are at least x seconds during which both talkbacks show
+(i.e.\  there are at least x seconds during which both talkbacks show
 barber pole). The valve is jammed, emergency stop.
 
 \item Talkback 1 or Talkback 2 show a barber pole for more than y seconds.

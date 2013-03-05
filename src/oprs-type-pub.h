@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * oprs-type-pub.h -- Public OPRS type.
  * 
- * Copyright (c) 1991-2013 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,7 +51,9 @@ typedef enum {INTEGER, LONG_LONG, TT_FLOAT, STRING, TT_ATOM, EXPRESSION, VARIABL
 	      LISP_LIST, INT_ARRAY, FLOAT_ARRAY, C_LIST, TT_FACT, TT_GOAL, 
 	      TT_INTENTION, TT_OP_INSTANCE, U_POINTER, U_MEMORY} Term_Type;
 
-/* These are here for historical reasons, because Windows 95 had these defined... */
+/* These are here for historical reasons, because Windows 95 had these defined...
+   I still keep them as the pu library uses them.
+ */
 #define ATOM TT_ATOM
 #define FLOAT TT_FLOAT
 

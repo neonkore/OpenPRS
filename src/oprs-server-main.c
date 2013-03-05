@@ -403,6 +403,8 @@ char *oprs_server_completion(char *text_arg, int state)
      static char *name;
      char *text = strip_start_white(text_arg);
      static Command com;
+
+     rl_completion_append_character ='\0';
      
      if (!state) {
 	  list_index = 0;
@@ -473,7 +475,6 @@ void initialize_rl(void)
 {
      rl_basic_word_break_characters = "";
      rl_readline_name = "oprs";
-     rl_completion_append_character ='\0';
      rl_completion_entry_function = (rl_compentry_func_t *)oprs_server_completion;
 }
 #endif

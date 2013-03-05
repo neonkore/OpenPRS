@@ -319,13 +319,13 @@ ef}, \code{list action} and \code{list all}.
 
 \item Wrote a \code{show intention} command (also available as a menu item)
 which gives an extensive status of the intentions and their component (thread,
-status, waiting condition, joining, etc).
+status, waiting condition, joining, etc.).
 
 \item Added code to execute all the root of the intention graph in //. This
 is controlled with a flag (\code{set parallel intention on/off}) and in the
 option menu. Default value of the flag is on.
 
-\item Added op predicate, i.e. predicate which can only be satisfied by
+\item Added op predicate, i.e.\ predicate which can only be satisfied by
 OP not in the database.
 
 \item Now the \MPA{} is started automatically by the application which want to
@@ -427,7 +427,7 @@ unitialization for example).
 \item Added a memq\_ep evaluable predicate MEMQ.
 
 \item \code{start\_kernel\_user\_hook} is now executed before the
-initial\_command (i.e. load with the -x).
+initial\_command (i.e.\ load with the -x).
 
 \item The name of the opfile appears in all op lists
 presented to the user.
@@ -706,7 +706,7 @@ exist some differences which are presented in this chapter.
 
 The VxWorks version of \COPRS{} has a lot of particulariries. Although there are
 no main programs under VxWorks, we distinguish between task spawnable code and
-library code (i.e. which may be used by more than one processes). Files with a
+library code (i.e.\ which may be used by more than one processes). Files with a
 \file{.o} suffix are considered as library and can be used by more than one
 processes. Files without any suffix usually contain a \code{main} which can be
 called with \code{taskSpawn} or from the shell.
@@ -886,7 +886,7 @@ Most commands are available in both kernel (the \XPK{} and the CPK{}). The
 following tables will allow the user to find out which command correspond to
 which menu and vice verca. Note that some commands are not available in both
 interface. This is the case for most declaration commands (\code{declare be},
-\code{declare ff}, etc) which one usually put in an include file. In any case, you
+\code{declare ff}, etc.) which one usually put in an include file. In any case, you
 can always transmit a command from the \OPRSS{} (providing the kernel has
 been properly connected to the \OPRSS{} upon startup).
 
@@ -1426,7 +1426,7 @@ variable modification is protected by mutex semaphores.
 ...)}  Build and return a "use once only" TermList containing \var{nb\_arg}
 elements built with the subsequent paire \code{TermType}, \code {Term *} in the
 argument list. See the example below. All the element are duplicated,
-i.e. strings, symbols are appropriately copied, except for those produce with
+i.e.\ strings, symbols are appropriately copied, except for those produce with
 \code{make\_external\_term\_comp} and \code{make\_external\_lisp\_list}. You should
 therefore appropriately free the objects passed to this function.
 \end{typefn}
@@ -1537,7 +1537,7 @@ prints the \var{opi} in \var{file}.
 
 \begin{typefn}{Kernel Function}{Op\_Structure *}{op\_instance\_op}{(Op\_Instance
 *\var{opi})}
-returns the Op\_Structure pointed by this \var{opi}, i.e. the OP from
+returns the Op\_Structure pointed by this \var{opi}, i.e.\ the OP from
 which this OP\_instance is an instance...
 \end{typefn}
 
@@ -1599,7 +1599,7 @@ objects handled by the kernel itself (mostly terms and their components) must
 be allocated/freed using the following macros. Objects pointed by USER\_POINTER
 can be allocated/freed as the user want. In any situation, never mix the
 different allocation mechanism (in particular on systems where the standard
-memory allocator is used: VxWorks, Purified version, etc). Mixing them will
+memory allocator is used: VxWorks, Purified version, etc.). Mixing them will
 lead to allocation/free error.
 
 \begin{typefn}{Kernel Macro}{void *}{OPRS\_MALLOC} {(size\_t \var{nBytes})}
@@ -2051,7 +2051,7 @@ It returns \code{TRUE} if the tail of the \code{OPRS\_LIST} is the specified
 The \i{C} language provides the capability to pass functions as parameters to
 other functions. This is utilized by \i{listPack} to allow users to write list
 processing functions. Instead of having the user walk through each
-\code{OPRS\_LIST} (i.e. with get\_list\_pos()) and pass each returned element to
+\code{OPRS\_LIST} (i.e.\ with get\_list\_pos()) and pass each returned element to
 some function, the function is passed to \i{listPack} and calls the user
 function.
 
@@ -2070,7 +2070,7 @@ The user may have some functions like \code{(int) func( (OPRS\_NODE) ptr, OPRS\_
 \var{list})}. \code{for\_all\_list()} invokes \code{func()} for the user (as
 often as necessary), adds up the returned values, and returns the total value
 to the user. \code{(OPRS\_NODE \var{ptr})} is a pointer to whatever the user wishes
-to pass to the function (i.e. it is a free pointer with which the user may
+to pass to the function (i.e.\ it is a free pointer with which the user may
 play). There are two related forms of \code{for\_all\_list}:
 
 \begin{verbatim}
@@ -2149,7 +2149,7 @@ PFI \var{func})} This function sorts a \code{OPRS\_LIST} with more complicated
 criteria than can easily be specified by an integer tag variable. The user
 specified functions,
 \code{func( element\_a, element\_b )}, return boolean
-\code{TRUE} if they are ordered properly (i.e. element\_a precedes
+\code{TRUE} if they are ordered properly (i.e.\ element\_a precedes
 element\_b) and \code{FALSE} otherwise.
 \code{sort\_list\_func()} returns \code{(OPRS\_LIST \var{list})}
 for the user convenience.
@@ -2314,7 +2314,7 @@ for_list_loop( my_list, loop_temp, temp, struct foo *){
 
 There is no a priori reason for the \COPRSDE{} to provide Lisp like functions,
 or a Lisp environment. However, for upward compatibility reasons, and to allow
-the user familiar with Lisp lists manipulation functions to use lisp functions
+the user familiar with Lisp lists manipulation functions to use Lisp functions
 in the \CPK{}, we added various functions and data structures in the \COPRSDE{}.
 
 In this chapter, we describe the different functions and the mechanisms which
@@ -2332,7 +2332,7 @@ First of all, it is important to note that the overall syntax used in the
 \COPRSDE{} is ``Lisp like'', and looks like Lisp. In other words, the
 various expressions are currently given in a syntax which looks a lot like the
 Lisp one (parenthesis are certainly here to remind you of this). But it does
-not mean there is a lisp interpreter behind the reader. In fact, whatever is
+not mean there is a Lisp interpreter behind the reader. In fact, whatever is
 read from the keyboard, or from a file is fed in a parser (or a command
 interpreter) and transformed in internal structures (the details of which are
 of no interest to the reader). Most of these structures are accessed by the
@@ -2361,7 +2361,7 @@ objects are typed when read and the syntax defines exactly what can go where.
 For example, the expression \code{(foo (1 2 3 4))} is not legal because
 \code{1} is recognized as an integer and not as a symbol. However, one may want
 to manipulate integer lists, or lists of objects unknown to the reader a priori
-(probably internal structures such as OP-instances, intentions, goals, etc). In
+(probably internal structures such as OP-instances, intentions, goals, etc.). In
 this case, one uses \code{LISP\_LIST}s: because of their lack of type
 requirement, they can basically handle whatever terms.  When you build a list
 like in the expression: \code{(foo (. 1 2 3 4 .))} you actually build a
@@ -2378,14 +2378,14 @@ Keep in mind that the elements of a \code{LISP\_LIST} are \code{Terms}.
 
 The empty LISP OPRS\_LIST is defined as follow in the file \file{oprs-type-pub.h}.
 \begin{verbatim}
-extern const L_List l_nil;  /* The lisp nil constant. */
+extern const L_List l_nil;  /* The Lisp nil constant. */
 \end{verbatim}
 
 \section{Standard Lisp Functions}
 \node{Standard Lisp Functions}
 \cpindex{Standard Lisp Functions}
 
-Standard lisp functions are predefined evaluable functions
+Standard Lisp functions are predefined evaluable functions
 (\pxref{Predefined Evaluable Functions}) used to manipulate \code{LISP\_LIST}.
 
 \begin{typeefa}{Evaluable Function}{INTEGER}{length}{(LISP\_LIST)}
@@ -2614,7 +2614,7 @@ source license).  If your distribution contains more than one architecture
 distribution, the \file{bin} and \file{lib} directory as well as the
 \file{site.make} file (which contain machine dependant stuff) will be located
 in a \code{\$TARGET} directory (as defined by tcsh, i.e sun4 for SunOS 4.1.3,
-sparc for Solaris 2.x, VxWorks, etc).
+sparc for Solaris 2.x, VxWorks, etc.).
 
 According to your license, some of these directories may be present or not (if
 you do not have a source license, the \file{src} directory is not present).
@@ -2676,22 +2676,22 @@ symbols are missing: \\*
 \code{user\_time, user\_time\_note, user\_call\_from\_parser}.
 
 \item [\file{oprs-relocatable}] is a relocatable \CPK{},  you can use
-to build your own version of the \CPK{} (i.e. containing your own evaluable
+to build your own version of the \CPK{} (i.e.\ containing your own evaluable
 functions and predicates).
 
 \item [\file{xoprs-relocatable}] is a relocatable \XPK{},  you can use
-to build your own version of the \XPK{} (i.e. containing your own evaluable
+to build your own version of the \XPK{} (i.e.\ containing your own evaluable
 functions and predicates).
 
 \item [\file{c++-oprs-relocatable}] is a relocatable \CPK{},  you can use
-to build your own version of the \CPK{} (i.e. containing your own evaluable
+to build your own version of the \CPK{} (i.e.\ containing your own evaluable
 functions and predicates) with C++ code. In this relocatable the oprs
 \code{main} is called \code{oprs\_main} and takes the same argument as the real
 \code{main}: \code{argc}, \code{argv} and \code{envp}. \code{oprs\_main} does not
 return.
 
 \item [\file{ c++-xoprs-relocatable}] is a relocatable \XPK{}, you can use
-to build your own version of the \XPK{} (i.e. containing your own evaluable
+to build your own version of the \XPK{} (i.e.\ containing your own evaluable
 functions and predicates) with C++ code. In this relocatable the oprs
 \code{main} is called \code{oprs\_main} and takes the same argument as the real
 \code{main}: \code{argc}, \code{argv} and \code{envp}. \code{oprs\_main} does not
@@ -2788,10 +2788,10 @@ present in the source distribution.
 \end{description}
 
 \item [\file{data}] contains a number of data files examples (\file{.opf}
-files, \file{.inc} files, \file{.db} files, \file{.sym} files, etc)
+files, \file{.inc} files, \file{.db} files, \file{.sym} files, etc.)
 
 \item [\file{data/test}] contains a number of test files (\file{.opf}
-files, \file{.inc} files, \file{.db} files, \file{.sym} files, etc)
+files, \file{.inc} files, \file{.db} files, \file{.sym} files, etc.)
 
 \item [\file{app-defaults}] contains some application default files for the
 \XPK{} application (\file{XOprs}) and the \OPE{} application
@@ -2962,10 +2962,10 @@ endif
 The \%C (for customization) is supported in X11 since release 5. Basically, if
 you have, for an application \code{app\_name} with \code{app\_name\_class} as
 application class, a \code{app\_name\_class.customization: res-value} resource
-defined in your \file{.Xresources} or \file{.Xdefault} files (i.e. already
+defined in your \file{.Xresources} or \file{.Xdefault} files (i.e.\ already
 defined in the resource manager of your X server), then when you launch
 application \code{app-name}, it will look for an application default file with
-the name \%N\%C, i.e. \code{app\_name\_class} concatenated with \code{res-value}.
+the name \%N\%C, i.e.\ \code{app\_name\_class} concatenated with \code{res-value}.
 
 So if you define \code{XOprs.customization: -en}, it will load \file{XOprs-en},
 while if you define \code{XOprs.customization: -fr}, it will load
@@ -3417,7 +3417,7 @@ particular reasons to put some OPs and other together in the same file.
 However, it is usually a good practice to break down the set of OPs used in a
 particular application into various files.
 
-\item[OP Instance:] A OP instance is a OP which is ``applicable'', i.e. a OP
+\item[OP Instance:] A OP instance is a OP which is ``applicable'', i.e.\ a OP
 for which there is a binding environment currently satisfied. The same OP can
 have more than one instances applicable at the same time (in which case, the
 binding environments are different).
@@ -3441,7 +3441,7 @@ way.
 
 \item[Message:] A message is a fact sent to or receives by a \PK{} (in fact by
 any module of a \COPRS{} application). Messages are identical to facts, except
-that they come from outside, i.e. they are not concluded by the \PK{} itself
+that they come from outside, i.e.\ they are not concluded by the \PK{} itself
 but are received from outside.
 
 \item[Motif:] Motif is a commercial product sold by Open Software
@@ -3495,7 +3495,7 @@ level mechanism to build user interface. However, the X Intrinsics library does
 not preclude any particular look and feel, or any particular manipulated
 object. Moreover, the X Intrinsics by itself is not enough to build a user
 interface, one needs to associate a widget set (such as the Athena widget set,
-the Motif widget, or the Olit widget set, etc) \cite{Xt-manual}.
+the Motif widget, or the Olit widget set, etc.) \cite{Xt-manual}.
 
 \item[X11:] X11 is a popular window system available on many platforms
 \cite{Xlib-manual}.
