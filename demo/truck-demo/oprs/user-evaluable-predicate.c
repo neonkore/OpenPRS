@@ -1,8 +1,7 @@
-static char rcsid [] = "$Id$";
 /*                               -*- Mode: C -*- 
  * user-evaluable-predicate.c -- contains user defined evaluable predicate.
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,9 +35,11 @@ static char rcsid [] = "$Id$";
 #include "opaque-pub.h"
 #include "constant-pub.h"
 #include "oprs-type-pub.h"
-#include "user-ev-predicate.h"
+#include "ev-predicate_f-pub.h"
 
-int get_local_time();
+#include "user-external_f.h"
+
+#include "../src/local-time_f.h"
 
 PBoolean elapsed_time_td_ep(TermList tl)
 {
@@ -66,12 +67,12 @@ PBoolean foo_bar_ep(TermList tl)
      else return FALSE;
 }
 
-void declare_user_eval_pred(void)
+void declare_td_eval_pred(void)
 {
-     make_and_declare_eval_pred("FOO_BAR",(PFB)foo_bar_ep, 1, NULL);
-     make_and_declare_eval_pred("ELAPSED-TIME",elapsed_time_td_ep, 2, NULL);
+     make_and_declare_eval_pred("FOO_BAR",(PFB)foo_bar_ep, 1, FALSE);
+     make_and_declare_eval_pred("ELAPSED-TIME",elapsed_time_td_ep, 2, FALSE);
      /* French version... */
-     make_and_declare_eval_pred("TEMPS-ECOULE",elapsed_time_td_ep, 2, NULL);
+     make_and_declare_eval_pred("TEMPS-ECOULE",elapsed_time_td_ep, 2, FALSE);
      return;
 }
 

@@ -1,3 +1,7 @@
+2013-03-13  Felix Ingrand  <felix@precise>
+
+	* Makefile.am (TRUCK_DEMO_OPRS_MOD_INCLUDE): Move to autotools...
+
 Tue May 24 11:04:56 1994  Vianney Coutance  (vianney@cascade)
 
 	* Makefile: Now use installed libraries.

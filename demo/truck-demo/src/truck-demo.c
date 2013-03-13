@@ -3,7 +3,7 @@
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,6 +35,8 @@
 /*
  * Public include files for widgets used in this file.
  */
+#include <stdlib.h>
+
 #include <Xm/Frame.h>
 #include <Xm/RowColumn.h>
 #include <Xm/DrawnB.h>
@@ -459,7 +461,7 @@ int main(int argc, char **argv)
      XtAppMainLoop(app_context);
 
      
-     return ;
+     return 0;
 }
 
 void init_demo ()

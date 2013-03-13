@@ -3,7 +3,7 @@
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,22 +32,6 @@
  *
  */
 
-
-/* 
- * This file will contain the functions provided to the user and 
- * called from the kernel. For example, if the user want to get 
- * statistics on FACTS or GOALS, or database operation, we could put 
- * in the kernel code a function call pointing to a function defined 
- * here. By default this function would do nothing, but if the user 
- * wish it would perform some operations.
- */
-
-PBoolean intention_list_sort_by_priority(Intention *i1, Intention *i2);
-PBoolean intention_list_sort_by_time(Intention *i1, Intention *i2);
-PBoolean intention_list_sort_by_priority_time(Intention *i1, Intention *i2);
-
-Intention_List intention_scheduler_time_sharing(Intention_List l);
-
-void start_kernel_user_hook(char *name);
-
-void end_kernel_user_hook();
+void declare_td_action(void);
+void declare_td_eval_funct(void);
+void declare_td_eval_pred(void);

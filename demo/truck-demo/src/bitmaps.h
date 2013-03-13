@@ -1,5 +1,7 @@
 /*                               -*- Mode: C -*- 
- * default-user-external.c -- 
+ * bitmaps.h -- 
+ * 
+ * $Id$
  * 
  * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
@@ -29,49 +31,49 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  */
+#ifndef INCLUDE_bitmaps
+#define INCLUDE_bitmaps
 
-#include "stdio.h"
-#include "opaque-pub.h"
-#include "default-hook.h"
-#include "default-hook_f.h"
-#include "oprs_f-pub.h"
+#include "bitmaps/valve.bm"
+#include "bitmaps/valve-open.bm"
 
-#include "user-end-hook_f-pub.h"
+#include "bitmaps/light.bm"
+#include "bitmaps/light-on.bm"
+#include "bitmaps/light-off.bm"
 
-#include "intention_f-pub.h"
+#include "bitmaps/bp.bm"
+#include "bitmaps/disarm-stop.bm"
+#include "bitmaps/armed-stop.bm"
+#include "bitmaps/truck.bm"
+#include "bitmaps/ready-truck.bm"
+#include "bitmaps/leaving-truck.bm"
+#include "bitmaps/truck-filled.bm"
+#include "bitmaps/ready-truck-filled.bm"
+#include "bitmaps/leaving-truck-filled.bm"
 
-#include "user-external.h"
-#include "user-external_f.h"
+#include "bitmaps/tank0.bm"
+#include "bitmaps/tank1.bm"
+#include "bitmaps/tank2.bm"
+#include "bitmaps/tank3.bm"
+#include "bitmaps/tank4.bm"
+#include "bitmaps/tank5.bm"
+#include "bitmaps/tank6.bm"
+#include "bitmaps/tank7.bm"
+#include "bitmaps/tank8.bm"
+#include "bitmaps/tank9.bm"
+#include "bitmaps/tank10.bm"
+#include "bitmaps/filled-tank0.bm"
+#include "bitmaps/filled-tank1.bm"
+#include "bitmaps/filled-tank2.bm"
+#include "bitmaps/filled-tank3.bm"
+#include "bitmaps/filled-tank4.bm"
+#include "bitmaps/filled-tank5.bm"
+#include "bitmaps/filled-tank6.bm"
+#include "bitmaps/filled-tank7.bm"
+#include "bitmaps/filled-tank8.bm"
+#include "bitmaps/filled-tank9.bm"
+#include "bitmaps/filled-tank10.bm"
 
-PBoolean my_intention_list_sort_example(Intention *i1, Intention *i2)
-{
-     return (intention_priority(i1) > intention_priority(i2));
-}
+#include "bitmaps/filling-no-truck.bm"
 
-void init_td_kernel(char *name)
-{
-     intention_scheduler = &intention_scheduler_time_sharing;
-     /* this is not used because of the statement above */
-     intention_list_sort_predicate = &intention_list_sort_by_priority;
-     main_loop_pool_sec = 0L;
-
-     main_loop_pool_usec = 10000L;
-}
-
-
-void end_td_kernel_user_hook()
-{
-     printf("Bye, bye from the truck demo...\n");
-}
-
-
-void init_truck_demo(void)
-{
-     declare_td_action();
-     declare_td_eval_funct();
-     declare_td_eval_pred();
-     
-     init_td_kernel(kernel_name());
-
-     add_user_end_kernel_hook((PFV)end_td_kernel_user_hook);
-}
+#endif /* INCLUDE_bitmaps */

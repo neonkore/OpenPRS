@@ -3,7 +3,7 @@
  * 
  * $Id$
  *
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,17 +34,5 @@
 
 #ifndef INCLUDE_user_external
 #define INCLUDE_user_external
-
-
-/* This is the pointer to the predicate which sort the list of the root of the intention graph.
- * If it is NULL, then no predicates are applied
- */
-
-extern PFB intention_list_sort_predicate;
-extern PFPL intention_scheduler;
-
-extern long main_loop_pool_sec;
-extern long main_loop_pool_usec;
-
 
 #endif /* INCLUDE_user_external */

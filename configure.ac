@@ -40,6 +40,15 @@ AC_ARG_ENABLE([gtk],
     esac],[gtk=no])
 AM_CONDITIONAL([WANT_GTK], [test x$gtk = xyes])
 
+AC_ARG_ENABLE([demo],
+  [  --enable-demo    Turn on demo based goprs/gope],
+  [case "${enableval}" in
+     yes) demo=yes ;;
+     no)  demo=no ;;
+      *) AC_MSG_ERROR([bad value ${enableval} for --enable-demo]) ;;
+    esac],[demo=no])
+AM_CONDITIONAL([WANT_DEMO], [test x$demo = xyes])
+
 # we do not want it for now
 AM_CONDITIONAL([WANT_OPC], [test xno = xyes])
 
@@ -126,6 +135,11 @@ AC_CONFIG_FILES([
                  src/mp-openprs.pc
                  doc/oprs-macros.tex
 		 src/config.h
+		 demo/Makefile
+		 demo/truck-demo/Makefile
+		 demo/truck-demo/src/Makefile
+		 demo/truck-demo/oprs/Makefile
+		 demo/truck-demo/oprs/data/Makefile
                 ])
 AC_OUTPUT
 

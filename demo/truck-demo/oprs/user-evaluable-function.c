@@ -1,8 +1,7 @@
-static char rcsid [] = "$Id$";
 /*                               -*- Mode: C -*- 
  * user-evaluable-function.c -- contains user defined evaluable functions.
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,10 +36,12 @@ static char rcsid [] = "$Id$";
 #include "opaque-pub.h"
 #include "constant-pub.h"
 #include "oprs-type-pub.h"
+#include "ev-function_f-pub.h"
 
-#include "user-ev-function.h"
+#include "user-external_f.h"
 
-int get_local_time();
+#include "../src/local-time_f.h"
+
 
 Term *time_td_eval_funct(TermList terms)
 {
@@ -54,7 +55,7 @@ Term *time_td_eval_funct(TermList terms)
      return res;
 }
 
-void declare_user_eval_funct(void)
+void declare_td_eval_funct(void)
 {
      make_and_declare_eval_funct("TIME",time_td_eval_funct, 0);
      /* French version... */

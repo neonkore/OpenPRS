@@ -1,9 +1,7 @@
-static char rcsid [] = "$Id$";
-
 /*                               -*- Mode: C -*- 
  * user-action.c -- contains user defined evaluable actions.
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,10 +36,12 @@ static char rcsid [] = "$Id$";
 #include "opaque-pub.h"
 #include "constant-pub.h"
 #include "oprs-type-pub.h"
+#include "action_f-pub.h"
 
-#include "user-action.h"
+#include "user-external_f.h"
 
-int get_local_time();
+#include "../src/local-time_f.h"
+
 Term *action_send_message(TermList terms);
 
 Term *action_init_oprs_time_td(TermList terms)
@@ -87,7 +87,7 @@ Term *action_run_oprs_time_td(TermList terms)
      return res;
 }
 
-void declare_user_action(void)
+void declare_td_action(void)
 {
      make_and_declare_action("INIT-OPRS-TIME",action_init_oprs_time_td, 1);
      make_and_declare_action("HALT-OPRS-TIME",action_halt_oprs_time_td, 0);
@@ -99,3 +99,4 @@ void declare_user_action(void)
      make_and_declare_action("ENVOYER-MESSAGE",action_send_message, 2);
      return;
 }
+

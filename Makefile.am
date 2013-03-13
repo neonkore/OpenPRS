@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2012 LAAS/CNRS
+# Copyright (c) 2012-2013 LAAS/CNRS
 # All rights reserved.
 #
 # Redistribution  and  use in source   and binary forms,  with or without
@@ -28,6 +28,10 @@
 
 
 SUBDIRS = libltdl util c_toolkit contrib src data doc
+
+if WANT_DEMO
+SUBDIRS += demo
+endif
 
 ACLOCAL_AMFLAGS = -I m4
 
