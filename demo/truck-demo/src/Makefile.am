@@ -30,7 +30,7 @@
 # ############################################################################
 
 
-AM_CPPFLAGS = -I$(top_srcdir)/c_toolkit
+AM_CPPFLAGS  = -I$(top_srcdir)/src -I$(top_srcdir)/c_toolkit
 AM_CFLAGS = -Wall # -Wextra
 
 AD2C = $(top_srcdir)/util/ad2c
@@ -68,5 +68,19 @@ xdefault_DATA = Truck-demo.ad
 	$(ADLANG2AD) en < $< > $@
 	chmod -w $@
 
+CLEANFILES =  Truck-demo.ad.h Truck-demo.ad
 
-#LIST_LIB = -L$(OPRS_LIBS_DIR) -lOprsMP
+EXTRA_DIST += td-icon.bit bitmaps/armed-stop.bm bitmaps/bp.bm bitmaps/canvas100.bm \
+	 bitmaps/disarm-stop.bm bitmaps/filled-tank0.bm bitmaps/filled-tank10.bm \
+	bitmaps/filled-tank1.bm bitmaps/filled-tank2.bm bitmaps/filled-tank3.bm \
+	bitmaps/filled-tank4.bm bitmaps/filled-tank5.bm bitmaps/filled-tank6.bm \
+	bitmaps/filled-tank7.bm bitmaps/filled-tank8.bm bitmaps/filled-tank9.bm \
+	bitmaps/filling-no-truck.bm bitmaps/leaving-truck.bm bitmaps/leaving-truck-filled.bm \
+	bitmaps/light.bm bitmaps/light-off.bm bitmaps/light-on.bm bitmaps/ready-truck.bm \
+	bitmaps/ready-truck-filled.bm bitmaps/tank0.bm bitmaps/tank10.bm bitmaps/tank1.bm \
+	bitmaps/tank2.bm bitmaps/tank3.bm bitmaps/tank4.bm bitmaps/tank5.bm bitmaps/tank6.bm \
+	bitmaps/tank7.bm bitmaps/tank8.bm bitmaps/tank9.bm bitmaps/truck.bm bitmaps/truck-filled.bm \
+	bitmaps/valve.bm bitmaps/valve-open.bm
+
+
+
