@@ -79,10 +79,10 @@ doc/truck-demo.tex
 doc/wait.tex
 example-sw.c
 foo.tex
-gope$
-goprs$
+src/gope
+src/goprs
 goprs-user
-kill-mp$
+src/kill-mp
 libltdl
 libtool
 m4/argz.m4
@@ -96,12 +96,11 @@ make.depend
 make.depend
 mp-oprs
 old
-opc$
-ope$
-oprs$
-oprs-cat$
-oprs-relocatable$
-oprs-server$
+src/opc
+src/ope
+src/oprs
+src/oprs-cat
+src/oprs-server
 site.make
 src/*-lex.h
 src/gope-icon.h
@@ -121,3 +120,4 @@ util/lex-includer.c
 xoprs
 xoprs-relocatable
 demo/truck-demo/src/truck-demo
+demo/truck-demo/oprs/data/truck-demo.inc

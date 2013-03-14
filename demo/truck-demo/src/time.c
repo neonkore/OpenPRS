@@ -3,7 +3,7 @@
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2003 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,7 +40,10 @@
 #endif
 
 #include "local-time_f.h"
-#include "demo.h"
+
+#include "lang.h"
+
+//#include "demo.h"
 
 double pow(double, double);
 
