@@ -211,7 +211,7 @@ USER_MODULES_EXAMPLE = user-action.c user-ev-function.c user-ev-predicate.c
 # this is an externaly installed library with many utility functions.
 CONTRIB_LIB = $(top_builddir)/contrib/src/libpu.la
 
-INCLUDES = @INCLTDL@
+#INCLUDES = @INCLTDL@
 
 ############################################
 # Here is the list of program to build and install
@@ -244,7 +244,7 @@ oprs_SOURCES =  op-x-opaque.c oprs-main.c top-lev-loop.c user-trace.c
 oprs_LDFLAGS = -export-dynamic
 oprs_LDADD = libTKernel.la libKernel.la libBasic.la libTOprs.la libOprs.la \
 		 libMP.la libVersion.a ../c_toolkit/libOPList.la $(CONTRIB_LIB)\
-		 @LIBLTDL@ @LIBADD_DL@
+		 ${LIBLTDL} ${LIBADD_DL}
 
 nodist_xoprs_SOURCES = oprs-lex.l  oprs-parser.y
 xoprs_SOURCES = xoprs-call.c xoprs-textwin.c \
@@ -255,7 +255,7 @@ xoprs_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX -UGTK $(XT_CFLAGS) $(MOTIF_CFLAGS)
 xoprs_LDFLAGS = -export-dynamic
 xoprs_LDADD = libXGKernel.la libKernel.la libBasic.la libXGOprs.la libOprs.la \
 	libXOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la $(CONTRIB_LIB) \
-	$(MOTIF_LIBS) $(XT_LIBS) @LIBLTDL@ @LIBADD_DL@
+	$(MOTIF_LIBS) $(XT_LIBS) ${LIBLTDL} ${LIBADD_DL}
 
 nodist_goprs_SOURCES = oprs-lex.l oprs-parser.y
 goprs_SOURCES = xm2gtk.c goprs-call.c goprs-textwin.c \
@@ -265,7 +265,7 @@ goprs_SOURCES = xm2gtk.c goprs-call.c goprs-textwin.c \
 goprs_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX -DGTK $(GTK_CFLAGS)
 goprs_LDADD = libGGKernel.la libKernel.la libBasic.la libGGOprs.la libOprs.la \
 	libGOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la $(CONTRIB_LIB) \
-	@GTK_LIBS@ @LIBLTDL@ @LIBADD_DL@
+	${GTK_LIBS} ${LIBLTDL} ${LIBADD_DL}
 
 oprs_cat_SOURCES = oprs-cat.c
 oprs_cat_LDADD = ../c_toolkit/libOPList.la
@@ -282,8 +282,9 @@ nodist_gope_SOURCES = ope-lex.l ope-parser.y
 gope_SOURCES = xm2gtk.c gope-bboard.c gope-edit.c gope-filesel.c gope-op-opf.c gope-main.c \
 	gope-menu.c ope-save.c ope-syntax.c gope-vsblf.c gope-rop.c ope-op-str.c ope-opaque.c
 gope_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX -DGTK $(GTK_CFLAGS)
+
 gope_LDADD = libBasic.la libGGOprs.la libOprs.la \
-		libGOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la @GTK_LIBS@
+		libGOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la ${GTK_LIBS}
 
 if WANT_OPC
 nodist_opc_SOURCES = opc-lex.l opc-parser.y
