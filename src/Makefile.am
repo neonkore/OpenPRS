@@ -224,7 +224,7 @@ endif
 # we do not install GTK version for now (too beta).
 if WANT_GTK
 bin_PROGRAMS += goprs gope
-noinst_PROGRAMS = bug
+#noinst_PROGRAMS = bug
 endif
 
 mp_oprs_SOURCES = mp.c
@@ -269,9 +269,9 @@ goprs_LDADD = libGGKernel.la libKernel.la libBasic.la libGGOprs.la libOprs.la \
 	${GTK_LIBS} ${LIBLTDL} ${LIBADD_DL}
 
 
-bug_SOURCES = bug.c
-bug_CPPFLAGS = $(AM_CPPFLAGS) $(GTK_CFLAGS)
-bug_LDADD = 	${GTK_LIBS}
+# bug_SOURCES = bug.c
+# bug_CPPFLAGS = $(AM_CPPFLAGS) $(GTK_CFLAGS)
+# bug_LDADD = 	${GTK_LIBS}
 
 
 oprs_cat_SOURCES = oprs-cat.c

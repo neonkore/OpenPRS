@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * goprs-menu.c -- 
  *
- * Copyright (c) 1991-2011 Francois Felix Ingrand, LAAS/CNRS.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand, LAAS/CNRS.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -891,7 +891,7 @@ GtkWidget *create_tool_bar(GtkWidget *parent, Draw_Data *dd)
   gtk_toolbar_set_style(GTK_TOOLBAR(toolbar), GTK_TOOLBAR_ICONS);
   gtk_toolbar_set_orientation(GTK_TOOLBAR(toolbar),GTK_ORIENTATION_VERTICAL);
   //  gtk_container_set_border_width(GTK_CONTAINER(toolbar), 0);
-  gtk_widget_set_size_request(toolbar, 100 , -1);
+  gtk_widget_set_size_request(toolbar, 100 , 250);
 
   oprsActiveDButton = gtk_label_new("Idle");
 

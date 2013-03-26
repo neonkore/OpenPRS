@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * goprs-main.c -- Top level file for the GTK interface for OpenPRS.
  * 
- * Copyright (c) 1991-2012 Francois Felix Ingrand, LAAS/CNRS.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand, LAAS/CNRS.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -447,7 +447,6 @@ int oprs_main(int argc,char **argv, char ** envp)
   GtkWidget *opeDrawWin;
   GtkWidget *intDrawWin;
 
-  Widget topForm;
   Widget oprsMenu;
 
   progname = argv[0];
@@ -512,7 +511,7 @@ int oprs_main(int argc,char **argv, char ** envp)
   dd.topLevelWindow = topLevelWindow;
   idd.topLevelWindow = topLevelWindow;
   gtk_window_set_title(GTK_WINDOW(topLevelWindow), title);
-  gtk_window_set_default_size(GTK_WINDOW(topLevelWindow), 1400, 800);
+  gtk_window_set_default_size(GTK_WINDOW(topLevelWindow), 1100, 800);
   gtk_window_set_position(GTK_WINDOW(topLevelWindow), GTK_WIN_POS_CENTER);
   gtk_window_set_icon(GTK_WINDOW(topLevelWindow), gdk_pixbuf_new_from_inline (-1, my_icon, FALSE, NULL));
   // create_pixbuf("xoprs-icon.png"));
@@ -532,10 +531,12 @@ int oprs_main(int argc,char **argv, char ** envp)
 
 
   hbox = gtk_hbox_new(FALSE, 0);
-  gtk_paned_pack1 (GTK_PANED (vpaned), hbox, TRUE, FALSE);
+  gtk_paned_pack1 (GTK_PANED (vpaned), hbox, FALSE, FALSE);
 
   opeDrawWin = gtk_scrolled_window_new(NULL, NULL); /* create a large scrolled window in this vbox */
-  gtk_paned_pack2 (GTK_PANED (vpaned), opeDrawWin, TRUE, FALSE);
+  gtk_scrolled_window_set_shadow_type(opeDrawWin, GTK_SHADOW_IN);
+  gtk_paned_pack2 (GTK_PANED (vpaned), opeDrawWin, TRUE, TRUE);
+  gtk_widget_set_size_request(opeDrawWin, 800, 300);
 
   dd.canvas = gtk_layout_new(NULL,NULL);
   gtk_widget_set_app_paintable(dd.canvas, TRUE);
@@ -569,21 +570,27 @@ int oprs_main(int argc,char **argv, char ** envp)
   gtk_box_pack_start(GTK_BOX(hbox), hpaned, TRUE, TRUE, 1); /* add an vertical horizontal pane to the main hbox */
 
   textSWindow = gtk_scrolled_window_new(NULL, NULL); /* create the text  window in this hbox */
-  gtk_paned_pack1 (GTK_PANED (hpaned), textSWindow, TRUE, FALSE);
+  gtk_scrolled_window_set_shadow_type(textSWindow, GTK_SHADOW_IN);
+  gtk_paned_pack1 (GTK_PANED (hpaned), textSWindow, FALSE, FALSE);
+  gtk_widget_set_size_request(textSWindow, 500 , 220);
+
   textview = gtk_text_view_new ();
   gtk_container_add (GTK_CONTAINER (textSWindow), textview);
 
   intDrawWin = gtk_scrolled_window_new(NULL, NULL); /* create the int graph window in this hbox */
-  gtk_paned_pack2 (GTK_PANED (hpaned), intDrawWin, TRUE, FALSE);
+  gtk_scrolled_window_set_shadow_type(intDrawWin, GTK_SHADOW_IN);
+  gtk_paned_pack2 (GTK_PANED (hpaned), intDrawWin, TRUE, TRUE);
+  gtk_widget_set_size_request(intDrawWin, 500 , 220);
 
   idd.canvas = gtk_layout_new(NULL,NULL);
   gtk_widget_set_app_paintable(idd.canvas, TRUE);
   gtk_container_add(GTK_CONTAINER(intDrawWin),idd.canvas);
 
   gtk_layout_get_size(GTK_LAYOUT(idd.canvas),&idd.canvas_width, &idd.canvas_height);
-  idd.work_height = MAX(WORK_HEIGHT, idd.canvas_height);
-  idd.work_width = MAX(WORK_WIDTH, idd.canvas_width);
+  idd.work_height = MAX(IDD_WORK_HEIGHT, idd.canvas_height);
+  idd.work_width = MAX(IDD_WORK_WIDTH, idd.canvas_width);
   gtk_layout_set_size(GTK_LAYOUT(idd.canvas), idd.work_width, idd.work_height); 
+
 
   idd.top = 0;
   idd.left = 0;
@@ -611,10 +618,14 @@ int oprs_main(int argc,char **argv, char ** envp)
   xp_create_filesel(topLevelWindow);
   xp_create_dialogs(topLevelWindow);
 
+  gtk_widget_realize(dd.canvas); /* required to access the bin_window */
+
+  gtk_widget_realize(idd.canvas);
+
   gtk_widget_show_all(topLevelWindow);
 
-  dd.window = GTK_LAYOUT(dd.canvas)->bin_window;
-  idd.window = GTK_LAYOUT(idd.canvas)->bin_window;
+  dd.window = gtk_layout_get_bin_window(GTK_LAYOUT(dd.canvas));
+  idd.window = gtk_layout_get_bin_window(GTK_LAYOUT(idd.canvas));
 
   opCGCsp = &opCGCs;
   dd.cgcsp = opCGCsp;

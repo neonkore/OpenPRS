@@ -36,6 +36,7 @@ int main(int argc, char **argv, char **envp)
 
      gtk_widget_show_all(topLevelWindow);
 
+     gtk_widget_realize(canvas);
      window = GTK_LAYOUT(canvas)->bin_window;
 
      fprintf(stderr,"Window = %p\n",window);
