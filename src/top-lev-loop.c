@@ -91,16 +91,7 @@ void let_the_good_time_roll(Oprs *oprs)
 
      check_and_sometimes_compact_list();
 
-     FD_ZERO(&readfds);
-     max_fds = 0;
-     if (register_to_server) {
-	  FD_SET(ps_socket, &readfds);
-	  max_fds = MAX(max_fds,ps_socket+1);
-     }
-     if (register_to_mp) {
-	  FD_SET(mp_socket, &readfds);
-	  max_fds = MAX(max_fds,mp_socket+1);
-     }
+     set_readfds(&readfds, &max_fds, FALSE);
 
      pool_tv.tv_sec = main_loop_pool_sec;
      pool_tv.tv_usec = main_loop_pool_usec;

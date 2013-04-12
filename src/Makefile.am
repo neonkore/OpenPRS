@@ -47,7 +47,7 @@ INC = action.h activate.h conditions.h config.h constant-pub.h \
 	top-lev.h type.h unification.h user-action.h user-ev-function.h \
 	user-ev-predicate.h user-trace.h version.h xhelp.h xm2gtk.h \
 	xoprs-intention.h xoprs-main-pub.h xoprs-main.h xoprs-textwin.h \
-	xoprs.h xoprs.h yy-funct.c
+	xoprs.h xoprs.h yy-funct.c top-lev_f-pub.h
 
 FINC = action_f.h activate_f.h conditions_f.h database_f.h \
 	default-hook_f.h ev-function_f.h ev-predicate_f.h \
@@ -114,7 +114,8 @@ EXTERNAL_INCLUDE = action_f-pub.h constant-pub.h ev-function_f-pub.h ev-predicat
 	oprs-type_f-pub.h oprs_f-pub.h user-action.h user-ev-function.h \
 	user-ev-predicate.h xoprs-main-pub.h oprs-error-pub.h \
 	oprs-rerror_f-pub.h user-trace.h user-trace_f.h oprs-print_f-pub.h \
-	user-end-hook_f-pub.h user-end-hook-pub.h  default-hook.h default-hook_f.h
+	user-end-hook_f-pub.h user-end-hook-pub.h  default-hook.h default-hook_f.h \
+	top-lev_f-pub.h
 
 pkginclude_HEADERS = $(EXTERNAL_INCLUDE)
 
@@ -245,7 +246,7 @@ oprs_SOURCES =  op-x-opaque.c oprs-main.c top-lev-loop.c user-trace.c
 oprs_LDFLAGS = -export-dynamic
 oprs_LDADD = libTKernel.la libKernel.la libBasic.la libTOprs.la libOprs.la \
 		 libMP.la libVersion.a ../c_toolkit/libOPList.la $(CONTRIB_LIB)\
-		 ${LIBLTDL} ${LIBADD_DL}
+		 $(LIBLTDL) $(LIBADD_DL)
 
 nodist_xoprs_SOURCES = oprs-lex.l  oprs-parser.y
 xoprs_SOURCES = xoprs-call.c xoprs-textwin.c \
@@ -256,7 +257,7 @@ xoprs_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX -UGTK $(XT_CFLAGS) $(MOTIF_CFLAGS)
 xoprs_LDFLAGS = -export-dynamic
 xoprs_LDADD = libXGKernel.la libKernel.la libBasic.la libXGOprs.la libOprs.la \
 	libXOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la $(CONTRIB_LIB) \
-	$(MOTIF_LIBS) $(XT_LIBS) ${LIBLTDL} ${LIBADD_DL}
+	$(MOTIF_LIBS) $(XT_LIBS) $(LIBLTDL) $(LIBADD_DL)
 
 nodist_goprs_SOURCES = oprs-lex.l oprs-parser.y
 goprs_SOURCES = xm2gtk.c goprs-call.c goprs-textwin.c \
@@ -266,12 +267,12 @@ goprs_SOURCES = xm2gtk.c goprs-call.c goprs-textwin.c \
 goprs_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX -DGTK $(GTK_CFLAGS)
 goprs_LDADD = libGGKernel.la libKernel.la libBasic.la libGGOprs.la libOprs.la \
 	libGOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la $(CONTRIB_LIB) \
-	${GTK_LIBS} ${LIBLTDL} ${LIBADD_DL}
+	$(GTK_LIBS) $(LIBLTDL) $(LIBADD_DL)
 
 
 # bug_SOURCES = bug.c
 # bug_CPPFLAGS = $(AM_CPPFLAGS) $(GTK_CFLAGS)
-# bug_LDADD = 	${GTK_LIBS}
+# bug_LDADD = 	$(GTK_LIBS)
 
 
 oprs_cat_SOURCES = oprs-cat.c
@@ -291,7 +292,7 @@ gope_SOURCES = xm2gtk.c gope-bboard.c gope-edit.c gope-filesel.c gope-op-opf.c g
 gope_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX -DGTK $(GTK_CFLAGS)
 
 gope_LDADD = libBasic.la libGGOprs.la libOprs.la \
-		libGOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la ${GTK_LIBS}
+		libGOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la $(GTK_LIBS)
 
 if WANT_OPC
 nodist_opc_SOURCES = opc-lex.l opc-parser.y

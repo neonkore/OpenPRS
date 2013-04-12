@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * xoprs-main.c -- Top level file for the X/Motif interface for one OPRS.
  * 
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -150,20 +150,10 @@ Boolean wait_other_events(XtPointer oprs_par)
      struct timeval pool_tv;
      Oprs *oprs = (Oprs *)oprs_par;
 
-     FD_ZERO(&readfds);
-     max_fds = 0;
-     if (register_to_server) {
-	  FD_SET(ps_socket, &readfds);
-	  max_fds = MAX(max_fds,ps_socket+1);
-     }
-     if (register_to_mp) {
-	  FD_SET(mp_socket, &readfds);
-	  max_fds = MAX(max_fds,mp_socket+1);
-     }
-
+     set_readfds(&readfds, &max_fds, FALSE);
      pool_tv.tv_sec = 0;
-     pool_tv.tv_usec = 1000;	/* we check the 2 sockets for new facts or goals. 1 mili second timeout.*/
-
+     pool_tv.tv_usec = 1000;	/* we check the 2 sockets for new facts or goals. 1 mili second timeout. 
+				   Because we are called as an XtWorkProc and we do not want to block the rest of the application. */
      if ((nfound = select(max_fds, &readfds, NULL, NULL, &pool_tv)) < 0)	
 	  if (errno != EINTR) {
 	       perror("wait_other_events: select NULL");

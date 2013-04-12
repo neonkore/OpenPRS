@@ -2,7 +2,7 @@
 /*                               -*- Mode: C -*-
  * top-lev-loop.c -- Main loop of a OPRS agent
  *
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -86,6 +86,8 @@
 #include "oprs-sprint_f.h"
 #include "parser-funct_f.h"
 
+#include "top-lev_f-pub.h"
+
 #ifdef GRAPHIX
 #include "xoprs-main_f.h"
 #endif
@@ -136,6 +138,54 @@ PBoolean safe_parse_one_or_more()
      return leave_it;
 }
 
+static fd_set external_readfds;
+static int max_external_readfds = -1; /* -1 means these 2 values have not been set yet... */
+
+void add_external_readfds(int ext_fds)
+{
+     if (max_external_readfds == -1) {
+	  FD_ZERO(&external_readfds);
+	  max_external_readfds = 0;
+     }
+
+     FD_SET(ext_fds, &external_readfds);
+     max_external_readfds = MAX(max_external_readfds,ext_fds+1);
+}
+
+void remove_external_readfds(int ext_fds)
+{
+     if (max_external_readfds == -1) {
+	  return;		/* This should be an error... */
+     }
+
+     FD_CLR(ext_fds, &external_readfds);
+     /* we should loop thru the new set and find the max... */
+}
+
+void set_readfds(fd_set *readfdsp, int *max_fds, PBoolean stdin_only)
+{
+     FD_ZERO(readfdsp);
+     *max_fds = 0;
+     if (register_to_server) {
+	  FD_SET(ps_socket, readfdsp);
+	  *max_fds = MAX(*max_fds,ps_socket+1);
+     }
+     if (register_to_mp) {
+	  FD_SET(mp_socket, readfdsp);
+	  *max_fds = MAX(*max_fds,mp_socket+1);
+     }
+     
+     if ((! stdin_only) &&  (max_external_readfds != -1)) {
+	  int i;
+	  for (i = 0; i < max_external_readfds; i++) {
+	       if (FD_ISSET(i, &external_readfds))
+		    FD_SET(i, readfdsp);
+	  }
+	  *max_fds = MAX(*max_fds,max_external_readfds);
+     }
+}
+
+
 void check_stdin()
 {
      fd_set readfds, save_readfds;
@@ -146,16 +196,7 @@ void check_stdin()
      zero_tv.tv_sec = 0;
      zero_tv.tv_usec = 0;
 
-     FD_ZERO(&save_readfds);
-     max_fds = 0;
-     if (register_to_server) {
-	  FD_SET(ps_socket, &save_readfds);
-	  max_fds = MAX(max_fds,ps_socket+1);
-     }
-     if (register_to_mp) {
-	  FD_SET(mp_socket, &save_readfds);
-	  max_fds = MAX(max_fds,mp_socket+1);
-     }
+     set_readfds(&save_readfds,&max_fds,TRUE);
      
      readfds = save_readfds;
 

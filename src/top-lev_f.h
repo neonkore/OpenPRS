@@ -39,3 +39,4 @@ void set_oprs_run_mode(Oprs_Run_Type mode);
 void reset_oprs_kernel(Oprs *oprs);
 PBoolean safe_parse_one_or_more(void);
 void report_run_status(void);
+void set_readfds(fd_set *readfdsp, int *max_fds, PBoolean stdin_only);
