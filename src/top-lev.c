@@ -159,7 +159,14 @@ void remove_external_readfds(int ext_fds)
      }
 
      FD_CLR(ext_fds, &external_readfds);
-     /* we should loop thru the new set and find the max... */
+
+     int i, new_max_external_readfds = 0;
+     /* we loop thru the new set and find the new max... */
+     for (i = 0; i < max_external_readfds; i++) {
+	  if (FD_ISSET(i, &external_readfds))
+	       new_max_external_readfds = i+1;
+     }
+     max_external_readfds = new_max_external_readfds;
 }
 
 void set_readfds(fd_set *readfdsp, int *max_fds, PBoolean stdin_only)

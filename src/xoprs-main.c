@@ -152,17 +152,18 @@ Boolean wait_other_events(XtPointer oprs_par)
 
      set_readfds(&readfds, &max_fds, FALSE);
      pool_tv.tv_sec = 0;
-     pool_tv.tv_usec = 1000;	/* we check the 2 sockets for new facts or goals. 1 mili second timeout. 
+     pool_tv.tv_usec = 1000;	/* we check the 2 openprs sockets for new facts or goals and also external sockets. 1 mili second timeout. 
 				   Because we are called as an XtWorkProc and we do not want to block the rest of the application. */
-     if ((nfound = select(max_fds, &readfds, NULL, NULL, &pool_tv)) < 0)	
-	  if (errno != EINTR) {
-	       perror("wait_other_events: select NULL");
-	  }
-     if (nfound > 0 ){
+     PROTECT_SYSCALL_FROM_EINTR(nfound,select(max_fds, &readfds, NULL, NULL, &pool_tv));
+     if (nfound == -1) {
+	  perror("wait_other_events: select < 0");
+     }
+     if (nfound > 0 ){		/* Some events to parse... */
 	  register_main_loop_from_other_events(oprs);
 	  other_events_registered = FALSE;
-	  return TRUE;
-     } else return FALSE;
+	  return TRUE;		/* deregister itself */
+     } else 
+	  return FALSE;		/* we timed-out, keep me as a workproc */
 }
 
 

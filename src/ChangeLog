@@ -1,5 +1,7 @@
 2013-04-12  Felix Ingrand  <felix@precise>
 
+	* top-lev.c (remove_external_readfds): Properly reset the max_external_readfds.
+
 	* top-lev_f-pub.h: add this file for the "external readfds".
 
 2013-02-26  Felix Ingrand  <felix@precise>
@@ -14,7 +16,7 @@
 
 	* Simplified some HAS_ HAVE_ cpp symbol (directly used the one provided by autoconf).
 
-2013-01-21  Felix Ingrand  <felix@precise>
+2013-01-21  Felix Ingrand  <felix@precise>`
 
 	* mp-openprs.pc.in (Libs): Not linking with the proper library... ExtMP should be used.
 

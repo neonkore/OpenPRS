@@ -99,10 +99,13 @@ void let_the_good_time_roll(Oprs *oprs)
 #if defined(HAVE_SETITIMER) && defined(HAVE_SIGACTION)
      block_sigalarm();		/* We should sleep/select for the remaining of the itimer time. */
 #endif
-     if (select(max_fds, &readfds, NULL, NULL, &pool_tv) < 0)
-	  if (errno != EINTR) {
-	       perror("top-lev-loop: select NULL");
-	  }
+
+     int found;
+
+     PROTECT_SYSCALL_FROM_EINTR(found,select(max_fds, &readfds, NULL, NULL, &pool_tv))
+     if (found == -1)
+	  perror("top-lev-loop: select NULL");
+
 #if defined(HAVE_SETITIMER) && defined(HAVE_SIGACTION)
      unblock_sigalarm();	/* We should restart the timer with the remaining of pool_tv... */
 #endif
