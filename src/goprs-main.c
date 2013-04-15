@@ -107,6 +107,12 @@ gint input_ps, input_mp;
 
 void register_main_loop_from_socket(gpointer data, gint ignore1, GdkInputCondition ignore2);
 
+void register_others_inputs(Oprs *oprs) /* recompute the list of Input to check... */
+{
+     fprintf(stderr, "register_others_inputs needs to be written for GDK.\n");
+
+}
+
 void deregister_other_inputs(Oprs *oprs)
 {
   // fprintf(stderr, "deregister_other_inputs.\n");

@@ -32,3 +32,8 @@
 
 FileNode *makeFileNode(PString file, PString node);
 void infoHelp(Widget w, XtPointer fn_par, XtPointer call_data);
+#ifndef URL_DOC
+void create_help_info(Widget parent);
+#else
+void create_help_info(void);
+#endif

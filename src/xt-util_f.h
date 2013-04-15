@@ -31,3 +31,4 @@
  */
 
 void process_xt_events(void);
+void print_top_widget(Widget  w);

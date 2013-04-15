@@ -49,6 +49,8 @@
 #include <fcntl.h>
 
 #include <sys/file.h>
+#include <sys/types.h>
+#include <sys/socket.h>
 
 #include <Xm/Xm.h>
 #include <Xm/Text.h>
@@ -61,9 +63,8 @@
 #include "xoprs-textwin_f.h"
 
 #include "xoprs-main.h"
-#include <sys/types.h>
-#include <sys/socket.h>
 #include "macro.h"
+#include "xoprs-call_f.h"
 
 static int	oprsInputId;		/* oprs input id */
 

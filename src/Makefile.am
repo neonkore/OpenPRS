@@ -74,7 +74,8 @@ FINC = action_f.h activate_f.h conditions_f.h database_f.h \
 	user-end-hook_f.h xhelp_f.h xm2gtk_f.h xoprs-dialog_f.h xoprs-intention_f.h \
 	xoprs-menu_f.h xoprs-textwin_f.h xt-util_f.h yy-funct_f.h goprs-call_f.h \
 	goprs-dialog_f.h goprs-filesel_f.h op-x-opaque_f.h op-dump-load_f.h \
-	oprs-server-main_f.h xoprs-main_f.h
+	oprs-server-main_f.h xoprs-main_f.h xoprs-filesel_f.h xoprs-rop_f.h \
+	xoprs-call_f.h
 
 
 

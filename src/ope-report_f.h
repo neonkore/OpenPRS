@@ -38,3 +38,4 @@ void report_syntax_error(PString message);
 
 void ope_information_create(Widget parent);
 void ope_information_report(char *message);
+void create_syntax_error_dialog(Widget parent);

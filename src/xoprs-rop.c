@@ -2,7 +2,7 @@
 /*                               -*- Mode: C -*- 
  * xoprs-rop.c -- 
  * 
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -53,6 +53,7 @@
 #include "op-structure.h"
 
 #include "relevant-op_f.h"
+#include "xoprs-rop_f.h"
 
 #include "xhelp.h"
 #include "xhelp_f.h"

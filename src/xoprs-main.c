@@ -65,7 +65,6 @@
 #include <Xm/Separator.h>
 
 #include "xhelp.h"
-#include "xhelp_f.h"
 
 #include "constant.h"
 #include "macro.h"
@@ -93,6 +92,16 @@
 #include "oprs-type_f.h"
 #include "oprs-init_f.h"
 
+#include "xhelp_f.h"
+#include "xoprs-filesel_f.h"
+#include "xoprs-rop_f.h"
+#include "xoprs-dialog_f.h"
+#include "ope-report_f.h"
+#include "xoprs-call_f.h"
+#include "default-hook_f.h"
+#include "xt-util_f.h"
+
+
 PBoolean install_user_trace = FALSE;
 
 Boolean xoprs_top_level_loop(XtPointer oprs);
@@ -117,7 +126,56 @@ PBoolean other_events_registered = FALSE;
 
 XtWorkProcId other_events_wp;
 
+//PBoolean other_inputs_registered = FALSE;
+
+static Slist *other_inputs_XtInputId = NULL;
+
+
+void XtImputId_ready(XtPointer oprs, int *source, XtInputId *id)
+{
+     if (! main_loop_registered) {
+	  XtAppAddWorkProc(app_context,&xoprs_top_level_loop,oprs);
+	  main_loop_registered = TRUE;
+     }
+
+     XtRemoveInput(*id);
+
+     delete_list_node(other_inputs_XtInputId, (const void *)*id);
+}
+
+void register_others_inputs(Oprs *oprs) /* recompute the list of Input to check... */
+{
+     if (!other_inputs_XtInputId) 
+	  other_inputs_XtInputId = sl_make_slist();
+
+     fd_set readfds;
+     int i, max_fds;
+     XtInputId id;
+
+     sl_loop_through_slist(other_inputs_XtInputId,id,XtInputId) { /* remove the old ones */
+	  XtRemoveInput(id);
+     }
+     sl_flush_slist(other_inputs_XtInputId);
+
+     set_readfds(&readfds, &max_fds, FALSE); /* get the new set rfds */
+
+     for (i = 0; i < max_fds; i++) {
+	  if (FD_ISSET(i, &readfds))
+	       sl_add_to_head(other_inputs_XtInputId, (const void *)XtAppAddInput(app_context, i, (XtPointer)XtInputReadMask,
+								    XtImputId_ready, oprs));
+     }
+     // other_inputs_registered = TRUE;
+}
+
 void register_main_loop_from_other_events(Oprs *oprs)
+{
+     if (! main_loop_registered) {
+	  XtAppAddWorkProc(app_context,&xoprs_top_level_loop,oprs);
+	  main_loop_registered = TRUE;
+     }
+}
+
+void register_main_loop_from_other_inputs(Oprs *oprs)
 {
      if (! main_loop_registered) {
 	  XtAppAddWorkProc(app_context,&xoprs_top_level_loop,oprs);
@@ -128,17 +186,18 @@ void register_main_loop_from_other_events(Oprs *oprs)
 void register_main_loop(Oprs *oprs)
 {
      register_main_loop_from_other_events(oprs);
-     if (other_events_registered) {
-	  XtRemoveWorkProc(other_events_wp);
-	  other_events_registered = FALSE;
-     }
+//     if (other_events_registered) {
+//	  XtRemoveWorkProc(other_events_wp);
+//	  other_events_registered = FALSE;
+//     }
 }
 
 void deregister_main_loop(Oprs *oprs)
 {
      main_loop_registered = FALSE;
-     other_events_wp = XtAppAddWorkProc(app_context,&wait_other_events,oprs);
-     other_events_registered = TRUE;
+//     other_events_wp = XtAppAddWorkProc(app_context,&wait_other_events,oprs);
+//     other_events_registered = TRUE;
+     register_others_inputs(oprs);
      XtAppAddTimeOut(app_context, (main_loop_pool_sec * 1000) +  (main_loop_pool_usec / 1000),
 		     (XtTimerCallbackProc)register_main_loop, oprs); /* This guy will re register us. */
 }
@@ -738,7 +797,7 @@ int main(int argc, char **argv, char **envp)
      idd.ig = oprs->intention_graph;
      register_main_loop(oprs);
 
-     update_active_idle((XtPointer)oprs,(XtIntervalId)NULL);
+     update_active_idle((XtPointer)oprs,(XtIntervalId *)NULL);
 
      start_kernel_hook(name);
 
@@ -746,6 +805,8 @@ int main(int argc, char **argv, char **envp)
 
      sprintf(title, "X-OPRS %s", package_version);
      UpdateMessageWindow(title);
+
+     register_others_inputs(oprs);
 
      XtAppMainLoop(app_context);
      
