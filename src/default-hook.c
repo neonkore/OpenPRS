@@ -61,7 +61,7 @@ void start_kernel_hook(char *name)
 	(as it has priotity over intention sorting.) */
      intention_list_sort_predicate = &intention_list_sort_by_priority;
      main_loop_pool_sec = 0L;
-     main_loop_pool_usec = 10000L;
+     main_loop_pool_usec = 100000L;
      /* if (start_kernel_user_hook)  */
      /*   (*start_kernel_user_hook)(name); */
 }

@@ -131,13 +131,23 @@ XtWorkProcId other_events_wp;
 static Slist *other_inputs_XtInputId = NULL;
 
 
-void XtImputId_ready(XtPointer oprs, int *source, XtInputId *id)
+void XtInputId_ready(XtPointer oprs, int *source, XtInputId *id)
 {
+#ifdef DEBUG_MAIN_LOOP
+     fprintf(stderr,"XtInputId_ready.\n");
+#endif
+ 
      if (! main_loop_registered) {
+#ifdef DEBUG_MAIN_LOOP
+	  fprintf(stderr,"AddWorkProc xoprs_top_level_loop.\n");
+#endif
 	  XtAppAddWorkProc(app_context,&xoprs_top_level_loop,oprs);
 	  main_loop_registered = TRUE;
      }
 
+#ifdef DEBUG_MAIN_LOOP
+     fprintf(stderr,"RemoveInput.\n");
+#endif
      XtRemoveInput(*id);
 
      delete_list_node(other_inputs_XtInputId, (const void *)*id);
@@ -153,6 +163,9 @@ void register_others_inputs(Oprs *oprs) /* recompute the list of Input to check.
      XtInputId id;
 
      sl_loop_through_slist(other_inputs_XtInputId,id,XtInputId) { /* remove the old ones */
+#ifdef DEBUG_MAIN_LOOP
+	  fprintf(stderr,"RemoveInput.\n");
+#endif
 	  XtRemoveInput(id);
      }
      sl_flush_slist(other_inputs_XtInputId);
@@ -160,9 +173,13 @@ void register_others_inputs(Oprs *oprs) /* recompute the list of Input to check.
      set_readfds(&readfds, &max_fds, FALSE); /* get the new set rfds */
 
      for (i = 0; i < max_fds; i++) {
-	  if (FD_ISSET(i, &readfds))
+	  if (FD_ISSET(i, &readfds)) {
+#ifdef DEBUG_MAIN_LOOP
+	       fprintf(stderr,"AddInput.\n");
+#endif
 	       sl_add_to_head(other_inputs_XtInputId, (const void *)XtAppAddInput(app_context, i, (XtPointer)XtInputReadMask,
-								    XtImputId_ready, oprs));
+								    XtInputId_ready, oprs));
+	  }
      }
      // other_inputs_registered = TRUE;
 }
@@ -170,18 +187,22 @@ void register_others_inputs(Oprs *oprs) /* recompute the list of Input to check.
 void register_main_loop_from_other_events(Oprs *oprs)
 {
      if (! main_loop_registered) {
+#ifdef DEBUG_MAIN_LOOP
+	  fprintf(stderr,"AddWorkProc xoprs_top_level_loop.\n");
+#endif
 	  XtAppAddWorkProc(app_context,&xoprs_top_level_loop,oprs);
 	  main_loop_registered = TRUE;
      }
 }
 
-void register_main_loop_from_other_inputs(Oprs *oprs)
-{
-     if (! main_loop_registered) {
-	  XtAppAddWorkProc(app_context,&xoprs_top_level_loop,oprs);
-	  main_loop_registered = TRUE;
-     }
-}
+/* void register_main_loop_from_other_inputs(Oprs *oprs) */
+/* { */
+/*      if (! main_loop_registered) { */
+/* 	  fprintf(stderr,"AddWorkProc xoprs_top_level_loop.\n"); */
+/* 	  XtAppAddWorkProc(app_context,&xoprs_top_level_loop,oprs); */
+/* 	  main_loop_registered = TRUE; */
+/*      } */
+/* } */
 
 void register_main_loop(Oprs *oprs)
 {
@@ -198,6 +219,9 @@ void deregister_main_loop(Oprs *oprs)
 //     other_events_wp = XtAppAddWorkProc(app_context,&wait_other_events,oprs);
 //     other_events_registered = TRUE;
      register_others_inputs(oprs);
+#ifdef DEBUG_MAIN_LOOP
+     fprintf(stderr,"AddTimeOut register_main_loop.\n");
+#endif
      XtAppAddTimeOut(app_context, (main_loop_pool_sec * 1000) +  (main_loop_pool_usec / 1000),
 		     (XtTimerCallbackProc)register_main_loop, oprs); /* This guy will re register us. */
 }
@@ -920,26 +944,3 @@ void UpdateMessageWindow(char *string)
      XmStringFree(xmres);
 }
 
-#ifdef DLSYMOPENCLOSE_UNDEFINED
-dlsym()
-{
-     fprintf(stderr,LG_STR("Fatal error: Sorry, but you should not be here...",
-			   "Fatal error: Sorry, but you should not be here..."));
-     exit(1);	  
-}
-
-dlopen()
-{
-     fprintf(stderr,LG_STR("Fatal error: Sorry, but you should not be here...",
-			   "Fatal error: Sorry, but you should not be here..."));
-     exit(1);	  
-}
-
-dlclose()
-{
-     fprintf(stderr,LG_STR("Fatal error: Sorry, but you should not be here...",
-			   "Fatal error: Sorry, but you should not be here..."));
-     exit(1);	  
-}
-
-#endif

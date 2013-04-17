@@ -163,7 +163,7 @@ void create_help_info(Widget parent)
 #else
 void create_help_info(void)
 {
-     fprintf(stderr, "The documentation cannot be browsed from the application, use your PDF viewer to read it.\n");
+//     fprintf(stderr, "The documentation cannot be browsed from the application, use your PDF viewer to read it.\n");
 }
 #endif
 

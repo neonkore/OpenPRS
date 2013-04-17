@@ -1,6 +1,15 @@
+2013-04-16  Felix Ingrand  <felix@precise>
+
+	* xoprs-main.c (XtInputId_ready): rewrote completely the code
+	which wake and register the xoprs_top_level_loop as a
+	WorkProc. Now we instruct Xt to check socket for us (ours and
+	external ones), and we register an AppTimeOut of
+	main_loop_pool_usec.
+
 2013-04-12  Felix Ingrand  <felix@precise>
 
-	* top-lev.c (remove_external_readfds): Properly reset the max_external_readfds.
+	* top-lev.c (remove_external_readfds): Properly reset the
+	max_external_readfds.
 
 	* top-lev_f-pub.h: add this file for the "external readfds".
 

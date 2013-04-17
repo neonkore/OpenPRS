@@ -119,6 +119,9 @@ PBoolean xoprs_top_level_loop(Oprs *oprs)
 	  if (! busy) {		/* Nothing to do... */
 	       check_and_sometimes_compact_list();
 	       deregister_main_loop(oprs);
+#ifdef DEBUG_MAIN_LOOP
+	       fprintf(stderr,"RemoveWorkProc xoprs_top_level_loop.\n");
+#endif
 	       return TRUE;
 	  }
      }
