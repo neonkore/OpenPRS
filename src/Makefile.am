@@ -266,6 +266,7 @@ goprs_SOURCES = xm2gtk.c goprs-call.c goprs-textwin.c \
 	goprs-main.c goprs-menu.c gtop-lev-loop.c \
 	goprs-op-graphic.c goprs-rop.c user-trace.c
 goprs_CPPFLAGS = $(AM_CPPFLAGS) -DGRAPHIX -DGTK $(GTK_CFLAGS)
+goprs_LDFLAGS = -export-dynamic
 goprs_LDADD = libGGKernel.la libKernel.la libBasic.la libGGOprs.la libOprs.la \
 	libGOpG.la libMP.la libVersion.a ../c_toolkit/libOPList.la $(CONTRIB_LIB) \
 	$(GTK_LIBS) $(LIBLTDL) $(LIBADD_DL)

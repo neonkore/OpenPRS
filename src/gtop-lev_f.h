@@ -40,4 +40,4 @@ void reset_oprs_kernel(Oprs *oprs);
 PBoolean safe_parse_one_or_more(void);
 void report_run_status(void);
 gboolean goprs_top_level_loop(gpointer data);
-void register_main_loop(gpointer data, gboolean from_socket);
+void register_main_loop(gpointer data);

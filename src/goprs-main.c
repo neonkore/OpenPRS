@@ -59,6 +59,7 @@
 #include "oprs-main.h"
 #include "int-graph.h"
 #include "top-lev.h"
+#include "top-lev_f.h"
 #include "op-default.h"
 
 #include "gope-graphic.h"
@@ -103,47 +104,69 @@ PBoolean socket_registered = FALSE;
 
 pthread_mutex_t loop_registering_mutex = PTHREAD_MUTEX_INITIALIZER;
 
-gint input_ps, input_mp;
+static Slist *other_gdk_inputs = NULL;
 
-void register_main_loop_from_socket(gpointer data, gint ignore1, GdkInputCondition ignore2);
-
-void register_others_inputs(Oprs *oprs) /* recompute the list of Input to check... */
+void register_main_loop_from_socket(gpointer oprs, gint source, GdkInputCondition ignore2)
+//void XtInputId_ready(XtPointer oprs, int *source, XtInputId *id)
 {
-     fprintf(stderr, "register_others_inputs needs to be written for GDK.\n");
+#ifdef DEBUG_MAIN_LOOP
+     fprintf(stderr,"XtInputId_ready.\n");
+#endif
+ 
+     if (! main_loop_registered) {
+#ifdef DEBUG_MAIN_LOOP
+	  fprintf(stderr,"AddWorkProc xoprs_top_level_loop.\n");
+#endif
+	  register_main_loop(oprs);
+     }
 
+     gint id;
+
+     sl_loop_through_slist(other_gdk_inputs,id, gint) { /* remove the old ones */
+#ifdef DEBUG_MAIN_LOOP
+	  fprintf(stderr,"RemoveInput.\n");
+#endif
+	  gdk_input_remove(id);
+     }
+
+     sl_flush_slist(other_gdk_inputs);
 }
 
-void deregister_other_inputs(Oprs *oprs)
+
+void register_other_inputs(Oprs *oprs) /* recompute the list of Input to check... */
 {
-  // fprintf(stderr, "deregister_other_inputs.\n");
-  if (register_to_server) {
-    gdk_input_remove(input_ps);
-  }
-  if (register_to_mp) {
-    gdk_input_remove(input_mp);
-  }
+     if (!other_gdk_inputs) 
+	  other_gdk_inputs = sl_make_slist();
+
+     fd_set readfds;
+     int i, max_fds;
+     gint id;
+
+     sl_loop_through_slist(other_gdk_inputs,id, gint) { /* remove the old ones */
+#ifdef DEBUG_MAIN_LOOP
+	  fprintf(stderr,"RemoveInput.\n");
+#endif
+	  gdk_input_remove(id);
+     }
+     sl_flush_slist(other_gdk_inputs);
+
+     set_readfds(&readfds, &max_fds, FALSE); /* get the new set rfds */
+
+     for (i = 0; i < max_fds; i++) {
+	  if (FD_ISSET(i, &readfds)) {
+#ifdef DEBUG_MAIN_LOOP
+	       fprintf(stderr,"AddInput.\n");
+#endif
+	       sl_add_to_head(other_gdk_inputs, (const void *)gdk_input_add(i, GDK_INPUT_READ, register_main_loop_from_socket, oprs));
+	  }
+     }
 }
 
-void register_other_inputs(Oprs *oprs)
-{
-  //  fprintf(stderr, "register_other_inputs.\n");
-  if (register_to_server) {
-    input_ps = gdk_input_add(ps_socket, GDK_INPUT_READ, &register_main_loop_from_socket, oprs);
-  }
-  if (register_to_mp) {
-    input_mp = gdk_input_add(mp_socket, GDK_INPUT_READ, &register_main_loop_from_socket, oprs);
-  }
-}
-
-void register_main_loop(gpointer data, gboolean from_socket)
+void register_main_loop(gpointer data)
 {
   Oprs *oprs = data;
   if (pthread_mutex_lock(&loop_registering_mutex) < 0)
     perror("goprs: register_main_loop: pthread_mutex_lock");
-  if (from_socket) {
-    deregister_other_inputs(oprs);
-    socket_registered = FALSE;
-  }
   if (! main_loop_registered) {
     //fprintf(stderr, "registering_main_loop as idle.\n");
     g_idle_add_full(G_PRIORITY_DEFAULT_IDLE, &goprs_top_level_loop,oprs, NULL); /* this will register the main loop */
@@ -158,35 +181,27 @@ void register_main_loop(gpointer data, gboolean from_socket)
 gboolean register_main_loop_from_timer(gpointer data)
 {
   //  fprintf(stderr, "register_main_loop_from_timer.\n");
-  register_main_loop(data, FALSE);
+  register_main_loop(data);
   return FALSE; /* This will deregister this very timeout function. */
 }
 
-void register_main_loop_from_socket(gpointer data, gint ignore1, GdkInputCondition ignore2)
+void deregister_main_loop_just_timeout(Oprs *oprs)
 {
-  //  fprintf(stderr, "register_main_loop_from_socket.\n");
-  register_main_loop(data, TRUE);
+     if (pthread_mutex_lock(&loop_registering_mutex) < 0)
+	  perror("goprs: deregister_main_loop: pthread_mutex_lock");
+     if (main_loop_registered) {
+	  main_loop_registered = FALSE;
+	  g_timeout_add((main_loop_pool_sec * 1000) +  (main_loop_pool_usec / 1000),
+			&register_main_loop_from_timer, oprs); /* This guy will re register us. */
+     }
+     if (pthread_mutex_unlock(&loop_registering_mutex) < 0)
+	  perror("goprs: deregister_main_loop: pthread_mutex_unlock");
 }
 
 void deregister_main_loop(Oprs *oprs)
 {
-  if (main_loop_registered) {
-    //fprintf(stderr, "deregister_main_loop.\n");
-    if (pthread_mutex_lock(&loop_registering_mutex) < 0)
-      perror("goprs: deregister_main_loop: pthread_mutex_lock");
-    if (main_loop_registered) {
-      //      fprintf(stderr, "deregistering_main_loop.\n");
-      main_loop_registered = FALSE;
-      g_timeout_add((main_loop_pool_sec * 1000) +  (main_loop_pool_usec / 1000),
-		    &register_main_loop_from_timer, oprs); /* This guy will re register us. */
-      if (!socket_registered) {
-	socket_registered = TRUE;
-	register_other_inputs(oprs);
-      }
-    }
-    if (pthread_mutex_unlock(&loop_registering_mutex) < 0)
-      perror("goprs: deregister_main_loop: pthread_mutex_unlock");
-  } 
+     deregister_main_loop_just_timeout(oprs);
+     register_other_inputs(oprs);
 }
 
 guint sb_cid;
@@ -676,7 +691,7 @@ int oprs_main(int argc,char **argv, char ** envp)
 
   run_initial_commands();
 
-  register_main_loop(oprs,FALSE);   /* this will register the main loop as an idle func.  */
+  register_main_loop(oprs);   /* this will register the main loop as an idle func.  */
   
   register_update_active_idle(oprs);
 
@@ -685,28 +700,3 @@ int oprs_main(int argc,char **argv, char ** envp)
   return 0;
 
 }
-
-#ifdef DLSYMOPENCLOSE_UNDEFINED
-dlsym()
-{
-  fprintf(stderr,LG_STR("Fatal error: Sorry, but you should not be here...",
-			"Fatal error: Sorry, but you should not be here..."));
-  exit(1);	  
-}
-
-dlopen()
-{
-  fprintf(stderr,LG_STR("Fatal error: Sorry, but you should not be here...",
-			"Fatal error: Sorry, but you should not be here..."));
-  exit(1);	  
-}
-
-dlclose()
-{
-  fprintf(stderr,LG_STR("Fatal error: Sorry, but you should not be here...",
-			"Fatal error: Sorry, but you should not be here..."));
-  exit(1);	  
-}
-
-#endif
-

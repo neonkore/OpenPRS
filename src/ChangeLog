@@ -1,3 +1,13 @@
+2013-04-18  Felix Ingrand  <felix@precise>
+
+	* xtop-lev-loop.c (xoprs_top_level_loop): Change the way we
+	deregister ourself when halted to avoid hogging the CPU.
+
+2013-04-17  Felix Ingrand  <felix@precise>
+
+	* goprs-main.c (register_other_inputs): Change the gdk code to
+	make it work like th Xt code.
+
 2013-04-16  Felix Ingrand  <felix@precise>
 
 	* xoprs-main.c (XtInputId_ready): rewrote completely the code

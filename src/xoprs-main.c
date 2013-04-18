@@ -122,7 +122,7 @@ extern PBoolean use_dialog_error;
 
 PBoolean main_loop_registered = FALSE;
 
-PBoolean other_events_registered = FALSE;
+//PBoolean other_events_registered = FALSE;
 
 XtWorkProcId other_events_wp;
 
@@ -153,7 +153,7 @@ void XtInputId_ready(XtPointer oprs, int *source, XtInputId *id)
      delete_list_node(other_inputs_XtInputId, (const void *)*id);
 }
 
-void register_others_inputs(Oprs *oprs) /* recompute the list of Input to check... */
+void register_other_inputs(Oprs *oprs) /* recompute the list of Input to check... */
 {
      if (!other_inputs_XtInputId) 
 	  other_inputs_XtInputId = sl_make_slist();
@@ -184,7 +184,7 @@ void register_others_inputs(Oprs *oprs) /* recompute the list of Input to check.
      // other_inputs_registered = TRUE;
 }
 
-void register_main_loop_from_other_events(Oprs *oprs)
+void register_main_loop(Oprs *oprs)
 {
      if (! main_loop_registered) {
 #ifdef DEBUG_MAIN_LOOP
@@ -204,26 +204,29 @@ void register_main_loop_from_other_events(Oprs *oprs)
 /*      } */
 /* } */
 
-void register_main_loop(Oprs *oprs)
-{
-     register_main_loop_from_other_events(oprs);
-//     if (other_events_registered) {
-//	  XtRemoveWorkProc(other_events_wp);
-//	  other_events_registered = FALSE;
-//     }
-}
+/* void register_main_loop(Oprs *oprs) */
+/* { */
+/*      register_main_loop_from_other_events(oprs); */
+/* //     if (other_events_registered) { */
+/* //	  XtRemoveWorkProc(other_events_wp); */
+/* //	  other_events_registered = FALSE; */
+/* //     } */
+/* } */
 
-void deregister_main_loop(Oprs *oprs)
+void deregister_main_loop_just_timeout(Oprs *oprs)
 {
      main_loop_registered = FALSE;
-//     other_events_wp = XtAppAddWorkProc(app_context,&wait_other_events,oprs);
-//     other_events_registered = TRUE;
-     register_others_inputs(oprs);
 #ifdef DEBUG_MAIN_LOOP
      fprintf(stderr,"AddTimeOut register_main_loop.\n");
 #endif
      XtAppAddTimeOut(app_context, (main_loop_pool_sec * 1000) +  (main_loop_pool_usec / 1000),
 		     (XtTimerCallbackProc)register_main_loop, oprs); /* This guy will re register us. */
+}
+
+void deregister_main_loop(Oprs *oprs)
+{
+     deregister_main_loop_just_timeout(oprs);
+     register_other_inputs(oprs);
 }
 
 Boolean wait_other_events(XtPointer oprs_par)
@@ -242,8 +245,8 @@ Boolean wait_other_events(XtPointer oprs_par)
 	  perror("wait_other_events: select < 0");
      }
      if (nfound > 0 ){		/* Some events to parse... */
-	  register_main_loop_from_other_events(oprs);
-	  other_events_registered = FALSE;
+	  register_main_loop(oprs);
+//	  other_events_registered = FALSE;
 	  return TRUE;		/* deregister itself */
      } else 
 	  return FALSE;		/* we timed-out, keep me as a workproc */
@@ -830,7 +833,7 @@ int main(int argc, char **argv, char **envp)
      sprintf(title, "X-OPRS %s", package_version);
      UpdateMessageWindow(title);
 
-     register_others_inputs(oprs);
+     register_other_inputs(oprs);
 
      XtAppMainLoop(app_context);
      

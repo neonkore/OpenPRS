@@ -812,12 +812,12 @@ void xset_oprs_run_mode(Oprs_Run_Type mode)
      switch(mode) {
      case RUN:
         gtk_label_set_text(GTK_LABEL(oprsStoppedDButton), "Runnable");
-	  register_main_loop(current_oprs, FALSE);
+	  register_main_loop(current_oprs);
 	  break;
      case STEP_NEXT:
         gtk_label_set_text(GTK_LABEL(oprsStoppedDButton), "Runnable");
        //	  unset_button(oprsStoppedDButton);
-	  register_main_loop(current_oprs, FALSE);
+	  register_main_loop(current_oprs);
 	  break;
      case STEP_HALT:
         gtk_label_set_text(GTK_LABEL(oprsStoppedDButton), "Stopped");

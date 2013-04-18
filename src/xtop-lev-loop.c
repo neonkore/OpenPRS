@@ -52,6 +52,7 @@
 #include "top-lev_f.h"
 
 #include "soak_f.h"
+#include "xoprs-main_f.h"
 
 PBoolean xoprs_top_level_loop(Oprs *oprs)
 {
@@ -61,17 +62,17 @@ PBoolean xoprs_top_level_loop(Oprs *oprs)
 	  Op_Instance *opi1, *opi2;
 	  PBoolean busy = FALSE;
 
-	  if ( !meta_option[META_LEVEL] || !oprs->posted_meta_fact ) /* We check the stdin only if 
-								    the Meta OPs have been intended. */
+	  if ( !meta_option[META_LEVEL] || !oprs->posted_meta_fact ) { /* We check the stdin only if 
+									  the Meta OPs have been intended. */
 #ifdef HAVE_SETITIMER
-	  if (check_the_stdin) {
-	       check_the_stdin = FALSE;
-	       check_stdin();
-	  }
+	       if (check_the_stdin) {
+		    check_the_stdin = FALSE;
+		    check_stdin();
+	       }
 #else
-	  check_stdin();
+	       check_stdin();
 #endif
-
+	  }
 	  if (oprs_run_mode != HALT) {
 	       shift_facts_goals(oprs);
 
@@ -114,13 +115,20 @@ PBoolean xoprs_top_level_loop(Oprs *oprs)
 	       SAFE_SL_FREE_SLIST(previous_soak);
 	       previous_soak = soak;
 
+	  } else {		/* HALTed */
+	       deregister_main_loop_just_timeout(oprs); /* we deregister the main loop but just start the timeout, not the fd select.
+							 otherwise we eat CPU likre crazy. */
+#ifdef DEBUG_MAIN_LOOP
+	       fprintf(stderr,"RemoveWorkProc xoprs_top_level_loop. (HALTED)\n");
+#endif
+	       return TRUE;
 	  }
 	  if (oprs_run_mode == STEP) set_oprs_run_mode(STEP_HALT);
 	  if (! busy) {		/* Nothing to do... */
 	       check_and_sometimes_compact_list();
 	       deregister_main_loop(oprs);
 #ifdef DEBUG_MAIN_LOOP
-	       fprintf(stderr,"RemoveWorkProc xoprs_top_level_loop.\n");
+	       fprintf(stderr,"RemoveWorkProc xoprs_top_level_loop. (!busy)\n");
 #endif
 	       return TRUE;
 	  }

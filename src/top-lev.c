@@ -151,7 +151,7 @@ void add_external_readfds(int ext_fds)
      FD_SET(ext_fds, &external_readfds);
      max_external_readfds = MAX(max_external_readfds,ext_fds+1);
 #ifdef GRAPHIX
-     register_others_inputs(current_oprs);
+     register_other_inputs(current_oprs);
 #endif
 }
 
@@ -171,7 +171,7 @@ void remove_external_readfds(int ext_fds)
      }
      max_external_readfds = new_max_external_readfds;
 #ifdef GRAPHIX
-     register_others_inputs(current_oprs);
+     register_other_inputs(current_oprs);
 #endif
 }
 

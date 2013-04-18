@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * fact-goal.c -- 
  * 
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2013 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,16 +31,9 @@
  */
 
 
-/*	For timeval definition. */
-#ifdef WIN95
-#endif
-
-
 #include "constant.h"
 
-
 #include "fact-goal.h"
-
 #include "fact-goal_f.h"
 #include "op-instance_f.h"
 #include "oprs-print.h"
