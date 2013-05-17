@@ -163,7 +163,7 @@ libOprs_la_SOURCES = help.c lisp-list.c oprs-ll.c oprs-send-m.c oprs-sprint.c \
 ############################################
 # Library used by all kernel programs (oprs text and graphic) but not graphic dependant.
 libKernel_la_SOURCES = database.c ev-predicate.c fact-goal.c oprs.c oprs-rerror.c unification.c oprs-profiling.c ltdl-loader.c
-
+libKernel_la_CPPFLAGS = $(AM_CPPFLAGS) $(LTDLINCL)
 
 ############################################
 # Library used by graphic programs {x,g}oprs and {,g}ope.
