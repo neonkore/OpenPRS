@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * pu-genom.c -- 
  * 
- * Copyright (C) 1999-2013 LAAS/CNRS
+ * Copyright (C) 1999-2012 LAAS/CNRS
  * 
  * $Id$
  */
@@ -40,7 +40,7 @@
 #include "pu-enum_f.h"
 #endif
 
-PBoolean pu_check_ttc_name(Expression *tc, char *name, char *type_name)
+PBoolean pu_check_ttc_name(Expression *tc, const char *name, const char *type_name)
 {
      if (strcasecmp(PFR_NAME(tc->pfr), (name ? name : type_name)) != 0) {
 	  fprintf(stderr,"pu_check_ttc_name: bad name, %s should be %s\n",
@@ -65,12 +65,12 @@ PBoolean pu_check_ttc_symbol_strict(Expression *tc, Symbol name)
 	  return TRUE;
 }
 
-PBoolean pu_check_ttc_name_alter(Expression *tc, char *name)
+PBoolean pu_check_ttc_name_alter(Expression *tc, const char *name)
 {
      return (strcmp(PFR_NAME(tc->pfr), name) == 0);
 }
 
-PBoolean pu_check_ttc_name_strict(Expression *tc, char *name)
+PBoolean pu_check_ttc_name_strict(Expression *tc, const char *name)
 {
      if (!pu_check_ttc_name_alter(tc, name)) {
 	  fprintf(stderr,"pu_check_ttc_name_strict: bad name, %s should be %s\n",
@@ -100,7 +100,7 @@ PBoolean pu_check_ttc_name_strict(Expression *tc, char *name)
 */
 
 #define define_pu_encode_genom(type_gen_name,type_gen,type_oprs,type_term) \
-PBoolean pu_encode_genom_ ## type_gen_name (char *name, Expression *tc, type_gen *val_addr, int size)\
+PBoolean pu_encode_genom_ ## type_gen_name (const char *name, Expression *tc, type_gen *val_addr, int size)\
 {\
      if (!pu_check_ttc_name(tc, name, #type_term))\
 	  return FALSE;\
@@ -117,7 +117,7 @@ PBoolean pu_encode_genom_ ## type_gen_name (char *name, Expression *tc, type_gen
 }
 
 #define define_pu_encode_genom3(type_gen_name,type_gen,type_oprs,type_term) \
-PBoolean pu_encode_genom3_ ## type_gen_name (char *name, Expression *tc, type_gen *val_addr)\
+PBoolean pu_encode_genom3_ ## type_gen_name (const char *name, Expression *tc, type_gen *val_addr)\
 {\
      if (!pu_check_ttc_name(tc, name, #type_term))\
 	  return FALSE;\
@@ -178,7 +178,7 @@ define_pu_encode_genom3(unsigned_char, unsigned char, int, INTEGER)
 define_pu_encode_genom3(addr, void *, void *, U_POINTER)
 
 /* Strings are particular... */
-PBoolean pu_encode_genom_string(char *name, Expression *tc, char *val_addr, int size, int max_size)
+PBoolean pu_encode_genom_string(const char *name, Expression *tc, char *val_addr, int size, int max_size)
 {
      if (!pu_check_ttc_name(tc, name, "string"))
 	  return FALSE;
@@ -219,7 +219,7 @@ PBoolean pu_encode_genom_string(char *name, Expression *tc, char *val_addr, int 
 */
 
 #define define_pu_decode_genom(type_gen_name,type_gen,oprs_fct,type_term,prop_type) \
-Term *pu_decode_genom_ ## type_gen_name(char *name, type_gen *addr, int size) \
+Term *pu_decode_genom_ ## type_gen_name(const char *name, type_gen *addr, int size) \
 {\
      Pred_Func_Rec *fr = find_or_create_pred_func(declare_atom(name?name:#prop_type));\
      TermList tl = sl_make_slist();\
@@ -231,7 +231,7 @@ Term *pu_decode_genom_ ## type_gen_name(char *name, type_gen *addr, int size) \
 }
 
 #define define_pu_decode_genom3(type_gen_name,type_gen,oprs_fct,type_term,prop_type) \
-Term *pu_decode_genom3_ ## type_gen_name(char *name, type_gen *addr) \
+Term *pu_decode_genom3_ ## type_gen_name(const char *name, type_gen *addr) \
 {\
      Pred_Func_Rec *fr = find_or_create_pred_func(declare_atom(name?name:#prop_type));\
      TermList tl = sl_make_slist();\
@@ -275,7 +275,7 @@ define_pu_decode_genom3(char, char, PUMakeTermInteger, int, INTEGER)
 define_pu_decode_genom3(float, float, PUMakeTermFloat, double, FLOAT)
 define_pu_decode_genom3(double, double, PUMakeTermFloat, double, FLOAT)
 
-Term *pu_decode_genom_string(char *name, char *addr, int size, int max_size)
+Term *pu_decode_genom_string(const char *name, const char *addr, int size, int max_size)
 {
      Pred_Func_Rec *fr = find_or_create_pred_func(declare_atom(name?name:"STRING"));
      TermList tl = sl_make_slist();
@@ -288,7 +288,7 @@ Term *pu_decode_genom_string(char *name, char *addr, int size, int max_size)
 
 /* Same as above, but just take one object, no need to pass a pointer */
 #define define_pu_simple_decode(type_gen_name,type_gen,oprs_fct,type_term,prop_type) \
-Term *pu_simple_decode_ ## type_gen_name(char *name, type_gen val) \
+Term *pu_simple_decode_ ## type_gen_name(const char *name, type_gen val) \
 {\
      Pred_Func_Rec *fr = find_or_create_pred_func(declare_atom(name?name:#prop_type));\
      TermList tl = sl_make_slist();\
@@ -314,7 +314,7 @@ define_pu_simple_decode(char, char, PUMakeTermInteger, int, INTEGER)
 define_pu_simple_decode(float, float, PUMakeTermFloat, double, FLOAT)
 define_pu_simple_decode(double, double, PUMakeTermFloat, double, FLOAT)
 
-Term *pu_simple_decode_atom(char *key, char *value)
+Term *pu_simple_decode_atom(const char *key, const char *value)
 {
   Pred_Func_Rec *fr = find_or_create_pred_func(declare_atom(key?key:"ATOM"));
   TermList tl = sl_make_slist();
@@ -323,7 +323,7 @@ Term *pu_simple_decode_atom(char *key, char *value)
   return(build_term_expr(build_expr_pfr_terms(fr, tl)));
 }
 
-Term *pu_simple_decode_string(char *key, char *value)
+Term *pu_simple_decode_string(const char *key, const char *value)
 {
   Pred_Func_Rec *fr = find_or_create_pred_func(declare_atom(key?key:"STRING"));
   TermList tl = sl_make_slist();

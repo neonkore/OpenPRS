@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * oprs-type_f-pub.h -- 
  * 
- * Copyright (c) 1991-2013 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,10 +34,10 @@
 extern "C"  {
 #endif
 
-Symbol declare_atom(char *id);
-Symbol make_atom(char *atom);
-Symbol find_atom(char *id);
-PString make_string(char *string);
+Symbol declare_atom(const char *id);
+Symbol make_atom(const char *atom);
+Symbol find_atom(const char *id);
+PString make_string(const char *string);
 
 
 double *make_doubleptr(double i);

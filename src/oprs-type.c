@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*-
  * oprs-type.c -- Fonction de construction et de print pour les types...
  *
- * Copyright (c) 1991-2013 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -934,7 +934,7 @@ PString remove_vert_bar(Symbol name)
      return s1;
 }
 
-Symbol make_atom(char *id)
+Symbol make_atom(const char *id)
 {
      Symbol res;     
 
@@ -949,7 +949,7 @@ Symbol make_atom(char *id)
      return res;
 }
 
-Symbol find_atom(char *id)
+Symbol find_atom(const char *id)
 /* Call make_atom, but force symbol checking... Therefore, will generate a warning if 
    it has not been declared previously */
 {
@@ -963,7 +963,7 @@ Symbol find_atom(char *id)
      return res;
 }
 
-Symbol declare_atom(char *id)
+Symbol declare_atom(const char *id)
 /* Call make_atom, but disable symbol checking... */
 {
      Symbol res;
@@ -976,7 +976,7 @@ Symbol declare_atom(char *id)
      return res;
 }
 
-PString make_string(char *string)
+PString make_string(const char *string)
 {
      int len = strlen(string);
      char *res;

@@ -1,3 +1,7 @@
+2013-07-30  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* pu-genom.c: move to const char * when possible.
+
 2013-01-22  Felix Ingrand  <felix@precise>
 
 	* pu-genom.c (pu_check_ttc_name_alter): Define symbol functions.
