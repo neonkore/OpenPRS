@@ -52,8 +52,19 @@ AM_CONDITIONAL([WANT_DEMO], [test x$demo = xyes])
 # we do not want it for now
 AM_CONDITIONAL([WANT_OPC], [test xno = xyes])
 
-AM_PROG_LEX
+#AM_PROG_LEX
+#AC_PROG_YACC
+
+AC_PROG_LEX
+if test x"$LEX" = x:; then
+   AC_MSG_FAILURE([required lex/flex program could not be found on your system.])
+fi
+
 AC_PROG_YACC
+set -- $YACC
+if ! command -v $1 >/dev/null; then
+   AC_MSG_FAILURE([required yacc/bison program could not be found on your system.])
+fi
 
 
 AC_ARG_VAR(LATEX, "LaTeX text formatting and typesetting")
