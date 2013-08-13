@@ -1,0 +1,23 @@
+This directory contains a number of files to ease the parsing of
+arguments passed to an evaluable function/predicate or action.
+
+pu-enum.c : contains a number of functions which are mostly deprecated
+and only used for GenoM2/OpenPRS binding... forget it. Chances are
+that you do not need this.
+
+pu-genom.c : define a number of function to encode and decode basic
+types from GenoM (i.e. C structures) to OpenPRS (Term *). Encodage is from PRS (Term *)
+to C, and Decodage is from C Struct to PRS (Term *).
+
+pu-parse-tl.c: contains functions and macros to parse OpenPRS TermList
+(i.e. the list of arguments passed to evaluable functions/predidates
+and actions. In external C/C++ code, you should use these to properly
+grab the arguments. You always pass a pointer to the type you want to
+grab and after the call, your pointer points to the object which DOES
+NOT belong to you... most of these functions return a boolean which
+TRUE if the parsing went fine, FALSE otherwise. Check the code for
+more information as how to use it.
+
+pu-mk-term.c: contains function to create proper Term * in OpenPRS
+(most likely to return them as the result of an evaluable function or
+action.

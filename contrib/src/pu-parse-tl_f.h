@@ -27,6 +27,8 @@ PBoolean PUGetOprsParametersSpecArg ( TermList paramList, int rank, Term_Type ty
 PBoolean PUGetOprsVarArgParameters(TermList paramList, PBoolean find_them_all, int nb, ...);
 PBoolean PUGetOprsVarArgG3Parameters(Expression *expr, PBoolean find_them_all, int nb, ...);
 
+
+/* These are tricky macros...   */
 #define set_parameter_or_default_value(parameter,default_value,oprs_type) (parameter = (default_value),oprs_type),#parameter,&(parameter)
 
 #define set_val_addr_func(in,field,mandatory,encode_func) #field, mandatory, &(in->field), encode_func

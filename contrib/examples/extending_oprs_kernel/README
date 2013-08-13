@@ -1,0 +1,4 @@
+This directory contains an example of how to "extend" your OPRS kernel
+with evaluable functions, evaluable predicates or actions.
+
+As for OpenPRS we use autotools to build this example.

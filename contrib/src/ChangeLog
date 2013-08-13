@@ -1,3 +1,11 @@
+2013-08-13  Felix Ingrand  <felix@precise>
+
+	* pu-parse-tl.c (PUGetOprsVarArgG3Parameters): Added comments to
+	try to explain how to use theses functions.
+	(PUGetOprsVarArgG3Parameters): fixed a priori a bug... when
+	calling a encode_genom_function, we did not check the returned
+	value, although this is very important... If we have a failure, we qui right away.
+
 2013-07-30  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* pu-genom.c: move to const char * when possible.

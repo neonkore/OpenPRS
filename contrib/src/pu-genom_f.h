@@ -45,6 +45,7 @@ PBoolean pu_check_ttc_name_alter(Expression *tc, const char *name);
 PBoolean pu_check_ttc_name_strict(Expression *tc, const char *name);
 PBoolean pu_check_ttc_symbol_alter(Expression *tc, Symbol name);
 PBoolean pu_check_ttc_symbol_strict(Expression *tc, Symbol name);
+
 PBoolean pu_encode_genom3_double ( const char *name, Expression *tc, double *val_addr);
 PBoolean pu_encode_genom3_float ( const char *name, Expression *tc, float *val_addr);
 PBoolean pu_encode_genom3_long_long_int ( const char *name, Expression *tc, long long int *val_addr);

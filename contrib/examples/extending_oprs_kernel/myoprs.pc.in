@@ -1,0 +1,9 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+oprsmoddir=${exec_prefix}/lib
+
+Name: pr2matutils
+Description: PR2MatUtils
+Version: 1.0b0
+Requires: openprs >= 1.1

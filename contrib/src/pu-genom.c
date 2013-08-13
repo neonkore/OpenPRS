@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * pu-genom.c -- 
  * 
- * Copyright (C) 1999-2012 LAAS/CNRS
+ * Copyright (C) 1999-2013 LAAS/CNRS
  * 
  * $Id$
  */
@@ -286,7 +286,7 @@ Term *pu_decode_genom_string(const char *name, const char *addr, int size, int m
      return(build_term_expr(build_expr_pfr_terms(fr, tl)));
 }
 
-/* Same as above, but just take one object, no need to pass a pointer */
+/* Same as above (pu_decode_genom3...), but just take one object, no need to pass a pointer */
 #define define_pu_simple_decode(type_gen_name,type_gen,oprs_fct,type_term,prop_type) \
 Term *pu_simple_decode_ ## type_gen_name(const char *name, type_gen val) \
 {\

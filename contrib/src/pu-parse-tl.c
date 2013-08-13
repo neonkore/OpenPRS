@@ -39,17 +39,9 @@
  *                 7 Avenue du colonel Roche   
  *                     31 077 Toulouse Cedex
  * 
- * $Id$
- * 
  */
 
-#ifndef __CEXTRACT__
-
 #include <config.h>
-
-#ifdef VXWORKS
-#include "vxWorks.h"
-#endif
 
 /* include system */
 #include <stddef.h>
@@ -58,7 +50,7 @@
 #include <stdarg.h>
 #include <string.h>
 
-/* pour OPRS */
+/* OPRS list */
 #include "slistPack.h"
 #include "slistPack_f.h"
 
@@ -70,8 +62,6 @@
 #include "lisp-list_f-pub.h"
 
 #include "pu-parse-tl_f.h"
-
-#endif
 
 PBoolean PU_bind_integer(int *intPtr, Term *term)
 {
@@ -181,15 +171,15 @@ PBoolean PU_bind_float(double *doublePtr, Term *paramTerm)
 }
 
 /*------------------------------------------------------------
-  * Fonction qui verifie le type des parametre et qui les affectent
-  * Ex: PUGetOprsParameters(termList, 6, 
-  *                                FLOAT, doublePtr,
+  * Fonction which checks the parameters and bind them to your pointers.
+  * Ex: PUGetOprsParameters(termList, 6, // we expect 6 arguments
+  *                                FLOAT, doublePtr, // they OpenPRS type, your pointer,
   *                                INTEGER, intPtr,
   *                                STRING, charPtrPtr,
   *                                U_POINTER, voidPtrPtr,
   *                                ATOM, charPtrPtr,
   *                                LISP_LIST, L_ListPtr)
-  * Retourne TRUE si tout c'est bien passe !
+  * Return TRUE if everything went fine!
   ------------------------------------------------------------*/
 PBoolean PUGetOprsParameters(TermList paramList, int NbParametres, ...)
 {
@@ -258,18 +248,16 @@ PBoolean PUGetOprsParameters(TermList paramList, int NbParametres, ...)
 }
 
 /*------------------------------------------------------------
-  Fonction qui decompose une LISP_LIST en ces differents elements
-  en verifiant leur type...
-  * Ex: PUGetLispListElem(lispList, 6, 
-  *                     FLOAT, doublePtr,
-  *                     INTEGER, intPtr,
+  Function which grabs the element of an OpenPRS LISP_LIST, check the length and the type
+  of the argument and bind them to your pointers.
+  * Ex: PUGetLispListElem(lispList, 6, // a LISP_LIST with 6 elements
+  *                     FLOAT, doublePtr, // first one a FLOAT, your pointers, 
+  *                     INTEGER, intPtr, // second on an integer, etc...
   *                     STRING, charPtrPtr,
   *                     U_POINTER, voidPtrPtr,
   *                     ATOM, charPtrPtr,
   *                     LISP_LIST, L_ListPtr)
-  * Retourne TRUE si tout c'est bien passe !
-  * (Dans le cas des STRING les "" sont enleves et il est a
-  * la charge de l'utilisateur de desallouer la chaine...
+  * Return  TRUE if everything went fine.
   ------------------------------------------------------------*/
 PBoolean PUGetLispListElem(L_List lispList, int NbTerm, ...)
 {
@@ -334,6 +322,7 @@ PBoolean PUGetLispListElem(L_List lispList, int NbTerm, ...)
 }
 
 int PUGetLispListCar(L_List *lispListPtr, Term_Type type, void *ptr)
+/* Grab the car (first element) of an OpenPRS LISP_LIST. */
 {
      Term *paramTerm;
 
@@ -392,16 +381,16 @@ int PUGetLispListCar(L_List *lispListPtr, Term_Type type, void *ptr)
 }
 
 /*------------------------------------------------------------
-  * Fonction qui ramasse les elements d'un EXPRESSION
+  * Function which grabs the element of an OpenPRS EXPRESSION. Of course, the first one
+  * must be an ATOM.
   * Ex: PUGetOprsTermCompArgs(tc, 6, 
+  *                                ATOM, charPtrPtr,
   *                                FLOAT, doublePtr,
   *                                INTEGER, intPtr,
   *                                STRING, charPtrPtr,
   *                                U_POINTER, voidPtrPtr,
-  *                                ATOM, charPtrPtr,
   *                                LISP_LIST, L_ListPtr)
-  * Retourne TRUE si tout c'est bien passe !
-  * Fortement inspire de la fonction PUGetOprsParamaters...(FFI 22/3/94)
+  * Return TRUE if all OK.
   ------------------------------------------------------------*/
 PBoolean PUGetOprsTermCompArgs(Expression *tc, int NbParametres, ...)
 {
@@ -422,7 +411,7 @@ PBoolean PUGetOprsTermCompArgs(Expression *tc, int NbParametres, ...)
 	  type = va_arg(listArg, Term_Type);
 
 	  if (paramCour == 1) 
-	       if (type == ATOM) {
+	       if (type == ATOM) { /* first argument must be an ATOM. */
 		    Symbol *atom = va_arg(listArg, Symbol *);
 		    *atom =  pred_func_rec_symbol(tc->pfr);
 	       } else {
@@ -480,6 +469,7 @@ PBoolean PUGetOprsTermCompArgs(Expression *tc, int NbParametres, ...)
 }
 
 PBoolean PUGetOprsTermCompSpecArg(Expression *tc, int rank, Term_Type type, void *ptr)
+/* Grab a specific argument from an EXPRESSION, rank=0 is the first element.  */
 {
      if (rank == 0) 
 	  if (type == ATOM) {
@@ -493,7 +483,7 @@ PBoolean PUGetOprsTermCompSpecArg(Expression *tc, int rank, Term_Type type, void
 	  Term *paramTerm;
 	  
 	  if (rank > sl_slist_length(paramList))
-	       return FALSE;
+	       return FALSE;	/* beyond the length of the list. */
 
 	  paramTerm = (Term *)sl_get_slist_pos(paramList, rank);
 
@@ -550,6 +540,8 @@ PBoolean PUGetOprsTermCompSpecArg(Expression *tc, int rank, Term_Type type, void
 }
 
 PBoolean PUGetOprsParametersSpecArg(TermList paramList, int rank, Term_Type type, void *ptr)
+/* Grab a specific argument from a TermList (parameter to evaluable functions/predicates
+   actions. rank=1 is the first element. */
 {
      Term *paramTerm;
 	  
@@ -609,9 +601,27 @@ PBoolean PUGetOprsParametersSpecArg(TermList paramList, int rank, Term_Type type
      return(TRUE);
 }
 
-/* We get an argument similar:
-   (VarArg (order 20)), This was passed from OpenPRS
-   10 <the result of the initialization>, "goal.order", int *, INTEGER
+/* These functions get a VarArg termList: example, you have a goal C
+ * struct with 3 fields, order an int, x and y double.
+
+   paramList = (VarArg (order 20)(goal.x 3.4)(y 4.5)(frame "base_id")), 
+   find_them_all ensure tat all the arguments are provided,
+   This is what we expect as ... args. N-uple of this form
+   INTEGER, "goal.order", &(goal.order),
+   FLOAT, "goal.x", &(goal.x),
+   FLOAT, "goal.y", &(goal.y)
+
+   which is usually produced by the call to this macro defined in pu-parse-tl_f.h
+   set_parameter_or_default_value(goal.order, 20, INTEGER),
+   set_parameter_or_default_value(goal.x, 0.0, FLOAT),
+   set_parameter_or_default_value(goal.y, 0.0, FLOAT)
+
+   the second argument of each n-uple in the macro is the default value which has
+   already been bound by the macro call.
+
+   Note that the argument in the VarArg can be minimal (e.g. order and
+   y) as there are no other possible solutions. This is usefull to
+   access intenal field in deep structures without having to give the whole path.
  */
 PBoolean PUGetOprsVarArgParameters(TermList paramList, PBoolean find_them_all, int nb, ...)
 {
@@ -739,7 +749,7 @@ PBoolean PUGetOprsVarArgParameters(TermList paramList, PBoolean find_them_all, i
        if (! found)
 	 if (find_them_all) {
 	   fprintf(stderr,"PUGetOprsVarArgParameters: Error: could not find \"%s\" in the argument list.\n", argName);
-	   return (FALSE);
+	   return FALSE;
 	 }
      }
      
@@ -748,14 +758,28 @@ PBoolean PUGetOprsVarArgParameters(TermList paramList, PBoolean find_them_all, i
 
 typedef PBoolean (* encode_genom_function)(Term *, void *);
 
+
+/* Following the logic of the previous function and pushing it further
+ * to recursively call encoding function to fill nested structure.
+ * This function and associated macros is heavily used in the
+ * GenoM3/OpenPRS template. Check the resulting code to see how it is
+ * used. */
 PBoolean PUGetOprsVarArgG3Parameters(Expression *expr, PBoolean find_them_all, int nb, ...)
 {
-     /* I get something like:
-	(tc, TRUE,  1, 
+     /* This function get something like this as argument:
+	(tc, TRUE,  3, 
 	"speedRef",TRUE,&(in->speedRef), encode_genom_demo_speed,
 	"bar.pos", TRUE, &(in->bar.pos), encode_genom_int,
 	"bar.err", FALSE, &(in->bar.err), encode_genom_double,
-	); */
+	); 
+	The n-uple above can be obtained using the set_val_addr_func macro. Such as
+	(tc, TRUE,  3, 
+	set_val_addr_func(in, speedRef,TRUE, encode_genom_demo_speed),
+	set_val_addr_func(in, bar.pos ,TRUE, encode_genom_demo_int),
+	set_val_addr_func(in, bar.err ,FALSE, encode_genom_demo_double),
+	); 
+	You get the idea... 
+*/
      va_list listArg;
      int paramCour;
      int result = TRUE;
@@ -789,6 +813,7 @@ PBoolean PUGetOprsVarArgG3Parameters(Expression *expr, PBoolean find_them_all, i
 	       int mandatory;
 	       void *addr;
 	       encode_genom_function funct;
+	       PBoolean funct_call_ok;
 
 	       /* Get the four fields */
 	       fieldName = va_arg(listArg, char *);
@@ -807,7 +832,10 @@ PBoolean PUGetOprsVarArgG3Parameters(Expression *expr, PBoolean find_them_all, i
 		    found = TRUE;
 		    add_to_tail(filled, (void *)(paramCour+1)); /* we remember the ith param was filled. */
 	    
-		    (funct)(argTerm,addr);
+		    funct_call_ok = (funct)(argTerm,addr);
+
+		    if (! funct_call_ok) return FALSE; /* the parsing did not go well. Just stop here. */
+
 		    break; 		/* we found it, move to the next arg */
 	       }
 	  }
