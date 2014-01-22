@@ -1,1 +1,1 @@
-void declare_myprs_action(void);
+void declare_myoprs_action(void);

@@ -40,7 +40,7 @@
 
 #include "pu-parse-tl_f.h"
 
-#include "evaluate-predicate_f.h"
+#include "evaluable-predicate_f.h"
 
 PBoolean is_an_int(TermList tl)
 {
@@ -51,20 +51,25 @@ PBoolean is_an_int(TermList tl)
 }
 
 
-PBoolean my_connected(TermList tl)
+PBoolean identical_point(TermList tl)
 {
-     if ( 1 == 1) {		/* Put your fancy condition here. */
-	  return TRUE;
-     } else {
-	  return FALSE;
-     }
+  double xa,ya,xb,yb;
 
+  if (PUGetOprsParameters(tl, 4,  
+			  FLOAT, &xa,
+			  FLOAT, &ya,
+			  FLOAT, &xb,
+			  FLOAT, &yb) && 
+      xa == xb && ya == yb)
+       return TRUE;
+  else
+       return FALSE;
 }
 
-void declare_myprs_eval_pred(void)
+void declare_myoprs_eval_pred(void)
 {
-     make_and_declare_eval_pred("IsAnInt", is_an_int, 1, TRUE);
-     make_and_declare_eval_pred("MyConnected", my_connected, 0, TRUE);
+     make_and_declare_eval_pred("IsAnInt", is_an_int, 1, TRUE); 
+     make_and_declare_eval_pred("PointEqual", identical_point, 4, TRUE);
      return;
 }
 

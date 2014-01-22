@@ -40,7 +40,7 @@
 #include "oprs-type_f-pub.h"
 #include "ev-function_f-pub.h"
 
-#include "evaluate-function_f.h"
+#include "evaluable-function_f.h"
 
 
 #include "pu-parse-tl_f.h"
@@ -79,8 +79,8 @@ Term *bar2pt_eval_funct(TermList terms)
     yb = (y1+y2)/2;
     
     
-    sl_add_to_tail(tl, pu_simple_decode_double("x",xb, 1)); //build (x <val xb>)
-    sl_add_to_tail(tl, pu_simple_decode_double("y", yb, 1)); //build (y <val yb>)
+    sl_add_to_tail(tl, pu_simple_decode_double("x",xb)); //build (x <val xb>)
+    sl_add_to_tail(tl, pu_simple_decode_double("y", yb)); //build (y <val yb>)
     sl_add_to_tail(tl, PUMakeTermFloat(xb));		     // Add the float value directly
     sl_add_to_tail(tl, PUMakeTermFloat(yb));
 				  
@@ -93,7 +93,7 @@ Term *bar2pt_eval_funct(TermList terms)
 
 #define D2D(x1,y1,x2,y2) (sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1)))
 
-Term *two_points_distance(TermList terms)
+Term *two_points_distance_eval_funct(TermList terms)
 {
   double xa,ya,xb,yb;
 
@@ -109,11 +109,11 @@ Term *two_points_distance(TermList terms)
 }
 
 
-void declare_myprs_eval_funct(void)
+void declare_myoprs_eval_funct(void)
 {
   make_and_declare_eval_funct("SQRT", sqrt_eval_funct, 1);
   make_and_declare_eval_funct("BARI", bar2pt_eval_funct, 4);
-  make_and_declare_eval_funct("CHECK-TABLE-POINT" , tablePointToPlace_eval_funct, 18);
+  make_and_declare_eval_funct("TwoPointDist" , two_points_distance_eval_funct, 4);
   return;
 }
 

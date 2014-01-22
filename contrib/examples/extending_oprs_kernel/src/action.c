@@ -59,15 +59,17 @@ Term *init_action(TermList terms)
      if (!PUGetOprsParameters(terms, 1,
 			      INTEGER, &init
 	      )) {
-     
+	  fprintf(stderr,"This was printed from the action init_action which did not get an int. Failure.\n");	
 	  return build_nil();
      }
+     fprintf(stderr,"This was printed from the action init_action, passing %d. Success.\n", init);	
      return(build_t());
 }
 
 Term *end_action(TermList terms)
 {
      /* do something. */
+     fprintf(stderr,"This was printed from the action end_action.\n");	
      return(build_t());
 }
 
@@ -78,13 +80,14 @@ Term *my_action(TermList terms)
      if (PUGetOprsParameters(terms, 2,
 			     FLOAT, &v,
 			     FLOAT, &w)) {
-	  // do_something_with_these_two_floats(v,w);	
+	  fprintf(stderr,"This was printed from the action my_action, passing %f and %f. Success.\n", v, w);	
 	  return(build_t());
      } else
+	  fprintf(stderr,"This was printed from the action my_action, which did not get the 2 FLOAT. Failure.\n");	
 	  return(build_nil());
 }
 
-void declare_myprs_action(void)
+void declare_myoprs_action(void)
 {
   make_and_declare_action("MyInit", init_action, 1);
   make_and_declare_action("MyEnd", end_action, 0);

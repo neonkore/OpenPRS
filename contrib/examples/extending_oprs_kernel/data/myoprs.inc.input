@@ -1,0 +1,15 @@
+
+load external "@MYOPRSMODDIR@/myoprs" "declare_myoprs"
+
+require "@OPENPRSDATADIR@/new-default.inc"
+
+
+include "@MYOPRSDATADIR@/myoprs.sym"
+load opf "@MYOPRSDATADIR@/myoprs.opf"
+load db "@MYOPRSDATADIR@/myoprs.db"
+
+
+trace suc_fail on
+trace step opf "@MYOPRSDATADIR@/myoprs.opf" on
+trace text opf "@MYOPRSDATADIR@/myoprs.opf" on
+trace graphic opf "@MYOPRSDATADIR@/myoprs.opf" on

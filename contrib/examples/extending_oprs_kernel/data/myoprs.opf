@@ -1,0 +1,252 @@
+;;;
+;;; File: /home/felix/work/openprs/contrib/examples/extending_oprs_kernel/data/myoprs.opf
+;;; $Id$
+;;; Date: Wed Aug 14 18:03:36 2013
+;;; Host: precise
+;;; OP Editor Version: 1.1b10
+;;; Compiled on precise (Tue Aug 13 18:44:36 CEST 2013)
+;;; OP File Format: 2
+;;;
+(2 
+(
+)
+(MyAction (
+(INVOCATION INVOCATION (! (MyAction $a $b)) 10 50 1 80 0 )
+(CONTEXT CONTEXT () 10 250 1 60 0 )
+(CALL CALL_NODE  10 150 1 60 0 )
+(SETTING SETTING  10 350 1 60 0 )
+(EFFECTS EFFECTS () 10 450 1 60 0 )
+(ACTION ACTION (MyAction $a $b) 310 50 1 60 0 )
+(DOCUMENTATION DOCUMENTATION  10 650 1 60 0 )
+(PROPERTIES PROPERTIES  10 550 1 60 0 )
+) (
+) (
+) )
+(MyEnd (
+(INVOCATION INVOCATION (! (MyEnd)) 10 50 1 80 0 )
+(CONTEXT CONTEXT () 10 250 1 60 0 )
+(CALL CALL_NODE  10 150 1 60 0 )
+(SETTING SETTING  10 350 1 60 0 )
+(EFFECTS EFFECTS () 10 450 1 60 0 )
+(ACTION ACTION (MyEnd) 310 50 1 60 0 )
+(DOCUMENTATION DOCUMENTATION  10 650 1 60 0 )
+(PROPERTIES PROPERTIES  10 550 1 60 0 )
+) (
+) (
+) )
+(MyInit (
+(INVOCATION INVOCATION (! (MyInit $int)) 10 50 1 80 0 )
+(CONTEXT CONTEXT () 10 250 1 60 0 )
+(CALL CALL_NODE  10 150 1 60 0 )
+(SETTING SETTING  10 350 1 60 0 )
+(EFFECTS EFFECTS () 10 450 1 60 0 )
+(ACTION ACTION (MyInit $int) 310 50 1 60 0 )
+(DOCUMENTATION DOCUMENTATION  10 650 1 60 0 )
+(PROPERTIES PROPERTIES  10 550 1 60 0 )
+) (
+) (
+) )
+(MyTest (
+(INVOCATION INVOCATION (! (MyTest)) 10 50 1 80 0 )
+(CONTEXT CONTEXT () 10 250 1 60 0 )
+(CALL CALL_NODE  10 150 1 60 0 )
+(SETTING SETTING  10 350 1 60 0 )
+(EFFECTS EFFECTS () 10 450 1 60 0 )
+(DOCUMENTATION DOCUMENTATION  10 650 1 60 0 )
+(PROPERTIES PROPERTIES  10 550 1 60 0 )
+) (
+(START START 0 0 312 26)
+(PROCESS N1 0 0 255 166)
+(IF N2 0 0 336 288)
+(THEN N2_T 0 0 321 288)
+(ELSE N2_F 0 0 362 288)
+(IF N3 0 0 498 238)
+(THEN N3_T 0 0 483 238)
+(ELSE N3_F 0 0 524 238)
+) (
+(IF START NN N3
+(! (MyInit Foo))
+()  0 0 40 0)
+(ELSE N3 NN N3_F)
+(THEN N3 NN N3_T)
+(ELSE N2 NN N2_F)
+(THEN N2 NN N2_T)
+(GOAL START NN N1
+(! (MyInit 1))
+()  0 0 40 0)
+) )
+(PR2OdoGet (
+(INVOCATION INVOCATION (! (PR2OdoGetLoop)) 10 50 1 80 0 )
+(CONTEXT CONTEXT () 10 250 1 60 0 )
+(CALL CALL_NODE  10 150 1 60 0 )
+(SETTING SETTING  10 350 1 60 0 )
+(EFFECTS EFFECTS () 10 450 1 60 0 )
+(DOCUMENTATION DOCUMENTATION  10 650 1 60 0 )
+(PROPERTIES PROPERTIES  10 550 1 60 0 )
+) (
+(START START 0 1 310 10)
+(PROCESS N1 0 0 251 139)
+(PROCESS N2 0 0 404 148)
+(PROCESS N3 0 0 607 162)
+(PROCESS N4 0 0 249 257)
+) (
+(GOAL N3 NN N2
+(^ (ELAPSED-TIME (CURRENT (TIME)) 1))
+((532 113) )  0 0 40 0)
+(GOAL N2 NN N3
+(=> (PR2Odo (PR2OdoGet)))
+((509 259) )  0 0 40 0)
+(GOAL START NN N2
+(! (SUCCEED))
+()  0 0 40 0)
+(GOAL START NN N1
+(^ (STOP))
+()  0 0 40 0)
+(GOAL N1 NN N4
+(! (FAILED))
+()  0 0 40 0)
+) )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; PR2PickAndPlace
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(defop PR2PickAndPlace
+    :invocation (! (PR2PickAndPlace))
+    :context ()
+    :body ((! (PR2PickPlaceStartActionClientAndWait))
+           (! (PR2PickupStartActionClientAndWait))
+           (! (PR2PlaceStartActionClientAndWait))
+           (! (PR2PickPlace (VarArg)))
+           (^ (PR2PickPlaceResult (index $i) (state $s) (success $suc) (detectedObject $o) (object_name $n) (table_name $t)))
+           (! (PR2Pickup (VarArg (target $o) (collision_object_name $n) (collision_support_surface_name $t))))
+           (^ (PR2PickupResult (index $pi) (state $ps) (manipulation_result $pres) (grasp $g)))
+           (! (PR2Place
+                  (VarArg (object $o) (collision_object_name $n) (x 0.700000) (grasp $g) (collision_support_surface_name $t))))
+           (^ (PR2PlaceResult (index $pi) (state $ps) (manipulation_result $pres)))
+          )
+    :effects ()
+)
+(PR2Sound (
+(INVOCATION INVOCATION (! (PR2Sound $sound $command $arg)) 10 50 1 80 0 )
+(CONTEXT CONTEXT () 10 250 1 60 0 )
+(CALL CALL_NODE  10 150 1 60 0 )
+(SETTING SETTING  10 350 1 60 0 )
+(EFFECTS EFFECTS () 10 450 1 60 0 )
+(ACTION ACTION (PR2Sound $sound $command $arg) 310 50 1 60 0 )
+(DOCUMENTATION DOCUMENTATION "sound (int): -3 (SAY): 1 (PLAY_ONCE) ; command (int) ; arg (string): \"hello\" " 10 650 1 60 0 )
+(PROPERTIES PROPERTIES  10 550 1 60 0 )
+) (
+) (
+) )
+(PR2Spin (
+(INVOCATION INVOCATION (! (PR2Spin)) 10 50 1 80 0 )
+(CONTEXT CONTEXT () 10 250 1 60 0 )
+(CALL CALL_NODE  10 150 1 60 0 )
+(SETTING SETTING  10 350 1 60 0 )
+(EFFECTS EFFECTS () 10 450 1 60 0 )
+(DOCUMENTATION DOCUMENTATION  10 650 1 60 0 )
+(PROPERTIES PROPERTIES  10 550 1 60 0 )
+) (
+(START START 0 0 310 54)
+(END END5 0 0 313 158)
+) (
+(GOAL START NN END5
+(^ (ROSSpinOnce))
+()  0 0 40 0)
+) )
+(PR2Start (
+(INVOCATION INVOCATION (! (PR2Start)) 10 50 1 80 0 )
+(CONTEXT CONTEXT () 10 250 1 60 0 )
+(CALL CALL_NODE  10 150 1 60 0 )
+(SETTING SETTING  10 350 1 60 0 )
+(EFFECTS EFFECTS () 10 450 1 60 0 )
+(DOCUMENTATION DOCUMENTATION  10 650 1 60 0 )
+(PROPERTIES PROPERTIES  10 550 1 60 0 )
+) (
+(START START 0 0 313 38)
+(PROCESS N1 0 0 327 151)
+(PROCESS N2 0 0 327 306)
+(END END4 0 0 317 425)
+) (
+(GOAL N2 NN END4
+(! (PR2End))
+()  0 0 40 0)
+(GOAL N1 NN N2
+(! (PR2Spin))
+()  0 0 40 0)
+(GOAL START NN N1
+(! (PR2Init 1))
+()  0 0 40 0)
+) )
+(PR2VelocitySet (
+(INVOCATION INVOCATION (! (PR2VelocitySet $v $w)) 10 50 1 80 0 )
+(CONTEXT CONTEXT () 10 250 1 60 0 )
+(CALL CALL_NODE  10 150 1 60 0 )
+(SETTING SETTING  10 350 1 60 0 )
+(EFFECTS EFFECTS () 10 450 1 60 0 )
+(ACTION ACTION (PR2VelocitySet $v $w) 310 50 1 60 0 )
+(DOCUMENTATION DOCUMENTATION  10 650 1 60 0 )
+(PROPERTIES PROPERTIES  10 550 1 60 0 )
+) (
+) (
+) )
+(PlayGripper (
+(INVOCATION INVOCATION (! (PlayGripper)) 10 50 1 80 0 )
+(CONTEXT CONTEXT () 10 250 1 60 0 )
+(CALL CALL_NODE  10 150 1 60 0 )
+(SETTING SETTING  10 350 1 60 0 )
+(EFFECTS EFFECTS () 10 450 1 60 0 )
+(DOCUMENTATION DOCUMENTATION  10 650 1 60 0 )
+(PROPERTIES PROPERTIES  10 550 1 60 0 )
+) (
+(START START 0 1 310 10)
+(PROCESS N1 0 0 320 279)
+(PROCESS N2 0 0 543 199)
+(PROCESS N3 0 0 559 83)
+(PROCESS N4 0 0 191 107)
+(PROCESS N5 0 0 152 233)
+) (
+(GOAL START NN N1
+(! (PR2GripperAction 1 1))
+((314 181) )  22 0 40 0)
+(GOAL N1 NN N2
+(^ (ELAPSED-TIME (CURRENT (TIME)) 1))
+((508 275) )  0 0 40 0)
+(GOAL N2 NN N3
+(! (PR2GripperAction 2 2))
+()  0 0 40 0)
+(GOAL N3 NN START
+(^ (ELAPSED-TIME (CURRENT (TIME)) 1))
+()  0 0 40 0)
+(GOAL START NN N4
+(^ (STOP))
+()  0 0 40 0)
+(GOAL N4 NN N5
+(! (FAILED))
+()  0 0 40 0)
+) )
+(SetIntParam (
+(INVOCATION INVOCATION (! (SetIntParam $key $int)) 10 50 1 80 0 )
+(CONTEXT CONTEXT () 10 250 1 60 0 )
+(CALL CALL_NODE  10 150 1 60 0 )
+(SETTING SETTING  10 350 1 60 0 )
+(EFFECTS EFFECTS () 10 450 1 60 0 )
+(ACTION ACTION (SetIntParam $key $int) 310 50 1 60 0 )
+(DOCUMENTATION DOCUMENTATION  10 650 1 60 0 )
+(PROPERTIES PROPERTIES  10 550 1 60 0 )
+) (
+) (
+) )
+(SetStringParam (
+(INVOCATION INVOCATION (! (SetStringParam $key $string)) 10 50 1 80 0 )
+(CONTEXT CONTEXT () 10 250 1 60 0 )
+(CALL CALL_NODE  10 150 1 60 0 )
+(SETTING SETTING  10 350 1 60 0 )
+(EFFECTS EFFECTS () 10 450 1 60 0 )
+(ACTION ACTION (SetStringParam $key $string) 310 50 1 60 0 )
+(DOCUMENTATION DOCUMENTATION  313 143 1 60 0 )
+(PROPERTIES PROPERTIES  10 550 1 60 0 )
+) (
+) (
+) )
+)

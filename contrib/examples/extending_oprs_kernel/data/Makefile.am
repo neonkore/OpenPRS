@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013 LAAS/CNRS
+# Copyright (c) 2012-2013 LAAS/CNRS
 # All rights reserved.
 #
 # Redistribution  and  use in source   and binary forms,  with or without
@@ -26,7 +26,22 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-SUBDIRS = src data
+DIST_DATA_FILES =  myoprs.opf myoprs.sym myoprs.db myoprs.inc.input
 
-pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = myoprs.pc
+INST_DATA_FILES =  myoprs.opf myoprs.sym myoprs.db myoprs.inc
+
+myoprsdatadir = @datadir@/myoprs/data
+myoprsmoddir = @libdir@
+
+pkgdatadatadir = $(pkgdatadir)/data
+pkgdatadata_DATA = $(INST_DATA_FILES)
+
+%.inc: %.inc.input ../config.status
+	$(SED) \
+        -e 's|@OPENPRSDATADIR@|@OPENPRS_DATADIR@|' \
+	-e 's|@MYOPRSDATADIR@|$(myoprsdatadir)|' \
+	-e 's|@MYOPRSMODDIR@|$(myoprsmoddir)|' \
+	$< > $@
+
+EXTRA_DIST = $(DIST_DATA_FILES)
+CLEANFILES = myoprs.inc

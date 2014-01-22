@@ -49,6 +49,7 @@ TAGS
 aclocal.m4
 autom4te.cache
 build/
+m4/
 config
 config-ac.h
 config-ac.h.in
@@ -57,6 +58,12 @@ config.h.in
 config.log
 config.status
 configure
+config.guess
+config.sub
+depcomp
+install-sh
+ltmain.sh
+missing
 data/new-default.opf.bak
 doc/bar.tex
 doc/example-cons.tex

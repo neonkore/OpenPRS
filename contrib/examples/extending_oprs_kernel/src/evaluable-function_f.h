@@ -1,1 +1,1 @@
-void declare_myprs_eval_funct(void);
+void declare_myoprs_eval_funct(void);
