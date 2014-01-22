@@ -310,6 +310,9 @@ Term *action_send_message(TermList terms)
 /* Send message. */
 {
      Term *t1, *t2,*res;
+     PBoolean save_rcr = replace_cr;
+
+     replace_cr = FALSE;
      
      res = MAKE_OBJECT(Term);
      
@@ -324,6 +327,8 @@ Term *action_send_message(TermList terms)
      res->type = TT_ATOM;
      res->u.id = lisp_t_sym;
 
+     replace_cr = save_rcr;
+
      return res;
 }
 
@@ -333,6 +338,9 @@ Term *action_send_string(TermList terms)
      Term *t1, *t2,*res;
      
      res = MAKE_OBJECT(Term);
+     PBoolean save_rcr = replace_cr;
+
+     replace_cr = FALSE;
      
      t1 = (Term *)sl_get_slist_pos(terms, 1);
      t2 = (Term *)sl_get_slist_pos(terms, 2);
@@ -340,6 +348,8 @@ Term *action_send_string(TermList terms)
 	  report_fatal_external_error(oprs_strerror(PE_EXPECTED_ATOM_TERM_TYPE));
      if (t2->type != STRING)
 	  report_fatal_external_error(oprs_strerror(PE_EXPECTED_EXPRESSION_TERM_TYPE));
+
+     replace_cr = save_rcr;
 
      oprs_send_message_string(t2->u.string,t1->u.id);
      res->type = TT_ATOM;
@@ -355,6 +365,10 @@ Term *action_multicast_message(TermList terms)
      Symbol *recs;
      int i, nb_recs;
      L_List l;
+     PBoolean save_rcr = replace_cr;
+
+     replace_cr = FALSE;
+
      res = MAKE_OBJECT(Term);
      
      t1 = (Term *)sl_get_slist_pos(terms, 1);
@@ -380,6 +394,9 @@ Term *action_multicast_message(TermList terms)
      }
 
      multicast_message_term(t2->u.expr,nb_recs,recs);
+
+     replace_cr = save_rcr;
+
      res->type = TT_ATOM;
      res->u.id = lisp_t_sym;
      FREE(recs);
@@ -391,13 +408,19 @@ Term *action_broadcast_message(TermList terms)
 /* Send message. */
 {
      Term *t1,*res;
-     
+     PBoolean save_rcr = replace_cr;
+
+     replace_cr = FALSE;
+
      res = MAKE_OBJECT(Term);
      
      t1 = (Term *)sl_get_slist_pos(terms, 1);
      if ((t1->type != EXPRESSION)) 
 	  report_fatal_external_error(oprs_strerror(PE_EXPECTED_EXPRESSION_TERM_TYPE));
      broadcast_message_term(t1->u.expr);
+
+     replace_cr = save_rcr;
+
      res->type = TT_ATOM;
      res->u.id = lisp_t_sym;
 

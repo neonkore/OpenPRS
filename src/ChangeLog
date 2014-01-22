@@ -1,3 +1,8 @@
+2014-01-21  Felix Ingrand  <felix@bobc1>
+
+	* action.c (action_print_term): Strings where printed with
+	backslash in message. Cause issues with FAPE.
+
 2013-04-18  Felix Ingrand  <felix@precise>
 
 	* xtop-lev-loop.c (xoprs_top_level_loop): Change the way we
