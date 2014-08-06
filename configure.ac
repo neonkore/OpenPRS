@@ -136,7 +136,6 @@ AC_CONFIG_FILES([
                  c_toolkit/Makefile
                  util/Makefile
                  contrib/Makefile
-                 contrib/data/Makefile
                  contrib/src/Makefile
 		 contrib/src/openprs-util.pc
                  data/Makefile
