@@ -991,7 +991,7 @@ thing.
 
 |Meta ~! (negation as failure)| (which is a OP in default-processes.graph)
 cannot be parsed because of the absence of negation as failure in \COPRS{}.  As
-a consequence, the expression \code{(! (~ \$X))} cannot be parsed as a Temporal
+a consequence, the expression \code{(! (\~{} \$X))} cannot be parsed as a Temporal
 Expression (according to \COPRS{} Grammar).
 
 \subsubsection{Badly Formed Goals}
@@ -1005,9 +1005,9 @@ because \code{(((CURRENT \$O) (CURRENT \$B)))} is not a valid \dfn{Composed
 Term}.
 
 This goal: \*
-\code{( ! (\& (~> (FOOBAR \$P \$A)) (=> (FOOBAR \$P \$A)))))))} \*
+\code{( ! (\& (\~{}> (FOOBAR \$P \$A)) (=> (FOOBAR \$P \$A)))))))} \*
 is not allowed anymore\dots{}, replace it with: \*
-\code{(\& (~> (FOOBAR \$P \$A)) (=> (FOOBAR \$P \$A))))))} \*
+\code{(\& (\~{}> (FOOBAR \$P \$A)) (=> (FOOBAR \$P \$A))))))} \*
 
 \section{SGRAPH Format}
 \node{SGRAPH Format}

@@ -526,7 +526,7 @@ Example: \code{consult (bar \$x b c)}\\*
 expression with unbound variables, and you can only conclude expression, not
 gexpression.\\*
 Example: \code{conclude (bar a b c)}, and\\*
-\code{conclude (~ (foo 2 3 (+ 2 3)))}, are accepted, however\\*
+\code{conclude (\~{} (foo 2 3 (+ 2 3)))}, are accepted, however\\*
 \code{conclude (bar \$x b c)} is not allowed because of the variable, nor is\\*
 \code{conclude (\& ( bar boo) (boo bar))} because of the conjunction.
 
@@ -1819,16 +1819,16 @@ General expressions (gexpression) are defined as follows:
 \noindent
 \code{gexpression := expression | lexpression} \\*
 \code{lexpression := ( expr\_logical\_operator gexpression+ )} \\*
-\code{expression := ( predicate term* ) | ( ~ ( predicate term* ) )} \\*
+\code{expression := ( predicate term* ) | ( \~{} ( predicate term* ) )} \\*
 \code{predicate :=  SYMBOL} \\*
-\code{expr\_logical\_operator := \& | V}
+\code{expr\_logical\_operator := \& | ||}
 
 Example of gexpressions: \\*
 \code{(foo a b)},\\*
 \code{(factorial 5 120)},\\*
 \code{(> 3 2)},\\*
 \code{(\& (foo a \$x) (bar \$x 7))},\\*
-\code{(~ (toto 45 (+ 3 4)))}.
+\code{(\~{} (toto 45 (+ 3 4)))}.
 
 \section{General Temporal Expressions}
 \node{General Temporal Expressions}
@@ -1847,7 +1847,7 @@ General Temporal Expressions (gtexpression) are defined as follows:
 \code{gtexpression := texpression | ltexpression} \\*
 \code{ltexpression := ( texpr\_logical\_operator gtexpression+ )} \\*
 \code{texpression := ( temporal\_operator gexpression )} \\*
-\code{temporal\_operator := ! | ? | \^{} | \# | \% | => | ~> |}\\*
+\code{temporal\_operator := ! | ? | \^{} | \# | \% | => | \~{}> |}\\*
 \code{                     achieve | test | wait | preserve |}\\*
 \code{                     maintain | conclude | assert | retract}\\*
 \code{texpr\_logical\_operator := \& | V}
@@ -2002,22 +2002,22 @@ into the kernel (and can lead to OP execution). This goal always succeeds.
 
 Example: \code{(=> (position valve close))}. One can also put more then one
 conclude or retract goal in a conjunction: \code{(\& (=> (position valve close))
-(=> (pressure tk1 200)) (~> (ALARM))))}.
+(=> (pressure tk1 200)) (\~{}> (ALARM))))}.
 
 \subsection{Retract Operator}
 \node{Retract Operator}
 \cpindex{Retract Operator}
 
-The retract operator is represented with the symbol: \samp{~>}, or with the
+The retract operator is represented with the symbol: \samp{\~{}>}, or with the
 symbol \code{retract} (in upercase or lowercase).
 
 When executed, this goal has for effect to retract the gexpression from the
 database. It always succeeds.
 
 
-Example: \code{(~> (position valve close))}. One can also put more then one
-conclude/assert or retract goal in a conjunction: \code{(\& (~> (position valve
-close)) (~> (pressure tk1 200)) (~> (ALARM))))}.
+Example: \code{(\~{}> (position valve close))}. One can also put more then one
+conclude/assert or retract goal in a conjunction: \code{(\& (\~{}> (position valve
+close)) (\~{}> (pressure tk1 200)) (\~{}> (ALARM))))}.
 
 \section{General Meta Expressions}
 \node{General Meta Expressions}
@@ -2241,11 +2241,11 @@ concluded or retracted upon successful execution of the OP.
 Example of effects part: \\*
 \code{()}, \\*
 \code{((=> (POSITION \$T \$POS)))}, \\*
-\code{((~> (POSITION \$T \$POS)))}, \\*
+\code{((\~{}> (POSITION \$T \$POS)))}, \\*
 \code{((=> (POSITION \$T1 \$POS1))
 (=> (POSITION \$T2 \$POS2))
 (=> (POSITION \$T3 \$POS3)))}, \\*
-\code{((~> (FOO \$x))
+\code{((\~{}> (FOO \$x))
 (=> (FOO \$y))
 (=> (BAR \$X \$Y)))}.
 
@@ -2909,7 +2909,7 @@ functions found in the expression are evaluated and the result is concluded,
 not the original expression. For example, if you conclude \code{(foo (+ 1 2) (-
 5 4))}, then \code{(foo 3 1)} ends up in the database.
 
-You can conclude facts with negation, \code{(~ (foo 3 1))}, for example.
+You can conclude facts with negation, \code{(\~{} (foo 3 1))}, for example.
 Moreover, when an expression is concluded, its negation, if found, is
 automatically retracted from the database.
 
@@ -3056,9 +3056,9 @@ containing information about flights between cities. If your database does not
 contain the fact that there is a direct flight between Toulouse and San
 Francisco, most likely, it means that no such flight exists. Therefore, if you
 ask \code{consult (direct-flight TLS SFO)}, it returns FALSE. But if you ask
-\code{consult (~ (direct-flight TLS SFO))}, then it also returns FALSE by
+\code{consult (\~{} (direct-flight TLS SFO))}, then it also returns FALSE by
 default, although it is TRUE. In fact, one solution would be to enter all the
-possible flights which do not exist, by adding explicitly \code{(~
+possible flights which do not exist, by adding explicitly \code{(\~{}
 (direct-flight TLS SFO))} and all the other ones.  This is tedious and will
 clutter your database with unnecessary information.
 
@@ -3066,7 +3066,7 @@ The solution to this problem in \CPK{} is to declare the predicate
 \code{direct-flight} as CWP with the following command: \code{declare\_cwp
 direct-flight} (\pxref{OPRS Kernel Database Commands}). It means
 automatically that any consultation of the negation of this predicate
-(such as \code{consult (~ (direct-flight TLS SFO))}) returns TRUE if the
+(such as \code{consult (\~{} (direct-flight TLS SFO))}) returns TRUE if the
 positive (\code{(direct-flight TLS SFO)}) is not in the database.
 
 When you declare evaluable predicate (\pxref{Evaluable Predicates}), you
@@ -3075,7 +3075,7 @@ predefined in the kernel are CWP.
 
 A side effect of this declaration is that any attempt to conclude the
 negation of a CWP is ignored by the database. Indeed, what would be
-the point of concluding \code{(~ (direct-flight TLS SFO))} as it is true
+the point of concluding \code{(\~{} (direct-flight TLS SFO))} as it is true
 anyway (providing of course that \code{(direct-flight
 TLS SFO)} is not in the database).
 
@@ -4607,10 +4607,10 @@ function. It is defined for 1 term. It prints the object and a cariage return.
 is defined for 1 term. The format of the term passed as argument is somewhat
 awkward and is here for upward compatibility with the old Lisp version of
 \OPRS{}. The Term should look like this: \\*
-\code{(FORMAT NIL "The Factorial of ~a is ~a." \$X \$N)))}\\*
+\code{(FORMAT NIL "The Factorial of \~{}a is \~{}a." \$X \$N)))}\\*
 i.e.\ a list containing the word \code{FORMAT}, then the symbol
 \code{NIL}, then a string, and finally a number of variables or terms.
-The \samp{~a} in the string will be replaced at print time with the value of
+The \samp{\~{}a} in the string will be replaced at print time with the value of
 the corresponding terms or variables.
 \end{typeefa}
 

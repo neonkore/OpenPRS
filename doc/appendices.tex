@@ -61,14 +61,14 @@ recognized by \COPRS{}. For example, the following goal is not allowed: \\*
 because \\*
 \code{(((CURRENT \$O) (CURRENT \$B)))} \\*
 is not a valid Composed Term. Similarly, this goal: \\*
-\code{( ! (\& (~> (FOOBAR \$P \$A)) (=> (FOOBAR \$P \$A)))))))} \\*
+\code{( ! (\& (\~{}> (FOOBAR \$P \$A)) (=> (FOOBAR \$P \$A)))))))} \\*
 is not allowed any longer\dots{} It should be replaced with: \\*
-\code{(\& (~> (FOOBAR \$P \$A)) (=> (FOOBAR \$P \$A))))))}
+\code{(\& (\~{}> (FOOBAR \$P \$A)) (=> (FOOBAR \$P \$A))))))}
 
 \item The following syntax is still allowed: \\*
 \code{( ! (=> (INITIAL-VALUE \$P \$O \$D \$V)))} \\*
 but should be replaced with the \code{=>} temporal operator (a similar
-remark holds for \code{~>}) .
+remark holds for \code{\~{}>}) .
 
 \item The \code{@} variables have the expected behavior. In SRI PRS, the
 only way to rebind a variable was to use a goal such as \code{(! (= @x
