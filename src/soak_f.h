@@ -37,6 +37,7 @@ void test_find_soak_fact(Fact *fact, Oprs *oprs);
 void test_find_soak_expr(Expression *expr, Oprs *oprs);
 void install_condition_timer_handler(void);
 void arm_condition_timer(void);
+void set_interval_timer(void);
 void desarm_condition_timer(void);
 void install_condition_timer_handler_set_arm(void);
 void kill_condition_timer(void);

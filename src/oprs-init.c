@@ -159,7 +159,7 @@ PDate ixtet_start_date;	/* The zero */
 
 void wrap_up(void)
 {
-#ifdef HAVE_SETITIMER
+#if defined(HAVE_SETITIMER) && defined(WANT_TRIGGERED_IO)
      kill_condition_timer();
 #endif
      end_kernel_hook();
@@ -878,7 +878,7 @@ Oprs *oprs_init_main(char *name, PBoolean use_x_window, char *mp_hostn, int mp_p
 
      oprs_prompt = name;
      previous_soak = NULL;
-#ifdef HAVE_SETITIMER
+#if defined(HAVE_SETITIMER) && defined(WANT_TRIGGERED_IO)
      install_condition_timer_handler_set_arm();
 #endif
      

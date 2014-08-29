@@ -96,7 +96,7 @@ void let_the_good_time_roll(Oprs *oprs)
      pool_tv.tv_sec = main_loop_pool_sec;
      pool_tv.tv_usec = main_loop_pool_usec;
 
-#if defined(HAVE_SETITIMER) && defined(HAVE_SIGACTION)
+#if defined(HAVE_SETITIMER) && defined(WANT_TRIGGERED_IO) && defined(HAVE_SIGACTION)
      block_sigalarm();		/* We should sleep/select for the remaining of the itimer time. */
 #endif
 
@@ -106,7 +106,7 @@ void let_the_good_time_roll(Oprs *oprs)
      if (found == -1)
 	  perror("top-lev-loop: select NULL");
 
-#if defined(HAVE_SETITIMER) && defined(HAVE_SIGACTION)
+#if defined(HAVE_SETITIMER) && defined(WANT_TRIGGERED_IO) && defined(HAVE_SIGACTION)
      unblock_sigalarm();	/* We should restart the timer with the remaining of pool_tv... */
 #endif
 }
@@ -119,9 +119,22 @@ void client_oprs_top_level_loop(Oprs *oprs)
 {
      Op_Instance_List soak;
      Op_Instance *opi1, *opi2;
+#if defined(HAVE_SETITIMER) && defined(WANT_TRIGGERED_IO)
+     long last_main_loop_pool_sec  = main_loop_pool_sec;
+     long last_main_loop_pool_usec = main_loop_pool_usec;
+#endif
 
      while (TRUE) {
-#ifdef HAVE_SETITIMER
+#if defined(HAVE_SETITIMER) && defined(WANT_TRIGGERED_IO)
+         if (last_main_loop_pool_sec != main_loop_pool_sec ||
+	     last_main_loop_pool_usec != main_loop_pool_usec)
+         {
+	       desarm_condition_timer();
+	       set_interval_timer();
+	       arm_condition_timer();
+	       last_main_loop_pool_sec  = main_loop_pool_sec;
+	       last_main_loop_pool_usec = main_loop_pool_usec;
+          }
 	  if (check_the_stdin) {
 	       check_the_stdin = FALSE;
 	       check_stdin();
@@ -129,6 +142,7 @@ void client_oprs_top_level_loop(Oprs *oprs)
 #else
 	  check_stdin();
 #endif
+
 	  if (oprs_run_mode != HALT) {
 	       shift_facts_goals(oprs);
 

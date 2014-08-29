@@ -32,7 +32,7 @@
 
 #include "config.h"
 
-#ifdef HAVE_SETITIMER
+#if defined(HAVE_SETITIMER) && defined(WANT_TRIGGERED_IO)
 #ifdef VXWORKS
 #include <vxWorks.h>
 #include <systime.h>
@@ -51,6 +51,7 @@
 
 #include "constant.h"
 #include "macro.h"
+#include <time.h>
 
 
 #ifdef OPRS_PROFILING
@@ -95,21 +96,52 @@
 #include "conditions_f.h"
 #include "soak_f.h"
 #include "oprs-pred-func_f.h"
+#include "top-lev.h"
 
 #ifdef GRAPHIX
 #include "xt-util_f.h"
 #endif
 
 /* Declaration of some functions */
-#ifdef HAVE_SETITIMER
-void set_condition_timer(void);
-#endif
 FrameList parse_inv_part(Expression *expr, FramePtr fp, List_Envar lenv, Oprs *oprs);
 FrameList parse_ip_lmexpr(Expression *expr, Frame *frame, Oprs *oprs);
 
 Op_Structure *soak_parsing_op = NULL;
 
 static PBoolean check_evolving_conditions = TRUE;
+
+#if ! (defined(HAVE_SETITIMER) && defined(WANT_TRIGGERED_IO))
+struct timespec last_evolving_conditions_time = { 0, 0 };
+
+/* Subtract the "struct timeval" values X and Y,
+   storing the result in RESULT.
+   Return 1 if the difference is negative, otherwise 0. */
+int
+timespec_subtract(struct timespec *result, struct timespec *x, struct timespec *y)
+{
+  /* Perform the carry for the later subtraction by updating y. */
+  if (x->tv_nsec < y->tv_nsec) {
+    int nsec = (y->tv_nsec - x->tv_nsec) / 1000000000 + 1;
+    y->tv_nsec -= 1000000000 * nsec;
+    y->tv_sec += nsec;
+  }
+  if (x->tv_nsec - y->tv_nsec > 1000000000) {
+    int nsec = (x->tv_nsec - y->tv_nsec) / 1000000000;
+    y->tv_nsec += 1000000000 * nsec;
+    y->tv_sec -= nsec;
+  }
+
+  /* Compute the time remaining to wait.
+     tv_usec is certainly positive. */
+  result->tv_sec = x->tv_sec - y->tv_sec;
+  result->tv_nsec = x->tv_nsec - y->tv_nsec;
+
+  /* Return 1 if result is negative. */
+  return x->tv_sec < y->tv_sec;
+}
+
+#endif
+
 
 Expression *prepare_ip(Op_Structure *op, List_Envar lenv, Expression *trig)
 {
@@ -1135,13 +1167,28 @@ Op_Instance_List find_soak(Oprs *oprs)
 	  }
 	  
 	  cond = NULL;
+
+#if ! (defined(HAVE_SETITIMER) && defined(WANT_TRIGGERED_IO))
+	  // Trigger checking evolving conditions if enough time has passed
+	  struct timespec now, diff;
+	  if (clock_gettime(CLOCK_REALTIME, &now) != 0) {
+	    // fail, always check
+	    check_evolving_conditions = TRUE;
+	  } else {
+	    timespec_subtract(&diff, &now, &last_evolving_conditions_time);
+	    if (diff.tv_sec > main_loop_pool_sec ||
+		(diff.tv_sec == main_loop_pool_sec && diff.tv_nsec >= (main_loop_pool_usec * 1000)))
+	    {
+              last_evolving_conditions_time = now;
+	      check_evolving_conditions = TRUE;
+	    }
+	  }
+#endif
 	  if (check_evolving_conditions) {
 	       sl_loop_through_slist(oprs->conditions_list, rc, Relevant_Condition *) 
 		    if (rc->evolving && ! (SAFE_SL_IN_SLIST(cond,rc)))
 			 SAFE_SL_ADD_TO_HEAD(cond,rc);
-#ifdef HAVE_SETITIMER
 	       check_evolving_conditions = FALSE;
-#endif
 	  }
 	  
 	  if (cond) {
@@ -1383,7 +1430,7 @@ void test_find_soak_fact(Fact *fact, Oprs *oprs)
 	  delete_expr(fact->statement, oprs->database); /* we delete it from the database. */
 }
 
-#ifdef HAVE_SETITIMER
+#if defined(HAVE_SETITIMER) && defined(WANT_TRIGGERED_IO)
 #ifdef HAVE_SIGACTION
 sigset_t sigalarm_set;
 
@@ -1535,5 +1582,5 @@ void desarm_condition_timer(void)
 	  perror("desarm_condition_timer: setitimer");
 #endif
 }
-#endif /* HAVE_SETITIMER */
+#endif /* defined(HAVE_SETITIMER) && defined(WANT_TRIGGERED_IO) */
 

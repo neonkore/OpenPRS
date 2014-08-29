@@ -57,6 +57,15 @@ AC_ARG_ENABLE([demo],
     esac],[demo=no])
 AM_CONDITIONAL([WANT_DEMO], [test x$demo = xyes])
 
+AC_ARG_ENABLE([triggered_io],
+  [  --enable-triggered-io    Use setitimer for triggered I/O processing],
+  [case "${enableval}" in
+     yes) triggered_io=yes ;;
+     no)  triggered_io=no ;;
+      *) AC_MSG_ERROR([bad value ${enableval} for --enable-triggered-io]) ;;
+    esac],[triggered_io=yes])
+AM_CONDITIONAL([WANT_TRIGGERED_IO], [test x$triggered_io = xyes])
+
 # we do not want it for now
 AM_CONDITIONAL([WANT_OPC], [test xno = xyes])
 

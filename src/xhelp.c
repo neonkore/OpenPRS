@@ -275,7 +275,9 @@ void infoHelp(Widget w,  XtPointer fn_par, XtPointer call_data)
 	  SPRINT(com, strlen(find_url_arg) + strlen(find_url_com) + strlen(oprs_doc_dir) + 3,
 		 sprintf(f,"%s %s %s", find_url_com, oprs_doc_dir, find_url_arg));
 
+#if defined(HAVE_SETITIMER) && defined(WANT_TRIGGERED_IO)
 	  block_sigalarm();
+#endif
 	  if ((find_url_popen = popen(SPRINTER_STRING(com), "r"))) {
 	       if (!(fgets(url_doc, BUFSIZ, find_url_popen))) {
 		    fprintf(stderr, "Cannot fgets from: %s\n", SPRINTER_STRING(com));
@@ -287,7 +289,9 @@ void infoHelp(Widget w,  XtPointer fn_par, XtPointer call_data)
 	       fprintf(stderr, "Cannot popen: %s\n", SPRINTER_STRING(com));
 	       doc = default_doc;
 	  }
+#if defined(HAVE_SETITIMER) && defined(WANT_TRIGGERED_IO)
 	  unblock_sigalarm();
+#endif
      }
      send_URL_to_netscape(doc, FALSE);
 }

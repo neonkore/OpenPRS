@@ -65,14 +65,27 @@ gboolean goprs_top_level_loop(gpointer data)
     Op_Instance_List soak;
     Op_Instance *opi1, *opi2;
     PBoolean busy = FALSE;
+#if defined(HAVE_SETITIMER) && defined(WANT_TRIGGERED_IO)
+     long last_main_loop_pool_sec  = main_loop_pool_sec;
+     long last_main_loop_pool_usec = main_loop_pool_usec;
+#endif
 
     if ( !meta_option[META_LEVEL] || !oprs->posted_meta_fact ) { /* We check the stdin only if 
 								    the Meta OPs have been intended. */
-#ifdef HAVE_SETITIMER
-	 if (check_the_stdin) {
-	      check_the_stdin = FALSE;
-	      check_stdin();
-	 }
+#if defined(HAVE_SETITIMER) && defined(WANT_TRIGGERED_IO)
+      if (last_main_loop_pool_sec != main_loop_pool_sec ||
+	  last_main_loop_pool_usec != main_loop_pool_usec)
+      {
+	desarm_condition_timer();
+	set_interval_timer();
+	arm_condition_timer();
+	last_main_loop_pool_sec  = main_loop_pool_sec;
+	last_main_loop_pool_usec = main_loop_pool_usec;
+      }
+      if (check_the_stdin) {
+	check_the_stdin = FALSE;
+	check_stdin();
+      }
 #else
 	 check_stdin();
 #endif
