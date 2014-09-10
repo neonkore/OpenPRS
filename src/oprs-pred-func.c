@@ -352,6 +352,16 @@ void un_declare_be(Pred_Func_Rec *pfr)
 	  UNDECLARE_PRED_BE(pr);
 }
 
+void un_declare_func(Pred_Func_Rec *pfr)
+{
+     Pred_Rec *pr;
+     
+     if ((pr = declare_pred(pfr)) && pfr->u.u.ef) {
+          FREE(pfr->u.u.ef);
+          pfr->u.u.ef = NULL;
+     }
+}
+
 void  check_or_set_pred_func_arity(Pred_Func_Rec *pfr, int arity)
 {
 

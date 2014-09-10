@@ -536,6 +536,8 @@ command:
 		pred_func 			{un_declare_be($4);}
  	| UNDECLARE_TK OP_PREDICATE_TK		{yy_begin_0();}
 		pred_func 			{un_declare_predicate_op($4);}
+ 	| UNDECLARE_TK FUNCTION_TK		{yy_begin_0();}
+		pred_func 			{un_declare_func($4);}
 	| STEP_TK  				{set_oprs_run_mode(STEP);}
 	| NEXT_TK  				{set_oprs_run_mode(STEP_NEXT);}
 	| HALT_TK  				{set_oprs_run_mode(HALT);}

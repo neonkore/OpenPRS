@@ -1390,6 +1390,9 @@ The following commands are currently available:\n\
 \t undeclare be predicat\n\
 \t\t undeclare the predicat as basic event predicat.\n\
 \n\
+\t undeclare function func\n\
+\t\t undeclare the evaluable function func.\n\
+\n\
 \t unify expr expr \n\
 \t\t unify two expressions.\n\
 \n\

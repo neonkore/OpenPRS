@@ -68,6 +68,7 @@ void declare_ff(Pred_Func_Rec *pr, int ar);
 void declare_be(Pred_Func_Rec *pr);
 void declare_predicate_op(Pred_Func_Rec *pr);
 void un_declare_be(Pred_Func_Rec *pr);
+void un_declare_func(Pred_Func_Rec *pr);
 void check_or_set_pred_arity(Pred_Func_Rec *pr, int arity);
 void check_or_set_pred_func_arity(Pred_Func_Rec *pfr, int arity);
 void free_pred_hash(void);
