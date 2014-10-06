@@ -6,8 +6,13 @@ AC_PREREQ(2.53)
 AC_INIT([Open PRS],[1.1b10],[felix@laas.fr],[openprs])
 AC_CONFIG_SRCDIR([src/oprs-main.c])
 AC_CONFIG_HEADERS([src/config-ac.h])
-AC_CONFIG_AUX_DIR([config])
-AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_AUX_DIR([config],[libltdl/config])
+
+# This line alone creates a problem at distcheck: configure: error: cannot find install-sh,
+# install.sh, or shtool in config ".."/config. I merged it in the previous statement.
+# AC_CONFIG_AUX_DIR([libltdl/config])
+
+AC_CONFIG_MACRO_DIR([m4],[libltdl/m4])
 
 AC_LANG(C)
 
@@ -30,6 +35,9 @@ AC_PROG_LN_S
 AC_PROG_MAKE_SET
 
 AM_INIT_AUTOMAKE([foreign])
+# This created error at distcheck Makefile:434: .deps/truck_demo-clock-bboard.Po: No such file or directory
+
+# subdir-objects])
 
 AC_ARG_ENABLE([gtk],
   [  --enable-gtk    Turn on gtk based goprs/gope],

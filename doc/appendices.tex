@@ -2801,18 +2801,20 @@ In any case, you should either put this directory in your
 \code{XFILESEARCHPATH} environment variable as in:
 
 \begin{verbatim}
-setenv OPRSDIR /usr/local/oprs
-if ( $?XFILESEARCHPATH ) then
-     setenv XFILESEARCHPATH "${XFILESEARCHPATH}:${OPRSDIR}/%T/%N%C"
+export OPRS_INSTALL_DIR=/usr/local # change as necessary
+if [[ ! $XFILESEARCHPATH ]]; then
+     export XFILESEARCHPATH="${XFILESEARCHPATH}:${OPRS_INSTALL_DIR}/lib/%T/%N%C"
 else
-     setenv XFILESEARCHPATH "${OPRSDIR}/%T/%N%C"
-endif
+     export XFILESEARCHPATH="${OPRS_INSTALL_DIR}/lib/%T/%N%C"
+fi
 \end{verbatim}
+
+\xref{Setting Up your Environment}
 
 The \code{\%C} suffix is very important if you want to take advantage of the
 multi language support of \COPRS{} (\pxref{Xt/Motif Widgets Hierarchy and Resources}).
 
-or copy these two files in your own app default directory pointed by the
+Alternatively, copy these two files in your own app default directory pointed by the
 environment variable \code{XAPPLRESDIR} (in this case, remove the \file{.ad}
 suffix).
 

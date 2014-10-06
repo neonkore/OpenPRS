@@ -47,6 +47,7 @@ oprs.pdf: oprs.tex oprs-kernel.tex oprs-macros.tex oprs.bib $(OP_TEX) appendices
 	$(BIBTEX) oprs
 	$(LATEX) $<
 	$(LATEX) $<
+	$(LATEX) $<
 
 index: $(INDEX)
 

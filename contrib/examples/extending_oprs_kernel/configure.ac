@@ -25,7 +25,7 @@ AC_PROG_LN_S
 AC_PROG_MAKE_SET
 AC_PROG_LIBTOOL
 
-AM_INIT_AUTOMAKE([foreign])
+AM_INIT_AUTOMAKE([foreign],[subdir-objects])
 
 # Checks for header files.
 AC_HEADER_STDC

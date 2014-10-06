@@ -1,2 +1,2 @@
-#!/bin/sh
-autoreconf -vi
+#! /bin/sh
+autoreconf --force -vi

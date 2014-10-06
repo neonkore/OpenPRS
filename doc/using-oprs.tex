@@ -65,16 +65,18 @@ To be able to use the \COPRSDE{} you may need to set up a number of environment
 variables.
 
 \begin{verbatim}
-setenv OPRS_DIR /usr/local/oprs
-setenv PATH "${PATH}:${OPRS_DIR}/bin"
-if ( $?XFILESEARCHPATH ) then
-         setenv XFILESEARCHPATH "${XFILESEARCHPATH}:${OPRS_DIR}/\%T/%N"
+export OPRS_INSTALL_DIR=/usr/local # change as necessary
+# unless ${OPRS_INSTALL_DIR}/bin is already in your path...
+export PATH="${PATH}:${OPRS_INSTALL_DIR}/bin"
+if [[ ! $XFILESEARCHPATH ]]; then
+     export XFILESEARCHPATH="${XFILESEARCHPATH}:${OPRS_INSTALL_DIR}/lib/%T/%N"
 else
-         setenv XFILESEARCHPATH "${OPRS_DIR}/%T/%N"
-endif
-setenv OPRS_DOC_DIR ${OPRS_DIR}/doc
-setenv OPRS_DATA_PATH  ${OPRS_DIR}/data:./data:.
+     export XFILESEARCHPATH="${OPRS_INSTALL_DIR}/lib/%T/%N"
+fi
+export OPRS_DOC_DIR=${OPRS_INSTALL_DIR}/share/doc/openprs/
+export OPRS_DATA_PATH=${OPRS_INSTALL_DIR}/share/data:./data:.
 \end{verbatim}
+
 
 \chapter{Getting Started}
 \node{Getting Started}
