@@ -31,7 +31,6 @@
 
 SUBDIRS = data
 
-
 AM_CPPFLAGS  = -I$(top_srcdir)/src -I$(top_srcdir)/c_toolkit
 
 AM_CFLAGS = -Wall # -Wextra
@@ -39,12 +38,12 @@ AM_CFLAGS = -Wall # -Wextra
 lib_LTLIBRARIES = truck-demo-oprs.la 
 
 TRUCK_DEMO_OPRS_MOD_SRC = user-evaluable-predicate.c user-action.c user-evaluable-function.c \
-	user-external.c ../src/time.c
+	user-external.c
 
 TRUCK_DEMO_OPRS_MOD_INCLUDE = user-external.h user-external_f.h
 
 truck_demo_oprs_la_SOURCES = $(TRUCK_DEMO_OPRS_MOD_SRC)  $(TRUCK_DEMO_OPRS_MOD_INCLUDE)
-truck_demo_oprs_la_LIBADD = 
+truck_demo_oprs_la_LIBADD = ../src/libtruck-demo-time.la
 truck_demo_oprs_la_LDFLAGS = -module 
 
 pkginclude_HEADERS = $(TRUCK_DEMO_OPRS_MOD_INCLUDE)
