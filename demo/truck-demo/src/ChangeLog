@@ -1,3 +1,9 @@
+2014-10-07  Felix Ingrand  <felix@precise>
+
+	* Makefile.am: AUTOMAKE_OPTIONS = no-dependencies option to fix
+	the problem I have with make distcheck... for this particular
+	directory. 
+
 2013-03-13  Felix Ingrand  <felix@precise>
 
 	* Makefile.am: Move to autotools....

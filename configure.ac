@@ -34,10 +34,7 @@ AC_SUBST(LIBLTDL)
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
 
-AM_INIT_AUTOMAKE([foreign])
-# This created error at distcheck Makefile:434: .deps/truck_demo-clock-bboard.Po: No such file or directory
-
-# subdir-objects])
+AM_INIT_AUTOMAKE([foreign] [subdir-objects])
 
 AC_ARG_ENABLE([gtk],
   [  --enable-gtk    Turn on gtk based goprs/gope],

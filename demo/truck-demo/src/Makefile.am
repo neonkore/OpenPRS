@@ -33,6 +33,8 @@
 AM_CPPFLAGS  = -I$(top_srcdir)/src -I$(top_srcdir)/c_toolkit
 AM_CFLAGS = -Wall # -Wextra
 
+AUTOMAKE_OPTIONS = no-dependencies
+
 AD2C = $(top_srcdir)/util/ad2c
 ADLANG2AD = $(top_srcdir)/util/adlang2ad
 
