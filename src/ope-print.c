@@ -2,7 +2,7 @@
 /*                               -*- Mode: C -*- 
  * ope-print.c -- 
  * 
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -59,7 +59,7 @@ String gx_print_command_template;
 String txt_print_command_template;
 Widget printQuestion;
 
-int print_op_printer(Draw_Data *dd)
+void print_op_printer(Draw_Data *dd)
 {
      char print_command[BUFSIZ];
      char message[BUFSIZ];

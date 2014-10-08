@@ -1,3 +1,7 @@
+2014-10-08  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* soak.c (clock_gettime): add a clock_gettime version grabbed from pocolib h2timeLib (thanks to Matthieur herrb).
+
 2014-01-21  Felix Ingrand  <felix@bobc1>
 
 	* action.c (action_print_term): Strings where printed with

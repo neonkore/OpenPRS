@@ -107,12 +107,15 @@ Widget xpUnloadOpDialog;
 Widget xpReloadOpDialog;
 Widget trace_radiobox, text_radiobutton, graphic_radiobutton, both_radiobutton, all_radiobutton, step_radiobutton;
 
+typedef enum {TEXT_TRACE, GRAPHIC_TRACE, BOTH_TRACE, STEP_TRACE, ALL_TRACE } Trace_Type;
+
 void updateSensitiveMetaOptionButtons(PBoolean meta_level_is_on);
 void updateSensitiveUserTraceButtons(PBoolean meta_level_is_on);
 #ifdef OPRS_PROFILING
 void updateSensitiveProfilingOptionButtons(PBoolean profiling);
 #endif
 void ReallyQuit(Widget w, XtPointer client_data, XtPointer call_data);
+void update_trace_op_list(Trace_Type tt);
 
 Widget changeMaxSizeDialog;
 
@@ -824,7 +827,6 @@ void xpCompilerOptionDialogAccept(Widget w, XtPointer client_data, XtPointer cal
 	  compiler_option[i] = XmToggleButtonGetState(compiler_option_widget_array[i]);
 }
 
-typedef enum {TEXT_TRACE, GRAPHIC_TRACE, BOTH_TRACE, STEP_TRACE, ALL_TRACE } Trace_Type;
 
 void text_button_changed(Widget w, XtPointer client_data, XmToggleButtonCallbackStruct * call_data)
 {

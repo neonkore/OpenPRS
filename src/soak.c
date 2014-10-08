@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * soak.c -- will find all the applicable ops (determine the famous soak "Set Of Applicable OPs")...
  * 
- * Copyright (c) 1991-2013 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -109,6 +109,27 @@ FrameList parse_ip_lmexpr(Expression *expr, Frame *frame, Oprs *oprs);
 Op_Structure *soak_parsing_op = NULL;
 
 static PBoolean check_evolving_conditions = TRUE;
+
+#ifdef __MACH__
+#include <mach/clock.h>
+#include <mach/mach.h>
+
+#define CLOCK_REALTIME -1
+
+int clock_gettime(int ignore,struct timespec *ts)
+{
+     mach_timespec_t mts;
+     clock_serv_t cclock;
+
+     host_get_clock_service(mach_host_self(), CALENDAR_CLOCK, &cclock);
+     clock_get_time(cclock, &mts);
+     mach_port_deallocate(mach_task_self(), cclock);
+     ts->tv_sec = mts.tv_sec;
+     ts->tv_nsec = mts.tv_nsec;
+     return 0;
+}
+#endif
+
 
 #if ! (defined(HAVE_SETITIMER) && defined(WANT_TRIGGERED_IO))
 struct timespec last_evolving_conditions_time = { 0, 0 };
