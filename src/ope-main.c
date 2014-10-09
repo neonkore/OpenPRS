@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*-
  * ope-main.c --
  *
- * Copyright (c) 1991-2013 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -645,7 +645,7 @@ int main(int argc, char **argv, char **envp)
 
      gx_print_command_template = Resrcs.gxPrintCmd;
      txt_print_command_template = Resrcs.txtPrintCmd;
-     print_english_operator = Resrcs.printEnglishOperator;
+     parse_and_print_english_operator = Resrcs.printEnglishOperator;
      language_str = Resrcs.language;
      ip_x = Resrcs.ip_x;
      ip_y = Resrcs.ip_y;

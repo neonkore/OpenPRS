@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*-
  * oprs-main.c --
  *
- * Copyright (c) 1991-2013 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -107,13 +107,16 @@ void server_init_arg(int argc,char **argv)
      char *id_case_option = NULL;
 
      int c, getoptflg = 0;
-     int  snumber_flg = 0, mpnumber_flg = 0, mpname_flg = 0, lci_flg = 0;
+     int  snumber_flg = 0, mpnumber_flg = 0, mpname_flg = 0, english_flg = 0, lci_flg = 0;
      extern char *optarg;
      int maxlength = MAX_HOST_NAME * sizeof(char);
 
-     while ((c = getopt(argc, argv, "Xi:j:m:l:nh")) != EOF)
+     while ((c = getopt(argc, argv, "Xi:j:m:l:nph")) != EOF)
 	  switch (c)
 	  {
+	  case 'p':
+	       english_flg++;
+	       break;
 	  case 'l':
 	       lci_flg++;
 	       id_case_option = optarg;
@@ -175,7 +178,14 @@ void server_init_arg(int argc,char **argv)
 
      if (!mpnumber_flg && !get_int_from_env("OPRS_MP_PORT", &mp_port))
 	 mp_port = MP_PORT;
-     
+
+     if ( english_flg ) {
+	  fprintf(stderr, LG_STR("This server will print english temporal operators.\n",
+				 "Ce serveur imprime les opétateurs temporel en toutes lettres.\n"));
+	  parse_and_print_english_operator = TRUE;
+     }
+
+
      if ( lci_flg ) {
 	  if (! check_and_set_id_case_option(id_case_option)) {
 	       fprintf(stderr, LG_STR("oprs-server: Invalid case option, check the arguments .\n",

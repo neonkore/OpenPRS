@@ -1,3 +1,7 @@
+2014-10-09  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* lex-exp.l.part (T): reinstall the code to parse temporal operator long form.
+
 2014-10-08  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* soak.c (clock_gettime): add a clock_gettime version grabbed from pocolib h2timeLib (thanks to Matthieu Herrb).

@@ -48,6 +48,7 @@
 
 #include "ope-graphic.h"
 #include "ope-global.h"
+#include "parser-funct.h"
 #include "constant.h"
 #include "macro.h"
 
@@ -90,7 +91,7 @@ void print_op_printer(Draw_Data *dd)
      } else {
 	  FILE *fpo;
 	  PBoolean save_pv = print_var_name;
-	  PBoolean save_peo = print_english_operator ;
+	  PBoolean save_peo = parse_and_print_english_operator ;
 
 	  if ((fpo = (FILE *) fopen(file_name_for_print, "w")) == NULL) {
 	       fprintf(stderr, LG_STR("write_opfile: failed fdopen %s\n",
@@ -102,7 +103,7 @@ void print_op_printer(Draw_Data *dd)
 	  sprintf(print_command, txt_print_command_template, file_name_for_print);
 
 	  print_var_name = TRUE;
-	  print_english_operator = FALSE;
+	  parse_and_print_english_operator = FALSE;
 
 	  write_top(fpo,dd->op);
 	  
@@ -110,7 +111,7 @@ void print_op_printer(Draw_Data *dd)
 	  fclose(fpo);
 	  
 	  print_var_name = save_pv;
-	  print_english_operator = save_peo;
+	  parse_and_print_english_operator = save_peo;
 
 	  XmUpdateDisplay(topLevel);
 	  

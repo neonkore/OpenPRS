@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * oprs-print.c -- Fonction de construction et de print pour les types...
  * 
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,7 +45,6 @@
 #include "intention_f.h"
 
 char *print_float_format = "%f";
-PBoolean print_english_operator = FALSE;
 PBoolean pretty_print = FALSE;
 PBoolean print_backslash = TRUE;
 PBoolean pretty_fill = FALSE;

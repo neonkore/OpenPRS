@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * parser-funct.c -- 
  * 
- * Copyright (c) 1991-2013 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -53,6 +53,7 @@ PBoolean i_have_the_stdin = TRUE; /* True when we are talking to the stdin. */
 PBoolean quit = FALSE;
 Parse_Source_Type parse_source = PS_FILE;
 PBoolean use_dialog_error = FALSE; /* Should we use dialog box to report the error */
+PBoolean parse_and_print_english_operator = FALSE;
 
 int pretty_width;
 char char_to_parse;

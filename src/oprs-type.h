@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * oprs-type.h -- Types utilises par OPRS
  * 
- * Copyright (c) 1991-2013 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -257,7 +257,6 @@ extern PBoolean pretty_print;
 extern PBoolean print_backslash;
 extern PBoolean pretty_fill;
 extern PBoolean print_var_name;
-extern PBoolean print_english_operator;
 extern PBoolean replace_cr;
 
 extern int print_length;	   

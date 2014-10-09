@@ -40,6 +40,7 @@
 #include "ope-global.h"
 #include "oprs-type.h"
 #include "oprs-print.h"
+#include "parser-funct.h"
 #include "oprs-print_f.h"
 #include "oprs-sprint.h"
 #include "oprs-sprint_f.h"
@@ -377,7 +378,7 @@ int write_opfile(char *file_name, OPFile *opfile)
      PString sym;
      PBoolean all_text = TRUE;
      PBoolean save_pv = print_var_name;
-     PBoolean save_peo = print_english_operator ;
+     PBoolean save_peo = parse_and_print_english_operator ;
 
      if (! opfile->backed_up) {
 	  char mv_command[BUFSIZ];
@@ -395,7 +396,7 @@ int write_opfile(char *file_name, OPFile *opfile)
      }
 
      print_var_name = TRUE;
-     print_english_operator = FALSE;
+     parse_and_print_english_operator = FALSE;
 
      UpdateMessageWindow(LG_STR("Saving current OP File.",
 				"Saving current OP File."));
@@ -427,7 +428,7 @@ int write_opfile(char *file_name, OPFile *opfile)
      report_opfile_saved();
 
      print_var_name = save_pv;
-     print_english_operator = save_peo;
+     parse_and_print_english_operator = save_peo;
      
      return 0;
 }

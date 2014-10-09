@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * parser-funct.h -- 
  * 
- * Copyright (c) 1991-2013 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,6 +51,8 @@ extern Parse_Source_Type parse_source;
 extern char s_parsed[BUFSIZ];
 extern PBoolean ope_parser;
 extern PBoolean stop_parsing_from_socket;
+extern PBoolean parse_and_print_english_operator;
+
 
 #define MAX_OPEN_INCLUDE 128
 

@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * oprs-init.c -- 
  * 
- * Copyright (c) 1991-2013 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -771,7 +771,7 @@ char *oprs_init_arg(int argc,char **argv, char **mp_hostn, int *mp_p, char **ser
      if ( english_flg ) {
 	  fprintf(stderr, LG_STR("This kernel will print english temporal operators.\n",
 				 "Ce noyau imprime les opétateurs temporel en toutes lettres.\n"));
-	  print_english_operator = TRUE;
+	  parse_and_print_english_operator = TRUE;
      }
 
      if ( !quiet_flg && !alone_flg)
