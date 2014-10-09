@@ -1,3 +1,8 @@
+2014-10-09  Felix Ingrand  <felix@precise>
+
+	* ope.tex (section{Arguments of the \OPE{}}): update the
+	documentation wrt. -p or -peo to parse and print english operator.
+
 2012-09-11  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* oprs-kernel.tex : Update the doc to mention the load external command.

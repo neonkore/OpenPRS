@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*-
  * oprs-type.c -- Fonction de construction et de print pour les types...
  *
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2014 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,6 +40,7 @@
 #include "constant.h"
 #include "oprs-type.h"
 #include "ev-function.h"
+#include "parser-funct.h"
 
 #include "oprs-type_f.h"
 #include "oprs-print.h"
@@ -781,14 +782,37 @@ void init_id_hash()
      DECLARE_TEXT_ID("~", not_sym);
      DECLARE_TEXT_ID("+>", cond_add_sym);
      DECLARE_TEXT_ID("->", cond_del_sym);
-     DECLARE_TEXT_ID("=>", temp_conclude_sym);
-     DECLARE_TEXT_ID("~>", retract_sym);
-     DECLARE_TEXT_ID("!", achieve_sym);
-     DECLARE_TEXT_ID("?", test_sym);
-     DECLARE_TEXT_ID("#", preserve_sym);
-     DECLARE_TEXT_ID("^", twait_sym);
-     DECLARE_TEXT_ID("%", maintain_sym);
-     DECLARE_TEXT_ID("<>", call_sym);
+
+     if (parse_and_print_english_operator) {
+	  if (lower_case_id || no_case_id) {
+	       DECLARE_TEXT_ID("assert", temp_conclude_sym);
+	       DECLARE_TEXT_ID("retract", retract_sym);
+	       DECLARE_TEXT_ID("achieve", achieve_sym);
+	       DECLARE_TEXT_ID("test", test_sym);
+	       DECLARE_TEXT_ID("preserve", preserve_sym);
+	       DECLARE_TEXT_ID("wait", twait_sym);
+	       DECLARE_TEXT_ID("maintain", maintain_sym);
+	       DECLARE_TEXT_ID("call", call_sym);
+	  } else {
+	       DECLARE_TEXT_ID("ASSERT", temp_conclude_sym);
+	       DECLARE_TEXT_ID("RETRACT", retract_sym);
+	       DECLARE_TEXT_ID("ACHIEVE", achieve_sym);
+	       DECLARE_TEXT_ID("TEST", test_sym);
+	       DECLARE_TEXT_ID("PRESERVE", preserve_sym);
+	       DECLARE_TEXT_ID("WAIT", twait_sym);
+	       DECLARE_TEXT_ID("MAINTAIN", maintain_sym);
+	       DECLARE_TEXT_ID("CALL", call_sym);
+	  }
+     } else {
+	  DECLARE_TEXT_ID("=>", temp_conclude_sym);
+	  DECLARE_TEXT_ID("~>", retract_sym);
+	  DECLARE_TEXT_ID("!", achieve_sym);
+	  DECLARE_TEXT_ID("?", test_sym);
+	  DECLARE_TEXT_ID("#", preserve_sym);
+	  DECLARE_TEXT_ID("^", twait_sym);
+	  DECLARE_TEXT_ID("%", maintain_sym);
+	  DECLARE_TEXT_ID("<>", call_sym);
+     }
 
      DECLARE_TEXT_ID("T", lisp_t_sym);/* Declare the T symbol */
      DECLARE_TEXT_ID("NIL", nil_sym);	/* Initialize the nil symbol */
