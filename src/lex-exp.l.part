@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * lex-exp.l -- 
  * 
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2014 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -90,21 +90,21 @@
 
 /* Long form for the mod operator */
 [Aa][Ss][Ss][Ee][Rr][Tt] |
-[Cc][Oo][Nn][Cc][Ll][Uu][Dd][Ee] { if (parse_and_print_english_operator) oprs_yylval.string = temp_conclude_sym; else DECLARE_ID(oprs_yytext,oprs_yylval.symbol);
+[Cc][Oo][Nn][Cc][Ll][Uu][Dd][Ee] { if (parse_and_print_english_operator) oprs_yylval.symbol = temp_conclude_sym; else DECLARE_ID(oprs_yytext,oprs_yylval.symbol);
      return SYMBOL_TK;}
-[Rr][Ee][Tt][Rr][Aa][Cc][Tt] {if (parse_and_print_english_operator)  oprs_yylval.string = retract_sym; else DECLARE_ID(oprs_yytext,oprs_yylval.symbol);
+[Rr][Ee][Tt][Rr][Aa][Cc][Tt] {if (parse_and_print_english_operator)  oprs_yylval.symbol = retract_sym; else DECLARE_ID(oprs_yytext,oprs_yylval.symbol);
      return SYMBOL_TK;}
-[Aa][Cc][Hh][Ii][Ee][Vv][Ee] {if (parse_and_print_english_operator)  oprs_yylval.string = achieve_sym; else DECLARE_ID(oprs_yytext,oprs_yylval.symbol);
+[Aa][Cc][Hh][Ii][Ee][Vv][Ee] {if (parse_and_print_english_operator)  oprs_yylval.symbol = achieve_sym; else DECLARE_ID(oprs_yytext,oprs_yylval.symbol);
      return SYMBOL_TK;}
-[Tt][Ee][Ss][Tt] {if (parse_and_print_english_operator)  oprs_yylval.string = test_sym; else DECLARE_ID(oprs_yytext,oprs_yylval.symbol);
+[Tt][Ee][Ss][Tt] {if (parse_and_print_english_operator)  oprs_yylval.symbol = test_sym; else DECLARE_ID(oprs_yytext,oprs_yylval.symbol);
      return SYMBOL_TK;}
-[Pp][Rr][Ee][Ss][Ee][Rr][Vv][Ee] {if (parse_and_print_english_operator)  oprs_yylval.string = preserve_sym; else DECLARE_ID(oprs_yytext,oprs_yylval.symbol);
+[Pp][Rr][Ee][Ss][Ee][Rr][Vv][Ee] {if (parse_and_print_english_operator)  oprs_yylval.symbol = preserve_sym; else DECLARE_ID(oprs_yytext,oprs_yylval.symbol);
      return SYMBOL_TK;}
-[Ww][Aa][Ii][Tt] {if (parse_and_print_english_operator)  oprs_yylval.string = twait_sym; else DECLARE_ID(oprs_yytext,oprs_yylval.symbol);
+[Ww][Aa][Ii][Tt] {if (parse_and_print_english_operator)  oprs_yylval.symbol = twait_sym; else DECLARE_ID(oprs_yytext,oprs_yylval.symbol);
      return SYMBOL_TK;}
-[Mm][Aa][Ii][Nn][Tt][Aa][Ii][Nn] {if (parse_and_print_english_operator)  oprs_yylval.string = maintain_sym; else DECLARE_ID(oprs_yytext,oprs_yylval.symbol);
+[Mm][Aa][Ii][Nn][Tt][Aa][Ii][Nn] {if (parse_and_print_english_operator)  oprs_yylval.symbol = maintain_sym; else DECLARE_ID(oprs_yytext,oprs_yylval.symbol);
      return SYMBOL_TK;}
-[Cc][Aa][Ll][Ll] {if (parse_and_print_english_operator)  oprs_yylval.string = call_sym; else DECLARE_ID(oprs_yytext,oprs_yylval.symbol);
+[Cc][Aa][Ll][Ll] {if (parse_and_print_english_operator)  oprs_yylval.symbol = call_sym; else DECLARE_ID(oprs_yytext,oprs_yylval.symbol);
      return SYMBOL_TK;}
 
 /* Paranthesis and brackets. */

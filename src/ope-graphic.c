@@ -2,7 +2,7 @@
 /*                               -*- Mode: C -*-
  * ope-graphic.c --
  *
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2014 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -930,12 +930,12 @@ void erase_inst(Widget w, Draw_Data *dd, OG *og)
  * It was not used anymore ( the og_text is erased before and includes
  * this region)
  */
-     int xs, ys;
-     int x = og->x;
-     int y =  og->y;
+     /* int xs, ys; */
+     /* int x = og->x; */
+     /* int y =  og->y; */
 
-     xs = x - dd->left;
-     ys = y - dd->top;
+     /* xs = x - dd->left; */
+     /* ys = y - dd->top; */
 
      XClearArea(dpy, win,
 		og->x - dd->left, og->y - dd->top,

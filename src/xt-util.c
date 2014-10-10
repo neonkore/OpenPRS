@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * xt-util.c -- 
  * 
- * Copyright (c) 1991-2013 Francois Felix Ingrand.
+ * Copyright (c) 1991-2014 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -100,10 +100,10 @@ void show_top_widget_hierarchy(Widget  w)
 
 void print_child(Widget w, unsigned int indent)
 {  
-     WidgetClass class;
+     /* WidgetClass class; */
      unsigned i;
 
-     class = XtClass(w);
+     /* class = XtClass(w); */
 
      for (i = 0 ; i < indent; i++)
 	  fprintf(stderr,"   |");

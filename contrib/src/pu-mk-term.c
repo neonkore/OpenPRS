@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * pu-mk-term.c -- 
  * 
- * Copyright (C) 1993-2012 LAAS/CNRS.
+ * Copyright (C) 1993-2014 LAAS/CNRS.
  *
  *                         -- C N R S -- 
  *         Laboratoire d'Automatique et d'Analyse des Systemes 

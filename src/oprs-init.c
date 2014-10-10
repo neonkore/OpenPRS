@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * oprs-init.c -- 
  * 
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2014 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -899,7 +899,9 @@ void load_kernel_from_parser(Oprs *oprs, PString file_name)
 	  Slist *oprs_new_goals;
 	  Slist *oprs_goals;
 	  Slist *oprs_conditions_list;
+#ifdef GRAPHIX
 	  PBoolean graphix;
+#endif
 	  ExprList exprs_to_load;
 	  Op_List ops;
 	  Expression *expr;
@@ -949,7 +951,10 @@ void load_kernel_from_parser(Oprs *oprs, PString file_name)
 	  LOAD_ADDR_AND_REF_LOC_ADDR(DPT_TIB, &new_current_tib);
 	  LOAD_ADDR_AND_REF_LOC_ADDR(DPT_INTENTION, &new_current_intention);
 
-	  graphix = load_boolean();
+#ifdef GRAPHIX
+	  graphix = 
+#endif
+	       load_boolean();
 
 	  load_all_objects();
 

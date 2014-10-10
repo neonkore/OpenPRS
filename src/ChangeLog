@@ -4,6 +4,10 @@
 
 	* oprs-parser.y.part (command): file_name does not seem to be usefull at all. read_file_name is probably better.
 
+2014-10-10  Felix Ingrand  <felix@precise>
+
+	* lex-exp.l.part (T): use .symbol, instead of .string
+
 2014-10-09  Felix Ingrand  <felix@precise>
 
 	* oprs-type.c (init_id_hash): output temporal operator in english

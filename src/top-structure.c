@@ -2,7 +2,7 @@
 /*                               -*- Mode: C -*- 
  * top-structure.c -- 
  * 
- * Copyright (c) 1991-2013 Francois Felix Ingrand.
+ * Copyright (c) 1991-2014 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -607,7 +607,9 @@ Double_Node *build_do_until(Double_Node *insts, Expression *cond)
 Double_Node *build_while(Expression *cond, Double_Node *insts)
 {
      Double_Node *res;
+#ifdef GRAPHIX
      Edge *edge = NULL;
+#endif
      Instruction *inst_res;
 
      if (really_build_node) {
@@ -629,8 +631,9 @@ Double_Node *build_while(Expression *cond, Double_Node *insts)
 
 	  make_and_connect_edge(nnif, nnthen, NULL, ET_THEN);
 	  make_and_connect_edge(nnif, nnelse, NULL, ET_ELSE);
+#ifdef GRAPHIX
 	  edge = make_and_connect_edge(node, nnif, cond, ET_IF);
-
+#endif
 	  merge_top_node(DN_TAIL(dn),node);
 
 	  insert_branch(insts,nnthen,node);
@@ -653,14 +656,18 @@ Double_Node *build_while(Expression *cond, Double_Node *insts)
 Double_Node *build_if(Expression *cond, Double_Node *thenb, Double_Node *elseb, PBoolean elseif)
 {
      Double_Node *res;
+#ifdef GRAPHIX
      Edge *edge = NULL;
+#endif
      Instruction *inst_res;
 
      if (really_build_node) {
 
 	  if (! elseb && ! thenb) {
 	       res = make_double_node(make_simple_node(),make_simple_node());
+#ifdef GRAPHIX
 	       edge = make_and_connect_simple_edge(res->head, res->tail, cond);
+#endif
 	  } else {
 
 	       Symbol nelse = NULL, nthen = NULL, nif = NULL;
@@ -681,8 +688,9 @@ Double_Node *build_if(Expression *cond, Double_Node *thenb, Double_Node *elseb, 
 
 	       make_and_connect_edge(nnif, nnthen, NULL, ET_THEN);
 	       make_and_connect_edge(nnif, nnelse, NULL, ET_ELSE);
+#ifdef GRAPHIX
 	       edge = make_and_connect_edge(node, nnif, cond, ET_IF);
-
+#endif
 	       if (!thenb) {
 		    if (!elseb) {
 			 fprintf(stderr, LG_STR("build_if: error, we should not get here...\n",
@@ -732,12 +740,16 @@ Double_Node *build_if(Expression *cond, Double_Node *thenb, Double_Node *elseb, 
 Double_Node *build_inst(Expression *inst)
 {
      Double_Node *res;
+#ifdef GRAPHIX
      Edge *edge = NULL;
+#endif
      Instruction *inst_res;
 
      if (really_build_node) {
 	  res = make_double_node(make_simple_node(),make_simple_node());
+#ifdef GRAPHIX
 	  edge = make_and_connect_simple_edge(res->head, res->tail, inst);
+#endif
      } else
 	  res = make_double_node(NULL, NULL);
 
