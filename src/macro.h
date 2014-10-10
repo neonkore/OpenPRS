@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * macro.h -- Macros used in OPRS.
  * 
- * Copyright (c) 1991-2013 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -87,7 +87,7 @@
 
 #define MALLOC(x) (malloc1(x))
 #define REALLOC(x,y) (realloc1(x,y))
-#define FREE(ptr) (free1(ptr))
+#define FREE(ptr) (free1((void *)ptr))
 
 void *calloc1(size_t  elemNum, size_t elemSize);
 void *dup_alloc1(void *mem );

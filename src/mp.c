@@ -232,7 +232,7 @@ void register_oprs(int socket)
        return;
      }
 
-     if ((mp_oprs_cl = sl_search_slist(mp_sender_list, name, equal_mp_oprs_name)) != NULL) {
+     if ((mp_oprs_cl = (Mp_Oprs_Client *)sl_search_slist(mp_sender_list, name, equal_mp_oprs_name)) != NULL) {
 	  fprintf(stderr, LG_STR("mp-oprs (%s:%d): Already has a client named: %s.\n",
 				 "mp-oprs (%s:%d): A déjà un client sous le nom de: %s.\n"),
 		  mp_hostname, mp_port, name);
@@ -577,7 +577,7 @@ void send_buffered_message(Mp_Oprs_Client *mpc_recipient)
 	       buff->written_so_far += wwyc;
 
 	       if (buff->written_so_far == buff->size) 
-		    free_buffered_message(sl_get_from_head(mpc_recipient->mess_list));
+		    free_buffered_message((Buff_Message *)sl_get_from_head(mpc_recipient->mess_list));
 	       else 
 		    break;	     
 	  }

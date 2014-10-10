@@ -11,7 +11,7 @@ extern "C" {
 Term * PUMakeTermInteger ( int val );
 Term * PUMakeTermLongLong(long long int val);
 Term* PUMakeTermFloat ( double val );
-Term * PUMakeTermAtom ( char *atom );
+Term * PUMakeTermAtom (const char *atom );
 Term* PUMakeTermUPointer ( void *pointer );
 Term* PUMakeTermUMemory ( void *p, int size );
 Term * PUMakeTermTrue ( void );

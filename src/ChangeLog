@@ -1,3 +1,9 @@
+2014-10-10  Francois Felix Ingrand  <felix@ingrand.net>
+
+	* lang.h ("C"): Disabling iso-char for now on the Mac, until I find a good fix for this.
+
+	* oprs-parser.y.part (command): file_name does not seem to be usefull at all. read_file_name is probably better.
+
 2014-10-09  Felix Ingrand  <felix@precise>
 
 	* oprs-type.c (init_id_hash): output temporal operator in english

@@ -1,11 +1,11 @@
 /*                               -*- Mode: C -*- 
-/* pu-parse-tl.c --- 
+ * pu-parse-tl.c --- 
  * 
  * Filename: pu-parse-tl.c
  * Description: 
  * Author: Felix Ingrand <felix@laas.fr>
  *
- * Copyright (C) 1993-2013 LAAS/CNRS.
+ * Copyright (C) 1993-2012 LAAS/CNRS.
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without

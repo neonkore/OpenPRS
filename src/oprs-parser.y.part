@@ -2,7 +2,7 @@
 /*                               -*- Mode: C -*- 
  * oprs-parser.y -- yacc grammaire
  * 
- * Copyright (c) 1991-2013 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -187,7 +187,7 @@ PBoolean load_ok;
 %type <cmd>		reset_or_eof
 %type <integer> 	pos_x pos_y pp_width
 %type <bool> 		debug_flag boolean visible pp_fill split join
-%type <string> 		op_name node_name edge_name prop_name documentation file_name write_file_name read_file_name symbol
+%type <string> 		op_name node_name edge_name prop_name documentation write_file_name read_file_name symbol
 %type <pred_func_rec>	pred_func
 %type <list_term> 	term_list
 %type <var> 		variable
@@ -290,7 +290,7 @@ command:
 #endif
 									 );}
 	| DELETE_TK OPF_TK			{yy_begin_0();} 
-		file_name	  		{delete_opf_from_rop($4,current_oprs->relevant_op,
+		read_file_name	  		{delete_opf_from_rop($4,current_oprs->relevant_op,
 #ifndef GRAPHIX
 								     FALSE
 #else
@@ -377,19 +377,19 @@ command:
 		 op_name			{yy_begin_COMMAND();}
 		 debug_flag			{trace_graphic_op($5,current_oprs->relevant_op,$7);}
 	| TRACE_TK GRAPHIC_TK OPF_TK  		{yy_begin_0();} 
-		 file_name			{yy_begin_COMMAND();}
+		 read_file_name			{yy_begin_COMMAND();}
 		 debug_flag			{trace_graphic_opf($5,current_oprs->relevant_op,$7);FREE($5);}
 	| TRACE_TK STEP_TK OP_TK  		{yy_begin_0();} 
 		 op_name			{yy_begin_COMMAND();}
 		 debug_flag			{trace_step_op($5,current_oprs->relevant_op,$7);}
 	| TRACE_TK STEP_TK OPF_TK  		{yy_begin_0();} 
-		 file_name			{yy_begin_COMMAND();}
+		 read_file_name			{yy_begin_COMMAND();}
 		 debug_flag			{trace_step_opf($5,current_oprs->relevant_op,$7);FREE($5);}
 	| TRACE_TK TEXT_TK OP_TK  		{yy_begin_0();} 
 		 op_name			{yy_begin_COMMAND();}
 		 debug_flag			{trace_text_op($5,current_oprs->relevant_op,$7);}
 	| TRACE_TK TEXT_TK OPF_TK  		{yy_begin_0();} 
-		 file_name			{yy_begin_COMMAND();}
+		 read_file_name			{yy_begin_COMMAND();}
 		 debug_flag			{trace_text_opf($5,current_oprs->relevant_op,$7);FREE($5);}
 	| SHOW_TK VARIABLE_TK			{show_global_variable();}
 	| SHOW_TK DB_TK				{print_database(current_oprs->database);}

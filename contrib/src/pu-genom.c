@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * pu-genom.c -- 
  * 
- * Copyright (C) 1999-2013 LAAS/CNRS
+ * Copyright (C) 1999-2012 LAAS/CNRS
  * 
  * $Id$
  */
@@ -191,7 +191,7 @@ PBoolean pu_encode_genom_string(const char *name, Expression *tc, char *val_addr
 	       if ((strlen(val)<max_size)) {
 		    memcpy(val_addr+(j-1)*max_size,val, strlen(val)+1);
 	       } else {
-		    fprintf(stderr,"pu_encode_genom_string: string to long: %u > %u\n",
+		    fprintf(stderr,"pu_encode_genom_string: string to long: %lu > %u\n",
 			    strlen(val), (unsigned int)max_size);
 		    *(val_addr +(j-1)*max_size) = '\0';
 		    return FALSE;

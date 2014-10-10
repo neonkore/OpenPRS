@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * lang.h -- 
  * 
- * Copyright (c) 1991-2013 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,7 @@ typedef enum {ENGLISH, FRENCH} Language_Type;
 
 extern Language_Type oprs_language;
 
-#if defined(VXWORKS)		/* To save memory wich is scarce... */
+#if defined(VXWORKS) || defined(__MACH__)		/* To save memory on VxWorks and please the complier on Mac OSX... */
 #define LG_STR(english,french) (english)
 #else
 #define LG_STR(english,french) (oprs_language == ENGLISH?english:french)

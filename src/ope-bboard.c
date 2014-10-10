@@ -2,7 +2,7 @@
 /*                               -*- Mode: C -*-
  * ope-bboard.c --
  *
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -1113,7 +1113,7 @@ void editNodeNameDialogAccept(Widget w, Draw_Data *dd, XtPointer call_data)
      if (og->type == DT_NODE) {
 	  renamed_node = og->u.gnode->node;
 	  
-	  if ((renamed_node->type == NT_START)) {
+	  if (renamed_node->type == NT_START) {
 	       fprintf(stderr,LG_STR("Incompatible Node type: %d in editNodeName.\n",
 				     "Incompatible Node type: %d in editNodeName.\n"),renamed_node->type);
 	       return;

@@ -2,11 +2,11 @@
 /*                               -*- Mode: C -*- 
  * lex-includer.l -- 
  * 
- * Copyright (C) 1994-2011 Francois Felix Ingrand
+ * Copyright (C) 1994-2012 Francois Felix Ingrand
  * 
  * $Id$
  * 
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2012 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,6 +45,10 @@
  */
 
 #include <string.h>
+
+void output_file_to_stdout(char *command);
+void eat_up_c_comment(void);
+
 %}
 
 %option noyywrap
@@ -63,7 +67,7 @@
 
 char * vpath=NULL;
 
-eat_up_c_comment()
+void eat_up_c_comment(void)
 {
      register int c;
 
@@ -106,7 +110,7 @@ char * find_file_path(char *path, char *name)
      
      more_path = (path && path[0]);
 
-     if (found = file_readable(name)) {
+     if ((found = file_readable(name))) {
 	  NEWSTR_STD(name,res);
 	  return res;
      } else {
@@ -139,7 +143,7 @@ char * find_file_path(char *path, char *name)
      return res;
 }
 
-output_file_to_stdout(char *command)
+void output_file_to_stdout(char *command)
 {
      char file_name[BUFSIZ];
      FILE *file;
@@ -149,7 +153,7 @@ output_file_to_stdout(char *command)
      if (start && end && (start != end)) {
 	  strncpy(file_name, start + 1, end - start - 1);
 	  file_name[end - start - 1] = '\0';
-	  if (file = fopen(find_file_path(vpath,file_name),"r")) {
+	  if ((file = fopen(find_file_path(vpath,file_name),"r"))) {
 	       int c;
 /* 	       printf("#line 1 \"%s\"\n",file_name); */
 	       while ((c = getc(file)) != EOF) {
@@ -187,14 +191,12 @@ output_file_to_stdout(char *command)
      } else fprintf(stderr,"Bad command format: %s\n", command);
 }
 
-main(int argc, char **argv)
+int main(int argc, char **argv)
 {
 
      extern int optind;
      extern char *optarg;
      int c, getoptflg=0;
-
-/*     ++argv, --argc;		/* skip over program name */
 
      while ((c = getopt(argc, argv, "p:h")) != EOF)
 	  switch (c) {

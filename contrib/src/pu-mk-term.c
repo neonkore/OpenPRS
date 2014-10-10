@@ -62,7 +62,7 @@ Term* PUMakeTermFloat(double val)
      return(build_float(val));
 }
 
-Term * PUMakeTermAtom(char *atom)
+Term * PUMakeTermAtom(const char *atom)
 {
      return build_id(make_atom(atom));
 }
