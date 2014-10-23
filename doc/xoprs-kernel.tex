@@ -151,7 +151,7 @@ list of directories where the kernel will look for data files (\file{.inc},
 equivalent to the \code{-d} command line argument.\\*
 Example:
 \begin{verbatim}
-setenv OPRS_DATA_PATH ./data:/usr/local/oprs/data:${HOME}/data
+export OPRS_DATA_PATH=./data:/usr/local/share/openprs/data:${HOME}/data
 \end{verbatim}
 
 \cpindex{OPRS\_DOC\_DIR}
@@ -159,7 +159,7 @@ setenv OPRS_DATA_PATH ./data:/usr/local/oprs/data:${HOME}/data
 documentation. It is used by the \XPK{} and the \OPE{}.
 Example:
 \begin{verbatim}
-setenv OPRS_DOC_DIR /usr/local/oprs/doc
+export OPRS_DOC_DIR=/usr/local/share/doc/openprs
 \end{verbatim}
 
 \cpindex{OPRS\_MP\_PORT}

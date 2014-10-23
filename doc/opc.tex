@@ -129,7 +129,11 @@ equivalent to the \code{-p} command line argument. Note that the use of
 or wih a previous \code{-p}).\*
 Example:
 \begin{verbatim}
-setenv OPRS_DATA_PATH ./data:/usr/local/oprs/data:${HOME}/data
+setenv OPRS_DATA_PATH ./data:/usr/local/share/oprs/data:${HOME}/data
+\end{verbatim}
+or
+\begin{verbatim}
+EXPORT OPRS_DATA_PATH ./data:/usr/local/share/oprs/data:${HOME}/data
 \end{verbatim}
 
 \end{description}
