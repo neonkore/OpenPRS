@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * xoprs-dialog.c -- 
  * 
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2014 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -1044,7 +1044,7 @@ Widget xpShowDBScrlTxt, xpShowDBDialog;
 
 void xpShowDBDialogUpdate()
 {
-     Arg args[1];
+     /* Arg args[1]; */
      static Sprinter *show_db_string = NULL;
 
      if (! show_db_string)
@@ -1114,7 +1114,7 @@ Widget xpShowCondScrlTxt, xpShowCondDialog;
 
 void xpShowCondDialogUpdate()
 {
-     Arg args[1];
+     /* Arg args[1]; */
      static Sprinter *show_cond_string = NULL;
 
      if (! show_cond_string)
@@ -1181,7 +1181,7 @@ Widget xpShowIGScrlTxt, xpShowIGDialog;
 
 void xpShowIGDialogUpdate()
 {
-     Arg args[1];
+     /* Arg args[1]; */
      static Sprinter *show_ig_string = NULL;
 
      if (! show_ig_string)

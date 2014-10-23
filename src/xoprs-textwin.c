@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * xps-textwin.c -- 
  * 
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2014 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -75,7 +75,7 @@ XmTextPosition TextGetLastPos(Widget w)
 
 void AppendTextWindow(Widget textWindow, char *s,PBoolean big)
 {
-     XmTextPosition  StartPos;      	/* starting position of input text */
+     /* XmTextPosition  StartPos;  */     	/* starting position of input text */
      XmTextPosition       lastPos;
      XmTextBlockRec        textblock;
 
@@ -90,7 +90,7 @@ void AppendTextWindow(Widget textWindow, char *s,PBoolean big)
     if (big) XtUnmanageChild(textWindow);
     XmTextInsert(textWindow, lastPos, textblock.ptr);
     if (big) XtManageChild(textWindow);
-    StartPos = TextGetLastPos(textWindow);
+    /* StartPos = TextGetLastPos(textWindow); */
     XmTextSetInsertionPosition(textWindow, 
 			       XmTextGetLastPosition(textWindow));
 }

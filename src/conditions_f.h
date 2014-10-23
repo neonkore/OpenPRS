@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * conditions_f.h -- 
  * 
- * Copyright (c) 1991-2013 Francois Felix Ingrand.
+ * Copyright (c) 1991-2014 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,3 +42,4 @@ void recheck_all_conditions(void);
 void free_conditions_list(Condition_List cl);
 void show_conditions(Condition_List cl);
 void add_condition_to_expr_internal(Relevant_Condition *rc);
+void sprint_conditions(Sprinter *sp, Condition_List cl);
