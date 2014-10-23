@@ -1,3 +1,10 @@
+2014-10-23  Felix Ingrand  <felix@precise>
+
+	* top-structure.c : fixed a problem I introduced cleaning up
+	code. Even if we do not build graphic object, some of these
+	functions need to be called to ensure the proper building of the
+	OP structure.
+
 2014-10-10  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* lang.h ("C"): Disabling iso-char for now on the Mac, until I find a good fix for this.

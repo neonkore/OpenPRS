@@ -458,7 +458,7 @@ Control_Point *merge_top_node(Control_Point *first, Control_Point *second)
      sl_loop_through_slist(first->out, edge, Edge *) {
 	  sl_add_to_tail(second->out, edge);
 #ifdef GRAPHIX
-	  edge->in = second;
+	  edge->in = second;	/* Only in the graphical rep do we need to point back. */
 #endif
      }
 
@@ -632,8 +632,10 @@ Double_Node *build_while(Expression *cond, Double_Node *insts)
 	  make_and_connect_edge(nnif, nnthen, NULL, ET_THEN);
 	  make_and_connect_edge(nnif, nnelse, NULL, ET_ELSE);
 #ifdef GRAPHIX
-	  edge = make_and_connect_edge(node, nnif, cond, ET_IF);
+	  edge = 
 #endif
+	       make_and_connect_edge(node, nnif, cond, ET_IF);
+
 	  merge_top_node(DN_TAIL(dn),node);
 
 	  insert_branch(insts,nnthen,node);
@@ -666,8 +668,9 @@ Double_Node *build_if(Expression *cond, Double_Node *thenb, Double_Node *elseb, 
 	  if (! elseb && ! thenb) {
 	       res = make_double_node(make_simple_node(),make_simple_node());
 #ifdef GRAPHIX
-	       edge = make_and_connect_simple_edge(res->head, res->tail, cond);
+	       edge = 
 #endif
+		    make_and_connect_simple_edge(res->head, res->tail, cond);
 	  } else {
 
 	       Symbol nelse = NULL, nthen = NULL, nif = NULL;
@@ -689,8 +692,9 @@ Double_Node *build_if(Expression *cond, Double_Node *thenb, Double_Node *elseb, 
 	       make_and_connect_edge(nnif, nnthen, NULL, ET_THEN);
 	       make_and_connect_edge(nnif, nnelse, NULL, ET_ELSE);
 #ifdef GRAPHIX
-	       edge = make_and_connect_edge(node, nnif, cond, ET_IF);
+	       edge = 
 #endif
+		    make_and_connect_edge(node, nnif, cond, ET_IF);
 	       if (!thenb) {
 		    if (!elseb) {
 			 fprintf(stderr, LG_STR("build_if: error, we should not get here...\n",
@@ -748,8 +752,9 @@ Double_Node *build_inst(Expression *inst)
      if (really_build_node) {
 	  res = make_double_node(make_simple_node(),make_simple_node());
 #ifdef GRAPHIX
-	  edge = make_and_connect_simple_edge(res->head, res->tail, inst);
+	  edge = 
 #endif
+	       make_and_connect_simple_edge(res->head, res->tail, inst);
      } else
 	  res = make_double_node(NULL, NULL);
 
