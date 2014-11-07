@@ -1,3 +1,7 @@
+2014-11-07  Felix Ingrand  <felix@precise>
+
+	* slistPack.h (s): Simplified this structure.
+
 2013-01-14  Felix Ingrand  <felix@precise>
 
 	* slistPack.c (sl_make_snode): remove the test on node==NULL... I

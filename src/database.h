@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*-
  * database.h -- Database structures and declarations.
  *
- * Copyright (c) 1991-2013 Francois Felix Ingrand.
+ * Copyright (c) 1991-2014 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -56,8 +56,8 @@ struct key {
 	  Term *term;
      }     u;
      Symbol pred;
-     unsigned char ar;
-     unsigned char pos;
+     unsigned int ar;
+     unsigned int pos;
      Key_Type key_or_term BITFIELDS(:1);	/* 2 values only... */
 };
 

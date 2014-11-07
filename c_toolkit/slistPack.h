@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * slistPack.h -- Simple list header.
  * 
- * Copyright (c) 1991-2013 Francois Felix Ingrand.
+ * Copyright (c) 1991-2014 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -63,8 +63,8 @@ struct simple_list  {
 	  const void **st;
 	  const void *sd;
      } current;
-     unsigned short length;
-     Slist_Type type:8;
-     unsigned int dynamic:8;
+     unsigned int length;
+     Slist_Type type;
+     unsigned int dynamic;
 };
 #endif

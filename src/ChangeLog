@@ -1,3 +1,7 @@
+2014-11-07  Felix Ingrand  <felix@precise>
+
+	* database.h (key): unsigned char for ar and pos are probably not arge enough for Sandra's SPARK strucutures...
+
 2014-10-23  Felix Ingrand  <felix@precise>
 
 	* top-structure.c : fixed a problem I introduced cleaning up
