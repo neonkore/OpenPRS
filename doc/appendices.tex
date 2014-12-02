@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% -*- Mode: latex -*- %%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
-%% Copyright (c) 1991-2011 Francois Felix Ingrand.
+%% Copyright (c) 1991-2012 Francois Felix Ingrand.
 %% All rights reserved.
 %%
 %% Redistribution and use in source and binary forms, with or without
@@ -2555,52 +2555,27 @@ These OPS can be found in the file \file{fib-par.opf}.
 \node{How to Install the OPRS Development Environment}
 \cpindex{How to Install the \COPRSDE{}}
 
-\textbf{This appendix is completely out of date and need to be updated since I moved
-the code in open source.}
+The easiest way to install \COPRSDE{} is to check the instructions on \url{http://robotpkg.openrobots.org/} .
 
-The easiest way to install \COPRSDE{} is to either to use git:
+If you use robotpkg \url{http://robotpkg.openrobots.org/} and have it installed already, just do:
+
+\noindent\code{cd supervision/openprs}\\
+\code{make update}
+
+or you can also use git:
 
 \noindent
-\code{git clone http://softs.laas.fr/git/robots/openprs.git\\
+\code{git clone git://git.openrobots.org/robots/openprs\\
 cd openprs\\
-./configure\\
-make}
+./bootstrap.sh\\
+./configure --prefix=<directory where you want to install it>\\
+make install}
 
-or to use robotpkg \url{http://homepages.laas.fr/mallet/robotpkg}. If you
-use robotpkg and have it installed already, just do:
-
-\noindent\code{cd architecture/openprs}\\
-\code{make update}
 
 \vspace{5mm}
 
-The rest of this appendix is left for ``information'' it is mostly out of
-date and useless.
-
-The installation procedure is different (although very similar), according to
-the license you have. One general comment is that most Makefile are written for
-GNU Make \cite{GNU-make-manual}, and may not work with other \code{make}
-program. Similarly, a number of tools (such as Perl \cite{perl-manual}) may be
-required to build the system (this is particularly true for the source
-distribution).
-
-
-
-\section{Unpacking the Distribution}
-\node{Unpacking the Distribution}
-\cpindex{Unpacking the Distribution}
-
-\begin{enumerate}
-
-\item Choose a directory where you want to install the distribution. \\*
-\code{\# cd /usr/local/oprs (or your preferred directory)}
-
-\item Unpack the distribution with: \\*
-\code{\# tar xvf <tape-dev>} \\*
-or, if you got the distribution as a compressed tar file: \\*
-\code{\# gnutar zxvf <dist-file> }
-
-\end{enumerate}
+The rest of this appendix is left for ``information'' it is mostly out of 
+date and useless. 
 
 \section{Description of the Distribution}
 \node{Description of the Distribution}
