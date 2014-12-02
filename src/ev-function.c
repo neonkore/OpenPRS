@@ -1066,6 +1066,34 @@ Term *l_second_ef(TermList terms)
      return t;
 }
 
+Term *l_nth_ef(TermList terms)
+/* Return the LISP_CAR object which is the n^{th} element of the
+   LISP_LIST, numbering from 0.
+*/
+{
+  Term
+    *n_term = (Term *)sl_get_slist_pos(terms,1),
+    *list_term = (Term *)sl_get_slist_pos(terms,2);
+  int n;
+  L_List list;
+
+  if (n_term->type != INTEGER)
+    report_fatal_external_error(oprs_strerror(PE_EXPECTED_INTEGER_TERM_TYPE));
+  n = n_term->u.intval;
+
+  if (list_term->type != LISP_LIST)
+    report_fatal_external_error(oprs_strerror(PE_EXPECTED_LISP_LIST_TERM_TYPE));
+  list = list_term->u.l_list;
+
+  while (n>0) {
+    if (! (list = CDR(list)))
+         report_fatal_external_error(oprs_strerror(PE_CAR_FROM_EMPTY_LISP_LIST));
+    --n;
+  }
+
+  return CAR_DUP(list);
+}
+
 Term *lisp_car_to_term_ef(TermList terms)
 /* Return a Term object which is the node of a  LISP_CAR. */
 { 
@@ -3013,6 +3041,74 @@ Term *arctan(TermList terms)
   return build_float(atan2(valt1, valt2)); 
 }
 
+Term *sprintf_ef(TermList terms)
+/* Print a list term. */
+{
+  //Term *t;
+  PString fmt_str, fmt_str2;
+  Term *term;
+  //Expression *tc;
+  PBoolean save_pb;
+  static Sprinter *sp = NULL;
+
+  if (sp) reset_sprinter(sp);
+  else sp = make_sprinter(0);
+
+  term = find_binding((Term *)sl_get_slist_next(terms, NULL));
+  if (term->type != STRING)
+    report_fatal_external_error(oprs_strerror(PE_EXPECTED_STRING_TERM_TYPE));
+  fmt_str = term->u.string;
+
+  for (fmt_str2 = fmt_str; *fmt_str2 ; fmt_str2++) {
+    if (*fmt_str2 != '%') {
+      SPRINT(sp, 1,sprintf(f,"%c",*fmt_str2));
+    } else {
+      switch (*++fmt_str2) {
+      case 'g':
+      case 'd':
+      case 'f':
+      case 's':
+        if ((term = (Term *)sl_get_slist_next(terms, term)) == 0)
+          report_fatal_external_error
+            (LG_STR("Directive and no term left to print in sprintf.",
+                    "Des directives subsistent mais plus de termes à imprimer dans la fonction sprintf."));
+        save_pb = print_backslash;
+        print_backslash = FALSE;
+        //print_unsigned = (*fmt_str2 == 'u') ? TRUE : FALSE;
+        sprint_term(sp,find_binding(term));
+        print_backslash = save_pb;
+        break;
+      case 't':
+        if ((term = (Term *)sl_get_slist_next(terms, term)) == 0)
+          report_fatal_external_error
+            (LG_STR("Directive and no term left to print in sprintf.",
+                    "Des directives subsistent mais plus de termes à imprimer dans la fonction sprintf."));
+        save_pb = print_backslash;
+        print_backslash = TRUE;
+        sprint_term(sp,find_binding(term));
+        print_backslash = save_pb;
+        break;
+      case '%':
+        SPRINT(sp, 1,sprintf(f,"%c",'%'));
+        break;
+      default:
+        fprintf(stderr,
+                LG_STR("Unknown directive %%%c in sprintf.\n",
+                       "Directive %%%c inconnue dans la fonction sprintf.\n"),
+                *fmt_str2);
+        break;
+      }
+    }
+  }
+
+  if ((term = (Term *)sl_get_slist_next(terms, term)) != 0)
+    report_recoverable_external_error
+      (LG_STR("term(s) left to print in sprintf.",
+              "Des term(s) restent à imprimer dans la fonction sprintf."));
+
+  return build_string(SPRINTER_STRING(sp));
+}
+
 
 void declare_ev_funct(void)
 /* Create the evaluable function hash table. (which is in the oprs structure. */
@@ -3100,6 +3196,7 @@ void declare_ev_funct(void)
      make_and_declare_eval_funct("CDDAR",l_cddar_ef, 1);
      make_and_declare_eval_funct("CDDDR",l_cdddr_ef, 1);
      make_and_declare_eval_funct("SECOND",l_second_ef, 1);
+     make_and_declare_eval_funct("NTH",l_nth_ef, 2);
      make_and_declare_eval_funct("REVERSE",l_reverse_ef, 1);
      make_and_declare_eval_funct("SORT-ALPHA",l_sort_ef, 1);
      make_and_declare_eval_funct("LAST",l_last_ef, 1);
@@ -3194,6 +3291,8 @@ void declare_ev_funct(void)
      make_and_declare_eval_funct("MAKE-GOAL-FROM-EXPR", make_goal_from_expr_ef, 1);
      make_and_declare_eval_funct("FIND-APPLICABLE-OPS-FOR-GOAL", find_applicable_ops_for_goal_ef, 1);
      make_and_declare_action("TEST-FOR-LTDL", find_applicable_ops_for_goal_ef, 1);
+
+     make_and_declare_eval_funct("SPRINTF", sprintf_ef, 1);
 
      /* declare_user_eval_funct(); */
      /* declare_shary_user_eval_funct(); /\* why is this here???? (FFI) *\/ */

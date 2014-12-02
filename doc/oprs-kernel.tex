@@ -4008,11 +4008,6 @@ is defined for 2 terms, a \code{Any Term} and a \code{LISP\_LIST}.  It adds the
 \code{LISP\_LIST}.
 \end{typeefa}
 
-\begin{typeefa}{Evaluable Function}{Any Term}{first}{(LISP\_LIST)}
-is the first function. It is defined for 1 term \code{LISP\_LIST}. It returns the
-first (or car) \code{Any Term} of the \code{LISP\_LIST}.
-\end{typeefa}
-
 \begin{typeefa}{Evaluable Function}{Any Term}{car}{(LISP\_LIST)}
 is defined for 1 term \code{LISP\_LIST}. It returns the car (or first) \code{Any Term} of
 the \code{LISP\_LIST}.
@@ -4083,6 +4078,11 @@ is defined for 1 term \code{LISP\_LIST}. It returns the cdddr
 \code{LISP\_LIST} of the \code{LISP\_LIST}.
 \end{typeefa}
 
+\begin{typeefa}{Evaluable Function}{Any Term}{first}{(LISP\_LIST)}
+is the first function. It is defined for 1 term \code{LISP\_LIST}. It returns the
+first (or car) \code{Any Term} of the \code{LISP\_LIST}.
+\end{typeefa}
+
 \begin{typeefa}{Evaluable Function}{Any Term}{second}{(LISP\_LIST)}
 is the second function. It is defined for 1 term \code{LISP\_LIST}. It returns
 the second (or cadr) \code{Any Term} of the \code{LISP\_LIST}.
@@ -4091,6 +4091,12 @@ the second (or cadr) \code{Any Term} of the \code{LISP\_LIST}.
 \begin{typeefa}{Evaluable Function}{Any Term}{last}{(LISP\_LIST)}
  is defined for 1 term \code{LISP\_LIST}. It returns the last \code{Any Term} of
  the \code{LISP\_LIST}. An error will occur if the list is empty.
+\end{typeefa}
+
+\begin{typeefa}{Evaluable Function}{Any Term}{nth}{(Integer LISP\_LIST)}
+ returns the nth \code{Any Term} of
+ the \code{LISP\_LIST}, indexed from zero. An error will occur if the first argument is not an
+integer or the list is empty.
 \end{typeefa}
 
 \begin{typeefa}{Evaluable Function}{LISP\_LIST}{delete-from-list}{(Any Term, LISP\_LIST)}
@@ -4156,6 +4162,10 @@ is that the elements will be evaluated.
 \begin{typeefa}{Evaluable Function}{ATOM}{gensym}{()}
 is the traditional gensym function (which create a new unique symbol in Lisp) .
 It is defined for no argument. It returns a new unique \code{ATOM}.
+\end{typeefa}
+
+\begin{typeefa}{Evaluable Function}{STRING}{sprintf}{(COMPOSED\_TERM \var{term})}
+will return a \code{STRING} which is the result of the formatted print directives (see Printing Actions like printf).
 \end{typeefa}
 
 \begin{typeefa}{Evaluable Function}{STRING}{string-cat}{(STRING STRING)} 
