@@ -50,7 +50,7 @@ publications have been written on this new programming
 paradigm (see Bibliography \pageref{bibliography}).
 
 \COPRSDE{} is, to our knowledge, the first complete Procedural Reasoning
-development environment written in C and available under Unix. Its graphic
+development environment written in C and available under Unix. Its graphical
 interface is based on MIT's X Window version 11 (X11), and
 Open Software Foundation's Motif widget set (Motif).
 It is the first implementation of \OPRS{} intended as a
@@ -64,19 +64,21 @@ which were research prototypes usually written in different Lisp dialects.
 \cpindex{What is Procedural Reasoning?}
 \cpindex{Procedural Reasoning}
 
-Procedural Reasoning is a set of tools and methods representing and executing
+Procedural Reasoning is a set of tools and methods for representing and executing
 plans and procedures. These plans or procedures are conditional sequences of
 actions which can be run to achieve given goals or to react in particular
 situations. Procedural Reasoning differs from other commonly used knowledge
-representation (rules, frames, etc.)
+representations (rules, frames, etc.).
 
 To a degree, procedural representation is a trade-off between purely
 declarative representations and strictly imperative representations. Declarative 
-representations suffer from a lack of control on the execution of their rules, imperative
+representations suffer from a lack of control on the execution of their rules,
+imperative representations
 suffer from limited modularity. Procedural Reasoning is particularly well suited
 for problems where implicit or explicit knowledge is already formalized as
 procedures or plans. The control information (i.e.\ the sequence of actions and
 tests) embedded in these procedures or plans is actually preserved.
+% FIXME: Actually preserved when what happens?
 
 \section{Overall Description of \COPRS{}}
 \node{Overall Description of OPRS}
@@ -93,7 +95,7 @@ telecommunications networks \cite{Wesley91}, the control of  mobile robots
 
 \figuregif[scale=1]{global-arch}{OPRS Global Architecture}{global-arch}
 
-As shown in Figure \ref{global-arch}, the architecture of a \CPK{} consists of
+As shown in Figure \ref{global-arch}, the architecture of an \CPK{} consists of
 (1) a database containing the system of current beliefs about the world; (2) a
 library of plans (or procedures), called Knowledge Areas (OPs), that describe
 particular sequences of actions and tests that may be performed to achieve
@@ -101,7 +103,7 @@ given goals or to react to certain situations; and (3) an intention graph,
 consisting of a [partially] ordered set of all plans chosen for execution at
 runtime. An interpreter (inference mechanism) manipulates these components,
 selecting an appropriate plan (OP) based on system beliefs and goals, placing
-those selected OPs on the intention structure, and finally executing them.
+those selected OPs in the intention structure, and finally executing them.
 
 The \CPK{} interacts with its environment through its database, which
 acquires new beliefs in response to changes in the environment, and through the
@@ -352,13 +354,13 @@ installation (\pxref{How to Install the OPRS Development Environment}),
 differences from SRI PRS (\pxref{Principal Differences with SRI PRS}),
 default OPs (\pxref{Default OPs}), the Grammar Used in the \COPRSDE{}
 (\pxref{Grammar Used in the OPRS Development Environment}), etc., as well as a glossary, a bibliography
-and various indices which point you back to the appropriate section of the
+and various indices which point you back to the appropriate sections of the
 manual.
 
 \end{description}
 
 Some chapters or sections have arbitrarily been put in a particular
-part, although they could equally well be presented in elsewhere.
+part, although they could equally well be presented elsewhere.
 For example, the OP syntax section (\pxref{OP Syntax and Semantics}) is
 part of the \CPK{} part, although it could be in the \OPE{} part. In
 any case, the various indices and cross references will always point
