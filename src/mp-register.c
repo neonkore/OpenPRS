@@ -433,7 +433,7 @@ PBoolean start_mp_oprs(const char *mp_hostname, int mp_port)
        
 	  fprintf(stderr, LG_STR("Starting message passer on remote host: %s, listening on port: %d.\n",
 				 "Lance le message passer sur la machine distante: %s, écoute sur le port: %d.\n"),mp_hostname, mp_port);
-	  sprintf(buffer,"rsh %s -n mp-oprs -j %d &", mp_hostname, mp_port);
+	  sprintf(buffer,"ssh %s -n mp-oprs -j %d &", mp_hostname, mp_port);
 	  sys_ret = system(buffer);
 	       
 	  return (sys_ret != -1); /* system returns -1 if an error occurs. */
