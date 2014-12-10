@@ -337,7 +337,7 @@ ADLANG2AD = $(top_srcdir)/util/adlang2ad
 %.y: %.y.part $(LEX_INCLUDER)
 	rm -f $*.y
 	 $(LEX_INCLUDER) -p.:$(VPATH) < $< > $*.y
-	chmod -w $*.y
+	chmod -w $*.y || true
 
 #
 # This rule says that some c and h depend of the yacc they come from.
@@ -362,7 +362,7 @@ opc-parser.y:  yacc-file.y.part yacc-graph-op.y.part yacc-exp.y.part yacc-text-o
 %.l: %.l.part $(LEX_INCLUDER)
 	rm -f $*.l
 	 $(LEX_INCLUDER) -p.:$(VPATH) < $< > $*.l
-	chmod -w $*.l
+	chmod -w $*.l || true
 
 # I could not rely on the automake flex management,as ylwrap does not properly handle renaming with -P
 
@@ -406,7 +406,7 @@ xdefault_DATA = XOprs.ad Ope.ad
 	rm -f $@
 	$(ADLANG2AD) en < $< > $@
 # To make sure we do not modify these...
-	chmod -w $@
+	chmod -w $@ || true
 
 
 CLEANFILES =  XOprs.ad.h oprs-server-lex.l ope-lex.l ope-parser.y oprs-server-parser.c \
