@@ -34,8 +34,12 @@
 \newcommand{\OPRS}{OPRS}
 
 \newcommand{\COPRS}{OPRS}
+\newcommand{\aCOPRS}{an OPRS}
     
 \newcommand{\CPK}{OPRS Kernel}
+% because of the way English works, the renaming of the language from beginning
+% with a consonant to beginning with a vowel is bad.
+\newcommand{\aCPK}{an \CPK}
     
 \newcommand{\XOPRS}{X-OPRS}
 
