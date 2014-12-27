@@ -292,8 +292,9 @@ listen to connection. It is used by the \CPK{}, the \XPK{}, the \OPRSS{}
 and the \MPA{}. It is equivalent to the \code{-j} command line argument. \\*
 Example:
 \begin{verbatim}
-setenv OPRS_MP_PORT 3456
+export OPRS_MP_PORT=3456
 \end{verbatim}
+If the MP Port is not explicitly set, it defaults to 3300.
 
 \cpindex{OPRS\_MP\_HOST}
 \item[\code{OPRS\_MP\_HOST}] is used  to specify the host on which the \MPA{} will
@@ -301,7 +302,7 @@ listen to connection. It is used by the \CPK{}, the \XPK{}, the \MPA{} and the
 \OPRSS{}. It is equivalent to the \code{-m} command line argument.\\*
 Example:
 \begin{verbatim}
-setenv OPRS_MP_HOST alf.laas.fr
+export OPRS_MP_HOST=alf.laas.fr
 \end{verbatim}
 
 \cpindex{OPRS\_SERVER\_PORT}
@@ -310,7 +311,7 @@ setenv OPRS_MP_HOST alf.laas.fr
 and the \OPRSS{}. It is equivalent to the \code{-i} command line argument.\\*
 Example:
 \begin{verbatim}
-setenv OPRS_SERVER_PORT 3457
+export OPRS_SERVER_PORT=3457
 \end{verbatim}
 
 \cpindex{OPRS\_SERVER\_HOST}
@@ -319,7 +320,7 @@ setenv OPRS_SERVER_PORT 3457
 \XPK{}. It is equivalent to the \code{-s} command line argument.\\*
 Example:
 \begin{verbatim}
-setenv OPRS_SERVER_HOST alf.laas.fr
+export OPRS_SERVER_HOST=alf.laas.fr
 \end{verbatim}
 
 \cpindex{OPRS\_ID\_CASE}
@@ -329,7 +330,7 @@ to the \code{-l} option. The possible values
 are \code{lower}, \code{upper} or \code{none}:\\*
 Example:
 \begin{verbatim}
-setenv OPRS_ID_CASE none
+export OPRS_ID_CASE=none
 \end{verbatim}
 
 \end{description}
@@ -339,9 +340,9 @@ useful when different users are using the \COPRSDE{} on the same host. By settin
 these variables to the proper value, they can make sure that their application
 will not interact with each other.
 
-\section{How to Kill a \CPK{}}
-\node{How to Kill a OPRS Kernel}
-\cpindex{How to Kill a OPRS Kernel}
+\section{How to Kill an \CPK{}}
+\node{How to Kill an OPRS Kernel}
+\cpindex{How to Kill an OPRS Kernel}
 
 You can kill a \CPK{} with the \code{kill} command of the
 \OPRSS{}:
@@ -361,30 +362,30 @@ command at the prompt:
 \cpindex{OPRS Kernel over Network}
 
 All the communications between the various components of the \COPRSDE{} are made
-using Internet sockets. If your license agreement allows it, you can
-run a \CPK{} on a machine different from the one on which the \OPRSS{}
-runs. On some machines with notably slow process switching it is strongly
-advised to run the \OPRSS{} and the \MPA{} on a host different from the one
-upon which the \CPK{} is running. In any case, you can start a \CPK{} from any
+using Internet sockets. You can easily
+run \aCPK{} on a machine different from the one on which the \OPRSS{}
+runs. On machines with notably slow process switching we strongly
+advise that you run the \OPRSS{} and the \MPA{} on a host different from the one
+upon which the \CPK{} is running. In any case, you can start \aCPK{} from any
 host, providing you specify the proper arguments to enable the \CPK{} to
 establish connection with the \OPRSS{} and the \MPA{}. Note that you need to
 issue an \code{accept} command in the \OPRSS{} to establish the connection.
 
-\section{How to Connect to a \CPK{}}
+\section{How to Connect to \aCPK{}}
 \node{How to Connect to a OPRS Kernel}
 \cpindex{How to Connect to a OPRS Kernel}
 \cpindex{Run Mode}
 \cpindex{Command Mode}
 
-When you start a \CPK{}, it enters its main loop and is in \dfn{run} mode. In
+When you start \aCPK{}, it enters its main loop and is in \dfn{run} mode. In
 this mode, the kernel checks for messages from the \MPA{} and commands from the
 \OPRSS{}, but does not interact directly with the user. If you want to
-interact directly with a \CPK{} (to consult the database, or load some OPs, and
+interact directly with \aCPK{} (to consult the database, or load some OPs, and
 so on), you can do it using the \code{connect} command of the \OPRSS{}. This
 will put the kernel in \dfn{command} mode. Note: This is not true for the \XPK{}
 with which you can interact using the X/Motif interface.
 
-For example, assuming you have created a \CPK{} named \code{FOO}, you can
+For example, assuming you have created \aCPK{} named \code{FOO}, you can
 connect to it by issuing the following command from the \OPRSS{} window.
 
 \code{OPRS-Server> connect foo}
@@ -413,7 +414,7 @@ One problem with this scheme is that during this time, the \CPK{} is deaf to
 the rest of the world. For example, it does not check for messages from the
 \MPA{}, and it does not even run its top level loop\dots{} However, the messages
 are queued (as much as possible) and the main loop will parse them upon
-restart.  In any case, the connection to a \CPK{} should be used as seldom as
+restart.  In any case, the connection to \aCPK{} should be used as seldom as
 possible and the kernel should then be left alone to run its own life.
 Nevertheless its use is not prohibited, and is usually appropriate to load
 database, or OPs just after the \CPK{} has been started.
@@ -437,7 +438,7 @@ If you happen to break the command parser, you need to reset it. Do this by typi
 \samp{.} at the beginning of a new line, i.e.\ \key{RET},
 \key{.}, and \key{RET}. \xref{OPRS Kernel Parser} for more on this subject.
 
-Keep in mind that you do not need to connect to a \CPK{} to execute a command
+Keep in mind that you do not need to connect to \aCPK{} to execute a command
 such as loading a database, or an include file. You can perform all of these
 from the \OPRSS{} using the \code{transmit} command (\pxref{OPRS-Server Communication Commands}). The main advantage of the command mode is that the
 interaction with the user is direct, but the main advantage of the
@@ -469,11 +470,11 @@ reference.
 \cpindex{OPRS Kernel parser}
 
 The \CPK{} uses a parser to parse the user commands (so does the \OPRSS{}
-and to some extend the \OPE{} and the \XPK{}). If for some reasons the parser
+and to some extent the \OPE{} and the \XPK{}). If for some reason the parser
 gets confused, presumably because of a syntax error, you can type a dot at the
 beginning of a new line, followed by a carriage return to reset it (i.e.
 \key{RET}, \key{.}, and \key{RET}). In any case, when you reset the parser, you
-must get the prompt after a warning.
+will get the prompt after a warning.
 
 \begin{verbatim}
 FOO> echoo (asd)
@@ -488,7 +489,7 @@ FOO>
 \end{verbatim}
 
 If you do not get the prompt, it means that the parser is still expecting a
-token to parse. (In some very peculiar situations, the parser needs to get close
+token to parse. (In some very peculiar situations, the parser needs to get a close
 parenthesis \samp{)} to accept the reset token \verb+\n.\n+).
 
 
@@ -525,8 +526,8 @@ Example: \code{consult (bar \$x b c)}\\*
 \pgindex{conclude (oprs)}
 \item \code{conclude \var{expression}}. Conclude the \var{expression}
 (\pxref{General Expressions}) in the database. You cannot conclude an
-expression with unbound variables, and you can only conclude expression, not
-gexpression.\\*
+expression with unbound variables, and you can only conclude expressions, not
+gexpressions.\\*
 Example: \code{conclude (bar a b c)}, and\\*
 \code{conclude (\~{} (foo 2 3 (+ 2 3)))}, are accepted, however\\*
 \code{conclude (bar \$x b c)} is not allowed because of the variable, nor is\\*
@@ -563,7 +564,7 @@ this command.
 
 The OP library contains all the OP/procedures which have been loaded in the
 \CPK{}. There are a number of commands to load/unload OP files in the OP
-library of a \CPK{}, as well as to clear/consult the OP library, and to
+library of \aCPK{}, as well as to clear/consult the OP library, and to
 set/unset trace on specific OP or OP files (i.e.\ set of OPs loaded from the
 concerned file).
 
@@ -638,8 +639,17 @@ database, as if it was a basic event fact (\pxref{Basic Events}).
 \node{OPRS Kernel Loading Commands}
 \cpindex{OPRS Kernel Loading Commands}
 
-File name can be given relative to the current directory or absolute
-(starting with a \samp{/}). This rule also applies to file loaded by
+\textit{FIXME: The following seems inconsistent:  first we say that files can be
+  relative to the current directory, or absolute, and then we say that they
+  files are searched for using the data path.  That suggests to me that, in
+  fact, the files can be named \emph{relative to the data path} (and \emph{not}
+  the current directory), or they can be given as absolute names (in which case
+  the data path will not be searched).  I believe that unless the current
+  directory (as `.') is in the data path, it will not be treated specially.  Is
+  that right?}
+
+File names can be given relative to the current directory or absolute
+(starting with a \samp{/}). This rule also applies to files loaded by
 means of commands in include files. Remember that files are searched in the
 \code{OPRS\_DATA\_PATH} path (\pxref{OPRS Kernel Environment Variables}).
 
@@ -922,7 +932,7 @@ The general syntax is:
 
 \pgindex{set action (oprs)}
 \item \code{set action on|off} Turn on or off some checking on the action
-compilation/aoprsing. In particular, it will check if an action calls a function
+compilation/parsing. In particular, it will check if an action calls a function
 declared as an evaluable function. \xref{Action Checking}. Default value:
 \code{on}.
 
@@ -1089,16 +1099,18 @@ are just loaded in memory, avoiding a costly parsing and compilation.
 just the OP description, they also contain all the declarations of predicates,
 functions, and symbols mentioned in the OPs.
 
-\item[Architecture and indian independant] The dump format is intentionaly
+\item[Architecture and endian independant] The dump format is intentionaly
 architecture and endian independant. One can create a dump file under a Pentium
 running Windows NT and reload it under a Sparc running Solaris or a 680x0 board
 under VxWorks.
 
 \item[Graphic and non graphic version of OP] Graphic information is dumped
-according to the kernel from which you dump the OPs (i.e.\ it is dumped from an
-\XPK{}, while it is not from a \CPK{}). Similarly, when loading OP dump, the
-graphic information is loaded if an only if it is present in the dump and if
-the kernel may use it (i.e.\ an \XPK{}).
+according to the kernel from which you dump the OPs.  That is graphical
+information will be dumped, if the OP is dumped from 
+an \XPK{}; no graphical information will be dumped if dumping from \aCPK{}). 
+Similarly, when loading an OP dump, the
+graphic information is loaded if and only if it is both present in the dump and if
+the loading kernel may use it (i.e.\ an \XPK{}).
 
 \end{description}
 
@@ -1109,18 +1121,18 @@ misunderstandings:
 
 \item[Unreadable format] The dump format is almost unreadable to the
 common user (and even programmer)... Therefore, all OP files should also be
-kept under source format (\file{.opf}).
+kept in source format (\file{.opf}).
 
 \item[Memory consumption] The dump and reload of OP and database dump files
-require some memory allocation which in some situations is sparse (under
-VxWorks for example). Some tables are required to perform the dump and the
+requires some memory allocation.  Caution will be required when memory is sparse (under
+VxWorks, for example). Some tables are required to perform the dump and the
 load. These tables are temporarily allocated and are freed afterward. 
 
 \item[No C compiled code included] C Compiled code, i.e.\ code linked by the
 user in the \PK{} is not dumped in the \OPRS{} dump files. The main reason is
-that contrary to the \OPRS{} compiled code, this code is not architecture
+that unlike the \OPRS{} compiled code, C compiled code is not architecture
 independant. Therefore, when you load a \OPRS{} dump file, the kernel will
-complain if it cannot find the evaluable functions/predicates/actions code it
+complain if it cannot find evaluable function, predicate, or action code it
 needs.
 
 \end{description}
@@ -1156,7 +1168,7 @@ OP already loaded). The suggested suffix for the dump OP file is \file{.dopf}.
 If this command is executed from the \XPK{}, and the dump OP file was produced
 from an \XPK{}, the graphical information is restored, otherwise, it will be
 unavailable (but the OP will still remain executable).  However, if it is
-executed from a \CPK{}, graphical information if present is discarded. \\*
+executed from \aCPK{}, graphical information if present is discarded. \\*
 Example: \code{load dump op "op-ex.dopf"}
 
 \pgindex{load dump db (oprs)}
@@ -1168,11 +1180,11 @@ Example: \code{load dump db "db-ex.ddb"}
 \end{itemize}
 
 The dump/load mechanism is the first step of a broader mechanism which will, in
-future releases, provide other facilities. For example, future version of
+future releases, provide other facilities. For example, a future version of
 \COPRS{} will provide warm boot capabilities (i.e.\ one will be able to dump a
-kernel state and later, reload it and continue from the point where it was
+kernel state and later reload it and continue from the point where it was
 dumped). In fact, the warm boot feature is more or less already present in the
-current version but is not currently supported (i.e.\ use at your own risk).
+current version but is not currently supported (i.e.\ use it at your own risk).
 
 \begin{itemize}
 
@@ -1192,7 +1204,7 @@ from the file. The suggested suffix for the dump OP file is \file{.dkrn}.  If
 this command is executed from the \XPK{}, and the dump kernel file was produced
 from an \XPK{}, the graphical information is restored, otherwise, it will be
 unavailable (but the OP will still remain executable).  However, if it is
-executed from a \CPK{}, graphical information, if present, is discarded. \\*
+executed from \aCPK{}, graphical information, if present, is discarded. \\*
 Example: \code{load dump kernel "krn-ex.dkrn"}
 
 \end{itemize}
@@ -1357,7 +1369,7 @@ function which can be used to do some cleanup (\pxref{User Hooks}).
 \node{Include File Format}
 \cpindex{Include File Format}
 
-\dfn{Include files} are files containing command to be executed by a \CPK{}. The
+\dfn{Include files} are files containing commands to be executed by \aCPK{}. The
 recommended, but not enforced, extension for these files is \file{.inc}.
 Include file can contain other include directives. Only two commands are
 forbidden in include file: \code{connect} and \code{disconnect}. Include files
@@ -1400,15 +1412,16 @@ trace graphic op |Print Factorial| off
 
 The syntax and the associated semantics is the same in the
 \CPK{}, \XPK{}, \OPE{} and \OPRSS{} modules. The same grammar is used and syntax
-checking is done and enforced whenever possible. In other words, unless you bother with
-the OP files themselves, it is very unlikely that a OP produced by the
+checking is done and enforced whenever possible. In other words, unless you hand-edit
+the OP files themselves, it is very unlikely that an OP produced by the
 \OPE{} will be rejected by the \CPK{}.
 
 A Lex/Yacc like format grammar can be found in \nxref{Grammar Used in the OPRS Development Environment}. The grammar is recursive, therefore, it cannot be
 easily presented with a bottom up approach without making the assumption that
 some elements are known.
+% FIXME: what does this sentence mean?  What is meant by a bottom-up approach?
 
-Note that although the syntax is very much like Lisp, but is no Lisp
+Note that although the syntax is very much like Lisp, there is no Lisp
 interpreter behind the reader (\pxref{LISPLIST}).
 
 
@@ -1417,20 +1430,20 @@ interpreter behind the reader (\pxref{LISPLIST}).
 \cpindex{Variables}
 
 A \dfn{variable} is a symbol which can  or cannot be bound to different
-values depending on the context (\pxref{Frames and Binding Environments}). This
-allows the user to specify an expression with part of it unspecified. Depending on
+values depending on the context (\pxref{Frames and Binding Environments}). Variables
+allow the user to write partially specified expressions. Depending on
 the context, a variable can be existentially or universally
 quantified. These quantifications are usually implicit but obvious. Most often
-however, variables are existentially quantified, i.e.\ the expression containing
+variables are existentially quantified, i.e.\ the expression containing
 the variable is interpreted with one possible value of all the possible values
-this variable can take. We will point out the situation where the variables are
+this variable can take. We will point out situations where variables are
 to be interpreted in a universally quantified way. Finally, there are operators
-and functions to force the universally quantification (\pxref{Universal
+and functions to force universal quantification (\pxref{Universal
 Quantification of Variables}).
 
-There are two types of variables in \COPRS. The \dfn{logical variables}
-(their name starts with the dollar character \samp{\$}) and the \dfn{program
-variables} (their name starts with the at sign character \samp{@}).
+There are two types of variables in \COPRS. \dfn{Logical variables}
+(their name starts with the dollar character, \samp{\$}) and \dfn{program
+variables} (their name starts with the at sign character, \samp{@}).
 
 
 
@@ -1441,13 +1454,17 @@ variables} (their name starts with the at sign character \samp{@}).
 Logical variables start with the dollar character \samp{\$}.\\*
 Example: \code{\$x}, \code{\$y} and \code{\$FOO}.
 
-The behavior of these variables is quite standard in logic programming (like
+The behavior of these variables is quite standard in logic programming (as
 in PROLOG \cite{Clocksin-Mellish84}).  They are bound once and remain bound. If the 
 execution of the branch on which they were bound is successful,
 then they stay bound (this is commonly used to bring values back to a caller) .
 
+% FIXME: I believe that this just means that the variables are lexically scoped,
+% and the scope range is the procedure or consultation expression.  The sentence
+% about making a copy of the variable confused me a bit.  This is just normal
+% lexical scoping, right?
 The scope of these variables is the procedure or the consultation expression in
-which they appear. Moreover, in recursive procedure call, a new ``copy'' of the
+which they appear. Moreover, in recursive procedure calls, a new ``copy'' of the
 variables is done.
 
 \subsection{Program Variables}
@@ -1462,11 +1479,13 @@ Example: \code{@x}, \code{@y} and \code{@FOO}.
 These variables are provided for convenience. They can be bound and rebound
 at any time, even if they are already bound to some value. They are not
 used in invocation or context parts due to their inability to keep a
-value. They are mostly used inside the body of a procedure in construction
-such as a local loop (See Figure \ref{ite-fact-prog-var-op}).
+value. They are mostly used inside the body of a procedure in constructions
+such as loops (See Figure \ref{ite-fact-prog-var-op}).
 
+% FIXME: I believe that this just means that the variables are lexically scoped,
+% and the scope range is the procedure or consultation expression.
 The scope of these variables is the procedure or the consultation expression in
-which they appear. Moreover, in recursive procedure call, a new ``copy'' of the
+which they appear. Moreover, in recursive procedure calls, a new ``copy'' of the
 variables is done.
 
 \subsection{Global Variables}
@@ -1483,7 +1502,7 @@ The scope of these variables is the whole kernel.
 
 Note that this mechanism should not be used in place of the database itself, it
 should only be used for information widely used, and ever changing, and which
-are difficult a priori to compute.
+are difficult or expensive to recompute.
 
 \section{Terms}
 \node{Terms}
@@ -1501,8 +1520,12 @@ them, we indicate in parenthesis the C type as defined in
 \node{Integer as a Term}
 \cpindex{Integer as a Term}
 
+\textit{FIXME: I believe that in the latest OPRS kernel integers are always
+  32-bit quantities, and so the user need not consult the machine architecture
+  to determine minimum and maximum values, etc.}
+
 A term can be an \dfn{integer}. Its C type in the Term structure is
-then \code{INTEGER}. In the \CPK{}, integers become C \code{int}. A
+\code{INTEGER}. In the \CPK{}, integers become C \code{int}. A
 direct consequence is that they are not bignums (a la Lisp). Therefore,
 there are maximum values for these numbers. Check the C compiler and
 your machine architecture for specific maximum and minimum values.
@@ -1515,7 +1538,7 @@ Example of numbers which are probably not recognized as integers:
 \node{Long long integer as a Term}
 \cpindex{Long long integer as a Term}
 
-A term can be a \dfn{long long integer}, i.e.\ a 64 bits integer.  Its C
+A term can be a \dfn{long long integer}, i.e.\ a 64 bit integer.  Its C
 type in the Term structure is then \code{LONG\_LONG}. In the \CPK{}, long
 long integers become C \code{long long int}. You can perform computation
 on integer larger than the ``regular'' int. Yet, there is a maximum value
@@ -1558,11 +1581,17 @@ char " in it"}.
 \node{Symbol as a Term}
 \cpindex{Symbol as a Term}
 
+\textit{FIXME: The rules for how the vertical bars are used are not clear.  In
+  the example, it looks like the user of vertical bars permits putting spaces
+  into a symbol.  It would probably help to specify what characters are and are
+  not legal symbol characters.}
+
 A term can be a \dfn{symbol}. Its C type in the Term structure is
-then \code{TT\_ATOM}. Symbols case may be changed automatically
-according to the option used (unless they are surrounded by vertical
-bars (\samp{|})). In some situations, (such as printing node names,
-or scripts names, the vertical bars are not printed around the symbol).
+then \code{TT\_ATOM}. The case of Symbols may be changed automatically
+according to the option used -- either automatically up-cased or down-cased --
+unless they are surrounded by vertical 
+bars (\samp{|}). In some situations, (such as printing node names,
+or script names, the vertical bars are not printed around the symbol).
 
 Example of symbols: \code{nil, t, |Foo Bar|, :BOO, bar}.\\*
 Example of non symbols: \code{123il, |\#:|123|, \$g45, @x, \$32a, .asd}.
@@ -1571,12 +1600,17 @@ Example of non symbols: \code{123il, |\#:|123|, \$g45, @x, \$32a, .asd}.
 \node{Variable as a Term}
 \cpindex{Variable as a Term}
 
+\textit{FIXME: Are variables case-shifted in the same way as symbols?}
+
 A term can be a \dfn{variable}. Its C type in the Term structure is then
 \code{VARIABLE}. Variables can be bound, in this case they are always bound to
-a Term (another variable for example). This depends of the binding environment
-in which they are considered.
+a Term (another variable for example). This depends on the binding environment
+in which they appear.
 
-Example of variables: \code{\$g45, \$x, \$32a, @foo, @BoO}.
+\textit{FIXME: I added a global variable to the following example.  Please fix
+  if that was wrong of me.}
+
+Example of variables: \code{\$g45, \$x, \$32a, @foo, @BoO, @@Global}.
 
 \subsection{Variable List as a Term}
 \node{Variable List as a Term}
@@ -2724,7 +2758,7 @@ instructions sequences.
 \cpindex{Expression Parsing}
 
 Before being executed, procedures are compiled. This is done
-automatically when you load a OP file in a \CPK{}. Most of the time, this
+automatically when you load a OP file in \aCPK{}. Most of the time, this
 compilation goes without any problem (because procedures have been
 created with the \OPE{} which is fairly rigorous regarding the syntax
 allowed for a OP). However, one could imagine that, for some reason, a OP
