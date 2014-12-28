@@ -207,20 +207,20 @@ can start to play with the \xref{Control and Status Panel}. For example,
 you can halt the kernel, then add a new goal, and then click on Step of
 Next to see a step by step execution (see \nxref{Control and Status Panel}, for an explanation of the differences between Next and Step.
 
-\chapter{Setting Up a \COPRS{} Application}
+\chapter{Setting Up \aCOPRS{} Application}
 \node{Setting Up a OPRS Application}
-\cpindex{Setting Up a \COPRS{} Application}
+\cpindex{Setting Up \aCOPRS{} Application}
 
-Setting up a \COPRS{} application is an easy task. However, there are a number
+Setting up \aCOPRS{} application is an easy task. However, there are a number
 of questions you have to ask yourself, or ask the final users or the experts
-who will bring the knowledge in the system. These questions mainly relates to
+who will bring the knowledge in the system. These questions mainly relate to
 the structure of the problem and to the way you want to solve it using \COPRS{}.
-Keep in mind that \COPRS{} is a shell, a tool, and if its functionalities makes
+Keep in mind that \COPRS{} is a shell, a tool, and even if its features make
 it particularly well suited for a certain type of application, you still need
 to do some work to organize your application.
 
 In this chapter we will examine all these questions you have to ask
-yourself and put forward some elements to help you to answer them.
+yourself and put forward some suggestions to help you to answer them.
 
 
 
@@ -233,7 +233,7 @@ The answer is 42.
 In fact, this is indeed a question you have to ask yourself before
 starting to implement your \COPRS{} application. The answer is in your
 application itself, you have to analyze it and figure out the answer. To
-help you we can go through a number of criteria which participate to the
+help you we can identify a number of criteria which participate in the
 decision.
 
 % **************************************
@@ -243,8 +243,8 @@ decision.
 \paragraph{How many agents are involved in your application?} Indeed,
 the number of agents are currently used to solve the problem is a good
 indication of the number of kernels you may need to solve it with
-\COPRS{}. For example, if your problem involved two agents working on
-their own part of the problem, exchanging information from time to time,
+\COPRS{}. For example, if your problem involved two agents, each working on
+its own part of the problem, exchanging information from time to time,
 then using two kernels seems a wise choice. Another possible situation is
 when you have a large number of agents doing ``more or less'' the same
 task, but either in a distributed way, or for their own objectives.
@@ -252,23 +252,23 @@ task, but either in a distributed way, or for their own objectives.
 \paragraph{Can all the computation be done by one kernel?} This is an
 important consideration. You must evaluate the amount of computation which
 will be done for the application and consider its distribution if it
-appear to be to large for a single kernel/platform. Keep in mind that
+appears to be too large for a single kernel/platform. Keep in mind that
 the kernel will not only execute the procedure you loaded but also the
 evaluable functions, predicates, and actions you have linked in the
 kernel. Some of these operations can be rather time consuming and
-required to be sliced or distributed.
+so should be sliced or distributed.
 
 \paragraph{Is the application composed of different independent modules
 or steps?} When the resolution of the problem is well defined in
 different modules, or can be broken down in a number of well separated
 steps, then one can consider implementing these different modules or
-step in separate kernels.
+steps in separate kernels.
 
-\paragraph{Is the shared information between modules small?} This is an
+\paragraph{Is the amount of information shared between modules small?} This is an
 important consideration to take into account. You have to make sure that
 the amount of information between the different kernels is not too large.
-Otherwise, you will loose in communication time, the time you have spare
-in distributing your application.
+Otherwise, you will lose in communication time, the time you have saved
+by distributing your application.
 
 \section{\CPK{}s or \XPK{}s}
 \node{OPRS Kernels or X-OPRS Kernels?}
@@ -312,7 +312,7 @@ may have to limit the number of \XPK{}.
 \node{The Database: Facts Only the Facts}
 \cpindex{The Database: Facts, Only the Facts}
 
-The database has a very important and critical role in a \COPRS{}
+The database has a very important and critical role in \aCOPRS{}
 application. It is the memory of the ``system'', and it is heavily used
 by the kernel to retrieve, check, conclude information. There are many
 questions to be asked before you start building your database. This
@@ -343,14 +343,14 @@ particular position. Such as in: \code{(position valve open)}, or
 \code{(position switch on)}, or even \code{(position robot unknown)}.
 
 Note that for this particular predicate, we put first the argument to which
-this information apply, and then the argument which represent the ``value''
+this information applies, and then the argument which represents the ``value''
 of this predicate for the first argument... However, this is not always
 the case. For example, a predicate such as \code{connected} which would
 represent that two entities are somehow ``connected'' in your application
 may not bear any particular meaning on the order of the argument.
 Therefore, \code{(connected a b)} would be semantically equivalent to
 \code{(connected b a)}. However, from a strict database point of view,
-these two facts are different and it is the user task to make these 2
+these two facts are different and it is the user's task to make these two
 equivalent when needed. To summarize, the order of arguments may be
 meaningful or not, but in any case, it is up to the user to ensure that
 this order is properly respected through the whole application when it is
@@ -360,32 +360,32 @@ An important consideration, is to keep in mind that the predicate name is
 always first, and cannot be replaced with a variable in any context. For
 example, it is forbidden to write in a OP something like: \code{(=> (\$x a
 b))}... Even if the variable \code{\$x} is bound to the symbol \code{connected}.
-The reasons for this limitation take their roots in the ``First Order Predicate
-Calculus''.
+This limitation comes from the limitations of the First Order Predicate
+Calculus.
 
-The last consideration to take into account relate to the goal
+The last consideration to take into account relates to the goal
 representation in \COPRS{}. Do not forget that goals are built upon facts.
 According to the temporal operator used, they modify the semantics of the
 fact they are qualifying. As a consequence, it is important that the
 facts underlying the goal representation be consistent with the goal
 representation.
 
-If one consider the fact \code{(position door open)}, then we can easily
+Consider the fact \code{(position door open)}.  We can easily
 build on this fact to get the following goal: \code{(! (position door
-open))} to close open the door if it is not already open, \code{(?
+open))} to open the door if it is not already open, \code{(?
 (position door open))} to test if it is currently open , \code{(\^{}
-(position door open))} to wait until somebody open the door (if it is not
+(position door open))} to wait until somebody opens the door (if it is not
 already open), etc... In all these examples, we can see that the fact and
-the goals are really carrying the wanted information. Moreover, when any
-of these goal is attempted, the corresponding facts is checked in the
-database...
+the goals correspond in meaning. Moreover, when any
+of these goals are attempted, the corresponding fact is checked in the
+database.
 
 \subsection{Which Predicate?}
 \node{Which Predicate?}
 \cpindex{Which Predicate?}
 
-Now that the notion of predicate is clear. Remains the problem of
-deciding which predicate should be used and for what.
+Now that the notion of predicate is clear, we must
+decide which predicates should be used and for what.
 
 First, the semantics of the predicates is the one the user wants to give
 to the predicate. If you want to use the word \code{position} to
@@ -395,34 +395,34 @@ just make your OP unreadable...
 Similarly, you can overload the semantics of a predicate. The predicate
 \code{position} can be used in an application to represent the position
 of various objects, and even different types of objects: switches,
-valves, lights, etc. An another alternative is to use predicate such as
-\code{switch-position} or \code{valve-position}. Here also, there is no
-rules, it is question of readability of the OPs and the database.
+valves, lights, etc. Another alternative is to use multiple predicates such as
+\code{switch-position} or \code{valve-position}. Here also, \COPRS{} imposes no
+rules: the choice is the user's, to be decided based on considerations of the readability of the OPs and the database.
 
-To help organize a database, very often, one use a \code{type} predicate
-to specify the type of the various object. This is very useful for
-example when one looks for all the open valve of the system: \\*
+To help organize a database, very often, one uses a \code{type} predicate
+to specify the types of the various objects. This is very useful for
+example when one looks for all the open valves in the plant: \\*
 \code{(\& (type valve \$v) (position \$v open))}.
 
-\subsection{Which Predicate Should be Declared as Closed World Predicate?}
+\subsection{Which Predicates Should be Declared as Closed World Predicates?}
 \node{Closed World Predicate?}
-\cpindex{Which Predicate Should be Declared as Closed World Predicate?}
+\cpindex{Which Predicates Should be Declared as Closed World Predicates?}
 
 This is an easy question to answer... In general, most if not all
 predicates should be declared as closed world predicates. Why? Because
-this is usually the way we tend to think, i.e.\ if something is not know
+this is usually the way we tend to think, i.e.\ if something is not known
 to be true, then its contrary is usually true. To use the example given
 in section \nxref{Closed World Predicates}, if we do not have any
-information about a direct flight between Toulouse an San Francisco, most
-likely, no such flight exist, and therefore, its negation is true.
+information about a direct flight between Toulouse and San Francisco, most
+likely, no such flight exists, and therefore, its negation is true.
 However, keep in mind that this information will be looked at (the fact
 that this specific fact is not in the database, and the fact that it is a
 CWP) if and only if you consult the negation of the fact. In other words,
-there are no need to declare CWP predicate for which you never retrieve
+there is no need to declare as CWP predicates for which you never retrieve
 the negation.
 
-Last, there may exist some predicates which are not closed world
-predicate, i.e.
+Finally, there may exist some predicates which are not closed world
+predicates, i.e.
 for which a request of the negation of something which is not known as
 true is false...
 
@@ -431,57 +431,57 @@ true is false...
 \cpindex{Which Predicate Should be Declared as Functional Facts?}
 
 \xref{Functional Facts} explains in great details the logic
-behind functional facts (in short FF).
+behind functional facts (FFs).
 
 The important things to remember are:
 
 \begin{itemize}
 
-\item FF are expensive.
+\item FFs are expensive.
 
 \item Only the predicates for which there exist a ``functional''
-representation can be considered as FF.
+representation can be considered as FFs.
 
-\item Declare predicate as functional fact, if and only if you want to
-insure an automatic clean up of previous value.
+\item Declare predicates as functional facts, if and only if you want to
+insure an automatic clean up of previous values.
 
 \item Remember to order the arguments in such a way that the predicate can
-be declare as FF.
+be declared as a FF.
 
 \item Sometime, Basic Events (\pxref{Basic Events}) and (\pxref{Basic Events?}) are enough to represent facts you want to get deleted
 automatically.
 
 \end{itemize}
 
-Here are example of predicates which are often declared as FF:\\*
+Here are examples of predicates which are often declared as FFs:\\*
 \code{position}, \code{status}, \code{connected}. For each of them one
-usually want to remove the previous value when a new value for a specific
+usually wants to remove the previous value when a new value for a specific
 object is concluded.
 
-\subsection{Which Predicate Should be Declared as Basic Events?}
+\subsection{Which Predicates Should be Declared as Basic Events?}
 \node{Basic Events?}
 \cpindex{Which Predicate Should be Declared as Basic Events?}
 
 This is another easy question to answer. You want to declare as Basic
-Events (\pxref{Basic Events}), all the predicate you want to trigger OP
-applicability or intentions/threads awaking, but that you do not want to
-keep in the database. This is to represent events which are ephemeral,
-still need to be considered by the kernel main loop, but do not need to
+Events (\pxref{Basic Events}), all the predicates you want to trigger OP
+applicability or intentions/threads awakening, but that you do not want to
+keep in the database. Basic Events are used to represent events which are ephemeral,
+which need to be considered by the kernel main loop, but do not need to
 be remembered in the database for future use.
 
 \subsection{Forbidden Things and Things to Avoid with the Database}
 \node{Forbidden Things and Things to Avoid with the Database}
 \cpindex{Forbidden Things and Things to Avoid with the Database}
 
-There are a number of things one should not do or avoid while using the
-database mechanism. Here is a non exhaustive list of forbidden things:
+There are a number of things one avoid while using the
+database mechanism. Here is a non-exhaustive list of forbidden things:
 
 \begin{itemize}
 
 \item Do not conclude facts containing unbound variables.
 
-\item Do not consult evaluable predicate with unbound variable (unless
-you predicate is able to handle the situation, which is unlikely...)
+\item Do not consult evaluable predicates with unbound variables (unless
+your predicate is able to handle the situation, which is unlikely...)
 
 \end{itemize}
 
@@ -489,11 +489,11 @@ Here is a non exhaustive list of things to avoid as much as possible:
 
 \begin{itemize}
 
-\item Avoid consulting big disjunction, which can lead to a huge number
+\item Avoid consulting big disjunctions, which can lead to a huge number
 of possible results. If you must use disjunction, try to put the most
 discriminating facts in first.
 
-\item Avoid using long argument list for facts.
+\item Avoid using long argument lists for facts.
 
 \item Remember to tune the size of the hashtable according to the number
 of facts you are concluding in the database.
@@ -506,10 +506,10 @@ to other internal objects. This will not break the system, but this will
 result in ever growing kernel (as the Garbage Collector will be unable to
 collect the internal data concluded in the database).
 
-\item Do not consult negation of Closed World predicate with unbound
-variable, as you will not get binding even if the negation is true.
+\item Do not consult the negation of Closed World predicates with unbound
+variables, as you will not get bindings even if the negation is true.
 
-\item Do not forget to clean up your database. Many application grows
+\item Do not forget to clean up your database. Many applications grow
 indefinitely because of a bad database clean up.
 
 \end{itemize}
@@ -528,7 +528,7 @@ Fact invoked OPs are usually written to respond or react to events. They do not
 have any explicit goal or objective.
 
 These OPs usually correspond to events you have to monitor or you need to
-check, such as alarm, or change of values, etc.
+check, such as alarms, change of values, etc.
 
 \subsection{Goal Invoked OPs}
 \node{Goal Invoked OPs}
@@ -537,7 +537,7 @@ check, such as alarm, or change of values, etc.
 Goal invoked OPs are written to achieve a particular goal or objective.
 Their success is equivalent to achieving the goal which invoked them.
 
-These OPs are usually implementing a goal directed behavior, i.e.\ the execution
+These OPs usually implement a goal directed behavior, i.e.\ the execution
 of these OP is supposed to achieve the goal for which they are applicable.
 
 \subsection{Predefined OPs}
@@ -547,54 +547,54 @@ of these OP is supposed to achieve the goal for which they are applicable.
 A number of predefined OPs can be loaded in a specific application. The user
 can pick up OPs in the different OP files provided with the distribution
 (\pxref{Default OPs}). For example, the OPs in the file \file{new-default.opf}
-(\pxref{new-default.opf}) provide a number of interesting functionalities. In
-fact, most application load this OP file.  Even if it is not required, it is
-strongly recommended, as OP as basic as \code{=} are defined in this file.
+(\pxref{new-default.opf}) provide a number of interesting functionalities. 
+Most applications load this OP file.  Even if it is not required, it is
+strongly recommended, since OPs as basic as \code{=} are defined in this file.
 
-Most of the default OPs defined in  \file{new-default.opf} are actions OPs. The
-actions they called are usually documented and can be directly used by the
+Most of the default OPs defined in  \file{new-default.opf} are action OPs. The
+actions they call are usually documented and can be directly used by the
 user.
 
 \section{User Defined Evaluable Functions}
 \node{User Defined Evaluable Functions}
 \cpindex{User Defined Evaluable Functions}
 
-Do you need to defined your own evaluable functions? This depends of your
-application. Do not look after them, the need will come in its time.
+Do you need to defined your own evaluable functions? This depends on your
+application. %Do not look after them, the need will come in its time.
 
 You may need evaluable functions for one the following reasons:
 
 \begin{itemize}
 
 \item to perform some specific computation on some Terms. For example,
-you may have to define the \code{max} function which taking to integers
-return the biggest of the two. Similarly, you may want to defined a
-function which concatenate two stings, etc... That's up to you.
+you may have to define the \code{max} function which takes two integers
+and returns the biggest of the two. Similarly, you may want to define a
+function which concatenates two stings, etc... That's up to you.
 
 \item to perform some specific computation on some user defined objects
-(\code{U\_POINTER} Term). For example, you may have defined your own user type, a
-fancy C structure which hold various information required by your
-application, and you want now to write a function which return the string
+(\code{U\_POINTER} Terms). For example, you may have defined your own user type, a
+fancy C structure which holds various information required by your
+application, and you want now to write a function which returns the string
 contained in a specific field of this object.
 
 \end{itemize}
 
-In any case, the need for evaluable function is easy to identify, and
-easy to solve. Keep in mind though, that evaluable function are called
+In any case, the need for evaluable functions is easy to identify, and
+easy to solve. Keep in mind though, that evaluable functions are called
 whenever they are encountered while posting a goal containing a composed
-term which function name is an evaluable function. As a consequence, the
-time taken by these function should be as short as possible. Contrary to
+term whose function name is an evaluable function. As a consequence, the
+time taken by these functions should be as short as possible. Unlike
 Actions, the execution of evaluable functions cannot be time sliced.
 
-Last, there are a number of things to consider when you write evaluable
+Finally, there are a number of things to consider when you write evaluable
 functions:
 
 \begin{itemize}
 
-\item Check the number of arguments which is passed to your function.
+\item Check the number of arguments which are passed to your function.
 
 \item Check the type of each argument you are getting. (do not assume
-that the user will always pass the argument of the right type at the
+that the user will always pass an argument of the right type at the
 right position).
 
 \item Check that all the arguments are bound. This relates to the previous
@@ -610,7 +610,7 @@ on this subject.
 \node{User Defined Evaluable Predicates}
 \cpindex{User Defined Evaluable Predicates}
 
-As evaluable functions, evaluable predicates may be required in some
+As with evaluable functions, evaluable predicates may be required in some
 application:
 
 \begin{itemize}
@@ -622,13 +622,13 @@ otherwise.
 
 \item to perform some specific computation on some user defined objects
 (\code{U\_POINTER} Term). For example, you may have defined your own user type, a
-fancy C structure which hold various information required by your
+fancy C structure which holds various information required by your
 application, and you need a predicate which evaluate to \code{TRUE} if a
-this structure satisfy a particular condition.
+this structure satisfies a particular condition.
 
 \end{itemize}
 
-Last, there are a number of things to consider when you write evaluable
+There are a number of things to consider when you write evaluable
 predicates:
 
 \begin{itemize}
@@ -636,7 +636,7 @@ predicates:
 \item Remember that you just need to return a \code{PBoolean}, i.e.
 \code{TRUE} or \code{FALSE}, not a Term.
 
-\item Check the number of arguments which is passed to your function.
+\item Check the number of arguments which are passed to your function.
 
 \item Check the type of each argument you are getting. (do not assume
 that the user will always pass the argument of the right type at the
@@ -655,16 +655,17 @@ on this subject.
 \node{User Defined Actions}
 \cpindex{User Defined Actions}
 
-Do you need to defined some actions? Here also, this depends of your
-application. It usually depends of what kind of interaction or
+Do you need to define some actions? The answer to this question also depends on
+your 
+application. It usually depends on what kind of interaction or
 ``actions'' (thus their name) you need to perform with the kernels.
-If your application only prints some statements (such as advices to an
-operator), then you may not need to define any actions. On the opposite,
-if your application need to directly interact or act with subsystems,
-then you will need to define some action.
+If your application only prints some statements (such as advice to an
+operator), then you may not need to define any actions. On the other hand,
+if your application needs to directly interact with subsystems,
+then you will need to define some actions.
 
 Keep in mind that if your application is organized in such a way that
-there is module which perform the real action on the world, and that this
+there is a module which performs the real action on the world, and this
 module is connected to the \MPA{}, then most if not all the actions are
 done using the \MPA{} (i.e.\ by sending a message to the module in charge
 of performing the action (a simulator or an interface to the real system).
@@ -673,29 +674,29 @@ Nevertheless, you may need actions for one the following reasons:
 
 \begin{itemize}
 
-\item to associate a specific functions to a OP. Thus enabling the action to
-succeed or fail and make the corresponding OP returning the corresponding
+\item to associate a specific functions to a OP, enabling the action to
+succeed or fail and return the corresponding
 result. Many users tend to forget that evaluable functions (as presented
 above) are evaluated at posting time, i.e.\ when the goal in which their
 form is contained is posted. But their evaluation is always meaningful and
-does not bear any success or failure. For example, in \code{(! (foo (+ 3
+does not affect success or failure. For example, in \code{(! (foo (+ 3
 4)))}, the   \code{(+ 3 4)} will be evaluated right away (unless you have
-unselected the \code{eval\_on\_post} option). However, this evaluation is
+deselected the \code{eval\_on\_post} option). However, this evaluation is
 always feasible and always gives a result. For an action (in fact a
 standard action), the result can  be either \code{T} or \code{NIL}, and
-upon this result depend the success or failure of the OP which calls it.
+the success or failure of the OP which calls it depends on this result.
 
 \item to perform some actions using code linked in your kernel. Keep in
-mind that when you build your application, you will, or may link some
-code in it. For example, if your application is linked (and by linked we
-mean the operation of linking in one program a number of functions calling
-each others) to an application dependent library and that you want to
-call some of these functions which may fail, then you need to define
+mind that when you build your application, you may link some
+code into it. For example, if your application is linked\footnote{By ``linked'' we
+refer to the operation of linking in one program a number of functions calling
+each other.} to an application-dependent library, you want to
+call some of these functions, and these functions may fail, then you need to define
 actions to call these functions.
 
-\item to time slice the execution of functions which take to long to
-execute. Keep in mind that the reactivity of your system depend of the
-longest action/evaluable functions of your application. Therefore, to
+\item to time slice the execution of functions which take too long to
+execute. Keep in mind that the reactivity of your system depends on the
+longest-running actions and evaluable functions. Therefore, to
 increase the reactivity of your kernel, you may have to time slice the
 execution of these actions.
 
@@ -704,7 +705,7 @@ term. \xref{Multi Variable Special Action} for more details.
 
 \end{itemize}
 
-Last, there are a number of things to consider when you write functions:
+There are a number of things to consider when you write functions:
 
 \begin{itemize}
 
@@ -719,11 +720,11 @@ comment as you will get a Term of type \code{VARIABLE} if a variable is
 unbound...
 
 \item Make sure you return a \strong{new} Term, and this recursively...
-Do not return for example one of the argument passed to the functions
-``as is'', or a \code{LISP\_LIST} containing object which have not been created
-by you.
+Do not return, for example, the value of one of the arguments passed to the function
+``as is'', or a \code{LISP\_LIST} containing objects which have not been created
+by your action.
 
-\item Make sure your function return the Term containing either:
+\item Make sure your function returns a Term containing either:
 
 \begin{itemize}
 
@@ -736,7 +737,7 @@ Action. \xref{Special Action} for more details.
 
 \item A list (\code{OPRS\_LIST}) of any kind of term or the symbol \code{:wait}, if it
 is a Multi Variable Special Action. The list should have exactly the same
-number of element as the list of variable it is unify against.
+number of elements as the list of variables against which it will be unified.
 \xref{Multi Variable Special Action} for more details.
 
 \end{itemize}
@@ -759,7 +760,7 @@ be considered before making a decision.
 \item Do you have to choose among various applicable OPs with a specific
 heuristic?
 
-\item Do you mind ``loosing'' or forgetting external events?
+\item Do you mind ``losing'' or forgetting external events?
 
 \end{itemize}
 
@@ -1165,9 +1166,9 @@ up response time and reduces operating costs.
 % ********** To be completed ***********
 % **************************************
 
-\chapter{Optimizing a \COPRS{} Applications}
+\chapter{Optimizing \aCOPRS{} Applications}
 \node{Optimizing a OPRS Applications}
-\cpindex{Optimizing a \COPRS{} Applications}
+\cpindex{Optimizing \aCOPRS{} Applications}
 
 
 
