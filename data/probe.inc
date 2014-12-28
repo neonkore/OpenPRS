@@ -1,5 +1,5 @@
-include "data/new-default.sym"
-load opf "data/new-default.opf"
+include "new-default.sym"
+load opf "new-default.opf"
 declare symbol TEST-FACTORIAL
 declare symbol IT-FACTORIAL
 declare symbol PRINT-IT-FACTORIAL
@@ -11,5 +11,5 @@ declare symbol TEST-NP-FACT
 declare cwp STOP-MESSAGE
 declare symbol TEST
 declare symbol TEST-MESSAGE
-load opf "data/probe.opf"
-;compile_ops "data/probe-2.opf"
+load opf "probe.opf"
+;compile_ops "probe-2.opf"

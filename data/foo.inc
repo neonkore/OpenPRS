@@ -1,6 +1,6 @@
-include "data/new-default.sym"
-load opf "data/new-default.opf"
-load opf "data/meta-selector.opf"
+include "new-default.sym"
+load opf "new-default.opf"
+load opf "meta-selector.opf"
 declare predicate FOO
 declare predicate BAR
-load opf "data/foo.opf"
+load opf "foo.opf"

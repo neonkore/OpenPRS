@@ -1,3 +1,3 @@
 conclude (foo a b)
-include "data/include2.inc"
+include "include2.inc"
 consult (foo $x $y)

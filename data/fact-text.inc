@@ -8,11 +8,11 @@ declare cwp PREFER-ITERATIVE
 declare op_predicate INTENDED-OP
 declare op_predicate PRINT
 
-load opf "data/fact-text.opf"
+load opf "fact-text.opf"
 
-trace step opf "data/fact-text.opf" on
-trace graphic opf "data/fact-text.opf" on
-;trace text opf "data/fact-text.opf" on
+trace step opf "fact-text.opf" on
+trace graphic opf "fact-text.opf" on
+;trace text opf "fact-text.opf" on
 trace graphic op |Print Factorial| off
 
 set meta on

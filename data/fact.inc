@@ -1,7 +1,7 @@
 declare cwp PROPERTY-P
 trace load op off
-include "data/new-default.sym"
-load opf "data/new-default.opf"
+include "new-default.sym"
+load opf "new-default.opf"
 
 declare predicate FACTORIAL
 declare predicate IT-FACTORIAL
@@ -18,4 +18,4 @@ declare cwp PREFER-RECURSIVE
 declare cwp PREFER-ITERATIVE
 declare op_predicate PRINT-FACTORIAL
 declare op_predicate PRINT-IT-FACTORIAL
-load opf "data/fact.opf"
+load opf "fact.opf"
