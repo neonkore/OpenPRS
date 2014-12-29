@@ -49,6 +49,7 @@ int external_register_to_the_mp_host_prot(const char *name, const char *host_nam
 int external_register_to_the_mp_prot(const char *name, int port, Protocol_Type prot);
 
 PString read_string_from_socket(int s,int *size);
+void send_message_string_socket(int socket, Symbol rec, PString message );
 void send_message_string(const PString message, Symbol rec);
 void broadcast_message_string(const PString message);
 void multicast_message_string(PString message, unsigned int nb_rec, Symbol *rec);
