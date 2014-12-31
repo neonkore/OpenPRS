@@ -1,4 +1,4 @@
-Copyright (c) 1991-2012 Francois Felix Ingrand and LAAS-CNRS.
+Copyright (c) 1991-2014 Francois Felix Ingrand and LAAS-CNRS.
 All rights reserved.
 
 This README is somehow outdated. Please see this page for more update
@@ -71,7 +71,7 @@ GETTING Open PRS
 ----------------
 
 The latest Open PRS version is available for download from:
-<http://softs.laas.fr/openrobots/tools/openprs.php>. 
+<https://git.openrobots.org/projects/openprs>. 
 
 INSTALLATION INSTRUCTIONS
 -------------------------
