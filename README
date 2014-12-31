@@ -76,10 +76,17 @@ The latest Open PRS version is available for download from:
 INSTALLATION INSTRUCTIONS
 -------------------------
 
+./bootstrap.sh
+
+After the bootstrap:
+
+1. 
 ./configure
 make
 
-you may build openprs in a specific directory:
+*OR*
+
+2.  you may build openprs in a specific directory:
 mkdir build 
 cd build
 ../configure
