@@ -110,9 +110,9 @@ void report_check_stdin_ctxt_error(void)
      else
 	  reset_sprinter(sp);
 
-     SPRINT(sp,128,sprintf(f,LG_STR("The previous error occured while parsing external inputs.\n\
+     SPRINT(sp,128,sprintf(f,LG_STR("The previous error occurred while parsing external inputs.\n\
 Proceed at your own risk.\n",
-				    "The previous error occured while parsing external inputs.\n\
+				    "The previous error occurred while parsing external inputs.\n\
 Proceed at your own risk.\n")));
 
      fprintf(stderr, "%s", SPRINTER_STRING(sp));

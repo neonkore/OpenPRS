@@ -113,7 +113,7 @@ void report_execute_intention_ctxt_error(Intention *in, Intention_Graph *ig)
 	  reset_sprinter(sp);
 
      SPRINT(sp,128,
-	    sprintf(f,LG_STR("The previous error occured in intention: ",
+	    sprintf(f,LG_STR("The previous error occurred in intention: ",
 			     "La précédente erreur s'est produite dans l'intention: ")));
      sprint_intention(sp, in);
      SPRINT(sp,2,sprintf(f,"\n\t"));
@@ -635,7 +635,7 @@ void report_execute_action_ctxt_error(Thread_Intention_Block *tib)
      else
 	  reset_sprinter(sp);
      
-     SPRINT(sp,128,sprintf(f,LG_STR("The previous error occured while executing an action in the tib: ",
+     SPRINT(sp,128,sprintf(f,LG_STR("The previous error occurred while executing an action in the tib: ",
 				    "La précédente erreur s'est produite lors de l'exécution d'une action dans le tib: ")));
      sprint_tib(sp,tib);
      SPRINT(sp,32,sprintf(f,LG_STR("\n\tof the intention: ",
@@ -806,7 +806,7 @@ void report_posting_goal_ctxt_error(Expression *expr, List_Envar lenv, Thread_In
      else
 	  reset_sprinter(sp);
 
-     SPRINT(sp,128,sprintf(f,LG_STR("The previous error occured while posting the goal: ",
+     SPRINT(sp,128,sprintf(f,LG_STR("The previous error occurred while posting the goal: ",
 				    "La précédent erreur s'est produite en postant le but: ")));
      sprint_expr(sp,expr);
      SPRINT(sp,32,sprintf(f,LG_STR("\n\twith the binding: ",

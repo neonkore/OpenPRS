@@ -626,8 +626,8 @@ void report_find_soak_fact_ctxt_error(Fact *fact)
      else
 	  reset_sprinter(sp);
 
-     SPRINT(sp,128,sprintf(f,LG_STR("The previous error occured in find_soak_fact for fact:\n",
-				    "The previous error occured in find_soak_fact for fact:\n")));
+     SPRINT(sp,128,sprintf(f,LG_STR("The previous error occurred in find_soak_fact for fact:\n",
+				    "The previous error occurred in find_soak_fact for fact:\n")));
      sprint_fact(sp,fact);
      if (fact->statement) {
 	  SPRINT(sp,16,sprintf(f,LG_STR(" statement: ",
@@ -690,8 +690,8 @@ void report_find_soak_goal_ctxt_error(Goal *goal)
      else
 	  reset_sprinter(sp);
 
-     SPRINT(sp,128,sprintf(f,LG_STR("The previous error occured in find_soak_goal for goal:\n",
-				    "The previous error occured in find_soak_goal for goal:\n")));
+     SPRINT(sp,128,sprintf(f,LG_STR("The previous error occurred in find_soak_goal for goal:\n",
+				    "The previous error occurred in find_soak_goal for goal:\n")));
      sprint_goal(sp,goal);
      if (goal->statement) {
 	  SPRINT(sp,16,sprintf(f,LG_STR(" statement: ",

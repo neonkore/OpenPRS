@@ -1508,7 +1508,7 @@ void report_database_ctxt_error(Expression *expr)
      else
 	  reset_sprinter(sp);
 
-     SPRINT(sp,64,sprintf(f,LG_STR("The previous error occured while checking: ",
+     SPRINT(sp,64,sprintf(f,LG_STR("The previous error occurred while checking: ",
 				   "La précédent erreur s'est produite lors de la consultation de: ")));
      sprint_expr(sp,expr);
      SPRINT(sp,64,sprintf(f,LG_STR(" in the database.\n",

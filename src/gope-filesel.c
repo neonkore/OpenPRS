@@ -936,7 +936,7 @@ void TimeoutCursors(PBoolean on, PString message)
 	 XtPopup(XtParent(dialog),XtGrabNone);
 	 XFlush(dpy);	
     } else {
-        /* get rid of all button and keyboard events that occured
+        /* get rid of all button and keyboard events that occurred
          * during the time out.  The user shouldn't have done anything
          * during this time, so flush for button and keypress events.
          * KeyRelease events are not discarded because accelerators
