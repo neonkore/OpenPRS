@@ -236,7 +236,7 @@ command:
 					          current_graph_file_name = current_opfile->name;} 
                 ntop                              {close_file_for_yyparse();  FREE($3);
 						 if (!be_quiet) printf("Done.\n");}
-	|  error RESET_DOT_TK				{warning("Parsing error, unknown command, reseting the parser");}
+	|  error RESET_DOT_TK				{warning("Parsing error, unknown command, resetting the parser");}
 	|  EXIT 				{printf("Quitting the OP-Editor.\n"); exit(0);}
 	;
 

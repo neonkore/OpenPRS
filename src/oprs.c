@@ -679,8 +679,8 @@ void add_goal(Goal *goal, Oprs *oprs)
 		    goal->echoue = FORBIDDEN_SYNTAX;
 	       }
 	  } else {
-	       fprintf(stderr,LG_STR("The type the goal should be TEXPR, or an AND LTEXPR in add_goal\n",
-				     "The type the goal should be TEXPR, or an AND LTEXPR in add_goal\n"));
+	       fprintf(stderr,LG_STR("The type of the goal should be TEXPR, or an AND LTEXPR in add_goal\n",
+				     "The type of the goal should be TEXPR, or an AND LTEXPR in add_goal\n"));
 	       goal->echoue = FORBIDDEN_SYNTAX;
 	  }
      }

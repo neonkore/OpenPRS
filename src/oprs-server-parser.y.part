@@ -159,7 +159,7 @@ server_command: INCLUDE file_name {open_file_for_yyparse($2); FREE($2);}
 	| QUIT
 		{quit = TRUE;}
 	|  error RESET_DOT_TK
-		{warning("Parsing error, unknown command, reseting the parser");}
+		{warning("Parsing error, unknown command, resetting the parser");}
 	;
 
 

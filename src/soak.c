@@ -1023,8 +1023,8 @@ Op_Instance_List find_soak_goal(Goal *goal, Oprs *oprs, PBoolean consulting)
 			      goal->echoue = FORBIDDEN_SYNTAX; 
 			 }
 		    } else {
-			 fprintf(stderr,LG_STR("The type the goal should be TEXPR, or an AND LTEXPR in find_soak...\n",
-					       "The type the goal should be TEXPR, or an AND LTEXPR in find_soak...\n"));
+			 fprintf(stderr,LG_STR("The type of the goal should be TEXPR, or an AND LTEXPR in find_soak...\n",
+					       "The type of the goal should be TEXPR, or an AND LTEXPR in find_soak...\n"));
 			 goal->echoue = FORBIDDEN_SYNTAX;
 		    }
 	  }

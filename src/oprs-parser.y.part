@@ -659,8 +659,8 @@ command:
 						}
 	| QUIT_TK				{quit = TRUE;}
 	| RESET_DOT_TK				{}
-	| error reset_or_eof			{warning(LG_STR("Parsing error, unknown command, reseting the parser",
-								"Erreur de parsing, unknown command, reseting the parser"));}
+	| error reset_or_eof			{warning(LG_STR("Parsing error, unknown command, resetting the parser",
+								"Erreur de parsing, unknown command, resetting the parser"));}
         ;
 
 consult_rop_frame:
