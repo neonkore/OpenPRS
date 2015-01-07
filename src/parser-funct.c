@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * parser-funct.c -- 
  * 
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2014 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -84,7 +84,7 @@ PString find_file_path(PString path, PString name)
 
      dir[0] = '\0';
      
-     more_path = (path && path[0]);
+     more_path = (path && path[0]); /* Path is not empty */
 
      /* absolute pathname? */
      if (name[0] == '/') {
