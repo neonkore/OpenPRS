@@ -15,7 +15,7 @@ OPF_FILES = example-cons.opf meta-intended-goal.opf example-list.opf \
 	fact-text.opf fib-text.opf semaphore.opf mini-default.opf
 
 INC_FILES = example-list.inc include.inc bar.inc boo.inc database-cwp.inc \
-	database-ep.inc database-ff.inc \
+	database-ep.inc database-ff.inc meta-intended-goal.inc\
 	fact-meta.inc fib.inc unification.inc \
 	foo.inc fact-meta-if-par.inc fib-par.inc ipp.inc\
 	fact-text.inc new-default.inc semaphore.inc mini-default.inc

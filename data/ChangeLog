@@ -1,5 +1,11 @@
+2015-01-07  Felix Ingrand  <felix@precise>
+
+	* Makefile.am (INC_FILES): Added meta-intended-goal.inc which was
+	missing (thanks to "Robert P. Goldman" <rpgoldman@sift.net>) for
+	catching this.
+
 2003-09-22  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* README: creation...
-	
+
 $Id$
