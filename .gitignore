@@ -128,3 +128,5 @@ xoprs
 xoprs-relocatable
 demo/truck-demo/src/truck-demo
 demo/truck-demo/oprs/data/truck-demo.inc
+# created by emacs auctex
+doc/auto
