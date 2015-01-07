@@ -70,8 +70,22 @@ Unix on which it does not run):
 GETTING Open PRS
 ----------------
 
+1. 
+You can install OpenPRS using robotpkg
+<http://robotpkg.openrobots.org/>. After installing it (OpenPRS is
+then located in supervision/openprs), just:
+
+cd supervision/openprs
+make update
+
+*OR* 
+
+you can grab the OpenPRS git source tree.
+
 The latest Open PRS version is available for download from:
 <https://git.openrobots.org/projects/openprs>. 
+
+and follow the following instructions:
 
 INSTALLATION INSTRUCTIONS
 -------------------------
@@ -82,7 +96,7 @@ After the bootstrap:
 
 1. 
 ./configure
-make
+make install
 
 *OR*
 
@@ -90,17 +104,21 @@ make
 mkdir build 
 cd build
 ../configure
-make
+make install
 
 Note that if you do not intend to install OpenPRS in the standard
 /usr/local directory you may have to specify the --prefix=<dir>
 Similarly, if you plan to have more than one architecture-dependent file in
 the same tree you may want to specify the  --exec-prefix=<bindir>
 
+
+
 You can test the result with something like:
 
-cd src
-./xoprs -n fact -a -A -x data/fact-meta-if-par.inc
+set the OPRS_DATA_PATH variable to point to the installed openprs/data
+directory (e.g. ~/openrobots/share/openprs/data/)
+
+./xoprs -n fact -a -A -x fact-meta-if-par.inc
 
 A window should appear...
 
@@ -175,6 +193,3 @@ include it in the distribution).
 
 -- 
 Felix Ingrand <felix@laas.fr>
-
-$Id$
-
