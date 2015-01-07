@@ -639,19 +639,24 @@ database, as if it was a basic event fact (\pxref{Basic Events}).
 \node{OPRS Kernel Loading Commands}
 \cpindex{OPRS Kernel Loading Commands}
 
-\textit{FIXME: The following seems inconsistent:  first we say that files can be
-  relative to the current directory, or absolute, and then we say that they
-  files are searched for using the data path.  That suggests to me that, in
-  fact, the files can be named \emph{relative to the data path} (and \emph{not}
-  the current directory), or they can be given as absolute names (in which case
-  the data path will not be searched).  I believe that unless the current
-  directory (as `.') is in the data path, it will not be treated specially.  Is
-  that right?}
+%% \textit{FIXME: The following seems inconsistent:  first we say that files can be
+%%   relative to the current directory, or absolute, and then we say that they
+%%   files are searched for using the data path.  That suggests to me that, in
+%%   fact, the files can be named \emph{relative to the data path} (and \emph{not}
+%%   the current directory), or they can be given as absolute names (in which case
+%%   the data path will not be searched).  I believe that unless the current
+%%   directory (as `.') is in the data path, it will not be treated specially.  Is
+%%   that right?}
+%% looking at the code of find_file_path in parser-funct, I changed the tex below.
 
-File names can be given relative to the current directory or absolute
-(starting with a \samp{/}). This rule also applies to files loaded by
-means of commands in include files. Remember that files are searched in the
-\code{OPRS\_DATA\_PATH} path (\pxref{OPRS Kernel Environment Variables}).
+File names can be given relative or absolute (starting with a
+\samp{/}). If absolute, they are searched with the absolute path. If
+relative, they are first searched in the \code{OPRS\_DATA\_PATH} path
+(\pxref{OPRS Kernel Environment Variables}), and if not found, they
+are searched in the current directory (so '.' is implicitly at the end
+of \code{OPRS\_DATA\_PATH}). This rule also applies to files loaded by
+means of commands in include files.
+
 
 \begin{itemize}
 
@@ -1416,10 +1421,12 @@ checking is done and enforced whenever possible. In other words, unless you hand
 the OP files themselves, it is very unlikely that an OP produced by the
 \OPE{} will be rejected by the \CPK{}.
 
-A Lex/Yacc like format grammar can be found in \nxref{Grammar Used in the OPRS Development Environment}. The grammar is recursive, therefore, it cannot be
-easily presented with a bottom up approach without making the assumption that
-some elements are known.
+A Lex/Yacc like format grammar can be found in \nxref{Grammar Used in the OPRS Development Environment}. 
+%% The grammar is recursive, therefore, it cannot be
+%% easily presented with a bottom up approach without making the assumption that
+%% some elements are known.
 % FIXME: what does this sentence mean?  What is meant by a bottom-up approach?
+% Response: Honestly, I ha no idea what I meant here... FFI
 
 Note that although the syntax is very much like Lisp, there is no Lisp
 interpreter behind the reader (\pxref{LISPLIST}).
@@ -1458,14 +1465,14 @@ The behavior of these variables is quite standard in logic programming (as
 in PROLOG \cite{Clocksin-Mellish84}).  They are bound once and remain bound. If the 
 execution of the branch on which they were bound is successful,
 then they stay bound (this is commonly used to bring values back to a caller) .
-
 % FIXME: I believe that this just means that the variables are lexically scoped,
 % and the scope range is the procedure or consultation expression.  The sentence
 % about making a copy of the variable confused me a bit.  This is just normal
 % lexical scoping, right?
 The scope of these variables is the procedure or the consultation expression in
-which they appear. Moreover, in recursive procedure calls, a new ``copy'' of the
-variables is done.
+which they appear.
+% Moreover, in recursive procedure calls, a new ``copy'' of the
+%variables is done.
 
 \subsection{Program Variables}
 \node{Program Variables}
@@ -1481,12 +1488,12 @@ at any time, even if they are already bound to some value. They are not
 used in invocation or context parts due to their inability to keep a
 value. They are mostly used inside the body of a procedure in constructions
 such as loops (See Figure \ref{ite-fact-prog-var-op}).
-
 % FIXME: I believe that this just means that the variables are lexically scoped,
 % and the scope range is the procedure or consultation expression.
 The scope of these variables is the procedure or the consultation expression in
-which they appear. Moreover, in recursive procedure calls, a new ``copy'' of the
-variables is done.
+which they appear.
+% Moreover, in recursive procedure calls, a new ``copy'' of the
+%variables is done.
 
 \subsection{Global Variables}
 \node{Global Variables}
@@ -1520,9 +1527,10 @@ them, we indicate in parenthesis the C type as defined in
 \node{Integer as a Term}
 \cpindex{Integer as a Term}
 
-\textit{FIXME: I believe that in the latest OPRS kernel integers are always
-  32-bit quantities, and so the user need not consult the machine architecture
-  to determine minimum and maximum values, etc.}
+%% \textit{FIXME: I believe that in the latest OPRS kernel integers are always
+%%   32-bit quantities, and so the user need not consult the machine architecture
+%%   to determine minimum and maximum values, etc.}
+%%  response: no they are ``int'' so I think it will depend of you C implementation/architecture, etc
 
 A term can be an \dfn{integer}. Its C type in the Term structure is
 \code{INTEGER}. In the \CPK{}, integers become C \code{int}. A
@@ -1581,17 +1589,19 @@ char " in it"}.
 \node{Symbol as a Term}
 \cpindex{Symbol as a Term}
 
-\textit{FIXME: The rules for how the vertical bars are used are not clear.  In
-  the example, it looks like the user of vertical bars permits putting spaces
-  into a symbol.  It would probably help to specify what characters are and are
-  not legal symbol characters.}
+%% \textit{FIXME: The rules for how the vertical bars are used are not clear.  In
+%%   the example, it looks like the user of vertical bars permits putting spaces
+%%   into a symbol.  It would probably help to specify what characters are and are
+%%   not legal symbol characters.}
 
-A term can be a \dfn{symbol}. Its C type in the Term structure is
-then \code{TT\_ATOM}. The case of Symbols may be changed automatically
-according to the option used -- either automatically up-cased or down-cased --
-unless they are surrounded by vertical 
-bars (\samp{|}). In some situations, (such as printing node names,
-or script names, the vertical bars are not printed around the symbol).
+A term can be a \dfn{symbol}. Its C type in the Term structure is then
+\code{TT\_ATOM}. Symbol surrounded by vertical bars (\samp{|}) can
+contain any characters, except the vertical bar itself, (e.g. white
+space, tab, etc). The case of Symbols may be changed automatically
+according to the option used -- either automatically up-cased or
+down-cased -- unless they are surrounded by vertical bars
+(\samp{|}). In some situations, (such as printing node names, or
+script names, the vertical bars are not printed around the symbol).
 
 Example of symbols: \code{nil, t, |Foo Bar|, :BOO, bar}.\\*
 Example of non symbols: \code{123il, |\#:|123|, \$g45, @x, \$32a, .asd}.
@@ -1600,15 +1610,16 @@ Example of non symbols: \code{123il, |\#:|123|, \$g45, @x, \$32a, .asd}.
 \node{Variable as a Term}
 \cpindex{Variable as a Term}
 
-\textit{FIXME: Are variables case-shifted in the same way as symbols?}
+%\textit{FIXME: Are variables case-shifted in the same way as symbols?}
 
 A term can be a \dfn{variable}. Its C type in the Term structure is then
 \code{VARIABLE}. Variables can be bound, in this case they are always bound to
 a Term (another variable for example). This depends on the binding environment
-in which they appear.
+in which they appear. Variables are case-shifted in the same way as symbols.
 
-\textit{FIXME: I added a global variable to the following example.  Please fix
-  if that was wrong of me.}
+%% \textit{FIXME: I added a global variable to the following example.  Please fix
+%%   if that was wrong of me.}
+%% resp: this is correct. FFI
 
 Example of variables: \code{\$g45, \$x, \$32a, @foo, @BoO, @@Global}.
 

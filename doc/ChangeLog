@@ -1,3 +1,10 @@
+2015-01-07  Felix Ingrand  <felix@precise>
+
+	* oprs-kernel.tex (section{\CPK{} Loading Commands}): Fixed the
+	text to reflect what the code does with resepect to
+	OPRS_DATA_PATH.
+	Addressed the FIXME Robert Goldman added.
+
 2014-12-02  Francois Felix Ingrand  <felix@ingrand.net>
 
 	* oprs.tex: update site where openprs is found.
