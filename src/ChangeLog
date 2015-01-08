@@ -1,3 +1,7 @@
+2015-01-08  Felix Ingrand  <felix@precise>
+
+	* Removed dev_env dead code...
+
 2014-11-07  Felix Ingrand  <felix@precise>
 
 	* database.h (key): unsigned char for ar and pos are probably not arge enough for Sandra's SPARK strucutures...

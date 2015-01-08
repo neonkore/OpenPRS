@@ -2,7 +2,7 @@
 /*                               -*- Mode: C -*- 
  * oprs-parser.y -- yacc grammaire
  * 
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2015 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -221,8 +221,8 @@ command:
 		read_file_name 			{printf(LG_STR("%sLoading DB \"%s\".\n",
 							       "%sChargement base de faits \"%s\".\n"),parser_indent, $4); 
 						 if (open_file_for_yyparse($4)<0) {
-						      printf(LG_STR("%sAbort Loading DB.\n",
-								    "%sAbandon chargement base de faits.\n"),parser_indent);
+						      printf(LG_STR("%sError, Abort  Loading DB.\n",
+								    "%sErreur, Abandon chargement base de faits.\n"),parser_indent);
 						      FREE($4);
 						      YYABORT; 
 						 } 
@@ -243,17 +243,11 @@ command:
 						 FREE(dopf_filename);
 						 FREE($4);
 						 YYACCEPT;}
-                                                 if ( !dev_env ) {
-						      printf(LG_STR("This command is only available on OPRS Development version.\n",
-								    "Cette commande n'est disponible que sur les versions de Développement de OPRS."));
-						      FREE($4);
-						      YYABORT;
-						 }
                                                  if (!be_quiet) printf(LG_STR("%sLoading/Compiling OP File \"%s\".\n",
 									      "%sChargement/Compilation fichier OP \"%s\".\n"),parser_indent, $4);
 						 if (open_file_for_yyparse($4)<0) {
-						      printf(LG_STR("%sAbort loading/compiling OP File.\n",
-								    "%sAbandon chargement/compilation fichier OP.\n"),parser_indent);
+						      printf(LG_STR("%sError, Abort  loading/compiling OP File.\n",
+								    "%sErreur, Abandon chargement/compilation fichier OP.\n"),parser_indent);
 						      FREE($4);
 						      YYABORT;
 						 }
@@ -262,18 +256,11 @@ command:
 						 if (!be_quiet) printf(LG_STR("%sLoading/Compiling OP File done.\n",
 									      "%sChargement/Compilation fichier OP terminé.\n"),parser_indent);}
 	| LOAD_TK OP_TK 			{yy_begin_0();}
-		symbol_list read_file_name	{ if ( !dev_env ) {
-						      printf(LG_STR("This command is only available on OPRS Development version.\n",
-								    "Cette commande n'est disponible que sur les versions de Développement de OPRS."));
-						      FREE($5);
-						      FREE_SLIST($4);
-						      YYABORT;
-						 }
-                                                 if (!be_quiet) printf(LG_STR("%sLoading/Compiling some OPs from OP File \"%s\".\n",
+		symbol_list read_file_name	{if (!be_quiet) printf(LG_STR("%sLoading/Compiling some OPs from OP File \"%s\".\n",
 									      "%sChargement/Compilation d'OPs du fichier OP \"%s\".\n"),parser_indent, $5);
 						 if (open_file_for_yyparse($5)<0) {
-						      printf(LG_STR("%sAbort loading/compiling  some OPs fromOP File.\n",
-								    "%sAbandon chargement/compilation d'OPs du fichier OP.\n"),parser_indent);
+						      printf(LG_STR("%sError, Abort  loading/compiling  some OPs fromOP File.\n",
+								    "%sErreur, Abandon chargement/compilation d'OPs du fichier OP.\n"),parser_indent);
 						      FREE($5);
 						      YYABORT;
 						 }
@@ -326,20 +313,11 @@ command:
 						    FREE(dopf_filename);
 						    FREE($4);
 						    YYACCEPT;}
-                                                 if ( !dev_env ) {
-						    printf(LG_STR("This command is only available on OPRS Development version.\n",
-							          "Cette commande n'est disponible que sur les versions de Développement de OPRS."));
-						    FREE_SLIST(text);
-						    FREE_SLIST(step_list);
-						    FREE_SLIST(graphic);
-						    FREE($4);
-						    YYABORT;
-						 }
 						 if (!be_quiet) printf(LG_STR("%sReloading/recompiling OP File \"%s\".\n",
 									      "%sRechargement/recompilation fichier OP \"%s\".\n"),parser_indent, $4);
 						 if (open_file_for_yyparse($4)<0) {
-						      printf(LG_STR("%sAbort reloading/recompiling OP File.\n",
-								    "%sAbandon rechargement/recompilation fichier OP.\n"),parser_indent);
+						      printf(LG_STR("%sError, Abort reloading/recompiling OP File.\n",
+								    "%sErreur, Abandon rechargement/recompilation fichier OP.\n"),parser_indent);
 						      FREE($4);
 						      YYABORT;
 						 }
@@ -406,42 +384,25 @@ command:
 	| SAVE_TK DB_TK				{yy_begin_0();} 
 		write_file_name			{save_database(current_oprs->database, $4); FREE($4);}
 	| DUMP_TK DB_TK				{yy_begin_0();} 
-		write_file_name			{if ( !dev_env ) {
-						      printf(LG_STR("This command is only available on OPRS Development version.\n",
-								    "Cette commande n'est disponible que sur les versions de Développement de OPRS."));
-						      FREE($4);
-						      YYABORT;
-						 }
-                                                 printf(LG_STR("Dumping fact db in \"%s\".\n",
+		write_file_name			{printf(LG_STR("Dumping fact db in \"%s\".\n",
 							       "Dump de base de faits dans \"%s\".\n"),$4);
 		                                 dump_database_from_parser(current_oprs->database, $4);
 						 printf(LG_STR("\nDumping DB done.\n",
 							       "\nDump base de faits terminé.\n"));
 						 FREE($4);}
 	| DUMP_TK OP_TK				{yy_begin_0();} 
-		write_file_name			{if ( !dev_env ) {
-						      printf(LG_STR("This command is only available on OPRS Development version.\n",
-								    "Cette commande n'est disponible que sur les versions de Développement de OPRS."));
-						      FREE($4);
-						      YYABORT;
-						 }
-                                                 printf(LG_STR("Dumping OP db in \"%s\".\n",
+		write_file_name			{printf(LG_STR("Dumping OP db in \"%s\".\n",
 							       "Dump de base de OP dans \"%s\".\n"),$4);
 		                                 dump_op_database_from_parser(current_oprs->relevant_op, $4);
 						 printf(LG_STR("\nDumping OP db done.\n",
 							       "\nDump de base de OP terminé.\n"));
 						 FREE($4);}
-	| DUMP_TK ALL_TK OPF_TK			{if ( !dev_env ) {
-						      printf(LG_STR("This command is only available on OPRS Development version.\n",
-								    "Cette commande n'est disponible que sur les versions de Développement de OPRS."));
-						      YYABORT;
-						 } else {
+	| DUMP_TK ALL_TK OPF_TK			{
 						      printf(LG_STR("Dumping all OP files.\n",
 								    "Dump de tous les fichiers OPs\n"));
 						      dump_all_opfs(current_oprs->relevant_op);
 						      printf(LG_STR("Dumping all OP files done.\n",
 								    "Dump de tous les fichiers OPs terminé.\n"));
-						 }
                                                 }
 	| DUMP_TK KERNEL_TK			{yy_begin_0();} 
 		write_file_name			{printf(LG_STR("Dumping kernel in \"%s\".\n",

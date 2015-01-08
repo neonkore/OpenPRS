@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * oprs.h -- Description de THE structure
  * 
- * Copyright (c) 1991-2013 Francois Felix Ingrand.
+ * Copyright (c) 1991-2015 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -71,7 +71,5 @@ extern FILE* fp_mp_socket;
 extern int parser_index;
 
 extern PBoolean quit;
-
-extern PBoolean dev_env;
 
 #endif /* INCLUDE_oprs */

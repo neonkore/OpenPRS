@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * oprs-dump.c -- 
  * 
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2015 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -102,8 +102,6 @@ int dump_format_version = 6;
 #endif
 
 int dump_file;
-
-PBoolean dev_env = TRUE;
 
 Slist *object_to_dump_list = NULL;
 Shash *dump_table = NULL;

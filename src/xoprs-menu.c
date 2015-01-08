@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * xoprs-menu.c -- 
  *
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2015 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -582,11 +582,9 @@ Widget xp_create_menu_bar(Widget parent, Draw_Data *dd, Int_Draw_Data *idd)
      XtAddCallback(loaddb, XmNactivateCallback, Xp_loaddb, 0);
      XtManageChild(loaddb);
 
-     if (dev_env) {
 	  loadop = XmCreatePushButtonGadget(filePDMenu,"loadop", NULL, 0);
 	  XtAddCallback(loadop, XmNactivateCallback, Xp_loadop, 0);
 	  XtManageChild(loadop);
-     }
 
      XtManageChild(XmCreateSeparator(filePDMenu,"fileseparator",NULL,0));
 
@@ -602,7 +600,6 @@ Widget xp_create_menu_bar(Widget parent, Draw_Data *dd, Int_Draw_Data *idd)
      XtAddCallback(loadkrn, XmNactivateCallback, Xp_loadkrn, 0);
      XtManageChild(loadkrn);
 
-     if (dev_env) {
 	  XtManageChild(XmCreateSeparator(filePDMenu,"fileseparator",NULL,0));
 
 	  listopfs = XmCreatePushButtonGadget(filePDMenu,"listopfs", NULL, 0);
@@ -616,7 +613,6 @@ Widget xp_create_menu_bar(Widget parent, Draw_Data *dd, Int_Draw_Data *idd)
 	  unloadop = XmCreatePushButtonGadget(filePDMenu,"unloadop", NULL, 0);
 	  XtAddCallback(unloadop, XmNactivateCallback, Xp_unloadop, 0);
 	  XtManageChild(unloadop);
-     }
 
      XtManageChild(XmCreateSeparator(filePDMenu,"fileseparator",NULL,0));
 
@@ -626,7 +622,6 @@ Widget xp_create_menu_bar(Widget parent, Draw_Data *dd, Int_Draw_Data *idd)
 
      XtManageChild(XmCreateSeparator(filePDMenu,"fileseparator",NULL,0));
 
-     if (dev_env) {
 	  dumpdb = XmCreatePushButtonGadget(filePDMenu,"dumpdb", NULL, 0);
 	  XtAddCallback(dumpdb, XmNactivateCallback, Xp_dumpdb, 0);
 	  XtManageChild(dumpdb);
@@ -638,7 +633,6 @@ Widget xp_create_menu_bar(Widget parent, Draw_Data *dd, Int_Draw_Data *idd)
 	  dumpop = XmCreatePushButtonGadget(filePDMenu,"dumpop", NULL, 0);
 	  XtAddCallback(dumpop, XmNactivateCallback, Xp_dumpop, 0);
 	  XtManageChild(dumpop);
-     }
 
      dumpkrn = XmCreatePushButtonGadget(filePDMenu,"dumpkrn", NULL, 0);
      XtAddCallback(dumpkrn, XmNactivateCallback, Xp_dumpkrn, 0);

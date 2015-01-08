@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * goprs-menu.c -- 
  *
- * Copyright (c) 1991-2013 Francois Felix Ingrand, LAAS/CNRS.
+ * Copyright (c) 1991-2015 Francois Felix Ingrand, LAAS/CNRS.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -515,12 +515,10 @@ GtkWidget *goprs_create_menu_bar(GtkWidget *window, Draw_Data *dd, Int_Draw_Data
   gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu),loaddb);
   g_signal_connect(G_OBJECT(loaddb), "activate", G_CALLBACK(Xp_loaddb), NULL);
 
-  if (dev_env) {
-    loadop = gtk_menu_item_new_with_label("Load OP File");
-    gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu),loadop);
-    g_signal_connect(G_OBJECT(loadop), "activate", G_CALLBACK(Xp_loadop), NULL);
-  }
-
+  loadop = gtk_menu_item_new_with_label("Load OP File");
+  gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu),loadop);
+  g_signal_connect(G_OBJECT(loadop), "activate", G_CALLBACK(Xp_loadop), NULL);
+  
   gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu), gtk_separator_menu_item_new());
 
   loadddb = gtk_menu_item_new_with_label("Load Dumped Database");
@@ -535,7 +533,6 @@ GtkWidget *goprs_create_menu_bar(GtkWidget *window, Draw_Data *dd, Int_Draw_Data
   gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu),loadkrn);
   g_signal_connect(G_OBJECT(loadkrn), "activate", G_CALLBACK(Xp_loadkrn), NULL);
 
-  if (dev_env) {
     gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu), gtk_separator_menu_item_new());
 
     listopfs = gtk_menu_item_new_with_label("List OP Files");
@@ -549,7 +546,6 @@ GtkWidget *goprs_create_menu_bar(GtkWidget *window, Draw_Data *dd, Int_Draw_Data
     unloadop = gtk_menu_item_new_with_label("Unload OP File");
     gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu),unloadop);
     g_signal_connect(G_OBJECT(unloadop), "activate", G_CALLBACK(Xp_unloadop), NULL);
-  }
 
   gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu), gtk_separator_menu_item_new());
 
@@ -559,7 +555,6 @@ GtkWidget *goprs_create_menu_bar(GtkWidget *window, Draw_Data *dd, Int_Draw_Data
 
   gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu), gtk_separator_menu_item_new());
 
-  if (dev_env) {
     dumpdb = gtk_menu_item_new_with_label("Dump Database");
     gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu),dumpdb);
     g_signal_connect(G_OBJECT(dumpdb), "activate", G_CALLBACK(Xp_dumpdb), NULL);
@@ -571,7 +566,6 @@ GtkWidget *goprs_create_menu_bar(GtkWidget *window, Draw_Data *dd, Int_Draw_Data
     dumpop = gtk_menu_item_new_with_label("Dump One OP File");
     gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu),dumpop);
     g_signal_connect(G_OBJECT(dumpop), "activate", G_CALLBACK(Xp_dumpop), NULL);
-  }
 
   dumpkrn = gtk_menu_item_new_with_label("Dump the Kernel");
   gtk_menu_shell_append(GTK_MENU_SHELL(filePDMenu),dumpkrn);
