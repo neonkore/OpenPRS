@@ -1,3 +1,7 @@
+;;;
+;;; credit for this emacs mode is primarily owed to Eric Engstrom and John Maraist at SIFT.
+;;;
+
 ;;;---------------------------------------------------------------------------
 ;;; To use, put something like the following in your emacs initializations:
 ;;; --------------------
