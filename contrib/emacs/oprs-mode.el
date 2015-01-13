@@ -16,6 +16,8 @@
 ;;; -------------------------------------------------------------------------
 ;;; Code:
 
+(load-library "cl-compat")			;It looks like setf is defined here.
+
 ;; NOTE: same as SVN/CVS revision:
 (defconst oprs-mode-version "$Revision$"
   "oprs-mode version number.")
