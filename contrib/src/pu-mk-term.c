@@ -57,7 +57,12 @@ Term * PUMakeTermLongLong(long long int val)
      return(build_long_long(val));
 }
 
-Term* PUMakeTermFloat(double val)
+Term* PUMakeTermFloat(float val)
+{
+  return(build_float((double)val)); /* Misleading name... build_float takes a double, sorry */
+}
+
+Term* PUMakeTermDouble(double val)
 {
      return(build_float(val));
 }

@@ -16,7 +16,8 @@ PBoolean PU_bind_u_pointer(void **ptr, Term *paramTerm);
 PBoolean PU_bind_u_memory(U_Memory **u_mem, Term *paramTerm);
 PBoolean PU_bind_expr(Expression **tcPtr, Term *paramTerm);
 PBoolean PU_bind_l_list(L_List *lispList, Term *paramTerm);
-PBoolean PU_bind_float(double *doublePtr, Term *paramTerm);
+PBoolean PU_bind_float(float *floatPtr, Term *paramTerm);
+PBoolean PU_bind_double(double *doublePtr, Term *paramTerm);
 
 PBoolean PUGetOprsParameters ( TermList paramList, int NbParametres, ... );
 PBoolean PUGetLispListElem ( L_List lispList, int NbTerm, ... );
