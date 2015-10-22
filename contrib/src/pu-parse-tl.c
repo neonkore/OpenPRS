@@ -49,6 +49,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
+#include <float.h>
 
 /* OPRS list */
 #include "slistPack.h"
@@ -174,8 +175,13 @@ PBoolean PU_bind_double(double *doublePtr, Term *paramTerm)
 PBoolean PU_bind_float(float *floatPtr, Term *paramTerm)
 {
      if (paramTerm->type == FLOAT) {
-          *floatPtr = (float)*paramTerm->u.doubleptr; /* we need to cast it, we should check it it fits though... */
-	  return TRUE;
+       double dd = *(paramTerm->u.doubleptr);
+       if ((dd < FLT_MIN) || (dd > FLT_MAX)) {
+	 fprintf(stderr,"PU_bind_float: Error: this double %f does not fit in a float;.\n", dd);
+	 return FALSE;
+       }
+       *floatPtr = dd;
+       return TRUE;
      } else if (paramTerm->type == INTEGER) {
 	  fprintf(stderr,"PU_bind_float: Warning: Casting parameter from INTEGER to FLOAT.\n");
 	  *floatPtr = paramTerm->u.intval;
