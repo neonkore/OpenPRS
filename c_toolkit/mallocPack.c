@@ -43,6 +43,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <inttypes.h>
 #endif
 
 #include "mallocPack_f.h"
@@ -237,7 +238,7 @@ void pr_mstats(FILE *fp, char *s)
 
 void *copy_alloc(void *ap)
 {
-     fprintf(stderr,"No copy_alloc for 0x%x in this lib.\n", (unsigned int)ap);
+     fprintf(stderr,"No copy_alloc for %p in this lib.\n", ap);
      return NULL;
 }
 
