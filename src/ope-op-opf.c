@@ -2,7 +2,7 @@
 /*                               -*- Mode: C -*-
  * ope-op-opf.c --
  *
- * Copyright (c) 1991-2011 Francois Felix Ingrand.
+ * Copyright (c) 1991-2017 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

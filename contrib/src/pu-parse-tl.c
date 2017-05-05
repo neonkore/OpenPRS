@@ -5,7 +5,7 @@
  * Description: 
  * Author: Felix Ingrand <felix@laas.fr>
  *
- * Copyright (C) 1993-2012 LAAS/CNRS.
+ * Copyright (C) 1993-2017 LAAS/CNRS.
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
