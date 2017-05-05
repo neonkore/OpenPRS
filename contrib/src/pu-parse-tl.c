@@ -73,11 +73,11 @@ PBoolean PU_bind_short(short *shortPtr, Term *term)
 	 *shortPtr = (short)term->u.intval;
 	  return TRUE;
        } else {
-	 fprintf(stderr,"PU_bind_integer: int value to large to fit in a short.\n");
+	 fprintf(stderr,"PU_bind_short: int value too large to fit in a short.\n");
 	 return FALSE;
        }
      } else {
-       fprintf(stderr,"PU_bind_integer: Bad parameter (expected an INTEGER).\n");
+       fprintf(stderr,"PU_bind_short: Bad parameter (expected an INTEGER).\n");
        return FALSE;
      }
 }
@@ -172,7 +172,7 @@ PBoolean PU_bind_l_list(L_List *lispList, Term *paramTerm)
 
 PBoolean PU_bind_double(double *doublePtr, Term *paramTerm)
 {
-     if (paramTerm->type == FLOAT) {
+     if (paramTerm->type == FLOAT) { /* What we call FLOAT in oprs are double */
 	  *doublePtr = *paramTerm->u.doubleptr;
 	  return TRUE;
      } else if (paramTerm->type == INTEGER) {
@@ -649,7 +649,7 @@ PBoolean PUGetOprsParametersSpecArg(TermList paramList, int rank, Term_Type type
  * struct with 3 fields, order an int, x and y double.
 
    paramList = (VarArg (order 20)(goal.x 3.4)(y 4.5)(frame "base_id")), 
-   find_them_all ensure tat all the arguments are provided,
+   find_them_all ensure that all the arguments are provided,
    This is what we expect as ... args. N-uple of this form
    INTEGER, "goal.order", &(goal.order),
    FLOAT, "goal.x", &(goal.x),
