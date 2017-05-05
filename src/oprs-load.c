@@ -359,14 +359,24 @@ long load_long(void)
 }
 
 #ifdef _LP64
+void int64ToChar(u_char a[], uint64_t n) {
+  memcpy(a, &n, 8);
+}
+
+uint64_t charTo64bitNum(u_char a[]) {
+  uint64_t n = 0;
+  memcpy(&n, a, 8);
+  return n;
+}
 void *load_ptr(void)
 {
-     void *hi;
+     u_char hi[8];
      u_char buf[8];
 
      load_read(buf, 8);
-     ntohptr(buf, &hi);
-     return hi;	
+     ntohptr(buf, hi);
+    
+     return (void *)charTo64bitNum(hi);	
 }
 #else
 void *load_ptr(void)
@@ -459,7 +469,7 @@ void ntohll(u_char *buf, long long *ll)
 }
 
 #ifdef _LP64
-void htonptr(void *ptr, u_char buf[8])
+void htonptr(const void *ptr, u_char buf[8])
 {
 #if defined(BIG_ENDIAN)
      BCOPY(ptr,buf, 8);
@@ -1009,7 +1019,7 @@ void *load_pred_func_rec(void)
 		    fprintf(stderr, LG_STR("load_func_rec: %s ef status of the loading (%s) and loaded (%s) elt differs.\n",
 					   "load_func_rec: %s ef propriété de la version à charger (%s) et chargée (%s) différent.\n"), name, TRUE_OR_FALSE_ST(ef), TRUE_OR_FALSE_ST(pfr->u.u.ef));
 
-	       if (!act != (!pfr->u.u.act)) 
+	       if (!act != !(pfr->u.u.act)) 
 		    fprintf(stderr, LG_STR("load_func_rec: %s act status of the loading (%s) and loaded (%s) elt differs.\n",
 					   "load_func_rec: %s act propriété de la version à charger (%s) et chargée (%s) différent.\n"), name, TRUE_OR_FALSE_ST(act), TRUE_OR_FALSE_ST(pfr->u.u.act));
 	  } else {

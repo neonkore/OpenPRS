@@ -265,7 +265,7 @@ int dump_ptr(const void *ptr)
 {
      u_char buf[8];
 
-     htonptr(ptr,buf);
+     htonptr((void *)ptr,buf);
 
      return dump_write(buf, 8);
 }

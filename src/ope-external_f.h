@@ -43,6 +43,7 @@ void build_edge_graphic(Edge *edge, Expression *gtexpr, Draw_Data *dd);
 
 OG *make_og_node(Draw_Data *dd, Op_Structure *op, Node *node, int x, int y);
 OG *make_node_graphic(Symbol name, Node *node);
+Gknot *make_gknot(int x, int y, OG *edge);
 OG *make_og_edge(Draw_Data *dd, Op_Structure *op,  Edge *edge, Node *in, Node *out,  Slist *knots, int x, int y, int pp_width, PBoolean pp_fill);
 OG *make_og_text_field(Draw_Data *dd, Op_Structure *op, Field_Type ft, Text_Type tt, int x, int y, PBoolean visible, int string_width, PBoolean pp_fill, int default_width);
 void update_list_og_inst(Draw_Data *dd, Op_Structure *op, OG *og_body);

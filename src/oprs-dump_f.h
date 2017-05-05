@@ -70,8 +70,8 @@ void ntoh64(u_char *buf, void *ll);
 void hton64(void *ll, u_char *buf);
 
 #ifdef _LP64
-void htonptr(void *ptr, u_char buf[8]);
-void ntohptr(u_char *buf, u_char ptr[8]);
+void htonptr(const void *ptr, u_char buf[8]);
+void ntohptr(u_char buf[8], u_char ptr[8]);
 #else
 void htonptr(const void *ptr, void **buf);
 void ntohptr(const void *buf, void **ptr);

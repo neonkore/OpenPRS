@@ -60,6 +60,7 @@
 #include "ope-save_f.h"
 #else
 #include "ope-graphic.h"
+#include "ope-external_f.h"
 #include "ope-global.h"
 #include "ope-op-opf_f.h"
 #include "ope-save_f.h"
@@ -458,12 +459,20 @@ nedge_typed:
 edge_expr: expr
 	;
 
+
 edge_knots:
 	OPENP_TK list_knots CLOSEP_TK			{$$ = $2;}
 	;
 
 list_knots: /* empty */ 			{$$ = sl_make_slist();}
-	| list_knots OPENP_TK INTEGER_TK INTEGER_TK CLOSEP_TK	{sl_add_to_tail($1, (void *)$3); sl_add_to_tail($1,(void *)$4); $$ = $1;}
+	| list_knots OPENP_TK INTEGER_TK INTEGER_TK CLOSEP_TK	{
+	sl_add_to_tail($1,
+#ifndef GRAPHIX
+	NULL
+#else
+	make_gknot($3,$4,NULL)
+#endif
+	); $$ = $1;}
 	;
 
 top_list: 	

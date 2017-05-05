@@ -612,43 +612,43 @@ void change_canvas_size(Draw_Data *dd, int x, int y)
      XtSetValues(dd->hscrollbar, args, 2);
 }
 
+Gknot *make_gknot(int x, int y, OG *edge)
+{
+  Gknot *gknot = MAKE_OBJECT(Gknot);
 
+  gknot->x = x;
+  gknot->y = y;
+  gknot->edge = NULL;
+
+  return gknot;
+}
 
 List_Knot parse_edge_location(Slist *edge_loc)
 {
      List_Knot list_knot =  sl_make_slist();
-     PBoolean first = TRUE;
-     int x,i;
-
-     x = 0 ;			/* Just to avoid GCC warning */
-     sl_loop_through_slist(edge_loc, i, int) {
-	  if (first) {
-	       x = i;
-	       first = FALSE;
-	  } else {
-	       XRectangle rect;
-	       Gknot *gknot = MAKE_OBJECT(Gknot);
-	       OG *og = MAKE_OBJECT(OG);
+     Gknot *gknot;
+     
+     sl_loop_through_slist(edge_loc, gknot, Gknot *) { /* list of non pointed object are problematic */
+       XRectangle rect;
+       OG *og = MAKE_OBJECT(OG);
 	       
-	       og->type = DT_KNOT;
-	       og->selected = FALSE;
-	       og->u.gknot = gknot;
-	       og->u.gknot->x = MAX(0,x);
-	       og->u.gknot->y = MAX(0,i);
-	       sl_add_to_tail(list_knot,og);
-	       rect.x = og->x = og->u.gknot->x - (KNOT_SIZE/2);
-	       rect.y = og->y = og->u.gknot->y - (KNOT_SIZE/2);
-	       rect.width = rect.height = og->width = og->height = KNOT_SIZE;
-	       og->region = XCreateRegion();
-	       XUnionRectWithRegion(&rect,og->region,og->region);
-	       sl_add_to_tail(current_op->list_movable_og,og);
-	       sl_add_to_tail(current_op->list_destroyable_og,og);
+       og->type = DT_KNOT;
+       og->selected = FALSE;
+       gknot->x = MAX(0,gknot->x);
+       gknot->y = MAX(0,gknot->y);
+       og->u.gknot = gknot;
+       sl_add_to_tail(list_knot,og);
+       rect.x = og->x = og->u.gknot->x - (KNOT_SIZE/2);
+       rect.y = og->y = og->u.gknot->y - (KNOT_SIZE/2);
+       rect.width = rect.height = og->width = og->height = KNOT_SIZE;
+       og->region = XCreateRegion();
+       XUnionRectWithRegion(&rect,og->region,og->region);
+       sl_add_to_tail(current_op->list_movable_og,og);
+       sl_add_to_tail(current_op->list_destroyable_og,og);
 	       
-	       if (!global_draw_data->just_compiling)
-		    update_canvas_size(global_draw_data, x, i);
+       if (!global_draw_data->just_compiling)
+	 update_canvas_size(global_draw_data, gknot->x, gknot->y);
 
-	       first= TRUE;
-	  }
      }
      return list_knot;
 }
@@ -893,38 +893,30 @@ void update_list_og_inst(Draw_Data *dd, Op_Structure *op, OG *og_body)
 List_Knot parse_knots(Op_Structure *op, Draw_Data *dd, Slist *edge_loc)
 {
      List_Knot list_knot =  sl_make_slist();
-     PBoolean first = TRUE;
-     int x,i;
+     Gknot *gknot;
 
-     x = 0 ;			/* Just to avoid GCC warning */
-     sl_loop_through_slist(edge_loc, i, int) {
-	  if (first) {
-	       x = i;
-	       first = FALSE;
-	  } else {
-	       XRectangle rect;
-	       Gknot *gknot = MAKE_OBJECT(Gknot);
-	       OG *og = MAKE_OBJECT(OG);
+     sl_loop_through_slist(edge_loc, gknot, Gknot *) {
+       XRectangle rect;
+       OG *og = MAKE_OBJECT(OG);
 	       
-	       og->type = DT_KNOT;
-	       og->selected = FALSE;
-	       og->u.gknot = gknot;
-	       og->u.gknot->x = MAX(0,x);
-	       og->u.gknot->y = MAX(0,i);
-	       sl_add_to_tail(list_knot,og);
-	       rect.x = og->x = og->u.gknot->x - (KNOT_SIZE/2);
-	       rect.y = og->y = og->u.gknot->y - (KNOT_SIZE/2);
-	       rect.width = rect.height = og->width = og->height = KNOT_SIZE;
-	       og->region = XCreateRegion();
-	       XUnionRectWithRegion(&rect,og->region,og->region);
-	       sl_add_to_tail(op->list_movable_og,og);
-	       sl_add_to_tail(op->list_destroyable_og,og);
-	       
-	       if (!dd->just_compiling)
-		    update_canvas_size(dd, x, i);
+       og->type = DT_KNOT;
+       og->selected = FALSE;
+       gknot->x = MAX(0,gknot->x);
+       gknot->y = MAX(0,gknot->y);
+       og->u.gknot = gknot;
 
-	       first= TRUE;
-	  }
+       sl_add_to_tail(list_knot,og);
+       rect.x = og->x = og->u.gknot->x - (KNOT_SIZE/2);
+       rect.y = og->y = og->u.gknot->y - (KNOT_SIZE/2);
+       rect.width = rect.height = og->width = og->height = KNOT_SIZE;
+       og->region = XCreateRegion();
+       XUnionRectWithRegion(&rect,og->region,og->region);
+       sl_add_to_tail(op->list_movable_og,og);
+       sl_add_to_tail(op->list_destroyable_og,og);
+       
+       if (!dd->just_compiling)
+	 update_canvas_size(dd, gknot->x, gknot->y);
+       
      }
      return list_knot;
 }
