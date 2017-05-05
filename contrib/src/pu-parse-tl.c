@@ -50,6 +50,8 @@
 #include <stdarg.h>
 #include <string.h>
 #include <float.h>
+#include <limits.h>
+#include <inttypes.h>
 
 /* OPRS list */
 #include "slistPack.h"
@@ -63,6 +65,22 @@
 #include "lisp-list_f-pub.h"
 
 #include "pu-parse-tl_f.h"
+
+PBoolean PU_bind_short(short *shortPtr, Term *term)
+{
+     if (term->type == INTEGER) {
+       if ((term->u.intval >= SHRT_MIN) && (term->u.intval <= SHRT_MAX)) {
+	 *shortPtr = (short)term->u.intval;
+	  return TRUE;
+       } else {
+	 fprintf(stderr,"PU_bind_integer: int value to large to fit in a short.\n");
+	 return FALSE;
+       }
+     } else {
+       fprintf(stderr,"PU_bind_integer: Bad parameter (expected an INTEGER).\n");
+       return FALSE;
+     }
+}
 
 PBoolean PU_bind_integer(int *intPtr, Term *term)
 {
@@ -856,7 +874,7 @@ PBoolean PUGetOprsVarArgG3Parameters(Expression *expr, PBoolean find_them_all, i
 		    (last[-1] == '.'))) { /* or the char before is a period . (better) */
 	    
 		    found = TRUE;
-		    add_to_tail(filled, (void *)(paramCour+1)); /* we remember the ith param was filled. */
+		    add_to_tail(filled, (void *)(intptr_t)(paramCour+1)); /* we remember the ith param was filled. */
 	    
 		    funct_call_ok = (funct)(argTerm,addr);
 
@@ -888,7 +906,7 @@ PBoolean PUGetOprsVarArgG3Parameters(Expression *expr, PBoolean find_them_all, i
 	  mandatory = va_arg(listArg, int);
 	  addr = va_arg(listArg, void *);
 	  funct = va_arg(listArg, encode_genom_function);
-	  if (mandatory && ! sl_in_slist(filled, (void *)(paramCour+1))) {
+	  if (mandatory && ! sl_in_slist(filled, (void *)(intptr_t)(paramCour+1))) {
 	       fprintf(stderr,"PUGetOprsVarArgG3Parameters: Error: Param %s is mandatory but was not provided.\n", 
 		       fieldName);
 	       return (FALSE);

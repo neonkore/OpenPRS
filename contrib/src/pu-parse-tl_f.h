@@ -8,6 +8,7 @@ extern "C" {
 #endif
 
 /* Prototypes */
+PBoolean PU_bind_short(short *shortPtr, Term *term);
 PBoolean PU_bind_integer(int *intPtr, Term *term);
 PBoolean PU_bind_long_long(long long int *intPtr, Term *term);
 PBoolean PU_bind_string(char **strPtr, Term *paramTerm);
