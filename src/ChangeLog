@@ -1,3 +1,11 @@
+2020-12-02  Felix Ingrand  <felix@doc>
+
+	* constant.h (COPYRIGHT_STRING): updated... with 2020
+
+	* ../configure.ac: bump version number to 1.1b11
+
+	* fixed some multiply defined symbols which upsets the linker with gcc-10
+
 2015-01-08  Felix Ingrand  <felix@precise>
 
 	* Removed dev_env dead code...
