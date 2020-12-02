@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*-
  * oprs-main.c --
  *
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2020 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -91,7 +91,7 @@ pthread_t accept_thread;
 \t[-m machine-message-passer] [-j numéro-port-message-passer]\n\
 \t[-l upper|lower|none ]\n")
 
-char *progname;
+extern char *progname;
 int mp_port = MP_PORT;
 int server_port = SERVER_PORT;
 char *mp_hostname;
@@ -99,7 +99,7 @@ char *server_hostname;
 int oprs_server_socket;
 PBoolean use_x_window = FALSE;
 PBoolean use_thread = TRUE;
-PBoolean i_have_the_stdin;
+extern PBoolean i_have_the_stdin;
 OprsClientList oprslist;
 
 void server_init_arg(int argc,char **argv)

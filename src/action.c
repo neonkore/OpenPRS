@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*- 
  * action.c -- 
  * 
- * Copyright (c) 1991-2013 Francois Felix Ingrand.
+ * Copyright (c) 1991-2020 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -1151,9 +1151,10 @@ Term *kill_intention_action(TermList terms)
 		    /* Add if it was not already here */ 
 		    sl_add_to_head(ig->list_condamned,in);			      
           return build_t();
-     } else 
+     } else {
 	  report_recoverable_external_error(oprs_strerror(PE_DEAD_INTENTION));
           return build_nil();
+     }
 }
 
 Term *asleep_intentions_action(TermList terms)

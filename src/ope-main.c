@@ -1,7 +1,7 @@
 /*                               -*- Mode: C -*-
  * ope-main.c --
  *
- * Copyright (c) 1991-2012 Francois Felix Ingrand.
+ * Copyright (c) 1991-2020 Francois Felix Ingrand.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -526,7 +526,7 @@ static XtResource resources[] = {
 };
 
 
-Draw_Data *global_draw_data;
+extern Draw_Data *global_draw_data;
 
 /* this is to allow our parsing of these options. */
 static XrmOptionDescRec options[] = {
